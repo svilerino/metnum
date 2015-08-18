@@ -1,2 +1,2 @@
 # metnum
-Numerical Methods
+Numerical Analysis
