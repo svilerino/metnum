@@ -14,12 +14,13 @@ using namespace std;
 /**
 * Resta de vectores
 */
-vector<double> restar(vector<double>, vector<double>);
+vector<double> restar(vector<double>&, vector<double>&);
 /**
 * Normas de vectores
 */
-double norma2(vector<double>);
-double norma1(vector<double>);
+double norma2(vector<double>&);
+double norma1(vector<double>&);
+void normalizar(vector<double>&);
 
 class Matriz {
 /**
@@ -27,7 +28,7 @@ class Matriz {
 * Representa una matriz de doubles
 */
 public:
-    /*********************** Constructores y cargar ***********************/
+    /*********************** CONSTRUCTORES ***********************/
 	/**
     * Constructor por defecto
     */
@@ -48,13 +49,13 @@ public:
     * Toma un vector no vacío de doubles y lo castea a matriz de R^(n x 1)
     * (vector columna).
     */
-    Matriz(vector<double> v);
+    Matriz(vector<double> &v);
     /**
     * Constructor de matriz diagonal
     * Toma un vector no vacío de double y lo convierte en una matriz de (n x n) que lo
     * tiene como diagonal.
     */
-    Matriz diagonal(vector<double>);
+    Matriz diagonal(vector<double> &v);
     /**
     * Cargar
     * Carga una matriz de un archivo. La primer línea del archivo debe ser,
@@ -64,7 +65,7 @@ public:
     */
    	void cargar(std::istream &is);
 
-   	/*********************** OPERACIONES entre matrices *****************************/
+   	/*********************** OPERACIONES ***********************/
    	/**
     * Traspuesta
     * Devuelve una nueva matriz que es la una copia de la original traspuesta.
@@ -74,7 +75,7 @@ public:
     * Multiplicar por otra matriz
     * Multiplica 'this'x'otra' y devuleve el resultado.
     */
-	Matriz multiplicar(Matriz otra);
+	Matriz multiplicar(Matriz &otra);
 	/**
     * Multiplicar por escalar
     * Multiplica 'this'x't' y devuelve el resultado.
@@ -82,17 +83,37 @@ public:
    	Matriz multiplicar(double t);
    	/**
     * Sumar
-    * Suma dos matrices y devuelve el resultado.
+    * Suma 'this'+'otra' y devuelve el resultado.
     */
-   	Matriz sumar(Matriz otra);
+   	Matriz sumar(Matriz &otra);
    	/**
     * Restar
     * Resta 'this'-'otra' y devuelve el resultado.
     */
-   	Matriz restar(Matriz otra);
+   	Matriz restar(Matriz &otra);
+    /**
+    * Submatriz
+    * Devuelve la submatriz de alto n y ancho m que tiene por primer elemento
+    * this[i][j].
+    */
+    Matriz submatriz(int i, int j, int n, int m);
+    /**
+    * Resolver sistema
+    * Dado un vector b, devuelve el vector solución del sistema Ax=b.
+    * Si no está hecha ya, realiza y almacena la factorización LU para acelerar
+    * futuras llamadas.
+    */
+    vector<double> resolver_sistema(vector <double> &b);
 
-    /************************ VARIOS *****************************/
+    /*********************** FACTORIZACIÓN ***********************/
+    /**
+    * Descomposición LU
+    * Calcula la descomposición PLU de la matriz y la almacena en la estructura.
+    */
+    void descomposicion_LU();
+    void pivotear(int i);
 
+    /************************ VARIOS ************************/
 	/**
     * []
     * Permite acceder a los elementos de la matriz usando notación estándar M[i][j].
@@ -116,6 +137,14 @@ public:
 
 private:
     vector<vector <double> > matriz;
+    
+    struct Lu{
+        vector<vector <double> > P;
+        vector<vector <double> > L;
+        vector<vector <double> > U;
+    };
+    Lu LU;
+    bool LU_hecha; // true <=> fue calculada la factorización LU
 };
 
 #endif
