@@ -15,9 +15,10 @@ using namespace std;
 /**
 * Operaciones de vectores
 */
+void check_dimensiones(int dimA, int dimB, const char* function_name);
 void sumar(vector<double> &a, vector<double> &b, vector<double> &res);
 void restar(vector<double> &a, vector<double> &b, vector<double> &res);
-double productoInterno(vector<double>&, vector<double>&);
+double producto_interno(vector<double>&, vector<double>&);
 double normap(vector<double>&, int p);
 void normalizar(vector<double> &v, int norma);
 
@@ -37,14 +38,14 @@ public:
     * Constructor
     * Construye la matriz identidad de n*n.
     */
-    Matriz(int n);
+    Matriz(uint n);
 	
     /**
     * Constructor
     * Toma el alto (primer parámetro) y el ancho (segundo parámetro)
     * y devuelve una matriz del tamaño especificado inicializada con ceros.
     */
-    Matriz(int n, int m);
+    Matriz(uint n, uint m);
     
     /**
     * Constructor a partir de un vector
@@ -58,7 +59,7 @@ public:
     * Toma un vector no vacío de double y lo convierte en una matriz de (n x n) que lo
     * tiene como diagonal.
     */
-    static  Matriz diagonal(vector<double> &v);
+    static Matriz diagonal(vector<double> &v);
     
     /**
     * Cargar
@@ -105,7 +106,7 @@ public:
     * Devuelve la submatriz de alto n y ancho m que tiene por primer elemento
     * this[i][j].
     */
-    Matriz submatriz(int i, int j, int n, int m);
+    Matriz submatriz(uint i, uint j, uint n, uint m);
     
     /**
     * Resolver sistema
@@ -121,7 +122,7 @@ public:
     * Calcula la descomposición PLU de la matriz y la almacena en la estructura.
     */
     void descomposicion_LU();
-    void pivotear(int i);
+    void pivotear(uint i);
 
     /************************ VARIOS ************************/
 	/**
@@ -144,12 +145,12 @@ public:
 
     /************************ Estructura interna *****************************/
 
-    int getFilas() const;
-    int getColumnas() const;
+    uint get_filas() const;
+    uint get_columnas() const;
 
 private:
-    int _numfilas;
-	int _numcolumnas;
+    uint _numfilas;
+	uint _numcolumnas;
     vector<vector <double> > _matriz;
     
     struct Lu{

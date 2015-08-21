@@ -7,12 +7,16 @@ int main(){
 	vector<double> vec1(4, 5);
 	vector<double> vec2(4, 1);
 	vector<double> vec3(4, 10);
+	vector<double> vec4(5, 10);
+
+	//deberia fallar la suma por dimensiones
+	//sumar(vec1, vec4, vec4);
 
 	cout << normap(vec1, 1) << endl;
 	cout << normap(vec2, 2) << endl;
 	cout << normap(vec3, 3) << endl;
 
-	double prodInt = productoInterno(vec1, vec2);
+	double prodInt = producto_interno(vec1, vec2);
 	cout << prodInt << endl;
 
 	vector<double> test(4, 5);
