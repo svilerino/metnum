@@ -108,27 +108,6 @@ public:
     * this[i][j].
     */
     Matriz submatriz(int i, int j, int n, int m);
-    
-    /*
-    * Eliminacion Gaussiana: Dado un vector b, devuelve el vector de incognitas x que resuelve el sistema Ax = b
-    */
-    vector<double> eliminacion_gaussiana(vector<double> &b);
-
-    /**
-    * Resolver sistema
-    * Dado un vector b, devuelve el vector solución del sistema Ax=b.
-    * Si no está hecha ya, realiza y almacena la factorización LU para acelerar
-    * futuras llamadas.
-    */
-    vector<double> resolver_sistema(vector <double> &b);
-
-    /*********************** FACTORIZACIÓN ***********************/
-    /**
-    * Descomposición LU
-    * Calcula la descomposición PLU de la matriz y la almacena en la estructura.
-    */
-    void descomposicion_LU();
-    void pivotear(int i);
 
     /************************ VARIOS ************************/
 	/**
@@ -139,7 +118,7 @@ public:
     
     /**
     * Mostrar
-    * Muestra una matriz por el stream 'os' (que puede ser cout).
+    * Muestra una matriz por el stream 'os'.
     */
     void mostrar(std::ostream &os);
     
@@ -149,6 +128,12 @@ public:
     */
     vector<double> diagonal();
 
+    /**
+    * Intercambiar Filas
+    * Intercambia las filas i y j de la matriz
+    */
+
+    void intercambiar_filas(int i, int j);
     /************************ Estructura interna *****************************/
 
     int get_filas() const;
@@ -158,18 +143,52 @@ private:
     int _numfilas;
 	int _numcolumnas;
     vector<vector <double> > _matriz;
-    
-    struct Lu{
-        vector<vector <double> > P;
-        vector<vector <double> > L;
-        vector<vector <double> > U;
-    };
 
-    Lu _LU;
-    
-    bool LU_hecha; // true <=> fue calculada la factorización LU
 };
 
-void imprimir_sistema(Matriz &A, vector<double> &vec, std::ostream &os);
+//void InicializarLU(int filas, int columnas, FactorizacionLU& lu);
+struct FactorizacionLU {
+    Matriz L;
+    Matriz U;
+};
+
+class SistemaEcuaciones {
+public:
+    SistemaEcuaciones(Matriz &A, vector<double> &b);
+
+    /**
+    * Muestra el sistema de ecuaciones por el stream 'os'.
+    */
+    void imprimir_sistema(std::ostream &os);
+
+    /*
+    *   Eliminacion Gaussiana
+        Dado un vector b, Devuelve el vector de incognitas x que resuelve el sistema Ax = b
+        Tiene costo cubico
+    */
+    vector<double> eliminacion_gaussiana(bool usar_pivoteo_parcial);
+
+    /*
+    *   Devuelve la Factorizacion LU de la Matriz A del sistema
+        Tiene costo cubico
+    */
+    FactorizacionLU factorizar_LU();// Asumiendo que en este tp son sistemas que admiten LU.
+
+    /*
+    *   Resuelve el sistema en tiempo cuadratico teniendo la factorizacion LU.
+    */
+    vector<double> resolver_con_LU(FactorizacionLU& lu);
+
+    /*
+    *   Cambia el vector de terminos independientes
+    */
+    void cambiar_b(vector<double> & nuevo_b);
+
+private:
+    Matriz _A;
+    vector<double> _b;
+
+    void pivoteo_parcial(int i);
+};
 
 #endif

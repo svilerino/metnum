@@ -48,9 +48,16 @@ int main(){
 
 	Matriz a;
 	a.cargar(cin);
+	//a.mostrar(cout);
+	//a.intercambiar_filas(1, 2);
+	//a.mostrar(cout);
+
 	vector<double> b = {1, 2 ,2}; 
 	vector<double> res(b.size(), 0);
-	res = a.eliminacion_gaussiana(b);
+
+	SistemaEcuaciones se(a, b);
+
+	res = se.eliminacion_gaussiana(true/*usar_pivoteo_parcial*/);
 	cout << "Resultado:" << endl;
 	imprimir_vector(res, cout);
     return 0;
