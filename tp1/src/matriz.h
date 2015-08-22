@@ -15,6 +15,7 @@ using namespace std;
 /**
 * Operaciones de vectores
 */
+void imprimir_vector(vector<double> &vec, std::ostream &os);
 void check_dimensiones(int dimA, int dimB, const char* function_name);
 void sumar(vector<double> &a, vector<double> &b, vector<double> &res);
 void restar(vector<double> &a, vector<double> &b, vector<double> &res);
@@ -38,14 +39,14 @@ public:
     * Constructor
     * Construye la matriz identidad de n*n.
     */
-    Matriz(uint n);
+    Matriz(int n);
 	
     /**
     * Constructor
     * Toma el alto (primer parámetro) y el ancho (segundo parámetro)
     * y devuelve una matriz del tamaño especificado inicializada con ceros.
     */
-    Matriz(uint n, uint m);
+    Matriz(int n, int m);
     
     /**
     * Constructor a partir de un vector
@@ -106,8 +107,13 @@ public:
     * Devuelve la submatriz de alto n y ancho m que tiene por primer elemento
     * this[i][j].
     */
-    Matriz submatriz(uint i, uint j, uint n, uint m);
+    Matriz submatriz(int i, int j, int n, int m);
     
+    /*
+    * Eliminacion Gaussiana: Dado un vector b, devuelve el vector de incognitas x que resuelve el sistema Ax = b
+    */
+    vector<double> eliminacion_gaussiana(vector<double> &b);
+
     /**
     * Resolver sistema
     * Dado un vector b, devuelve el vector solución del sistema Ax=b.
@@ -122,7 +128,7 @@ public:
     * Calcula la descomposición PLU de la matriz y la almacena en la estructura.
     */
     void descomposicion_LU();
-    void pivotear(uint i);
+    void pivotear(int i);
 
     /************************ VARIOS ************************/
 	/**
@@ -145,12 +151,12 @@ public:
 
     /************************ Estructura interna *****************************/
 
-    uint get_filas() const;
-    uint get_columnas() const;
+    int get_filas() const;
+    int get_columnas() const;
 
 private:
-    uint _numfilas;
-	uint _numcolumnas;
+    int _numfilas;
+	int _numcolumnas;
     vector<vector <double> > _matriz;
     
     struct Lu{
@@ -163,5 +169,7 @@ private:
     
     bool LU_hecha; // true <=> fue calculada la factorización LU
 };
+
+void imprimir_sistema(Matriz &A, vector<double> &vec, std::ostream &os);
 
 #endif
