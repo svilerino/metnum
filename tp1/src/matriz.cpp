@@ -289,38 +289,6 @@ void Matriz::intercambiar_filas(int i, int j) {
     swap(_matriz[i], _matriz[j]);
 }
 
-
-//void InicializarLU(int filas, int columnas, FactorizacionLU& lu) {
-    // lu.L es lower(tiene la parte superior con ceros y unos en la diagonal)
-    // lu.U es upper(tiene la parte inferior con ceros)
-    // Voy a asumir que las diagonales de ambas pueden tener valores
-    
-    // La matriz L va a ser del tipo
-    // a11  0   0   0  ... 0
-    // a21 a22  0   0  ... 0
-    // a31 a32 a33  0  ... 0
-    // a41 a42 a43 a44 ... 0
-    // ...
-    // an1 an2 an3 an4 ... ann
-
-    // La matriz U va a ser del tipo
-    // a11 a12 a13 a14 ... a1n
-    //  0  a22 a23 a24 ... a1n
-    //  0   0  a33 a34 ... a1n
-    //  0   0   0  a44 ... a1n
-    // ...
-    //  0   0   0   0  ... ann
-
-    // El modo de representar esto eficientemente en memoria lo voy a plantear asi...
-    // Las matrices se representan como vectores de vectores de doubles, entonces...
-    // Para la matriz L:
-    // la fila i-esima va a tener n-i columnas y respetando los limites obvios de indexacion se indexa igual.
-
-    // Para la matriz U:
-    // la fila i-esima va a tener i columnas pero para indexarla se debe hacer lo siguiente.
-    // U[i][j] va a ser equivalente a U[i][j]
-//}
-
 /**
 * 
 * Implementacion clase SistemaEcuaciones
@@ -367,8 +335,6 @@ void SistemaEcuaciones::imprimir_sistema(std::ostream &os) {
 }
 
 vector<double> SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial) {
-    cout << "Sistema original" << endl;
-    imprimir_sistema(cout);
 
     int numfilas = _A.get_filas();
     int numcolumnas = _A.get_columnas();
@@ -394,9 +360,6 @@ vector<double> SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcia
             _b[j] -= m * _b[i];
         }
     }
-    
-    cout << "Sistema equivalente triangular" << endl;
-    imprimir_sistema(cout);
 
     // Calculo el vector X de soluciones con backward substitution.
     for (int i = numfilas - 1; i >= 0; i--) {
@@ -436,110 +399,72 @@ void SistemaEcuaciones::cambiar_b(vector<double> & nuevo_b) {
     _b = nuevo_b;
 }
 
-vector<double> SistemaEcuaciones::resolver_con_LU(FactorizacionLU& lu) {
-    vector<double> res;
-    return res;
+vector<double> SistemaEcuaciones::resolver_con_LU(FactorizacionLU& factorizacion) {
+    int sizeB = _b.size();
+    vector<double> resY(sizeB);
+    vector<double> resX(sizeB);
+
+    int numfilas = _A.get_filas();
+
+    // calculo resY
+    for (int i = 0 ; i < numfilas; i++) {
+        double suma = 0;
+        for (int j = 0; j < i; j++) {
+            suma += factorizacion._L[i][j] * resY[j];
+        }
+        resY[i] = (_b[i] - suma) / factorizacion._L[i][i];
+    }
+
+    // calculo resX
+    for (int i = numfilas - 1 ; i>=0; i--) {
+        double suma = 0;
+        for (int j=i+1; j < numfilas; j++) {
+            suma += factorizacion._U[i][j] * resX[j];
+        }
+        resX[i] = (resY[i] - suma) / factorizacion._U[i][i];
+    }
+    return resX;
 }
 
 FactorizacionLU SistemaEcuaciones::factorizar_LU() {
+    int numfilas = _A.get_filas();
+    int numcolumnas = _A.get_columnas();
+
     FactorizacionLU lu;
+
+    lu._L = _A;
+    lu._U = _A;
+
+    for (int i = 0; i < numcolumnas - 1; i++) {
+        for (int j = i+1; j < numfilas; j++) {
+            // Opero sobre la fila 
+            for (int k = numcolumnas - 1; k >= i; k--) {
+                // Guardo los elementos de L
+                if (k == i) {
+                    // Calculo el coeficiente multiplicador
+                    double m = lu._L[j][i] / lu._L[i][i];
+                    lu._L[j][k] = m;
+                } else {
+                    lu._L[j][k] -= (lu._L[j][i] / lu._L[i][i]) * lu._L[i][k];
+                }
+                //modifico los elementos de U
+                lu._U[j][k] -= (lu._U[j][i] / lu._U[i][i]) * lu._U[i][k];
+            }
+        }
+    }
+
+    // le borro la parte triangular superior a L y pongo unos en la diagonal por convencion
+    for (int i = 0; i<numfilas; i++) {
+        for (int j = 0; j < numcolumnas; j++) {
+            if (j==i) {
+                lu._L[i][i] = 1;
+            } 
+
+            if (j>i) {
+                lu._L[i][j] = 0;
+            }
+        }
+    }
 
     return lu;
 }
-
-//vector <double> Matriz::resolver_sistema(vector<double> &b)
-//{
-//    if (!LU_hecha) {
-//        descomposicion_LU();
-//    }
-//
-//    vector<double> y(b.size());
-//    vector<double> x(b.size());
-//
-//    // permuto b
-//    vector<double> tmp(b.size());
-//    for (int i = 0; i<_numfilas; i++) {
-//        for (int j = 0; j < _numfilas; j++) {
-//            if (_LU.P[i][j] == 1) {
-//                tmp[i]=b[j];
-//            }
-//        }
-//    }
-//    b = tmp;
-//
-//    // calculo Y
-//    for (int i = 0 ; i<_numfilas; i++) {
-//        double suma = 0;
-//        for (int j = 0; j < i; j++) {
-//            suma += _LU.L[i][j] * y[j];
-//        }
-//        y[i] = (b[i]-suma) / _LU.L[i][i];
-//    }
-//
-//    // calculo X
-//    for (int i=_numfilas-1 ; i>=0; i--) {
-//        double suma=0;
-//        for (int j=i+1; j < _numfilas; j++) {
-//            suma += _LU.U[i][j] * x[j];
-//        }
-//        x[i] = (y[i]-suma) / _LU.U[i][i];
-//    }
-//    return x;
-//}
-
-//void Matriz::descomposicion_LU()
-//{
-//    _LU.L = _matriz;
-//    _LU.U = _matriz;
-//    _LU.P = _matriz;
-//
-//    // P = ID
-//    for (int i = 0; i<_numfilas; i++) {
-//        for (int j = 0; j < _numcolumnas; j++) {
-//            if (i==j) {
-//                _LU.P[i][j]=1;
-//            } else {
-//                _LU.P[i][j]=0;
-//            }
-//        }
-//    }
-//
-//    for (int i = 0; i<_numfilas; i++) {
-//        if (_LU.L[i][i]==0) {
-//            pivotear(i);
-//        }
-//
-//        for (int j=i+1; j < _numcolumnas; j++) {
-//            for (int k=_numfilas-1; k>=i; k--) {
-//                if (k == i) {
-//                    _LU.L[j][k] = (_LU.L[j][i] / _LU.L[i][i]);
-//                } else {
-//                    _LU.L[j][k] -= (_LU.L[j][i] / _LU.L[i][i]) * _LU.L[i][k];
-//                }
-//                _LU.U[j][k] -= (_LU.U[j][i] / _LU.U[i][i]) * _LU.U[i][k];
-//            }
-//        }
-//    }
-//
-//    // le borro la parte triangular superior a L
-//    for (int i = 0; i<_numfilas; i++) {
-//        for (int j = 0; j < _numcolumnas; j++) {
-//            if (j==i) _LU.L[i][i] = 1;
-//            if (j>i) _LU.L[i][j] = 0;
-//        }
-//    }
-//    LU_hecha = true;
-//}
-
-//void Matriz::pivotear(int i)
-//{
-//    bool encontroFilaNoNula = false;
-//    for (int j=i+1; (j < _numfilas && !encontroFilaNoNula); j++) {
-//        if (_LU.L[j][i] != 0) {
-//            swap(_LU.P[i], _LU.P[j]);
-//            swap(_LU.L[i], _LU.L[j]);
-//            swap(_LU.U[i], _LU.U[j]);            
-//            encontroFilaNoNula = true;
-//        }
-//    }
-//}

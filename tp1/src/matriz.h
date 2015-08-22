@@ -54,7 +54,7 @@ public:
     * (vector columna).
     */
     Matriz(vector<double> &v);
-    
+
     /**
     * Constructor de matriz diagonal
     * Toma un vector no vacío de double y lo convierte en una matriz de (n x n) que lo
@@ -146,10 +146,9 @@ private:
 
 };
 
-//void InicializarLU(int filas, int columnas, FactorizacionLU& lu);
 struct FactorizacionLU {
-    Matriz L;
-    Matriz U;
+    Matriz _L;
+    Matriz _U;
 };
 
 class SistemaEcuaciones {

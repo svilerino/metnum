@@ -52,14 +52,33 @@ int main(){
 	//a.intercambiar_filas(1, 2);
 	//a.mostrar(cout);
 
-	vector<double> b = {1, 2 ,2}; 
+	vector<double> b = {1, 2 ,2, 3}; 
 	vector<double> res(b.size(), 0);
 
 	SistemaEcuaciones se(a, b);
+	cout << "Sistema original" << endl;
+    se.imprimir_sistema(cout);
 
-	res = se.eliminacion_gaussiana(true/*usar_pivoteo_parcial*/);
-	cout << "Resultado:" << endl;
+	res = se.eliminacion_gaussiana(false/*usar_pivoteo_parcial*/);
+    cout << "Sistema equivalente triangular sin pivoteo parcial" << endl;
+    se.imprimir_sistema(cout);
+	cout << "Resultado con gauss:" << endl;
 	imprimir_vector(res, cout);
+
+	SistemaEcuaciones se2(a, b);
+	res = se2.eliminacion_gaussiana(true/*usar_pivoteo_parcial*/);
+    cout << "Sistema equivalente triangular con pivoteo parcial" << endl;
+    se2.imprimir_sistema(cout);
+	cout << "Resultado con gauss:" << endl;
+	imprimir_vector(res, cout);
+
+	SistemaEcuaciones seLU(a, b);
+
+	FactorizacionLU lu = seLU.factorizar_LU();
+	res = seLU.resolver_con_LU(lu);
+	cout << "Resultado con LU:" << endl;
+	imprimir_vector(res, cout);
+
     return 0;
 }
 
