@@ -14,7 +14,7 @@ clean:
 	- $(RM) -rf *.o *~ tp1
 
 tp1: $(OBJECTS)
-	$(LD) $(LDFLAGS) -o tp1 $(OBJECTS)
+	$(LD) $(LDFLAGS) -o ../bin/tp1 $(OBJECTS)
 
 %.o: %.cpp
 	$(CC) -c $(CFLAGS) -o "$@" "$<"

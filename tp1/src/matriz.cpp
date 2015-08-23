@@ -7,6 +7,18 @@ using namespace std;
 * 
 */
 
+void imprimir_vector(vector<double> &vec, std::ostream &os) {
+    os.precision(5);
+    os.setf(ios::fixed,ios::floatfield);
+    os << "[";
+    int sizeV = vec.size();
+    for (int i = 0; i < sizeV; i++)
+    {
+        os << vec[i] << (i == sizeV-1 ? "" : ", ");
+    }
+    os << "]" << endl;
+}
+
 void check_dimensiones(int dimA, int dimB, const char* function_name) {
     if (dimA != dimB) {
         cerr << "[Error de dimensiones en funcion: " << function_name << "]" << endl;
@@ -17,11 +29,11 @@ void check_dimensiones(int dimA, int dimB, const char* function_name) {
 void sumar(vector<double> &a, vector<double> &b, vector<double> &res)
 {
     check_dimensiones(a.size(), b.size(), __FUNCTION__);
-    uint sizeA = a.size();
+    int sizeA = a.size();
 
     res.resize(sizeA);
 
-    for (uint i = 0; i < sizeA; i++) {
+    for (int i = 0; i < sizeA; i++) {
         res[i] = a[i] + b[i];
     }
 }
@@ -30,17 +42,17 @@ void restar(vector<double> &a, vector<double> &b, vector<double> &res)
 {
     check_dimensiones(a.size(), b.size(), __FUNCTION__);
     
-    uint sizeA = a.size();
-    for (uint i = 0; i < sizeA; i++) {
+    int sizeA = a.size();
+    for (int i = 0; i < sizeA; i++) {
         res[i] = a[i] - b[i];
     }
 }
 
 double normap(vector<double> &v, int p) {
     double acum = 0;
-    uint sizeV = v.size();
+    int sizeV = v.size();
 
-    for (uint i = 0; i<sizeV; i++) {
+    for (int i = 0; i<sizeV; i++) {
         acum = acum + pow(abs(v[i]), p);
     }
     return pow(acum, 1/(double)p);
@@ -49,8 +61,8 @@ double normap(vector<double> &v, int p) {
 void normalizar(vector<double> &v, int norma)
 {
     double norm = normap(v, norma);
-    uint sizeV = v.size();
-    for (uint i = 0; i < sizeV; i++) {
+    int sizeV = v.size();
+    for (int i = 0; i < sizeV; i++) {
         v[i] = v[i] / norm;
     }
 }
@@ -59,8 +71,8 @@ double producto_interno(vector<double>& vec1, vector<double>& vec2) {
     double res = 0;
     check_dimensiones(vec1.size(), vec2.size(), __FUNCTION__);    
     
-    uint sizeV = vec1.size();
-    for (uint i = 0; i < sizeV; i++) {
+    int sizeV = vec1.size();
+    for (int i = 0; i < sizeV; i++) {
         res += (vec1[i] * vec2[i]);
     }
     return res;
@@ -72,12 +84,12 @@ double producto_interno(vector<double>& vec1, vector<double>& vec2) {
 * 
 */
 
-uint Matriz::get_filas() const
+int Matriz::get_filas() const
 {
     return _numfilas;
 }
 
-uint Matriz::get_columnas() const
+int Matriz::get_columnas() const
 {
     return _numcolumnas;
 }
@@ -89,7 +101,7 @@ Matriz::Matriz()
     _numcolumnas = 0;
 }
 
-Matriz::Matriz(uint n, uint m)
+Matriz::Matriz(int n, int m)
 {
     _numfilas = n;
     _numcolumnas = m;
@@ -98,17 +110,17 @@ Matriz::Matriz(uint n, uint m)
     _matriz.resize(_numfilas, vec_fila);
 }
 
-Matriz::Matriz(uint dimension) : Matriz(dimension, dimension)// llamo al constructor de matrices rectangulares
+Matriz::Matriz(int dimension) : Matriz(dimension, dimension)// llamo al constructor de matrices rectangulares
 {
     // Inicializo la diagonal con unos.
-    for (uint i = 0; i < dimension; i++) {
+    for (int i = 0; i < dimension; i++) {
         _matriz[i][i] = 1;
     }
 }
 
 Matriz::Matriz(vector<double> &v) : Matriz(v.size(), 1)// llamo al constructor de matrices rectangulares
 {
-    for (uint i = 0; i < _numfilas; i++) {
+    for (int i = 0; i < _numfilas; i++) {
         _matriz[i][0] = v[i];
     }
 }
@@ -118,7 +130,8 @@ Matriz Matriz::diagonal(vector<double> &v)
 {
     Matriz res(v.size(), v.size());
     
-    for (uint i = 0; i<v.size(); i++) {
+    int sizeV = v.size();
+    for (int i = 0; i<sizeV; i++) {
         res[i][i] = v[i];
     }
     return res;
@@ -132,8 +145,8 @@ void Matriz::cargar(std::istream &is)
     _matriz.clear();
     
     vector<double> fila;
-	for (uint i = 0; i < _numfilas; i++) {
-		for (uint j = 0; j < _numcolumnas; j++) {
+	for (int i = 0; i < _numfilas; i++) {
+		for (int j = 0; j < _numcolumnas; j++) {
 		    double val;
 			is >> val;
 			fila.push_back(val);
@@ -148,9 +161,9 @@ void Matriz::mostrar(std::ostream &os)
     os.precision(5);
     os.setf(ios::fixed,ios::floatfield);
 
-	for (uint i = 0 ; i<_numfilas; i++) {
+	for (int i = 0 ; i<_numfilas; i++) {
 		os << "[";
-		for (uint j = 0; j < _numcolumnas; j++) {
+		for (int j = 0; j < _numcolumnas; j++) {
 		    if (_matriz[i][j] < 0) {
                 os.precision(4);  
             } else {
@@ -172,8 +185,8 @@ Matriz Matriz::traspuesta()
 {
     Matriz res(_numcolumnas, _numfilas);
 
-    for (uint i = 0; i<_numfilas; i++) {
-        for (uint j = 0; j < _numcolumnas; j++) {
+    for (int i = 0; i<_numfilas; i++) {
+        for (int j = 0; j < _numcolumnas; j++) {
             res[j][i] = _matriz[i][j];
         }
     }
@@ -185,10 +198,10 @@ Matriz Matriz::multiplicar(Matriz &a)
     check_dimensiones(_numcolumnas, a._numfilas, __FUNCTION__);
 
     Matriz b (_numfilas, a._numcolumnas);
-    for (uint i = 0; i < _numfilas; i++) {
-        for (uint j = 0; j < a._numcolumnas; j++) {
+    for (int i = 0; i < _numfilas; i++) {
+        for (int j = 0; j < a._numcolumnas; j++) {
             b[i][j] = 0;
-            for (uint k = 0; k < _numcolumnas; k++) {
+            for (int k = 0; k < _numcolumnas; k++) {
                 b[i][j] = b[i][j] + _matriz[i][k] * a[k][j];
             }
         }
@@ -200,8 +213,8 @@ Matriz Matriz::multiplicar(double t)
 {
     Matriz res(_numfilas, _numcolumnas);
 
-    for (uint i = 0; i < _numfilas; i++) {
-        for (uint j = 0; j < _numcolumnas; j++) {
+    for (int i = 0; i < _numfilas; i++) {
+        for (int j = 0; j < _numcolumnas; j++) {
             res[i][j] = _matriz[i][j] * t;
         }
     }
@@ -214,8 +227,8 @@ Matriz Matriz::sumar(Matriz &otra)
     check_dimensiones(_numcolumnas, otra._numcolumnas, __FUNCTION__);
 
     Matriz res(_numfilas, _numcolumnas);
-    for (uint i = 0; i < _numfilas; i++) {
-        for (uint j = 0; j < _numcolumnas; j++) {
+    for (int i = 0; i < _numfilas; i++) {
+        for (int j = 0; j < _numcolumnas; j++) {
             res[i][j] = _matriz[i][j] + otra[i][j];
         }
     }
@@ -228,15 +241,15 @@ Matriz Matriz::restar(Matriz &otra)
     check_dimensiones(_numcolumnas, otra._numcolumnas, __FUNCTION__);
 
     Matriz res(_numfilas, _numcolumnas);
-    for (uint i = 0; i < _numfilas; i++) {
-        for (uint j = 0; j < _numcolumnas; j++) {
+    for (int i = 0; i < _numfilas; i++) {
+        for (int j = 0; j < _numcolumnas; j++) {
             res[i][j] = _matriz[i][j] - otra[i][j];
         }
     }
     return res;
 }
 
-Matriz Matriz::submatriz(uint y, uint x, uint n, uint m)
+Matriz Matriz::submatriz(int y, int x, int n, int m)
 {
     if (n > _numfilas || m > _numcolumnas) {
         cerr << "Estas pidiendo una submatriz mas grande que la matriz original." << endl;
@@ -244,8 +257,8 @@ Matriz Matriz::submatriz(uint y, uint x, uint n, uint m)
     }
 
     Matriz res(n, m);
-    for (uint i = 0; i<res._numfilas; i++) {
-        for (uint j = 0; j < res._numcolumnas; j++) {
+    for (int i = 0; i<res._numfilas; i++) {
+        for (int j = 0; j < res._numcolumnas; j++) {
             if ((i+y < _numfilas) && (j+x < _numcolumnas)) {
                 res[i][j] = _matriz[i+y][j+x];
             }
@@ -254,110 +267,204 @@ Matriz Matriz::submatriz(uint y, uint x, uint n, uint m)
     return res;
 }
 
-vector <double> Matriz::resolver_sistema(vector<double> &b)
-{
-    if (!LU_hecha) {
-        descomposicion_LU();
-    }
-
-    vector<double> y(b.size());
-    vector<double> x(b.size());
-
-    // permuto b
-    vector<double> tmp(b.size());
-    for (uint i = 0; i<_numfilas; i++) {
-        for (uint j = 0; j < _numfilas; j++) {
-            if (_LU.P[i][j] == 1) {
-                tmp[i]=b[j];
-            }
-        }
-    }
-    b = tmp;
-
-    // calculo Y
-    for (uint i = 0 ; i<_numfilas; i++) {
-        double suma = 0;
-        for (uint j = 0; j < i; j++) {
-            suma += _LU.L[i][j] * y[j];
-        }
-        y[i] = (b[i]-suma) / _LU.L[i][i];
-    }
-
-    // calculo X
-    for (uint i=_numfilas-1 ; i>=0; i--) {
-        double suma=0;
-        for (uint j=i+1; j < _numfilas; j++) {
-            suma += _LU.U[i][j] * x[j];
-        }
-        x[i] = (y[i]-suma) / _LU.U[i][i];
-    }
-    return x;
-}
-
-void Matriz::descomposicion_LU()
-{
-    _LU.L = _matriz;
-    _LU.U = _matriz;
-    _LU.P = _matriz;
-
-    // P = ID
-    for (uint i = 0; i<_numfilas; i++) {
-        for (uint j = 0; j < _numcolumnas; j++) {
-            if (i==j) {
-                _LU.P[i][j]=1;
-            } else {
-                _LU.P[i][j]=0;
-            }
-        }
-    }
-
-    for (uint i = 0; i<_numfilas; i++) {
-        if (_LU.L[i][i]==0) {
-            pivotear(i);
-        }
-
-        for (uint j=i+1; j < _numcolumnas; j++) {
-            for (uint k=_numfilas-1; k>=i; k--) {
-                if (k == i) {
-                    _LU.L[j][k] = (_LU.L[j][i] / _LU.L[i][i]);
-                } else {
-                    _LU.L[j][k] -= (_LU.L[j][i] / _LU.L[i][i]) * _LU.L[i][k];
-                }
-                _LU.U[j][k] -= (_LU.U[j][i] / _LU.U[i][i]) * _LU.U[i][k];
-            }
-        }
-    }
-    for (uint i = 0; i<_numfilas; i++) {
-        for (uint j = 0; j < _numcolumnas; j++) {
-            if (j==i) _LU.L[i][i] = 1;
-            if (j>i) _LU.L[i][j] = 0;
-        }
-    }
-    LU_hecha = true;
-}
-
-void Matriz::pivotear(uint i)
-{
-    bool encontroFilaNoNula = false;
-    for (uint j=i+1; (j < _numfilas && !encontroFilaNoNula); j++) {
-        if (_LU.L[j][i] != 0) {
-            swap(_LU.P[i], _LU.P[j]);
-            swap(_LU.L[i], _LU.L[j]);
-            swap(_LU.U[i], _LU.U[j]);            
-            encontroFilaNoNula = true;
-        }
-    }
-}
-
 vector<double> Matriz::diagonal()
 {
     vector<double> diag;
-    for (uint i = 0; i<_numfilas; i++) {
-        for (uint j = 0; j < _numcolumnas; j++) {
+    for (int i = 0; i<_numfilas; i++) {
+        for (int j = 0; j < _numcolumnas; j++) {
             if (i==j) {
                 diag.push_back(_matriz[i][j]);
             }
         }
     }
     return diag;
+}
+
+void Matriz::intercambiar_filas(int i, int j) {
+    if (i > _numfilas || j > _numfilas) {
+        cerr << "Estas tratando de intercambiar filas con indices erroneos." << endl;
+        exit(-1);
+    }
+
+    swap(_matriz[i], _matriz[j]);
+}
+
+/**
+* 
+* Implementacion clase SistemaEcuaciones
+* 
+*/
+
+SistemaEcuaciones::SistemaEcuaciones(Matriz &A, vector<double> &b) {
+    _A = A;
+    _b = b;
+}
+
+void SistemaEcuaciones::imprimir_sistema(std::ostream &os) {
+    os.precision(5);
+    os.setf(ios::fixed,ios::floatfield);
+
+    int num_filas = _A.get_filas();
+    int num_columnas = _A.get_columnas();
+
+    for (int i = 0 ; i< num_filas; i++) {
+        os << "[";
+        for (int j = 0; j < num_columnas; j++) {
+            if (_A[i][j] < 0) {
+                os.precision(4);  
+            } else {
+                os.precision(5);  
+            } 
+            
+            if (j == num_columnas-1) {
+                os << _A[i][j];
+            } else {
+                os << _A[i][j] << " ";
+            }
+        }
+        os << " | ";
+        if (_b[i] < 0) {
+            os.precision(4);  
+        } else {
+            os.precision(5);  
+        } 
+        os << _b[i];
+        os << "]" << endl;
+    }
+    os << endl;
+}
+
+vector<double> SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial) {
+
+    int numfilas = _A.get_filas();
+    int numcolumnas = _A.get_columnas();
+
+    vector<double> vecSol(numfilas, 0);
+    
+    // Triangular la matriz ampliada del sistema
+    for (int i = 0; i < numcolumnas - 1; i++) {
+        if(usar_pivoteo_parcial)
+        {
+            pivoteo_parcial(i);
+        }
+
+        for (int j = i+1; j < numfilas; j++) {
+            // Calculo el coeficiente multiplicador
+            double m = _A[j][i] / _A[i][i];
+            
+            // Opero sobre la fila 
+            for (int k = i; k < numcolumnas; k++) {
+                _A[j][k] -= m * _A[i][k];
+            }
+            // Tambien hay que modificar el vector b!
+            _b[j] -= m * _b[i];
+        }
+    }
+
+    // Calculo el vector X de soluciones con backward substitution.
+    for (int i = numfilas - 1; i >= 0; i--) {
+        // Obtener suma de la fila por el b
+        double sumaAcum = 0;
+        for (int j = i+1; j < numcolumnas; j++) {
+            if(i<numfilas && j < numcolumnas)
+                sumaAcum += _A[i][j] * vecSol[j];
+        }
+
+        // Despejar el xi
+        vecSol[i] = (_b[i] - sumaAcum) / _A[i][i];
+    }
+
+    return vecSol;
+}
+
+void SistemaEcuaciones::pivoteo_parcial(int i) {
+    // Busco la maxima fila debajo de la i-esima
+    int numfilas = _A.get_filas();
+    int maxI = i;
+
+    for (int j = i + 1; j < numfilas; j++) {
+        if (_A[j][i] > _A[maxI][i]) {
+            maxI = i;
+        }
+    }
+
+    // Si es una fila distinta, las swapeo para lograr tener un pivote maximo.
+    if( i != maxI ) {
+        _A.intercambiar_filas(i, maxI);
+        swap(_b[i], _b[maxI]);
+    }
+}
+
+void SistemaEcuaciones::cambiar_b(vector<double> & nuevo_b) {
+    _b = nuevo_b;
+}
+
+vector<double> SistemaEcuaciones::resolver_con_LU(FactorizacionLU& factorizacion) {
+    int sizeB = _b.size();
+    vector<double> resY(sizeB);
+    vector<double> resX(sizeB);
+
+    int numfilas = _A.get_filas();
+
+    // calculo resY
+    for (int i = 0 ; i < numfilas; i++) {
+        double suma = 0;
+        for (int j = 0; j < i; j++) {
+            suma += factorizacion._L[i][j] * resY[j];
+        }
+        resY[i] = (_b[i] - suma) / factorizacion._L[i][i];
+    }
+
+    // calculo resX
+    for (int i = numfilas - 1 ; i>=0; i--) {
+        double suma = 0;
+        for (int j=i+1; j < numfilas; j++) {
+            suma += factorizacion._U[i][j] * resX[j];
+        }
+        resX[i] = (resY[i] - suma) / factorizacion._U[i][i];
+    }
+    return resX;
+}
+
+FactorizacionLU SistemaEcuaciones::factorizar_LU() {
+    int numfilas = _A.get_filas();
+    int numcolumnas = _A.get_columnas();
+
+    FactorizacionLU lu;
+
+    lu._L = _A;
+    lu._U = _A;
+
+    for (int i = 0; i < numcolumnas - 1; i++) {
+        for (int j = i+1; j < numfilas; j++) {
+            // Opero sobre la fila 
+            for (int k = numcolumnas - 1; k >= i; k--) {
+                // Guardo los elementos de L
+                if (k == i) {
+                    // Calculo el coeficiente multiplicador
+                    double m = lu._L[j][i] / lu._L[i][i];
+                    lu._L[j][k] = m;
+                } else {
+                    lu._L[j][k] -= (lu._L[j][i] / lu._L[i][i]) * lu._L[i][k];
+                }
+                //modifico los elementos de U
+                lu._U[j][k] -= (lu._U[j][i] / lu._U[i][i]) * lu._U[i][k];
+            }
+        }
+    }
+
+    // le borro la parte triangular superior a L y pongo unos en la diagonal por convencion
+    for (int i = 0; i<numfilas; i++) {
+        for (int j = 0; j < numcolumnas; j++) {
+            if (j==i) {
+                lu._L[i][i] = 1;
+            } 
+
+            if (j>i) {
+                lu._L[i][j] = 0;
+            }
+        }
+    }
+
+    return lu;
 }

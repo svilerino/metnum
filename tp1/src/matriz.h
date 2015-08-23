@@ -15,6 +15,7 @@ using namespace std;
 /**
 * Operaciones de vectores
 */
+void imprimir_vector(vector<double> &vec, std::ostream &os);
 void check_dimensiones(int dimA, int dimB, const char* function_name);
 void sumar(vector<double> &a, vector<double> &b, vector<double> &res);
 void restar(vector<double> &a, vector<double> &b, vector<double> &res);
@@ -38,14 +39,14 @@ public:
     * Constructor
     * Construye la matriz identidad de n*n.
     */
-    Matriz(uint n);
+    Matriz(int n);
 	
     /**
     * Constructor
     * Toma el alto (primer parámetro) y el ancho (segundo parámetro)
     * y devuelve una matriz del tamaño especificado inicializada con ceros.
     */
-    Matriz(uint n, uint m);
+    Matriz(int n, int m);
     
     /**
     * Constructor a partir de un vector
@@ -53,7 +54,7 @@ public:
     * (vector columna).
     */
     Matriz(vector<double> &v);
-    
+
     /**
     * Constructor de matriz diagonal
     * Toma un vector no vacío de double y lo convierte en una matriz de (n x n) que lo
@@ -106,23 +107,7 @@ public:
     * Devuelve la submatriz de alto n y ancho m que tiene por primer elemento
     * this[i][j].
     */
-    Matriz submatriz(uint i, uint j, uint n, uint m);
-    
-    /**
-    * Resolver sistema
-    * Dado un vector b, devuelve el vector solución del sistema Ax=b.
-    * Si no está hecha ya, realiza y almacena la factorización LU para acelerar
-    * futuras llamadas.
-    */
-    vector<double> resolver_sistema(vector <double> &b);
-
-    /*********************** FACTORIZACIÓN ***********************/
-    /**
-    * Descomposición LU
-    * Calcula la descomposición PLU de la matriz y la almacena en la estructura.
-    */
-    void descomposicion_LU();
-    void pivotear(uint i);
+    Matriz submatriz(int i, int j, int n, int m);
 
     /************************ VARIOS ************************/
 	/**
@@ -133,7 +118,7 @@ public:
     
     /**
     * Mostrar
-    * Muestra una matriz por el stream 'os' (que puede ser cout).
+    * Muestra una matriz por el stream 'os'.
     */
     void mostrar(std::ostream &os);
     
@@ -143,25 +128,66 @@ public:
     */
     vector<double> diagonal();
 
+    /**
+    * Intercambiar Filas
+    * Intercambia las filas i y j de la matriz
+    */
+
+    void intercambiar_filas(int i, int j);
     /************************ Estructura interna *****************************/
 
-    uint get_filas() const;
-    uint get_columnas() const;
+    int get_filas() const;
+    int get_columnas() const;
 
 private:
-    uint _numfilas;
-	uint _numcolumnas;
+    int _numfilas;
+	int _numcolumnas;
     vector<vector <double> > _matriz;
-    
-    struct Lu{
-        vector<vector <double> > P;
-        vector<vector <double> > L;
-        vector<vector <double> > U;
-    };
 
-    Lu _LU;
-    
-    bool LU_hecha; // true <=> fue calculada la factorización LU
+};
+
+struct FactorizacionLU {
+    Matriz _L;
+    Matriz _U;
+};
+
+class SistemaEcuaciones {
+public:
+    SistemaEcuaciones(Matriz &A, vector<double> &b);
+
+    /**
+    * Muestra el sistema de ecuaciones por el stream 'os'.
+    */
+    void imprimir_sistema(std::ostream &os);
+
+    /*
+    *   Eliminacion Gaussiana
+        Dado un vector b, Devuelve el vector de incognitas x que resuelve el sistema Ax = b
+        Tiene costo cubico
+    */
+    vector<double> eliminacion_gaussiana(bool usar_pivoteo_parcial);
+
+    /*
+    *   Devuelve la Factorizacion LU de la Matriz A del sistema
+        Tiene costo cubico
+    */
+    FactorizacionLU factorizar_LU();// Asumiendo que en este tp son sistemas que admiten LU.
+
+    /*
+    *   Resuelve el sistema en tiempo cuadratico teniendo la factorizacion LU.
+    */
+    vector<double> resolver_con_LU(FactorizacionLU& lu);
+
+    /*
+    *   Cambia el vector de terminos independientes
+    */
+    void cambiar_b(vector<double> & nuevo_b);
+
+private:
+    Matriz _A;
+    vector<double> _b;
+
+    void pivoteo_parcial(int i);
 };
 
 #endif
