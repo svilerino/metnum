@@ -41,6 +41,7 @@
 *.mtc1
 *.out
 *.synctex.gz
+*.tex.backup
 
 #### Dropbox ####
 *.dropbox.attr
