@@ -1,0 +1,127 @@
+\documentclass[10pt, a4paper,english,spanish]{article}
+\usepackage[spanish]{babel}
+\parindent = 0 pt
+\parskip = 11 pt
+\usepackage[width=15.5cm, left=3cm, top=2.5cm, height= 24.5cm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{multicol}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{algpseudocode}
+\usepackage{courier}
+\usepackage{enumitem}
+\usepackage{placeins}
+\usepackage{booktabs}
+% \usepackage[margin=1in]{geometry}
+
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\newtheorem{proposition}{Proposici\'on}
+\lstset{language=C++, showstringspaces=false, tabsize=2, breaklines=true, title=\lstname}
+
+\makeindex
+
+\begin{document}
+\newgeometry{margin=2cm}
+\pagenumbering{gobble}
+\raggedleft
+\includegraphics[width=8cm]{caratula/logo1.jpg}\\
+
+\raggedright
+\vspace{3cm}
+{\Huge \bfseries Trabajo Práctico 1 \\ Cálculo de isotermas en sectores circulares}
+\rule{\textwidth}{0.02in}
+\large Jueves 3 de septiembre de 2015 \hfill Métodos Numéricos
+\vspace{1.5cm}
+
+\normalsize
+\begin{tabular}{|l@{\hspace{5ex}}c@{\hspace{5ex}}l|}
+        \hline
+        \rule{0pt}{1.2em}Integrante & LU & Correo electrónico\\[0.2em]
+        \hline
+        \rule{0pt}{1.2em} Nahuel Lascano  & 476/11 &\tt laski.nahuel@gmail.com\\[0.2em]
+        \rule{0pt}{1.2em} XXXX & XXXX &\tt XXXX\\[0.2em]
+        \rule{0pt}{1.2em} XXXX & XXXX &\tt XXXX\\[0.2em]
+        \hline
+\end{tabular}
+
+\medskip
+En este trabajo aplicamos dos métodos de resolución de sistemas de ecuaciones lineales (factorización LU y eliminación gaussiana) para el cálculo de isotermas de sectores circulares, dadas las temperaturas de las circunferencias interior y exterior. % TODO: agregar algo breve con conclusiones
+
+\medskip
+Palabras clave: factorización LU, eliminación gaussiana, sistemas de ecuaciones lineales, matriz banda
+
+\vspace{1.0cm}
+\raggedright
+
+\begin{multicols}{2}
+\includegraphics[width=8cm]{caratula/logo-uba.png}
+
+\columnbreak
+\vspace*{4.5cm}
+\raggedleft
+\textbf{Facultad de Ciencias Exactas y Naturales}\\
+Universidad de Buenos Aires\\
+\small
+Ciudad Universitaria - (Pabellon I/Planta Baja)\\
+Intendente G\"uiraldes 2160 - C1428EGA\\
+Ciudad Autonoma de Buenos Aires - Rep. Argentina\\
+Tel/Fax: (54 11) 4576-3359\\
+http://www.fcen.uba.ar
+\end{multicols}
+
+\restoregeometry
+
+\clearpage
+
+\pagenumbering{arabic}
+
+\tableofcontents
+
+\vspace{3cm}
+
+\clearpage
+
+\setlength{\parindent}{10pt}
+
+\section{Introducción teórica}
+\input{introduccion.tex}
+\clearpage
+
+\section{Desarrollo}
+\input{desarrollo.tex}
+\clearpage
+
+\section{Resultados}
+\input{resultados.tex}
+\clearpage
+
+\section{Discusión}
+\input{discusion.tex}
+\clearpage
+
+\section{Conclusiones}
+\input{conclusiones.tex}
+
+\section{Apéndice}
+\subsection{Apéndice A: Enunciado}
+% \input{tp1.tex}
+
+\end{document}
