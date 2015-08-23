@@ -7,3 +7,55 @@
 % y realizadas las mediciones experimentales.  Los ensayos fallidos, hipotesis y conjeturas
 % equivocadas,  experimentos  y  metodos  malogrados  deben  gurar  en  esta  seccion,  con
 % una breve explicacion de los motivos de estas fallas (en caso de ser conocidas).
+
+De la discretización de la ecuación del calor provista por el informe resulta una nueva ecuación que nos va a servir para armar nuestro sistema discreto:
+
+\begin{equation}\label{calor}
+\frac{t_{j-1,k}-2t_{jk}+t_{j+1,k}}{(\Delta r)^2}+\frac{1}{r}\frac{t_{j,k}-t_{j-1,k}}{\Delta r}+\frac{1}{r^2}\frac{t_{j,k-1}-2t_{jk}+t_{j,k+1}}{(\Delta \theta)^2} = 0 
+\end{equation}
+
+Para poder armar el sistema $Ax=b$ equivalente, es necesario:
+\begin{itemize}
+ \item
+    Extraer los factores que multiplican a cada una de las cinco incógnitas: $t_{j-1,k}$; $t_{j,k}$; $t_{j+1,k}$; $t_{j,k-1}$ y $t_{j,k+1}$.
+
+    Estos se obtienen de la ecuación \ref{calor}.
+    \begin{align*}
+        t_{j-1, k}&*(\frac{1}{(\Delta r)^2} - \frac{1}{r_j \Delta r}) \\
+        t_{j, k}  &*(\frac{-2}{(\Delta r)^2} + \frac{1}{r_j \Delta r} - \frac{2}{{r_j}^2 (\Delta r)^2}) \\
+        t_{j+1, k}&*(\frac{1}{(\Delta r)^2}) \\
+        t_{j, k-1}&*(\frac{1}{{r_j}^2(\Delta \theta)^2}) \\
+        t_{j, k+1}&*(\frac{1}{{r_j}^2(\Delta \theta)^2})
+    \end{align*}
+    Para simplificar, en adelante llamaremos $F_{j,k}$ al factor que multiplica a la incógnita $t_{j,k}$ y $Ft_{j,k}$ a $F_{j,k}*t_{j,k}$.
+ \item
+    Analizar los ``casos borde'': aquellos puntos donde la ecuación \ref{calor} no vale.
+    
+    Para evitar confusiones de variables, tomaremos $\theta_0 = 0$ como el menor valor posible de $\theta$ y $\theta_{n-1}$ como el mayor, pues vale $(r_j, \theta_n) = (r_j, \theta_0)$ para cualquier $j$. 
+    
+    Los casos interesantes para valores de $j, k$ entonces son:
+    \begin{enumerate}
+     \item La pared interior del horno ($j = 0$; $k = 0, ..., n-1$). La ecuación en esos casos es $t_{0, k} = T_i(\theta_k)$.
+     \item La pared exterior del horno ($j = m$; $k = 0, ..., n-1$). La ecuación en esos casos es $t_{m, k} = T_e(\theta_k)$.
+     \item El valor mínimo de $\theta$ ($j = 0, ..., m$; $k = 0$). Se debe reemplazar $t_{j, k-1}$ por $t_{j, n-1}$ en todas las ecuaciones correspondientes.
+     \item El valor máximo de $\theta$ ($j = 0, ..., m$; $k = n-1$). Se debe reemplazar $t_{j, k+1}$ por $t_{j, 0}$ en todas las ecuaciones correspondientes.
+    \end{enumerate}
+    Estos últimos reemplazos se pueden resumir en $$(j, k) \Rightarrow (j, k \text{ mod } n)$$
+ \item
+    Combinar los puntos anteriores para plantear el sistema de ecuaciones a resolver:
+    \begin{align*}
+    &t_{0, k} = T_i(\theta_k)                                           &\forall k = 0, ..., n-1  \\
+    &t_{m, k} = T_e(\theta_k)                                           &\forall k = 0, ..., n-1  \\
+    &Ft_{j-1,k} + Ft_{j,k} + Ft_{j+1,k} + Ft_{j,k-1} + Ft_{j,k+1} = 0  &\forall j=1, ..., m-1; k = 1, ... , n-2 \\
+    &Ft_{j-1,0} + Ft_{j,0} + Ft_{j+1,0} + Ft_{j,n-1} + Ft_{j,1} = 0    &\forall j=1, ..., m-1 \\
+    &Ft_{j-1,n-1} + Ft_{j,n-1} + Ft_{j+1,n-1} + Ft_{j,n-2} + Ft_{j,0} = 0    &\forall j=1, ..., m-1 \\
+    \end{align*}
+
+    Del mismo podemos obtener fácilmente la matriz $A$ (que tendrá 5 valores no nulos por fila a lo sumo) y el vector $b$ (que será nulo en todas sus componentes salvo aquellas correspondientes a $j=0$ y $j=m$).
+  \item
+    Resta pensar un orden para las incógnitas que permita asegurar que la matriz resultante sea $banda$. El mismo es:
+    
+    $$ (0,0); (0,1); ... ; (j,n-1); (j+1,0); (j,1); ... ; (m, n-1)$$ % TODO: estaría bueno hacer una imagen representativa, que muestre un toque la espiral rara esta. No sé usar mucho ninguna herramienta como para hacerlo :(.
+    
+    Sobre el proceso llevado adelante para su elección hablaremos en la sección \ref{banda}.
+\end{itemize}
