@@ -189,5 +189,4 @@ private:
 
     void pivoteo_parcial(int i);
 };
-
 #endif

@@ -3,6 +3,7 @@
 #include <cstring>
 #include "matriz.h"
 #include "io.h"
+#include "problem.h"
 
 using namespace std;
 
@@ -29,6 +30,7 @@ int main(int argc, char** argv){
 	
 	mostrar_datos_entrada(in_arg, cout);
 
+	Problem problem(in_arg);
 	Results output_results;
 	
 	// Archivo que guarda datos de mediciones
@@ -40,11 +42,11 @@ int main(int argc, char** argv){
 
 	switch(execution_mode) {
 		case ELIM_GAUSSIANA:
-			resolucion_gauss(in_arg, output_results, timing_file);
+			problem.resolucion_gauss(output_results, timing_file);
 			timing_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
 			break;
 		case FACT_LU:
-			resolucion_lu(in_arg, output_results, timing_file);
+			problem.resolucion_lu(output_results, timing_file);
 			timing_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
 			break;
 	}

@@ -58,20 +58,20 @@ Para poder armar el sistema $Ax=b$ equivalente, es necesario:
   \item
     Pensar un orden para las incógnitas que permita asegurar que la matriz resultante sea $banda$. El mismo es:
     
-    $$ (0,0); (0,1); ... ; (j,n-1); (j+1,0); (j,1); ... ; (m, n-1)$$ % TODO: estaría bueno hacer una imagen representativa, que muestre un toque la espiral rara esta. No sé usar mucho ninguna herramienta como para hacerlo :(.
+    $$ (0,0); (0,1); ... ; (0,n-1); (1,0); (1,1); ... ; (j,n-1); (j+1,0); (j,1); ... ; (m, n-1)$$ % TODO: estaría bueno hacer una imagen representativa, que muestre un toque la espiral rara esta. No sé usar mucho ninguna herramienta como para hacerlo :(.
     
     tanto para las filas como para las columnas. Sobre el proceso llevado adelante para su elección hablaremos en la sección \ref{banda}.
 \end{itemize}
 
 Una vez realizados estos pasos estamos en condiciones de plantear el sistema de ecuaciones $Ax=b$:
 
-Lo primero que debemos notar es que como hay $n*m$ puntos diferentes tendremos $n*m$ incógnitas diferentes. Luego, $A \in \mathbb{R}^{nm*nm}$: cada columna y cada fila de $A$ corresponden a un punto $t_{j,k}$ del sistema. Asimismo, $x \in \mathbb{R}^{nm}$ y $b \in \mathbb{R}^{nm}$. 
+Lo primero que debemos notar es que como hay $n*(m+1)$ puntos diferentes tendremos $n*(m+1)$ incógnitas diferentes. Luego, $A \in \mathbb{R}^{n(m+1)*n(m+1)}$: cada columna y cada fila de $A$ corresponden a un punto $t_{j,k}$ del sistema. Asimismo, $x \in \mathbb{R}^{n(m+1)}$ y $b \in \mathbb{R}^{n(m+1)}$. 
 
-Lo segundo que debemos notar es que, por coincidir el orden elegido para filas y para columnas, el índice de la fila correspondiente al punto $t_{j,k}$ coincide con el de la columna correspondiente a ese punto. Llamaremos a este índice $i(j,k)$. Notar que podemos computar $i$ fácilmente como $i(j,k)=j*m+k$ (suponiendo que indexamos por 0 tanto filas como columnas).
+Lo segundo que debemos notar es que, por coincidir el orden elegido para filas y para columnas, el índice de la fila correspondiente al punto $t_{j,k}$ coincide con el de la columna correspondiente a ese punto. Llamaremos a este índice $i(j,k)$. Notar que podemos computar $i$ fácilmente como $i(j,k)=j*n+k$ (suponiendo que indexamos por 0 tanto filas como columnas).
 
-Por el orden elegido, las primeras $n$ filas corresponden a los puntos $t_{0,k}$. Mirando el sistema de ecuaciones, las primeras $n$ filas de $A$ coinciden con la identidad (1 en la diagonal y 0 en el resto) y las primeras $n$ filas de $b$ coinciden con $T_i(\theta_k)$.
+Por el orden elegido, las primeras $n$ filas corresponden a los puntos $t_{0,k}$ con $k=0,...,n-1$. Mirando el sistema de ecuaciones, las primeras $n$ filas de $A$ coinciden con la identidad (1 en la diagonal y 0 en el resto) y las primeras $n$ filas de $b$ coinciden con $T_i(\theta_k)$.
 
-Lo mismo vale para las últimas $n$ filas: corresponden a los puntos $t_{m,k}$, las filas correspondientes de $A$ coinciden con la identidad y las componentes de $b$ con $T_e(\theta_k)$.
+Lo mismo vale para las últimas $n$ filas: corresponden a los puntos $t_{m,k}$ con $k=0,...,n-1$, las filas correspondientes de $A$ coinciden con la identidad y las componentes de $b$ con $T_e(\theta_k)$.
 
 Llegado este punto podemos definir completamente $b$: todas sus demás componentes son nulas (por ser $0$ la solución al resto de las ecuaciones del sistema), por lo que resulta:
 
