@@ -165,23 +165,28 @@ public:
         Dado un vector b, devuelve el vector de incognitas x que resuelve el sistema Ax = b
         en O(filas(A)^3)
     */
-    vector<double> eliminacion_gaussiana(bool usar_pivoteo_parcial);
+    void eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<double> &res);
 
     /*
     *   Devuelve la Factorizacion LU de la Matriz A del sistema
         en O(filas(A)^3)
     */
-    FactorizacionLU factorizar_LU();// Asumiendo que en este tp son sistemas que admiten LU.
+    void factorizar_LU(FactorizacionLU& lu);// Asumiendo que en este tp son sistemas que admiten LU.
 
     /*
     *   Resuelve el sistema en O(filas(A)^2) teniendo la factorizacion LU.
     */
-    vector<double> resolver_con_LU(FactorizacionLU& lu);
+    void resolver_con_LU(FactorizacionLU& lu, vector<double> &res);
 
     /*
     *   Cambia el vector de terminos independientes
     */
     void cambiar_b(vector<double> & nuevo_b);
+
+    /*
+    *   Cambia el vector de terminos independientes
+    */
+    void cambiar_a(Matriz &a);
 
 private:
     Matriz _A;

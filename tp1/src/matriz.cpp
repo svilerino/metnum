@@ -295,9 +295,8 @@ void Matriz::intercambiar_filas(int i, int j) {
 * 
 */
 
-SistemaEcuaciones::SistemaEcuaciones(Matriz &A, vector<double> &b) {
-    _A = A;
-    _b = b;
+SistemaEcuaciones::SistemaEcuaciones(Matriz &A, vector<double> &b) : _A(A), _b(b)  {
+
 }
 
 void SistemaEcuaciones::imprimir_sistema(ostream &os) {
@@ -334,12 +333,9 @@ void SistemaEcuaciones::imprimir_sistema(ostream &os) {
     os << endl;
 }
 
-vector<double> SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial) {
-
+void SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<double> &vec_sol) {
     int numfilas = _A.get_filas();
     int numcolumnas = _A.get_columnas();
-
-    vector<double> vecSol(numfilas, 0);
     
     // Triangular la matriz ampliada del sistema
     for (int i = 0; i < numcolumnas - 1; i++) {
@@ -367,14 +363,12 @@ vector<double> SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcia
         double sumaAcum = 0;
         for (int j = i+1; j < numcolumnas; j++) {
             if(i<numfilas && j < numcolumnas)
-                sumaAcum += _A[i][j] * vecSol[j];
+                sumaAcum += _A[i][j] * vec_sol[j];
         }
 
         // Despejar el xi
-        vecSol[i] = (_b[i] - sumaAcum) / _A[i][i];
+        vec_sol[i] = (_b[i] - sumaAcum) / _A[i][i];
     }
-
-    return vecSol;
 }
 
 void SistemaEcuaciones::pivoteo_parcial(int i) {
@@ -399,14 +393,17 @@ void SistemaEcuaciones::cambiar_b(vector<double> & nuevo_b) {
     _b = nuevo_b;
 }
 
-vector<double> SistemaEcuaciones::resolver_con_LU(FactorizacionLU& factorizacion) {
+void SistemaEcuaciones::cambiar_a(Matriz & nuevo_a) {
+    _A = nuevo_a;
+}
+
+void SistemaEcuaciones::resolver_con_LU(FactorizacionLU& factorizacion, vector<double> &resX) {
     int sizeB = _b.size();
     vector<double> resY(sizeB);
-    vector<double> resX(sizeB);
 
     int numfilas = _A.get_filas();
 
-    // calculo resY
+    // Calculo resY
     for (int i = 0 ; i < numfilas; i++) {
         double suma = 0;
         for (int j = 0; j < i; j++) {
@@ -415,7 +412,7 @@ vector<double> SistemaEcuaciones::resolver_con_LU(FactorizacionLU& factorizacion
         resY[i] = (_b[i] - suma) / factorizacion._L[i][i];
     }
 
-    // calculo resX
+    // Calculo resX
     for (int i = numfilas - 1 ; i>=0; i--) {
         double suma = 0;
         for (int j=i+1; j < numfilas; j++) {
@@ -423,14 +420,11 @@ vector<double> SistemaEcuaciones::resolver_con_LU(FactorizacionLU& factorizacion
         }
         resX[i] = (resY[i] - suma) / factorizacion._U[i][i];
     }
-    return resX;
 }
 
-FactorizacionLU SistemaEcuaciones::factorizar_LU() {
+void SistemaEcuaciones::factorizar_LU(FactorizacionLU& lu) {
     int numfilas = _A.get_filas();
     int numcolumnas = _A.get_columnas();
-
-    FactorizacionLU lu;
 
     lu._L = _A;
     lu._U = _A;
@@ -453,7 +447,7 @@ FactorizacionLU SistemaEcuaciones::factorizar_LU() {
         }
     }
 
-    // le borro la parte triangular superior a L y pongo unos en la diagonal por convencion
+    // Le borro la parte triangular superior a L y pongo unos en la diagonal por convencion
     for (int i = 0; i<numfilas; i++) {
         for (int j = 0; j < numcolumnas; j++) {
             if (j==i) {
@@ -465,6 +459,4 @@ FactorizacionLU SistemaEcuaciones::factorizar_LU() {
             }
         }
     }
-
-    return lu;
 }

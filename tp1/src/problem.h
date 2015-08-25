@@ -1,22 +1,22 @@
 #ifndef PROBLEM_H
 #define PROBLEM_H
+#define CANT_ITERS_MEDICION 1
 
 #include "io.h"
+
+typedef enum metodo_resolucion {ELIM_GAUSSIANA, FACT_LU, ELIM_GAUSSIANA_CON_PIVOTEO_PARCIAL} metodo_resolucion;
 
 class Problem {
 	// Abstrae funciones y datos útiles de un problema con varias instancias
 public:
     Problem(ProblemArguments &in_args);
 
-	/* Resolución Gauss
-	* Resuelve todas las instancias del problema usando eliminación gaussiana en cada una
-	*/
-	void resolucion_gauss(Results &output, ostream &timing_result_os);
-	/* Resolución LU
+	/* Resolución de instancias
 	* Resuelve todas las instancias del problema computando una vez la factorización LU
-	* y usándola de ahí en adelante
+	* y usándola de ahí en adelante o usando eliminacion gaussiana repetidas veces.
+	* Esto depende del parametro pasado del tipo metodo_resolucion
 	*/
-    void resolucion_lu(Results &output, ostream &timing_result_os);
+    void resolver_instancias(Results &output, ostream &timing_result_os, metodo_resolucion metodo);
 
 private:
 	/* Indice
@@ -61,6 +61,7 @@ private:
     int delta_r;	// delta radio
     int delta_t;	// delta tita
 	double isoterma_buscada;
+	int num_instancias;	
 
     Matriz A;
 	vector<vector<double> > instancias_temp_internas;	// T_i(k). Dimension de los vectores internos: n, uno por cada tita

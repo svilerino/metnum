@@ -10,8 +10,6 @@
 
 using namespace std;
 
-typedef enum tipo_ejecucion {ELIM_GAUSSIANA, FACT_LU} tipo_ejecucion;
-
 typedef struct ProblemArguments {
 	int radio_interno;		// R_i
 	int radio_externo;		// R_e

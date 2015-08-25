@@ -9,13 +9,13 @@ using namespace std;
 
 int main(int argc, char** argv){
 	if(argc != 4) {
-		cout << "El ejecutable toma tres parametros por lınea de comando, que seran el archivo de entrada, el archivo de salida, y el metodo a ejectutar (0 EG, 1 LU, 2 TESTS)." << endl;
+		cout << "El ejecutable toma tres parametros por lınea de comando, que seran el archivo de entrada, el archivo de salida, y el metodo a ejectutar (0 EG, 1 LU, 2 EG_PIVOTEO_PARCIAL)." << endl;
 		exit(-1);
 	}
 
 	char* path_file_in = argv[1]; 
 	char* path_file_out = argv[2]; 
-	tipo_ejecucion execution_mode = (tipo_ejecucion) atoi(argv[3]); 
+	metodo_resolucion execution_mode = (metodo_resolucion) atoi(argv[3]); 
 
 	ProblemArguments in_arg;
 	
@@ -40,14 +40,7 @@ int main(int argc, char** argv){
 		exit(-1);
 	} 
 
-	switch(execution_mode) {
-		case ELIM_GAUSSIANA:
-			problem.resolucion_gauss(output_results, timing_file);
-			break;
-		case FACT_LU:
-			problem.resolucion_lu(output_results, timing_file);
-			break;
-	}
+	problem.resolver_instancias(output_results, timing_file, execution_mode);
 
 	timing_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
 
