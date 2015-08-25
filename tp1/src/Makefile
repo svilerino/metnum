@@ -3,7 +3,7 @@ LD=g++
 CFLAGS=-Wall -O2 -std=c++0x -ggdb
 LDFLAGS=
 RM=rm
-OBJECTS=main.o matriz.o
+OBJECTS=main.o matriz.o io.o
 
 .PHONY: all clean
 

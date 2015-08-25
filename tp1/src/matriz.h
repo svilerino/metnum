@@ -162,19 +162,19 @@ public:
 
     /*
     *   Eliminacion Gaussiana
-        Dado un vector b, Devuelve el vector de incognitas x que resuelve el sistema Ax = b
-        Tiene costo cubico
+        Dado un vector b, devuelve el vector de incognitas x que resuelve el sistema Ax = b
+        en O(filas(A)^3)
     */
     vector<double> eliminacion_gaussiana(bool usar_pivoteo_parcial);
 
     /*
     *   Devuelve la Factorizacion LU de la Matriz A del sistema
-        Tiene costo cubico
+        en O(filas(A)^3)
     */
     FactorizacionLU factorizar_LU();// Asumiendo que en este tp son sistemas que admiten LU.
 
     /*
-    *   Resuelve el sistema en tiempo cuadratico teniendo la factorizacion LU.
+    *   Resuelve el sistema en O(filas(A)^2) teniendo la factorizacion LU.
     */
     vector<double> resolver_con_LU(FactorizacionLU& lu);
 
