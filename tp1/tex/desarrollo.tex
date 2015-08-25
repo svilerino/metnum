@@ -8,11 +8,14 @@
 % equivocadas,  experimentos  y  metodos  malogrados  deben  gurar  en  esta  seccion,  con
 % una breve explicacion de los motivos de estas fallas (en caso de ser conocidas).
 
+\subsection{Armado del sistema de ecuaciones}
 De la discretización de la ecuación del calor provista por el informe resulta una nueva ecuación que nos va a servir para armar nuestro sistema discreto:
 
 \begin{equation}\label{calor}
 \frac{t_{j-1,k}-2t_{jk}+t_{j+1,k}}{(\Delta r)^2}+\frac{1}{r}\frac{t_{j,k}-t_{j-1,k}}{\Delta r}+\frac{1}{r^2}\frac{t_{j,k-1}-2t_{jk}+t_{j,k+1}}{(\Delta \theta)^2} = 0 
 \end{equation}
+
+Esta ecuación vale para cada punto del modelo salvo los límites, sobre los cuales hablaremos en breve.
 
 Para poder armar el sistema $Ax=b$ equivalente, es necesario:
 \begin{itemize}
@@ -27,7 +30,7 @@ Para poder armar el sistema $Ax=b$ equivalente, es necesario:
         t_{j, k-1}&*(\frac{1}{{r_j}^2(\Delta \theta)^2}) \\
         t_{j, k+1}&*(\frac{1}{{r_j}^2(\Delta \theta)^2})
     \end{align*}
-    Para simplificar, en adelante llamaremos $F_{j,k}$ al factor que multiplica a la incógnita $t_{j,k}$ y $Ft_{j,k}$ a $F_{j,k}*t_{j,k}$.
+    Por cuestiones de espacio, en adelante llamaremos $M_{j,k}$ al factor que multiplica a la incógnita $t_{j,k}$, $M_{j-1,k}$ al que multiplica a $t_{j-1,k}$ y así sucesivamente. Y resumiremos $Mt_{j,k} = M_{j,k}*t_{j,k}$, $Mt_{j-1,k}=M_{j-1,k}*t_{j-1,k}$.
  \item
     Analizar los ``casos borde'': aquellos puntos donde la ecuación \ref{calor} no vale.
     
@@ -43,21 +46,39 @@ Para poder armar el sistema $Ax=b$ equivalente, es necesario:
     Estos últimos reemplazos se pueden resumir en $$(j, k) \Rightarrow (j, k \text{ mod } n)$$
  \item
     Combinar los puntos anteriores para plantear el sistema de ecuaciones a resolver:
-    \begin{align*}
+    \begin{align*}\label{sistema}
     &t_{0, k} = T_i(\theta_k)                                           &\forall k = 0, ..., n-1  \\
     &t_{m, k} = T_e(\theta_k)                                           &\forall k = 0, ..., n-1  \\
-    &Ft_{j-1,k} + Ft_{j,k} + Ft_{j+1,k} + Ft_{j,k-1} + Ft_{j,k+1} = 0  &\forall j=1, ..., m-1; k = 1, ... , n-2 \\
-    &Ft_{j-1,0} + Ft_{j,0} + Ft_{j+1,0} + Ft_{j,n-1} + Ft_{j,1} = 0    &\forall j=1, ..., m-1 \\
-    &Ft_{j-1,n-1} + Ft_{j,n-1} + Ft_{j+1,n-1} + Ft_{j,n-2} + Ft_{j,0} = 0    &\forall j=1, ..., m-1 \\
+    &Mt_{j-1,k} + Mt_{j,k} + Mt_{j+1,k} + Mt_{j,k-1} + Mt_{j,k+1} = 0  &\forall j=1, ..., m-1; k = 1, ... , n-2 \\
+    &Mt_{j-1,0} + Mt_{j,0} + Mt_{j+1,0} + Mt_{j,n-1} + Mt_{j,1} = 0    &\forall j=1, ..., m-1 \\
+    &Mt_{j-1,n-1} + Mt_{j,n-1} + Mt_{j+1,n-1} + Mt_{j,n-2} + Mt_{j,0} = 0    &\forall j=1, ..., m-1
     \end{align*}
 
-    Del mismo podemos obtener fácilmente la matriz $A$ (que tendrá 5 valores no nulos por fila a lo sumo) y el vector $b$ (que será nulo en todas sus componentes salvo aquellas correspondientes a $j=0$ y $j=m$).
+    Del mismo podemos obtener la matriz $A$ (que tendrá 5 valores no nulos por fila a lo sumo) y el vector $b$ (que será nulo en todas sus componentes salvo aquellas correspondientes a $j=0$ y $j=m$).
   \item
     Pensar un orden para las incógnitas que permita asegurar que la matriz resultante sea $banda$. El mismo es:
     
     $$ (0,0); (0,1); ... ; (j,n-1); (j+1,0); (j,1); ... ; (m, n-1)$$ % TODO: estaría bueno hacer una imagen representativa, que muestre un toque la espiral rara esta. No sé usar mucho ninguna herramienta como para hacerlo :(.
     
-    Sobre el proceso llevado adelante para su elección hablaremos en la sección \ref{banda}.
-  
-  \item
+    tanto para las filas como para las columnas. Sobre el proceso llevado adelante para su elección hablaremos en la sección \ref{banda}.
 \end{itemize}
+
+Una vez realizados estos pasos estamos en condiciones de plantear el sistema de ecuaciones $Ax=b$:
+
+Lo primero que debemos notar es que como hay $n*m$ puntos diferentes tendremos $n*m$ incógnitas diferentes. Luego, $A \in \mathbb{R}^{nm*nm}$: cada columna y cada fila de $A$ corresponden a un punto $t_{j,k}$ del sistema. Asimismo, $x \in \mathbb{R}^{nm}$ y $b \in \mathbb{R}^{nm}$. 
+
+Lo segundo que debemos notar es que, por coincidir el orden elegido para filas y para columnas, el índice de la fila correspondiente al punto $t_{j,k}$ coincide con el de la columna correspondiente a ese punto. Llamaremos a este índice $i(j,k)$. Notar que podemos computar $i$ fácilmente como $i(j,k)=j*m+k$ (suponiendo que indexamos por 0 tanto filas como columnas).
+
+Por el orden elegido, las primeras $n$ filas corresponden a los puntos $t_{0,k}$. Mirando el sistema de ecuaciones, las primeras $n$ filas de $A$ coinciden con la identidad (1 en la diagonal y 0 en el resto) y las primeras $n$ filas de $b$ coinciden con $T_i(\theta_k)$.
+
+Lo mismo vale para las últimas $n$ filas: corresponden a los puntos $t_{m,k}$, las filas correspondientes de $A$ coinciden con la identidad y las componentes de $b$ con $T_e(\theta_k)$.
+
+Llegado este punto podemos definir completamente $b$: todas sus demás componentes son nulas (por ser $0$ la solución al resto de las ecuaciones del sistema), por lo que resulta:
+
+$$b = (T_i(0), T_i(1), ..., T_i(n-1), 0, ..., 0, T_e(0), T_e(1), ..., T_e(n-1)) $$
+
+Para $j \not = 0, j \not = m$, las filas $i(j,k)$ de $A$ tendrán cinco componentes no-nulas (que corresponden a los vecinos de $t_{j,k}$ en el modelo). Fijados $j$ y $k$ ($0\not=j\not=m, 0\not=k\not=n-1$), estas componentes serán $i(j-1,k); i(j,k); i(j+1,k); i(j,k-1)$ e $i(j,k+1)$ y coincidirán con lo que anteriormente llamamos $M(j-1,k); M(j,k); M(j+1,k); M(j,k-1)$ y $M(j,k+1)$ respectivamente. 
+
+Resta simplemente considerar los casos $k=0$ y $k=n-1$, pero no reviste mayor complejidad que tomar módulo $n$ después de las operaciones que involucren $k$.
+
+\subsection{Resolución del sistema de ecuaciones}
