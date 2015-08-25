@@ -355,7 +355,7 @@ void SistemaEcuaciones::imprimir_sistema(ostream &os) {
 void SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<double> &vec_sol) {
     int numfilas = _A.get_filas();
     int numcolumnas = _A.get_columnas();
-    
+
     // Triangular la matriz ampliada del sistema
     for (int i = 0; i < numcolumnas - 1; i++) {
         if (usar_pivoteo_parcial) {

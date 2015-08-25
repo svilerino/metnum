@@ -40,7 +40,7 @@ int main(int argc, char** argv){
 		exit(-1);
 	} 
 
-	//problem.resolver_instancias(output_results, timing_file, execution_mode);
+	problem.resolver_instancias(output_results, timing_file, execution_mode);
 
 	timing_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
 

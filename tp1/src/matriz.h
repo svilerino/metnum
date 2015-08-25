@@ -165,7 +165,7 @@ struct FactorizacionLU {
 
 class SistemaEcuaciones {
 public:
-    SistemaEcuaciones::SistemaEcuaciones(Matriz &A, vector<double> &b) : _A(A), _b(b){}
+    SistemaEcuaciones(Matriz &A, vector<double> &b) : _A(A), _b(b){}
     /**
     * Muestra el sistema de ecuaciones por el stream 'os'.
     */
