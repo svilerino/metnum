@@ -1,6 +1,9 @@
+#ifndef TESTS_H
+#define TESTS_H
+
 #include "matriz.h"
 
-void tests() {
+void run_test(){
 //	vector<double> vec1(4, 5);
 //	vector<double> vec2(4, 1);
 //	vector<double> vec3(4, 10);
@@ -48,22 +51,21 @@ void tests() {
 	//a.mostrar(cout);
 	//a.intercambiar_filas(1, 2);
 	//a.mostrar(cout);
-
-	vector<double> b = {1, 2 ,2, 3}; 
+	vector<double> b = {8.0, -11.0, -3.0}; 
 	vector<double> res(b.size(), 0);
 
 	SistemaEcuaciones se(a, b);
 	cout << "Sistema original" << endl;
     se.imprimir_sistema(cout);
 
-	res = se.eliminacion_gaussiana(false/*usar_pivoteo_parcial*/);
+	se.eliminacion_gaussiana(false/*usar_pivoteo_parcial*/, res);
     cout << "Sistema equivalente triangular sin pivoteo parcial" << endl;
     se.imprimir_sistema(cout);
 	cout << "Resultado con gauss:" << endl;
 	imprimir_vector(res, cout);
 
 	SistemaEcuaciones se2(a, b);
-	res = se2.eliminacion_gaussiana(true/*usar_pivoteo_parcial*/);
+	se2.eliminacion_gaussiana(true/*usar_pivoteo_parcial*/, res);
     cout << "Sistema equivalente triangular con pivoteo parcial" << endl;
     se2.imprimir_sistema(cout);
 	cout << "Resultado con gauss:" << endl;
@@ -71,8 +73,10 @@ void tests() {
 
 	SistemaEcuaciones seLU(a, b);
 
-	FactorizacionLU lu = seLU.factorizar_LU();
-	res = seLU.resolver_con_LU(lu);
+	FactorizacionLU lu;
+	seLU.factorizar_LU(lu);
+	seLU.resolver_con_LU(lu, res);
 	cout << "Resultado con LU:" << endl;
 	imprimir_vector(res, cout);
 }
+#endif
