@@ -94,6 +94,14 @@ int Matriz::get_columnas() const
     return _numcolumnas;
 }
 
+void Matriz::resize(int n, int m){
+    _numfilas = n;
+    _numcolumnas = m;
+
+    vector<double> vec_fila(_numcolumnas, 0/*inicializo con ceros*/);
+    _matriz.resize(_numfilas, vec_fila);
+}
+
 Matriz::Matriz()
 {
     _matriz.clear();
@@ -103,29 +111,25 @@ Matriz::Matriz()
 
 Matriz::Matriz(int n, int m)
 {
-    _numfilas = n;
-    _numcolumnas = m;
-
-    vector<double> vec_fila(_numcolumnas, 0/*inicializo con ceros*/);
-    _matriz.resize(_numfilas, vec_fila);
+    resize(n, m);   // resize inicializa con ceros
 }
 
-Matriz::Matriz(int dimension) : Matriz(dimension, dimension)// llamo al constructor de matrices rectangulares
+Matriz::Matriz(int dimension) : Matriz(dimension, dimension) // reutilizo el constructor de matrices rectangulares
 {
-    // Inicializo la diagonal con unos.
+    // inicializo la diagonal con unos.
     for (int i = 0; i < dimension; i++) {
         _matriz[i][i] = 1;
     }
 }
 
-Matriz::Matriz(vector<double> &v) : Matriz(v.size(), 1)// llamo al constructor de matrices rectangulares
+Matriz::Matriz(vector<double> &v) : Matriz(v.size(), 1) // reutilizo de matrices rectangulares
 {
     for (int i = 0; i < _numfilas; i++) {
         _matriz[i][0] = v[i];
     }
 }
 
-// Metodo estatico(es un constructor factory porq tiene la misma firma que la que construye vectores columna)
+// Metodo estatico (es un constructor factory porq tiene la misma firma que la que construye vectores columna)
 Matriz Matriz::diagonal(vector<double> &v)
 {
     Matriz res(v.size(), v.size());
@@ -164,7 +168,8 @@ void Matriz::mostrar(ostream &os)
 	for (int i = 0 ; i<_numfilas; i++) {
 		os << "[";
 		for (int j = 0; j < _numcolumnas; j++) {
-		    if (_matriz[i][j] < 0) {
+		    // seteo la precisión en función del signo para obtener ancho fijo
+            if (_matriz[i][j] < 0) {
                 os.precision(4);  
             } else {
                 os.precision(5);  
@@ -177,6 +182,27 @@ void Matriz::mostrar(ostream &os)
             }
         }
         os << "]" << endl;
+    }
+    os << endl;
+}
+
+void Matriz::mostrar_esparsa(ostream &os)
+{
+    os.precision(5);
+    os.setf(ios::fixed,ios::floatfield);
+
+    for (int i = 0 ; i<_numfilas; i++) {
+        for (int j = 0; j < _numcolumnas; j++) {
+            if (_matriz[i][j] < 0) {
+                os.precision(4);  
+            } else if (_matriz[i][j] > 0) {
+                os.precision(5);  
+            } else {
+                continue;
+            }
+            os << "(" << i << ", " << j << ") = ";
+            os << _matriz[i][j] << endl;
+        }
     }
     os << endl;
 }

@@ -16,34 +16,43 @@ Problem::Problem(ProblemArguments &in_args) {
 	delta_t = 2*3.14/n;
 	
 	armar_matriz();
+//	A.mostrar_esparsa(cout);
 }
 
 void Problem::armar_matriz() {
-	Matriz res(dimension, dimension);
-	int ultimo_indice_valido = indice(m,n-1);
+	A.resize(dimension, dimension);
 	// Las primeras y últimas n filas de A coinciden con la identidad
-	for (int j = 0; j < n; j++) {
-		res[indice(j,j)][indice(j,j)] = 1;
-		int i = ultimo_indice_valido-j;
-		res[indice(i,i)][indice(i,i)] = 1;
+	for (int k = 0; k < n; k++) {
+		A[indice(0,k)][indice(0,k)] = 1;
+		A[indice(m,k)][indice(m,k)] = 1;
 	}
 	// Las demás filas tienen cinco componentes no nulas
 	for (int j = 1; j < m; j++) {
 		for (int k = 0; k < n-1; k++) {
-			
+			armar_fila(j, k);
 		}
 	}
-	A = res; // me gustaría trabajar directamente sobre A pero desconozco cómo llamar a su constructor desde adentro de un no-constructor
-	// La veo medio jodida dado que ademas las dimensiones de la matriz son dinamicas(se leen del input)
-	// Seguro se puede pero esto no es tan grave porque la matriz inicial que se construye es vacia.
+}
+
+void Problem::armar_fila(int j, int k) {
+	int S_PUNTOS[5][2] = {{-1, 0}, {0, 0}, {1, 0}, {0, -1}, {0, 1}}; // tiene los vecinos y el punto principal
+	int indice_fila = indice(j, k);
+	for (int num_punto = 0; num_punto < 5; num_punto++){
+		int s_j = S_PUNTOS[num_punto][0];
+		int s_k = S_PUNTOS[num_punto][1];
+		int indice_columna = indice(j+s_j, (k+s_k)%n);
+		double valor = multiplicador(s_j, s_k, j);
+		//cout << endl << j+s_j << " " << (k+s_k)%n << endl;
+		//cout << indice_fila << ", " << indice_columna << " = " << valor << endl;
+		A[indice_fila][indice_columna] = valor; 
+	}
 }
 
 double Problem::multiplicador(int s_j, int s_k, int j) {
-	double delta_r2 = pow(delta_r, 2); 	// delta_r^2
-	double delta_t2 = pow(delta_t, 2); 	// delta_t^2
+	double delta_r2 = pow(delta_r, 2);	// delta_r^2
+	double delta_t2 = pow(delta_t, 2);	// delta_t^2
 	double rj = Rj(j);					// rj
-	double rj2 = pow(rj, 2); 			// rj^2
-
+	double rj2 = pow(rj, 2);			// rj^2
 	if (s_j == -1 && s_k == 0) {
 		// caso (j-1, k)
 		return 1/delta_r2 - 1/(rj*delta_r);
@@ -65,10 +74,13 @@ double Problem::multiplicador(int s_j, int s_k, int j) {
 }
 
 vector<double> Problem::armar_b(int instancia) {
-	vector<double> v(dimension, 0);
-	cerr << "Falta implementar Problem::armar_b!" << endl;
-	exit(-1);
-	return v;
+	vector<double> b(dimension, 0);
+	// Las primeras y últimas n componentes del vector son las únicas no-nulas
+	for (int k = 0; k < n; k++) {
+		b[indice(0, k)] = Ti(instancia, k);
+		b[indice(m, k)] = Te(instancia, k);
+	}
+	return b;
 }
 
 void Problem::resolver_instancias(Results &output, ostream &timing_result_os, metodo_resolucion metodo) {
@@ -98,22 +110,18 @@ void Problem::resolver_instancias(Results &output, ostream &timing_result_os, me
 
 		    MEDIR_TIEMPO_PROMEDIO(
 				sist_ec.eliminacion_gaussiana(false/*no usar pivoteo parcial*/, res);
-		    , CANT_ITERS_MEDICION, &promedio_medicion_instancia);  
-
+		    , CANT_ITERS_MEDICION, &promedio_medicion_instancia);
 		} else if (metodo == ELIM_GAUSSIANA_CON_PIVOTEO_PARCIAL) {
 			// Hay que poner la matriz A original sin la eli. gauss. anterior.
 			sist_ec.cambiar_a(A);
 
 		    MEDIR_TIEMPO_PROMEDIO(
 				sist_ec.eliminacion_gaussiana(true/*usar pivoteo parcial*/, res);
-		    , CANT_ITERS_MEDICION, &promedio_medicion_instancia);  
-
+		    , CANT_ITERS_MEDICION, &promedio_medicion_instancia);
 		} else if (metodo == FACT_LU) {
-			
 		    MEDIR_TIEMPO_PROMEDIO(
 				sist_ec.resolver_con_LU(lu, res);
 		    , CANT_ITERS_MEDICION, &promedio_medicion_instancia);  
-
 		}	
 
 	    // Imprimo el tiempo consumido en el stream.

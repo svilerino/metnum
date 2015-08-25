@@ -34,7 +34,7 @@ int main(int argc, char** argv){
 	Results output_results;
 	
 	// Archivo que guarda datos de mediciones
-	ofstream timing_file ("timing_results.txt");
+	ofstream timing_file("timing_results.txt");
 	if (!timing_file.is_open()) {
 		cerr << "Imposible escribir en archivo de salida" << endl;
 		exit(-1);

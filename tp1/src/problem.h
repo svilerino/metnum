@@ -39,6 +39,7 @@ private:
 	* Arma la matriz correspondiente al problema y la guarda en A
 	*/
 	void armar_matriz();
+	void armar_fila(int j, int k);
 		/* Multiplicador
 		* Auxiliar para el armado de la matriz
 		* Devuelve el factor que multiplica al vecino de un punto (j, k) de la matriz
@@ -58,11 +59,11 @@ private:
     int dimension;	// cantidad de incógnitas (y de filas y de columnas de la matriz del problema)
     int Ri;			// radio interno
     int Re;			// radio externo
-    int delta_r;	// delta radio
-    int delta_t;	// delta tita
+    int num_instancias;	
+	double delta_r;	// delta radio
+    double delta_t;	// delta tita
 	double isoterma_buscada;
-	int num_instancias;	
-
+	
     Matriz A;
 	vector<vector<double> > instancias_temp_internas;	// T_i(k). Dimension de los vectores internos: n, uno por cada tita
 	vector<vector<double> > instancias_temp_externas;	// T_e(k). Dimension de los vectores intenros: n, uno por cada tita

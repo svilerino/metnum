@@ -114,13 +114,25 @@ public:
     * []
     * Permite acceder a los elementos de la matriz usando notación estándar M[i][j].
     */
-	vector<double>& operator[] (int i){return _matriz[i];}
+    vector<double>& operator[](int i){return _matriz[i];}
+    
+    /**
+    * Resize
+    * Borra la matriz y crea una nueva de alto n y ancho m.
+    */
+    void resize(int n, int m);
     
     /**
     * Mostrar
     * Muestra una matriz por el stream 'os'.
     */
     void mostrar(ostream &os);
+    
+    /**
+    * Mostrar esparsa
+    * Muestra los valores no nulos de una matriz por el stream 'os'.
+    */
+    void mostrar_esparsa(ostream &os);
     
     /**
     * Diagonal
