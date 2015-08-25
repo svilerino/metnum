@@ -4,17 +4,20 @@ CFLAGS=-Wall -O2 -std=c++0x -ggdb
 LDFLAGS=
 RM=rm
 OBJECTS=main.o matriz.o io.o problem.o
+BINDIR=../bin
 
 .PHONY: all clean
 
 all: tp1
 
 clean:
+	rm -rf $(BINDIR)
+	mkdir -p $(BINDIR)
 	reset
 	- $(RM) -rf *.o *~ tp1
 
 tp1: $(OBJECTS)
-	$(LD) $(LDFLAGS) -o ../bin/tp1 $(OBJECTS)
+	$(LD) $(LDFLAGS) -o $(BINDIR)/tp1 $(OBJECTS)
 
 %.o: %.cpp
 	$(CC) -c $(CFLAGS) -o "$@" "$<"

@@ -32,6 +32,8 @@ void Problem::armar_matriz(){
 		}
 	}
 	A = res; // me gustaría trabajar directamente sobre A pero desconozco cómo llamar a su constructor desde adentro de un no-constructor
+	// La veo medio jodida dado que ademas las dimensiones de la matriz son dinamicas(se leen del input)
+	// Seguro se puede pero esto no es tan grave porque la matriz inicial que se construye es vacia.
 }
 
 double Problem::multiplicador(int s_j, int s_k, int j){
@@ -61,6 +63,7 @@ double Problem::multiplicador(int s_j, int s_k, int j){
 }
 
 void Problem::resolucion_gauss(Results &output, ostream &timing_result_os){
+	
 }
 
 void Problem::resolucion_lu(Results &output, ostream &timing_result_os){

@@ -43,14 +43,15 @@ int main(int argc, char** argv){
 	switch(execution_mode) {
 		case ELIM_GAUSSIANA:
 			problem.resolucion_gauss(output_results, timing_file);
-			timing_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
 			break;
 		case FACT_LU:
 			problem.resolucion_lu(output_results, timing_file);
-			timing_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
 			break;
 	}
 
+	timing_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
+
+	// Escribir resultados
 	ofstream output_file(path_file_out);
 	if (output_file.is_open()) {
 		write_results_to_stream(output_file, output_results);
