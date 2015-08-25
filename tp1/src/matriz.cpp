@@ -311,7 +311,6 @@ void Matriz::intercambiar_filas(int i, int j) {
         cerr << "Estas tratando de intercambiar filas con indices erroneos." << endl;
         exit(-1);
     }
-
     swap(_matriz[i], _matriz[j]);
 }
 
@@ -320,11 +319,6 @@ void Matriz::intercambiar_filas(int i, int j) {
 * Implementacion clase SistemaEcuaciones
 * 
 */
-
-SistemaEcuaciones::SistemaEcuaciones(Matriz &A, vector<double> &b) : _A(A), _b(b)  {
-
-}
-
 void SistemaEcuaciones::imprimir_sistema(ostream &os) {
     os.precision(5);
     os.setf(ios::fixed,ios::floatfield);
@@ -340,7 +334,6 @@ void SistemaEcuaciones::imprimir_sistema(ostream &os) {
             } else {
                 os.precision(5);  
             } 
-            
             if (j == num_columnas-1) {
                 os << _A[i][j];
             } else {
@@ -365,15 +358,12 @@ void SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<
     
     // Triangular la matriz ampliada del sistema
     for (int i = 0; i < numcolumnas - 1; i++) {
-        if(usar_pivoteo_parcial)
-        {
+        if (usar_pivoteo_parcial) {
             pivoteo_parcial(i);
         }
-
         for (int j = i+1; j < numfilas; j++) {
             // Calculo el coeficiente multiplicador
-            double m = _A[j][i] / _A[i][i];
-            
+            double m = _A[j][i] / _A[i][i];   
             // Opero sobre la fila 
             for (int k = i; k < numcolumnas; k++) {
                 _A[j][k] -= m * _A[i][k];
@@ -382,16 +372,15 @@ void SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<
             _b[j] -= m * _b[i];
         }
     }
-
     // Calculo el vector X de soluciones con backward substitution.
     for (int i = numfilas - 1; i >= 0; i--) {
         // Obtener suma de la fila por el b
         double sumaAcum = 0;
         for (int j = i+1; j < numcolumnas; j++) {
-            if(i<numfilas && j < numcolumnas)
+            if (i<numfilas && j < numcolumnas) {
                 sumaAcum += _A[i][j] * vec_sol[j];
+            }
         }
-
         // Despejar el xi
         vec_sol[i] = (_b[i] - sumaAcum) / _A[i][i];
     }
@@ -407,9 +396,8 @@ void SistemaEcuaciones::pivoteo_parcial(int i) {
             maxI = i;
         }
     }
-
     // Si es una fila distinta, las swapeo para lograr tener un pivote maximo.
-    if( i != maxI ) {
+    if ( i != maxI ) {
         _A.intercambiar_filas(i, maxI);
         swap(_b[i], _b[maxI]);
     }
@@ -467,7 +455,7 @@ void SistemaEcuaciones::factorizar_LU(FactorizacionLU& lu) {
                 } else {
                     lu._L[j][k] -= (lu._L[j][i] / lu._L[i][i]) * lu._L[i][k];
                 }
-                //modifico los elementos de U
+                // modifico los elementos de U
                 lu._U[j][k] -= (lu._U[j][i] / lu._U[i][i]) * lu._U[i][k];
             }
         }
@@ -479,7 +467,6 @@ void SistemaEcuaciones::factorizar_LU(FactorizacionLU& lu) {
             if (j==i) {
                 lu._L[i][i] = 1;
             } 
-
             if (j>i) {
                 lu._L[i][j] = 0;
             }
