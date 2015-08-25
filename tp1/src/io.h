@@ -29,11 +29,11 @@ typedef struct Results {
 	vector<vector<double> > instances_solutions;
 } Results;
 
-void mostrar_datos_entrada(ProblemArguments args, std::ostream &os);
-void read_args_from_stream(std::istream &is, ProblemArguments& args);
-void write_results_to_stream(std::ostream &os, Results output_results);
+void mostrar_datos_entrada(ProblemArguments args, ostream &os);
+void read_args_from_stream(istream &is, ProblemArguments& args);
+void write_results_to_stream(ostream &os, Results output_results);
 
-void resolucion_gauss(ProblemArguments in_args, Results &output, std::ostream &timing_result_os);
-void resolucion_lu(ProblemArguments in_args, Results &output, std::ostream &timing_result_os);
+void resolucion_gauss(ProblemArguments in_args, Results &output, ostream &timing_result_os);
+void resolucion_lu(ProblemArguments in_args, Results &output, ostream &timing_result_os);
 
 #endif

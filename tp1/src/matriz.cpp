@@ -7,7 +7,7 @@ using namespace std;
 * 
 */
 
-void imprimir_vector(vector<double> &vec, std::ostream &os) {
+void imprimir_vector(vector<double> &vec, ostream &os) {
     os.precision(5);
     os.setf(ios::fixed,ios::floatfield);
     os << "[";
@@ -137,7 +137,7 @@ Matriz Matriz::diagonal(vector<double> &v)
     return res;
 }
 
-void Matriz::cargar(std::istream &is)
+void Matriz::cargar(istream &is)
 {
 	is >> _numfilas;
     is >> _numcolumnas;
@@ -156,7 +156,7 @@ void Matriz::cargar(std::istream &is)
 	}
 }
 
-void Matriz::mostrar(std::ostream &os)
+void Matriz::mostrar(ostream &os)
 {
     os.precision(5);
     os.setf(ios::fixed,ios::floatfield);
@@ -300,7 +300,7 @@ SistemaEcuaciones::SistemaEcuaciones(Matriz &A, vector<double> &b) {
     _b = b;
 }
 
-void SistemaEcuaciones::imprimir_sistema(std::ostream &os) {
+void SistemaEcuaciones::imprimir_sistema(ostream &os) {
     os.precision(5);
     os.setf(ios::fixed,ios::floatfield);
 

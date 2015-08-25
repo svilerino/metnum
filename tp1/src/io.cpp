@@ -1,7 +1,7 @@
 #include "io.h"
 using namespace std;
 
-void read_args_from_stream(std::istream &is, ProblemArguments &args) {
+void read_args_from_stream(istream &is, ProblemArguments &args) {
 	memset(&args, 0, sizeof(ProblemArguments));
 
 	is >> args.radio_interno;
@@ -30,7 +30,7 @@ void read_args_from_stream(std::istream &is, ProblemArguments &args) {
 	}
 }
 
-void write_results_to_stream(std::ostream &os, Results output_results) {
+void write_results_to_stream(ostream &os, Results output_results) {
 	os.precision(5);
 	os.setf(ios::fixed,ios::floatfield);
 	
@@ -44,15 +44,16 @@ void write_results_to_stream(std::ostream &os, Results output_results) {
 	}
 }
 
-void resolucion_gauss(ProblemArguments in_args, Results &output, std::ostream &timing_result_os) {
-// Armar la matriz y resolver el sistema usando eliminacion gaussiana(ver tests.hpp para ver como)
+void resolucion_gauss(ProblemArguments in_args, Results &output, ostream &timing_result_os) {
+	// Armar la matriz y resolver el sistema usando eliminacion gaussiana
+	
 }
 
-void resolucion_lu(ProblemArguments in_args, Results &output, std::ostream &timing_result_os) {
+void resolucion_lu(ProblemArguments in_args, Results &output, ostream &timing_result_os) {
 // Armar la matriz y resolver el sistema usando LU(ver tests.hpp para ver como)
 }
 
-void mostrar_datos_entrada(ProblemArguments args, std::ostream &os) {
+void mostrar_datos_entrada(ProblemArguments args, ostream &os) {
 	os << "radio_interno: " << args.radio_interno << endl;
 	os << "radio_externo: " << args.radio_externo << endl;
 	os << "cantidad_radios: " << args.cantidad_radios << endl;

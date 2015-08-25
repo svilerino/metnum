@@ -77,10 +77,10 @@ order=-1
 
 [item:desarrollo.tex]
 archive=true
-column=92
+column=0
 encoding=UTF-8
 highlight=LaTeX
-line=59
+line=84
 mode=LaTeX
 open=true
 order=1
@@ -152,10 +152,10 @@ JumpList=
 ViMarks=.,4,77,[,4,77,],4,77
 
 [view-settings,view=0,item:desarrollo.tex]
-CursorColumn=92
-CursorLine=59
+CursorColumn=0
+CursorLine=84
 JumpList=
-ViMarks=.,60,0,[,60,0,],60,0
+ViMarks=.,10,43,[,10,31,],10,43
 
 [view-settings,view=0,item:discusion.tex]
 CursorColumn=0

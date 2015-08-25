@@ -15,7 +15,7 @@ using namespace std;
 /**
 * Operaciones de vectores
 */
-void imprimir_vector(vector<double> &vec, std::ostream &os);
+void imprimir_vector(vector<double> &vec, ostream &os);
 void check_dimensiones(int dimA, int dimB, const char* function_name);
 void sumar(vector<double> &a, vector<double> &b, vector<double> &res);
 void restar(vector<double> &a, vector<double> &b, vector<double> &res);
@@ -69,7 +69,7 @@ public:
     * A partir de la segunda línea deben estar los elementos separados por espacios.
     * No hace falta que haya saltos de línea entre filas.
     */
-   	void cargar(std::istream &is);
+   	void cargar(istream &is);
 
    	/*********************** OPERACIONES ***********************/
    	/**
@@ -120,7 +120,7 @@ public:
     * Mostrar
     * Muestra una matriz por el stream 'os'.
     */
-    void mostrar(std::ostream &os);
+    void mostrar(ostream &os);
     
     /**
     * Diagonal
@@ -158,7 +158,7 @@ public:
     /**
     * Muestra el sistema de ecuaciones por el stream 'os'.
     */
-    void imprimir_sistema(std::ostream &os);
+    void imprimir_sistema(ostream &os);
 
     /*
     *   Eliminacion Gaussiana
