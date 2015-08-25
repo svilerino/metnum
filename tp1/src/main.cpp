@@ -17,7 +17,6 @@ int main(int argc, char** argv){
 	tipo_ejecucion execution_mode = (tipo_ejecucion) atoi(argv[3]); 
 
 	ProblemArguments in_arg;
-	memset(&in_arg, 0, sizeof(ProblemArguments)); // TODO: para qué hace falta esto??
 	
 	ifstream input_file(path_file_in);
 	if (input_file.is_open()) {
@@ -31,8 +30,7 @@ int main(int argc, char** argv){
 	mostrar_datos_entrada(in_arg, cout);
 
 	Results output_results;
-	memset(&output_results, 0, sizeof(Results)); // idem
-
+	
 	// Archivo que guarda datos de mediciones
 	ofstream timing_file ("timing_results.txt");
 	if (!timing_file.is_open()) {
