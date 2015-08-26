@@ -1,5 +1,6 @@
 #include "matriz.h"
 using namespace std;
+#define DEBUG_MESSAGES_ON 1//comentar esta linea para no hacer chequeos costosos en tiempo de ejecucion
 
 /**
 * 
@@ -21,7 +22,7 @@ void imprimir_vector(vector<double> &vec, ostream &os) {
 
 void check_dimensiones(int dimA, int dimB, const char* function_name) {
     if (dimA != dimB) {
-        cerr << "[Error de dimensiones en funcion: " << function_name << "]" << endl;
+        cerr << "\e[0;31m" << "[Error] Fallo el check de dimensiones en funcion: " << function_name << "]" << "\e[0m[";
         exit(-1);
     }
 }
@@ -278,7 +279,7 @@ Matriz Matriz::restar(Matriz &otra)
 Matriz Matriz::submatriz(int y, int x, int n, int m)
 {
     if (n > _numfilas || m > _numcolumnas) {
-        cerr << "Estas pidiendo una submatriz mas grande que la matriz original." << endl;
+        cerr << "\e[0;31m" << "[Error] Estas pidiendo una submatriz mas grande que la matriz original." << "\e[0m[";
         exit(-1);
     }
 
@@ -308,7 +309,7 @@ vector<double> Matriz::diagonal()
 
 void Matriz::intercambiar_filas(int i, int j) {
     if (i > _numfilas || j > _numfilas) {
-        cerr << "Estas tratando de intercambiar filas con indices erroneos." << endl;
+        cerr << "\e[0;31m" << "[Error] Estas tratando de intercambiar filas con indices erroneos." << "\e[0m[";
         exit(-1);
     }
     swap(_matriz[i], _matriz[j]);
@@ -363,7 +364,13 @@ void SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<
         }
         for (int j = i+1; j < numfilas; j++) {
             // Calculo el coeficiente multiplicador
-            double m = _A[j][i] / _A[i][i];   
+            double m = _A[j][i] / _A[i][i];  
+            #ifdef DEBUG_MESSAGES_ON
+                if ( _A[i][i] == 0) {
+                    cerr << "\e[0;31m[ERROR] DIVISION POR CERO EN PIVOTE DE GAUSS\e[0m";
+                    exit(-1);
+                } 
+            #endif
             // Opero sobre la fila 
             for (int k = i; k < numcolumnas; k++) {
                 _A[j][k] -= m * _A[i][k];
@@ -447,6 +454,19 @@ void SistemaEcuaciones::factorizar_LU(FactorizacionLU& lu) {
         for (int j = i+1; j < numfilas; j++) {
             // Opero sobre la fila 
             for (int k = numcolumnas - 1; k >= i; k--) {
+                
+                #ifdef DEBUG_MESSAGES_ON
+                    if ( lu._L[i][i] == 0) {
+                        cerr << "\e[0;31m[ERROR] DIVISION POR CERO (L[i][i] == 0) en Factorizacion LU\e[0m";
+                        exit(-1);
+                    }
+
+                    if ( lu._U[i][i] == 0) {
+                        cerr << "\e[0;31m[ERROR] DIVISION POR CERO (U[i][i] == 0) en Factorizacion LU\e[0m";
+                        exit(-1);
+                    }
+                #endif
+
                 // Guardo los elementos de L
                 if (k == i) {
                     // Calculo el coeficiente multiplicador
