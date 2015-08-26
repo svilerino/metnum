@@ -29,11 +29,11 @@ int main(int argc, char** argv){
 		read_args_from_stream(input_file, in_arg);
 		input_file.close();
 	} else {
-		cerr << "Path de archivo de entrada invalido" << endl; 	
+		cerr << "Path de archivo de entrada invalido: " << path_file_in << endl; 	
 		exit(-1);
 	} 
 	
-	mostrar_datos_entrada(in_arg, cout);
+	//mostrar_datos_entrada(in_arg, cout);
 
 	Problem problem(in_arg);
 	Results output_results;
@@ -41,7 +41,7 @@ int main(int argc, char** argv){
 	// Archivo que guarda datos de mediciones
 	ofstream timing_file(path_timings_out);
 	if (!timing_file.is_open()) {
-		cerr << "Imposible escribir en archivo de salida" << endl;
+		cerr << "Imposible escribir en archivo de timings: " << path_timings_out << endl;
 		exit(-1);
 	} 
 
@@ -55,7 +55,7 @@ int main(int argc, char** argv){
 		write_results_to_stream(output_file, output_results);
 		output_file.close();
 	} else {
-		cerr << "Imposible escribir en archivo de salida" << endl;
+		cerr << "Imposible escribir en archivo de salida: " << path_file_out << endl;
 		exit(-1);
 	}
     return 0;
