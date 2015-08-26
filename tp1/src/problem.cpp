@@ -128,7 +128,10 @@ void Problem::resolver_instancias(Results &output, ostream &timing_result_os, me
 	    // La onda de esto es tener un archivo con el tiempo consumido por instancia por cada linea
 	    // Despues con scripts y ploteos mostrar esta info apropiadamente en el informe.
 
-    	timing_result_os << promedio_medicion_instancia << endl;
+    	timing_result_os << promedio_medicion_instancia;
+    	if(instancia < num_instancias - 1){
+    		timing_result_os << endl;// La medicion esta en microsegundos !
+    	}
 
     	// Escribir resultados en parametro out.
     	output.instances_solutions.push_back(res);

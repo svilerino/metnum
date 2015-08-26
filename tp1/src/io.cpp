@@ -37,7 +37,10 @@ void write_results_to_stream(ostream &os, Results output_results) {
 	for (int i = 0; i < ninst; i++) {
 		int solution_dim = output_results.instances_solutions[i].size();
 		for (int j = 0; j < solution_dim; j++) {
-			os << output_results.instances_solutions[i][j] << endl;
+			os << output_results.instances_solutions[i][j];
+			if((i < ninst - 1) || (j < solution_dim - 1)) {
+				os << endl;
+			}
 		}	
 	}
 }

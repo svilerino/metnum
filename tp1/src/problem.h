@@ -1,6 +1,8 @@
 #ifndef PROBLEM_H
 #define PROBLEM_H
-#define CANT_ITERS_MEDICION 1
+#define CANT_ITERS_MEDICION 1// ojo que al hacer mas de una iteracion como esta el codigo
+// para lu funciona bien, para gauss no,
+// hay que meter las llamadas que reemplazan A y b del sistema adentro de la medicion.
 
 #include "io.h"
 
