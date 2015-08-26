@@ -2,7 +2,9 @@ all:
 	pdflatex informe.tex
 	pdflatex informe.tex
 
-
+run: all
+	okular informe.pdf
+	
 clean:
 	rm -f *.pdf
 	rm -f *.aux
