@@ -8,14 +8,19 @@
 using namespace std;
 
 int main(int argc, char** argv){
-	if(argc != 4) {
-		cout << "El ejecutable toma tres parametros por lınea de comando, que seran el archivo de entrada, el archivo de salida, y el metodo a ejectutar (0 EG, 1 LU, 2 EG_PIVOTEO_PARCIAL)." << endl;
+	if(argc < 4) {
+		cout << "El ejecutable toma tres parametros por lınea de comando, que seran el archivo de entrada, el archivo de salida, y el metodo a ejecutar (0 EG, 1 LU, 2 EG_PIVOTEO_PARCIAL)." << endl;
+		cout << "Como parametros adicionales se pueden pasar luego del tercer parametro: <archivo salida timing>" << endl;
 		exit(-1);
 	}
 
-	char* path_file_in = argv[1]; 
-	char* path_file_out = argv[2]; 
+	string path_file_in = argv[1]; 
+	
+	string path_file_out = argv[2]; 
+
 	metodo_resolucion execution_mode = (metodo_resolucion) atoi(argv[3]); 
+	
+	string path_timings_out = (argc > 4) ? argv[4] : "timing_results.txt";
 
 	ProblemArguments in_arg;
 	
@@ -34,7 +39,7 @@ int main(int argc, char** argv){
 	Results output_results;
 	
 	// Archivo que guarda datos de mediciones
-	ofstream timing_file("timing_results.txt");
+	ofstream timing_file(path_timings_out);
 	if (!timing_file.is_open()) {
 		cerr << "Imposible escribir en archivo de salida" << endl;
 		exit(-1);
