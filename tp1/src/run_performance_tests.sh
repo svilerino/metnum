@@ -9,8 +9,6 @@ blue='\e[0;34m'
 purple='\e[0;35m'
 NC='\e[0m' # No Color
 echo ""
-TESTS_INPUT="tests"
-TESTS_OUTPUT="test-results"
 TIMING_OUTPUT="timings-out"
 
 if [ "${1}" == "eliminacion_gaussiana" ]
@@ -25,7 +23,8 @@ then
 fi
 
 
-echo -e "${purple}Corriendo tests de performance usando ${1}...${NC}"
+echo -e "${purple}Corriendo tests de performance usando ${1}...(time is un microseconds)${NC}"
+echo -e "${red}Multiples tiempos por test indican tiempo por instancia de test${NC}"
 
 if ls tests/*.in &> /dev/null; then
 	pushd tests
@@ -34,16 +33,20 @@ if ls tests/*.in &> /dev/null; then
 		
 		file="${file%.*}" #extraigo el nombre sin la extension
 
-		echo -n "Corriendo [${1}] con archivo de input $file.in..."
-		"../../bin/tp1" "$file.in" "../$TESTS_OUTPUT/${1}_$file.out" "$method_number" "../$TIMING_OUTPUT/${1}_$file.timingout"
+		echo -e -n "Corriendo ${purple}[${1}]${NC} con archivo de input $file.in..."
+		"../../bin/tp1" "$file.in" "$file.out" "$method_number" "../$TIMING_OUTPUT/${1}_$file.timingout"
 		process_exit_status=$?
 
 		#verificar que el proceso haya terminado con return 0
 		if [ $process_exit_status -eq 0 ] 
 		then
-			echo -e "${green}[Ok]${NC}"
-			#agregar resultado a la lista de timings
-	
+			#extraigo la salida del archivo de timings
+			timeconsumed=$(cat "../$TIMING_OUTPUT/${1}_$file.timingout" | awk -F' ' '{print $6}' | tr '\n' ' ')
+			
+			echo -e "${green}[Ok in ${timeconsumed}]${NC}"
+
+			#agregar resultado a la lista de timings	
+
 			cat "../$TIMING_OUTPUT/${1}_$file.timingout" >> "../$TIMING_OUTPUT/${1}.tmpplot"
 			echo "" >> "../$TIMING_OUTPUT/${1}.tmpplot"
 			# curve fit para heuristica
