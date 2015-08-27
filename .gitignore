@@ -47,3 +47,4 @@ bin/
 #### Dropbox ####
 *.dropbox.attr
 
+*.pyc

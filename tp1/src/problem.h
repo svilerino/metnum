@@ -4,7 +4,9 @@
 // para lu funciona bien, para gauss no,
 // hay que meter las llamadas que reemplazan A y b del sistema adentro de la medicion.
 
+#include <math.h>
 #include "io.h"
+#include "timing.h"
 
 typedef enum metodo_resolucion {ELIM_GAUSSIANA, FACT_LU, ELIM_GAUSSIANA_CON_PIVOTEO_PARCIAL} metodo_resolucion;
 

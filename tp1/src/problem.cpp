@@ -1,8 +1,7 @@
 #include "problem.h"
-#include "timing.h"
 
 Problem::Problem(ProblemArguments &in_args) {
-	m = in_args.cantidad_radios;
+	m = in_args.cantidad_radios-1;
 	n = in_args.cantidad_titas;
 	Ri = in_args.radio_interno;
 	Re = in_args.radio_externo;
@@ -12,8 +11,8 @@ Problem::Problem(ProblemArguments &in_args) {
 	instancias_temp_externas = in_args.instancias_temp_externas;
 
 	dimension = n*(m+1);
-	delta_r = (Re-Ri)/m;
-	delta_t = 2*3.14/n;
+	delta_r = ((double)Re-(double)Ri)/(double)m;
+	delta_t = 2.0*M_PI/(double)n;
 	
 	armar_matriz();
 	//A.mostrar_esparsa(cout);
@@ -36,7 +35,7 @@ void Problem::armar_matriz() {
 
 void Problem::armar_fila(int j, int k) {
 	int S_PUNTOS[5][2] = {{-1, 0}, {0, 0}, {1, 0}, {0, -1}, {0, 1}}; // tiene los vecinos y el punto principal
-	//cout << "j, k: " << j << " " << k << endl;
+	//cout << "j, k: " << j << ", " << k << endl;
 	int indice_fila = indice(j, k);
 	//cout << "indice_fila: " << indice_fila << endl;
 	for (int num_punto = 0; num_punto < 5; num_punto++){
@@ -62,7 +61,7 @@ double Problem::multiplicador(int s_j, int s_k, int j) {
 		return 1/delta_r2 - 1/(rj*delta_r);
 	} if (s_j == 0 && s_k == 0) {
 		// caso (j, k)
-		return -2/delta_r2 + 1/(rj*delta_r) - 2/(rj2*delta_r2);
+		return -2/delta_r2 + 1/(rj*delta_r) - 2/(rj2*delta_t2);
 	} if (s_j == 1 && s_k == 0) {
 		// caso (j+1, k)
 		return 1/delta_r2;

@@ -9,13 +9,13 @@
 % una breve explicacion de los motivos de estas fallas (en caso de ser conocidas).
 
 \subsection{Armado del sistema de ecuaciones}
-De la discretización de la ecuación del calor provista por el informe resulta una nueva ecuación que nos va a servir para armar nuestro sistema discreto:
+De la discretización de la ecuación del calor provista por el informe resulta una nueva ecuación que nos va a servir para armar nuestro sistema discreto.
 
 \begin{equation}\label{calor}
-\frac{t_{j-1,k}-2t_{jk}+t_{j+1,k}}{(\Delta r)^2}+\frac{1}{r}\frac{t_{j,k}-t_{j-1,k}}{\Delta r}+\frac{1}{r^2}\frac{t_{j,k-1}-2t_{jk}+t_{j,k+1}}{(\Delta \theta)^2} = 0 
+\frac{t_{j-1,k}-2t_{jk}+t_{j+1,k}}{(\Delta r)^2}+\frac{1}{r_j}\frac{t_{j,k}-t_{j-1,k}}{\Delta r}+\frac{1}{{r_j}^2}\frac{t_{j,k-1}-2t_{jk}+t_{j,k+1}}{(\Delta \theta)^2} = 0 
 \end{equation}
 
-Esta ecuación vale para cada punto del modelo salvo los límites, sobre los cuales hablaremos en breve.
+Esta ecuación vale para cada punto $(r_j, \theta_k)$ del modelo salvo los límites, sobre los cuales hablaremos en breve.
 
 Para poder armar el sistema $Ax=b$ equivalente, es necesario:
 \begin{itemize}
@@ -25,12 +25,12 @@ Para poder armar el sistema $Ax=b$ equivalente, es necesario:
     Estos se obtienen de la ecuación \ref{calor}.
     \begin{align*}
         t_{j-1, k}&*(\frac{1}{(\Delta r)^2} - \frac{1}{r_j \Delta r}) \\
-        t_{j, k}  &*(\frac{-2}{(\Delta r)^2} + \frac{1}{r_j \Delta r} - \frac{2}{{r_j}^2 (\Delta r)^2}) \\
+        t_{j, k}  &*(\frac{-2}{(\Delta r)^2} + \frac{1}{r_j \Delta r} - \frac{2}{{r_j}^2 (\Delta \theta)^2}) \\
         t_{j+1, k}&*(\frac{1}{(\Delta r)^2}) \\
         t_{j, k-1}&*(\frac{1}{{r_j}^2(\Delta \theta)^2}) \\
         t_{j, k+1}&*(\frac{1}{{r_j}^2(\Delta \theta)^2})
     \end{align*}
-    Por cuestiones de espacio, en adelante llamaremos $M_{j,k}$ al factor que multiplica a la incógnita $t_{j,k}$, $M_{j-1,k}$ al que multiplica a $t_{j-1,k}$ y así sucesivamente. Y resumiremos $Mt_{j,k} = M_{j,k}*t_{j,k}$, $Mt_{j-1,k}=M_{j-1,k}*t_{j-1,k}$.
+    Por cuestiones de espacio, en adelante llamaremos $M_{j,k}$ al factor que multiplica a la incógnita $t_{j,k}$, $M_{j-1,k}$ al que multiplica a $t_{j-1,k}$ y así sucesivamente. Y resumiremos $Mt_{j,k} = M_{j,k}*t_{j,k}$, $Mt_{j-1,k}=M_{j-1,k}*t_{j-1,k}$, etc.
  \item
     Analizar los ``casos borde'': aquellos puntos donde la ecuación \ref{calor} no vale.
     
