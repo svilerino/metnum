@@ -14,12 +14,15 @@ all: tp1
 
 run_gauss: tp1
 	./run_performance_tests.sh eliminacion_gaussiana
+	python metnum.py test eliminacion_gaussiana
 
 run_factorizacion_lu: tp1
 	./run_performance_tests.sh factorizacion_lu
+	python metnum.py test factorizacion_lu
 
 run_gauss_pivot: tp1
 	./run_performance_tests.sh eliminacion_gaussiana_pivoteo_parcial
+	python metnum.py test eliminacion_gaussiana_pivoteo_parcial
 
 clean:
 	reset

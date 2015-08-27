@@ -10,6 +10,7 @@ class Tp1TestCase(unittest.TestCase):
 
   def runTp(self, input, output):
     """Invoca al tp con input y output como parametros"""
+    print "TODO: VER UNA FORMA DE PASAR POR PARAMETRO QUE METODO USAR PARA LA RESOLUCION"
     check_call([settings.executable, input, output] + settings.extraParams, stdin=None, stdout=PIPE, stderr=PIPE)
 
   def assertRun(self, inputPath, expectedPath, outputPath):

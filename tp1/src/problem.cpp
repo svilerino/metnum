@@ -92,8 +92,12 @@ void Problem::resolver_instancias(Results &output, ostream &timing_result_os, me
 	SistemaEcuaciones sist_ec(A, b);
 	FactorizacionLU lu;
 
+	double promedio_preprocesamiento = 0.0;
+
 	if(metodo == FACT_LU) {
-		sist_ec.factorizar_LU(lu);
+		MEDIR_TIEMPO_PROMEDIO(
+				sist_ec.factorizar_LU(lu);
+		    , CANT_ITERS_MEDICION, &promedio_preprocesamiento);
 	}
 	
 	timing_result_os.precision(5);
@@ -131,7 +135,13 @@ void Problem::resolver_instancias(Results &output, ostream &timing_result_os, me
 	    // La onda de esto es tener un archivo con el tiempo consumido por instancia por cada linea
 	    // Despues con scripts y ploteos mostrar esta info apropiadamente en el informe.
 
-    	timing_result_os << promedio_medicion_instancia;
+		// Si se uso factorizacion LU, le agrego ademas el costo de obtener la factorizacion LUpromedio_medicion_instancia		
+		// La primera instancia se lleva de bonus el costo de crear LU si corresponde
+		promedio_medicion_instancia += (instancia == 0) * promedio_preprocesamiento;
+
+		// cant_radios cant_titas dimension_matriz num_instancias metodo_utilizado promedio_medicion
+		timing_result_os << n << " " << (m+1) << " " << dimension << " " << num_instancias << " " << metodo << " " << promedio_medicion_instancia;
+
     	if(instancia < num_instancias - 1){
     		timing_result_os << endl;// La medicion esta en microsegundos !
     	}

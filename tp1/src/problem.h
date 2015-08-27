@@ -59,7 +59,7 @@ private:
 	vector<double> armar_b(int instancia);
 
     int n;			// cantidad de angulos
-    int m;			// cantidad de radios
+    int m;			// cantidad de radios - 1
     int dimension;	// cantidad de incógnitas (y de filas y de columnas de la matriz del problema)
     int Ri;			// radio interno
     int Re;			// radio externo

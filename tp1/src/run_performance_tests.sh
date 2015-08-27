@@ -24,10 +24,12 @@ then
 	method_number=2
 fi
 
+
 echo -e "${purple}Corriendo tests de performance usando ${1}...${NC}"
 
 if ls tests/*.in &> /dev/null; then
 	pushd tests
+	rm -rf "../$TIMING_OUTPUT/${1}.tmpplot"
 	for file in *.in; do
 		
 		file="${file%.*}" #extraigo el nombre sin la extension
@@ -35,12 +37,15 @@ if ls tests/*.in &> /dev/null; then
 		echo -n "Corriendo [${1}] con archivo de input $file.in..."
 		"../../bin/tp1" "$file.in" "../$TESTS_OUTPUT/${1}_$file.out" "$method_number" "../$TIMING_OUTPUT/${1}_$file.timingout"
 		process_exit_status=$?
-		
+
 		#verificar que el proceso haya terminado con return 0
 		if [ $process_exit_status -eq 0 ] 
 		then
 			echo -e "${green}[Ok]${NC}"
-			
+			#agregar resultado a la lista de timings
+	
+			cat "../$TIMING_OUTPUT/${1}_$file.timingout" >> "../$TIMING_OUTPUT/${1}.tmpplot"
+			echo "" >> "../$TIMING_OUTPUT/${1}.tmpplot"
 			# curve fit para heuristica
 			# fitType=2
 			# echo "$heuristica -> fitType=$fitType"
