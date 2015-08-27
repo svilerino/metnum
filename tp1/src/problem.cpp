@@ -140,7 +140,8 @@ void Problem::resolver_instancias(Results &output, ostream &timing_result_os, me
 		promedio_medicion_instancia += (instancia == 0) * promedio_preprocesamiento;
 
 		// cant_radios cant_titas dimension_matriz num_instancias metodo_utilizado promedio_medicion
-		timing_result_os << n << " " << (m+1) << " " << dimension << " " << num_instancias << " " << metodo << " " << promedio_medicion_instancia;
+		//timing_result_os << n << " " << (m+1) << " " << dimension << " " << num_instancias << " " << metodo << " " << promedio_medicion_instancia;
+		timing_result_os << n << " " << (m+1) << " " << promedio_medicion_instancia;
 
     	if(instancia < num_instancias - 1){
     		timing_result_os << endl;// La medicion esta en microsegundos !

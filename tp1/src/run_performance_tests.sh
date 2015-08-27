@@ -49,22 +49,27 @@ if ls tests/*.in &> /dev/null; then
 
 			cat "../$TIMING_OUTPUT/${1}_$file.timingout" >> "../$TIMING_OUTPUT/${1}.tmpplot"
 			echo "" >> "../$TIMING_OUTPUT/${1}.tmpplot"
-			# curve fit para heuristica
-			# fitType=2
-			# echo "$heuristica -> fitType=$fitType"
  
-			# ./plot.sh "$heuristica".tmpplot 0 "$fitType"
-			# ./plot.sh "$heuristica".tmpplot 1
-			# ./plot.sh "$heuristica".tmpplot 2
-			# ./plot.sh "$heuristica".tmpplot 3
-			# ./plot.sh "$heuristica".tmpplot 4	
 		else
 			echo -e "${red}[Fail]${NC}"			
 		fi
+		
 
-		#usar el script de la catedra para validar resultados porque usa almostequal y no == en comparacion de salida.
+		#usamos el script de la catedra para validar resultados porque usa almostequal y no == en comparacion de salida.
 	done
+	
 	popd
+	#time to plot willies!
+	#ordeno plot por la primer columna de numeros 
+	sort "$TIMING_OUTPUT/${1}.tmpplot" -k1,1 --numeric-sort > "$TIMING_OUTPUT/${1}.tmpplot.tmp"
+	mv "$TIMING_OUTPUT/${1}.tmpplot.tmp" "$TIMING_OUTPUT/${1}.tmpplot"
+
+	#llamo al plotter de python
+	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 0
+	# ./plot.sh "$heuristica".tmpplot 1
+	# ./plot.sh "$heuristica".tmpplot 2
+	# ./plot.sh "$heuristica".tmpplot 3
+	# ./plot.sh "$heuristica".tmpplot 4	
 else
     echo "[WARN] NO existen archivos de testing"
 fi
