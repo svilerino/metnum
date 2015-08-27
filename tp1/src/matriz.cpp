@@ -362,9 +362,16 @@ void SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<
         if (usar_pivoteo_parcial) {
             pivoteo_parcial(i);
         }
+        //cout << "Triangulando columna " << i << endl;
         for (int j = i+1; j < numfilas; j++) {
+            if (_A[j][i] == 0) {
+                // Ya hay un cero allí, no hay nada que hacer
+                continue;
+            }
+            //cout << "Triangulando fila " << j << endl;
+            //_A.mostrar(cout);
             // Calculo el coeficiente multiplicador
-            double m = _A[j][i] / _A[i][i];  
+            double m = _A[j][i] / _A[i][i];
             #ifdef DEBUG_MESSAGES_ON
                 if ( _A[i][i] == 0) {
                     cerr << "\e[0;31m[ERROR] DIVISION POR CERO EN PIVOTE DE GAUSS\e[0m";

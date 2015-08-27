@@ -16,7 +16,7 @@ Problem::Problem(ProblemArguments &in_args) {
 	delta_t = 2*3.14/n;
 	
 	armar_matriz();
-//	A.mostrar_esparsa(cout);
+	//A.mostrar_esparsa(cout);
 }
 
 void Problem::armar_matriz() {
@@ -28,7 +28,7 @@ void Problem::armar_matriz() {
 	}
 	// Las demás filas tienen cinco componentes no nulas
 	for (int j = 1; j < m; j++) {
-		for (int k = 0; k < n-1; k++) {
+		for (int k = 0; k < n; k++) {
 			armar_fila(j, k);
 		}
 	}
@@ -36,13 +36,17 @@ void Problem::armar_matriz() {
 
 void Problem::armar_fila(int j, int k) {
 	int S_PUNTOS[5][2] = {{-1, 0}, {0, 0}, {1, 0}, {0, -1}, {0, 1}}; // tiene los vecinos y el punto principal
+	//cout << "j, k: " << j << " " << k << endl;
 	int indice_fila = indice(j, k);
+	//cout << "indice_fila: " << indice_fila << endl;
 	for (int num_punto = 0; num_punto < 5; num_punto++){
 		int s_j = S_PUNTOS[num_punto][0];
 		int s_k = S_PUNTOS[num_punto][1];
-		int indice_columna = indice(j+s_j, (k+s_k)%n);
+		int j_punto = j+s_j;
+		int k_punto = (k+s_k == -1) ? n-1 : (k+s_k)%n;		// el operador % no se lleva bien con números negativos
+		int indice_columna = indice(j_punto, k_punto);
 		double valor = multiplicador(s_j, s_k, j);
-		//cout << endl << j+s_j << " " << (k+s_k)%n << endl;
+		//cout << endl << j_punto << " " << k_punto << endl;
 		//cout << indice_fila << ", " << indice_columna << " = " << valor << endl;
 		A[indice_fila][indice_columna] = valor; 
 	}
