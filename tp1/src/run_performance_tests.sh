@@ -1,7 +1,5 @@
 #!/bin/bash
 #iterar sobre la carpeta de resultados, 
-#	los que no tengan stdout no => ignoro, o anoto que hubo error...
-#	los que tengan salida piola por stdout => grafico y comparo sol vs exacta
 
 red='\e[0;31m'
 green='\e[0;32m'
@@ -41,8 +39,8 @@ if ls tests/*.in &> /dev/null; then
 		if [ $process_exit_status -eq 0 ] 
 		then
 			#extraigo la salida del archivo de timings
-			timeconsumed=$(cat "../$TIMING_OUTPUT/${1}_$file.timingout" | awk -F' ' '{print $6}' | tr '\n' ' ')
-			
+			timeconsumed=$(cat "../$TIMING_OUTPUT/${1}_$file.timingout" | awk -F' ' '{print $3}' | tr '\n' ' ')
+
 			echo -e "${green}[Ok in ${timeconsumed}]${NC}"
 
 			#agregar resultado a la lista de timings	
@@ -61,15 +59,20 @@ if ls tests/*.in &> /dev/null; then
 	popd
 	#time to plot willies!
 	#ordeno plot por la primer columna de numeros 
+
+	#TENER EN CUENTA QUE EN ARCHIVOS MULTIINSTANCIA, SOBRETODO EN LU ORDENAR ESTO 
+	#ES UN PROBLEMA PORQUE SE PIERDE EL ORDEN RELATIVO DE RESULTADOS DENTRO INSTANCIAS DE UN MISMO TEST
+
 	sort "$TIMING_OUTPUT/${1}.tmpplot" -k1,1 --numeric-sort > "$TIMING_OUTPUT/${1}.tmpplot.tmp"
 	mv "$TIMING_OUTPUT/${1}.tmpplot.tmp" "$TIMING_OUTPUT/${1}.tmpplot"
 
 	#llamo al plotter de python
-	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 0
-	# ./plot.sh "$heuristica".tmpplot 1
-	# ./plot.sh "$heuristica".tmpplot 2
-	# ./plot.sh "$heuristica".tmpplot 3
-	# ./plot.sh "$heuristica".tmpplot 4	
+	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 0 -1
+	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 0 1
+	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 1
+	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 2
+	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 3
+	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 4
 else
     echo "[WARN] NO existen archivos de testing"
 fi
