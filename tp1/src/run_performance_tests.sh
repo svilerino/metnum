@@ -47,7 +47,14 @@ if ls tests/*.in &> /dev/null; then
 
 			cat "../$TIMING_OUTPUT/${1}_$file.timingout" >> "../$TIMING_OUTPUT/${1}.tmpplot"
 			echo "" >> "../$TIMING_OUTPUT/${1}.tmpplot"
- 
+
+
+			#aca deberiamos armar el isofile para este archivo de entrada
+
+			# Plot de la solucion
+			#pushd ../tools
+			#octave run_horno.m "$file.in" "$file.out" "$isofile.example"
+			#popd
 		else
 			echo -e "${red}[Fail]${NC}"			
 		fi
