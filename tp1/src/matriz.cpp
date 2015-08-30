@@ -1,6 +1,6 @@
 #include "matriz.h"
 using namespace std;
-#define DEBUG_MESSAGES_ON 1//comentar esta linea para no hacer chequeos costosos en tiempo de ejecucion
+#define DEBUG_MESSAGES_ON 0//comentar esta linea para no hacer chequeos costosos en tiempo de ejecucion
 
 /**
 * 
@@ -362,14 +362,14 @@ void SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<
         if (usar_pivoteo_parcial) {
             pivoteo_parcial(i);
         }
-        //cout << "Triangulando columna " << i << endl;
+
         for (int j = i+1; j < numfilas; j++) {
+
             if (_A[j][i] == 0) {
                 // Ya hay un cero allí, no hay nada que hacer
                 continue;
             }
-            //cout << "Triangulando fila " << j << endl;
-            //_A.mostrar(cout);
+
             // Calculo el coeficiente multiplicador
             double m = _A[j][i] / _A[i][i];
             
@@ -384,6 +384,7 @@ void SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<
             for (int k = i; k < numcolumnas; k++) {
                 _A[j][k] -= m * _A[i][k];
             }
+
             // Tambien hay que modificar el vector b!
             _b[j] -= m * _b[i];
         }
@@ -397,6 +398,7 @@ void SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<
                 sumaAcum += _A[i][j] * vec_sol[j];
             }
         }
+
         // Despejar el xi
         vec_sol[i] = (_b[i] - sumaAcum) / _A[i][i];
     }
@@ -456,52 +458,42 @@ void SistemaEcuaciones::factorizar_LU(FactorizacionLU& lu) {
     int numfilas = _A.get_filas();
     int numcolumnas = _A.get_columnas();
 
-    lu._L = _A;
+    // L identidad
+    lu._L.resize(numfilas, numcolumnas);
+
+    for (int i = 0; i<numfilas; i++) {
+        lu._L[i][i] = 1;
+    }
+    
+    // U comienza siendo la matriz A
     lu._U = _A;
 
     for (int i = 0; i < numcolumnas - 1; i++) {
         for (int j = i+1; j < numfilas; j++) {
+
             if (lu._U[j][i] == 0) {
                 // Ya hay un cero allí, no hay nada que hacer
                 continue;
             }
             
+            #ifdef DEBUG_MESSAGES_ON
+                if ( lu._U[i][i] == 0) {
+                    cerr << "\e[0;31m[ERROR] DIVISION POR CERO (U[i][i] == 0) en Factorizacion LU\e[0m";
+                    exit(-1);
+                }
+            #endif
+
             // Calculo el coeficiente multiplicador para L y U
             double multiplicadorU = (lu._U[j][i] / lu._U[i][i]);
-            double multiplicadorL = lu._L[j][i] / lu._L[i][i];
-            
+
             // Opero sobre la fila 
             for (int k = i; k < numcolumnas; k++) {
-
-                #ifdef DEBUG_MESSAGES_ON
-                    if ( lu._L[i][i] == 0) {
-                        cerr << "\e[0;31m[ERROR] DIVISION POR CERO (L[i][i] == 0) en Factorizacion LU\e[0m";
-                        exit(-1);
-                    }
-
-                    if ( lu._U[i][i] == 0) {
-                        cerr << "\e[0;31m[ERROR] DIVISION POR CERO (U[i][i] == 0) en Factorizacion LU\e[0m";
-                        exit(-1);
-                    }
-                #endif
-
                 // modifico los elementos de U
                 lu._U[j][k] -= multiplicadorU * lu._U[i][k];
-
-                // Guardo los elementos de L
-                if (k == i) {
-                    lu._L[j][k] = multiplicadorL;
-                } else {
-                    lu._L[j][k] -= multiplicadorL * lu._L[i][k];
-                }                
             }
-        }
-    }
 
-    // Le borro la parte triangular superior a L y pongo unos en la diagonal por convencion
-    for (int i = 0; i<numfilas; i++) {
-        for (int j = i; j < numcolumnas; j++) {
-            lu._L[i][j] = (j==i);
+            // Guardo los elementos de L
+            lu._L[j][i] = multiplicadorU;
         }
     }
 }
