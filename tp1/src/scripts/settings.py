@@ -14,5 +14,6 @@ compiler = 'g++'
 executable = '../bin/tp1' if os.name == 'posix' else 'tp.exe'
 
 # Parametros extra
-extraParams = ['1'] # calculo que esto es el parametro de que metodo de resolucion usar
+# extraParams = ['1'] # calculo que esto es el parametro de que metodo de resolucion usar
+# esto se cambio por un argumento de linea de comando
 
