@@ -201,8 +201,7 @@ void Matriz::mostrar_esparsa(ostream &os)
             } else {
                 continue;
             }
-            os << "(" << i << ", " << j << ") = ";
-            os << _matriz[i][j] << endl;
+            os << "(" << i << ", " << j << ") = " << _matriz[i][j] << endl;
         }
     }
     os << endl;

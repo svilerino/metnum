@@ -31,6 +31,15 @@ void Problem::armar_matriz() {
 			armar_fila(j, k);
 		}
 	}
+
+	// Evaluo que sea diagonal dominante por filas
+	for (int i = 0; i < dimension; i++){
+		double suma = 0;
+		for (int j = 0; j < dimension; j++){
+			if (j != i) suma += abs(A[i][j]); 
+		}
+		if (abs(suma) > abs(A[i][i])+0.00000001) cerr << "No es diagonal dominante por filas" << endl;
+	}
 }
 
 void Problem::armar_fila(int j, int k) {
