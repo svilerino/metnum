@@ -1,4 +1,5 @@
 #include "problem.h"
+#define DEBUG_MESSAGES_ON 0//comentar esta linea para no hacer chequeos costosos en tiempo de ejecucion
 
 Problem::Problem(ProblemArguments &in_args) {
 	m = in_args.cantidad_radios-1;
@@ -32,6 +33,8 @@ void Problem::armar_matriz() {
 		}
 	}
 
+    #ifdef DEBUG_MESSAGES_ON
+
 	// Evaluo que sea diagonal dominante por filas
 	for (int i = 0; i < dimension; i++){
 		double suma = 0;
@@ -47,6 +50,8 @@ void Problem::armar_matriz() {
 		// cout << res << " " << i << endl;
 		assert(res == i);
 	}
+
+	#endif
 }
 
 void Problem::armar_fila(int j, int k) {
