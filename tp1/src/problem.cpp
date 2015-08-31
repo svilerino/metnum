@@ -139,6 +139,8 @@ void Problem::interpolar_isoterma(vector<double> &solucion, ostream &iso_result_
 		it_min = min_element(temp_ang.begin(), temp_ang.end());
 		it_max = max_element(temp_ang.begin(), temp_ang.end());
 
+		assert(*it_min <= *it_max);
+
 		bool isotermaEnRango = true;
 		double radio_estimado = 0;
 
@@ -170,11 +172,11 @@ void Problem::interpolar_isoterma(vector<double> &solucion, ostream &iso_result_
 			// Como el vector de temperaturas esta revertido
 			// Los indices de up y low estan espejados
 
+			int idx_low = m - (it_low - temp_ang.begin());
+			int idx_up = m - (it_up - temp_ang.begin());
+			
 			reverse(temp_ang.begin(), temp_ang.end());
 			// imprimir_vector(temp_ang, cout);
-
-			int idx_low = n - 1 -(it_low - temp_ang.begin());
-			int idx_up = n - 1 - (it_up - temp_ang.begin());
 
 			// cout << "isoterma acotada en angulo: " << Tk(angulo) << endl;
 
@@ -187,6 +189,11 @@ void Problem::interpolar_isoterma(vector<double> &solucion, ostream &iso_result_
 			if(temp_ang[idx_low] > isoterma_buscada || isoterma_buscada > temp_ang[idx_up]) {
 				imprimir_vector(temp_ang, cout);
 				cout << temp_ang[idx_low] << " <= " << isoterma_buscada << " <= " << temp_ang[idx_up] << endl;
+
+				// le hice reverse y se dieron vuelta los iters
+				cout << "min: " << *it_max << endl;
+				cout << "max: " << *it_min << endl;
+
 				cout << "upper_bound at position " << idx_up << endl;
 				cout << "lower_bound at position " << idx_low << endl;
 
