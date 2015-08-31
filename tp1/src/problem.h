@@ -23,6 +23,8 @@ public:
 	*/
     void resolver_instancias(Results &output, ostream &timing_result_os, metodo_resolucion metodo);
 
+    void mostrar_solucion(ostream &os, Results output_results);
+
 private:
 	/* Punto
 	* Devuelve el punto (j, k) en polares dado un indice
@@ -44,6 +46,11 @@ private:
 	* Devuelve la longitud del radio j-ésimo
 	*/
 	double Rj(int j){return Ri+delta_r*j;}
+	/* Tk
+	* Devuelve la amplitud del angulo k-ésimo
+	*/
+	double Tk(int k){return delta_t*k;}
+
 	/* Armar matriz
 	* Arma la matriz correspondiente al problema y la guarda en A
 	*/
