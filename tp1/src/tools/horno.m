@@ -2,7 +2,7 @@ function horno(inputfile, solution, output_img_path, isofile)
 
 ifid = fopen(inputfile);
 solfid = fopen(solution);
-instparam = fscanf(ifid, '%d',6);
+instparam = fscanf(ifid, '%f',6);
 if (nargin > 3)
    isofid = fopen(isofile);
 end
