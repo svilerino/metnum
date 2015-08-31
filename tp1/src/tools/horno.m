@@ -49,23 +49,27 @@ for k = 1:ninst
     x = reshape(x,angulos,radios);
     x(angulos+1,:) = x(1,:);
     h = pcolor(xdib,ydib,x);
+    title('Mapa de calor de la pared del horno')
     saveas(h, out_heatmappath)
 
     %aca ploteo la isoterma
     if (nargin > 2)
-        h = figure;
         radioiso = fscanf(isofid, '%f',angulos);
         radioiso = [radioiso; radioiso(1)];
         radioiso = radioiso';
-
 
         theta=linspace(0,2*pi,angulos+1);
         interno=linspace(radioi,radioi,angulos+1);
         externo=linspace(radioe,radioe,angulos+1);
         
+        h = figure;
         polar(theta,interno), hold on;
-        polar(theta,radioiso);
+        polar(theta,radioiso, 'r');
         polar(theta,externo);
+        % grid on;
+        % grid minor;
+
+        title('Ubicacion de la isoterma en la pared del horno')
 
         saveas(h, out_isomap)
         hold off;
