@@ -11,8 +11,8 @@
 using namespace std;
 
 typedef struct ProblemArguments {
-	int radio_interno;		// R_i
-	int radio_externo;		// R_e
+	double radio_interno;		// R_i
+	double radio_externo;		// R_e
 	int cantidad_radios;	// m
 	int cantidad_titas;		// n
 	double isoterma_buscada;
