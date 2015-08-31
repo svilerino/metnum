@@ -38,6 +38,7 @@ clean_tests:
 	rm -rf $(TESTS)/*.png
 	rm -rf $(TESTS)/*.out
 	rm -rf $(TESTS)/*.isoout
+	rm -rf $(TESTS)/*.mp4
 
 tp1: $(OBJECTS)
 	mkdir -p $(BINDIR)

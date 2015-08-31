@@ -56,6 +56,11 @@ if ls tests/*.in &> /dev/null; then
 			# plotea el heatmap y la isoterma
 			octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.out\", \"../tests/\", \"../tests/$file.isoout\")"
 			popd
+		
+			# Crear video del test 6 de la isoterma
+			ffmpeg -framerate 3/1 -start_number 1 -i "$file"_inst_%d_isomap.png -c:v libx264 -r 30 -pix_fmt yuv420p "$file"_video_isomap.mp4
+			# Crear video del test 6 del calor
+			ffmpeg -framerate 3/1 -start_number 1 -i "$file"_inst_%d_heatmap.png -c:v libx264 -r 30 -pix_fmt yuv420p "$file"_video_heatmap.mp4
 		else
 			echo -e "${red}[Fail]${NC}"			
 		fi
@@ -63,7 +68,8 @@ if ls tests/*.in &> /dev/null; then
 
 		#usamos el script de la catedra para validar resultados porque usa almostequal y no == en comparacion de salida.
 	done
-	
+
+
 	popd
 	#time to plot willies!
 	#ordeno plot por la primer columna de numeros 
