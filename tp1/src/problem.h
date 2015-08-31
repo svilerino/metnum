@@ -7,6 +7,7 @@
 #include <math.h>
 #include "io.h"
 #include "timing.h"
+#include <cassert>
 
 typedef enum metodo_resolucion {ELIM_GAUSSIANA, FACT_LU, ELIM_GAUSSIANA_CON_PIVOTEO_PARCIAL} metodo_resolucion;
 
@@ -23,8 +24,12 @@ public:
     void resolver_instancias(Results &output, ostream &timing_result_os, metodo_resolucion metodo);
 
 private:
+	/* Punto
+	* Devuelve el punto (j, k) en polares dado un indice
+	*/
+	pair<int, int> punto(int i){return make_pair(i / n, i % n);}
 	/* Indice
-	* Devuelve el índice (número de fila o columna) corresondiente al punto T_(j,k)
+	* Devuelve el índice (número de fila o columna) corresondiente al punto (j,k)
 	*/
 	int indice(int j, int k){return j*n+k;}
 	/* Ti

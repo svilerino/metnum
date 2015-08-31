@@ -40,6 +40,13 @@ void Problem::armar_matriz() {
 		}
 		if (abs(suma) > abs(A[i][i])+0.00000001) cerr << "No es diagonal dominante por filas" << endl;
 	}
+
+
+	for (int i = 0; i < 1000; ++i) {
+		int res = indice(punto(i).first, punto(i).second);
+		// cout << res << " " << i << endl;
+		assert(res == i);
+	}
 }
 
 void Problem::armar_fila(int j, int k) {
