@@ -53,7 +53,10 @@ if ls tests/*.in &> /dev/null; then
 
 			# Plot de la solucion
 			pushd ../tools
-			octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.in.out\", \"../tests/isofile.example\", \"../tests/heatmap.$file.png\", \"../tests/isomap.$file.png\")"
+			# plotea el heatmap y la isoterma desde isofile<num>.out
+			# octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.out\", \"../tests/\", \"../tests/isofile$file.in\")"
+			# plotea solo el heatmap
+			octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.out\", \"../tests/\")"
 			popd
 		else
 			echo -e "${red}[Fail]${NC}"			

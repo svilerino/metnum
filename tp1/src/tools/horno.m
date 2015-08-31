@@ -1,9 +1,9 @@
-function horno(inputfile, solution, isofile, out_heatmappath, out_isomap)
+function horno(inputfile, solution, output_img_path, isofile)
 
 ifid = fopen(inputfile);
 solfid = fopen(solution);
 instparam = fscanf(ifid, '%d',6);
-if (nargin > 2)
+if (nargin > 3)
    isofid = fopen(isofile);
 end
 
@@ -18,6 +18,10 @@ deltaAng = 2*pi/angulos;
 deltaRad = (radioe-radioi)/(radios-1);
 
 for k = 1:ninst
+    [pathstr, fileinname, ext] = fileparts(inputfile);
+    out_heatmappath = strcat(output_img_path, fileinname, '_inst_', num2str(k), '_heatmap.png');
+    out_isomap = strcat(output_img_path, fileinname, '_inst_', num2str(k), '_isomap.png');
+
     %armado de b 
     b = zeros(puntos,1);
     baux = fscanf(ifid,'%f',2*angulos);
@@ -53,7 +57,7 @@ for k = 1:ninst
     saveas(h, out_heatmappath)
 
     %aca ploteo la isoterma
-    if (nargin > 2)
+    if (nargin > 3)
         radioiso = fscanf(isofid, '%f',angulos);
         radioiso = [radioiso; radioiso(1)];
         radioiso = radioiso';
@@ -63,13 +67,10 @@ for k = 1:ninst
         externo=linspace(radioe,radioe,angulos+1);
         
         h = figure;
+        title('Ubicacion de la isoterma en la pared del horno')
         polar(theta,interno), hold on;
         polar(theta,radioiso, 'r');
         polar(theta,externo);
-        % grid on;
-        % grid minor;
-
-        title('Ubicacion de la isoterma en la pared del horno')
 
         saveas(h, out_isomap)
         hold off;
