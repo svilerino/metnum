@@ -1,1 +1,0 @@
-horno("../tests/test1.in", "../tests/test1.out", "../tests/isofile.example")

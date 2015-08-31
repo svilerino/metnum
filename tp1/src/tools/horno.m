@@ -1,4 +1,4 @@
-function horno(inputfile, solution, isofile)
+function horno(inputfile, solution, isofile, out_heatmappath, out_isomap)
 
 ifid = fopen(inputfile);
 solfid = fopen(solution);
@@ -41,7 +41,7 @@ for k = 1:ninst
     end
 
     %Aca ploteo el calor en el horno
-    figure;
+    h = figure;
     xdib = reshape(xdib,angulos,radios);
     xdib(angulos+1,:) = xdib(1,:);
     ydib = reshape(ydib,angulos,radios);
@@ -49,10 +49,11 @@ for k = 1:ninst
     x = reshape(x,angulos,radios);
     x(angulos+1,:) = x(1,:);
     h = pcolor(xdib,ydib,x);
+    saveas(h, out_heatmappath)
 
     %aca ploteo la isoterma
     if (nargin > 2)
-        figure;
+        h = figure;
         radioiso = fscanf(isofid, '%f',angulos);
         radioiso = [radioiso; radioiso(1)];
         radioiso = radioiso';
@@ -61,10 +62,13 @@ for k = 1:ninst
         theta=linspace(0,2*pi,angulos+1);
         interno=linspace(radioi,radioi,angulos+1);
         externo=linspace(radioe,radioe,angulos+1);
-        polar(theta,externo), hold on;
+        
+        polar(theta,interno), hold on;
         polar(theta,radioiso);
-        polar(theta,interno);
+        polar(theta,externo);
+
+        saveas(h, out_isomap)
         hold off;
-        pause;
+        % pause;
     end
 end

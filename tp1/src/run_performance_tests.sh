@@ -52,9 +52,9 @@ if ls tests/*.in &> /dev/null; then
 			#aca deberiamos armar el isofile para este archivo de entrada
 
 			# Plot de la solucion
-			#pushd ../tools
-			#octave run_horno.m "$file.in" "$file.out" "$isofile.example"
-			#popd
+			pushd ../tools
+			octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.in.out\", \"../tests/isofile.example\", \"../tests/heatmap.$file.png\", \"../tests/isomap.$file.png\")"
+			popd
 		else
 			echo -e "${red}[Fail]${NC}"			
 		fi
