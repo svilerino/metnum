@@ -3,39 +3,81 @@ import sys
 import math
 import random
 
-#parameters validation
-if(len(sys.argv) < 7):
-    print "Use with parameters: testgen.py <outputTestSuitePath> <r_i> <r_e> <m+1> <n> <iso> <ninst>"
-    sys.exit(1); 
+if(len(sys.argv) < 2):
+	print "The first parameter specifies the test generation mode: 1 for the first method (varying n and m) "
+	print "and 2 for the second method (given fixed n and m, change the temperatures). For help for each mode, run testgen.py <Mode>"
+else:
 
-#read input data from file
-outputFilePath = str(sys.argv[1])
-r_i = float(sys.argv[2])
-r_e = float(sys.argv[3])
-m_1 = int(sys.argv[4])
-n = int(sys.argv[5])
-iso = int(sys.argv[6])
-ninst = int(sys.argv[7])
+	if(int(sys.argv[1]) == 1):
+		#parameters validation
+		if(len(sys.argv) < 11):
+		    print "Mode 1: Use with parameters: testgen.py <Mode> <outputTestSuitePath#> <r_i> <r_e> <m+1_s> <m+1_e> <n_s> <n_e> <iso> <ninst>"
+		    print "Where the # of radius goes from m+1_s to m+1_e and the # of angles goes from n_s to n_e"
+		else:
+			#read input data from file
+			outputFilePath = str(sys.argv[2])
+			r_i = float(sys.argv[3])
+			r_e = float(sys.argv[4])
+			m_1_s = int(sys.argv[5])
+			m_1_e = int(sys.argv[6])
+			n_s = int(sys.argv[7])
+			n_e = int(sys.argv[8])
+			iso = int(sys.argv[9])
+			ninst = int(sys.argv[10])
 
-with open(outputFilePath, 'w') as f:
-    f.write(str(r_i) + 	" " + str(r_e) + " " + str(m_1) + " " + str(n) + " " + str(iso)+ " " + str(ninst) + "\n")
+			index = 0
 
-    for i in xrange(0,ninst): #Generate each instance
-    	for j in xrange(0,n): #Generate n internal wall values
-    		value = random.uniform(1400, 1600)
-    		f.write(str(value) +" ")
+			for m in xrange(m_1_s, m_1_e+1):
+				for n in xrange(n_s, n_e+1):
+					currentFilePath = outputFilePath + str(index)
+					index = index + 1
+					with open(currentFilePath, 'w') as f:
+						f.write(str(r_i) + 	" " + str(r_e) + " " + str(m) + " " + str(n) + " " + str(iso)+ " " + str(ninst) + "\n")
+						for i in xrange(0,ninst):
+							for j in xrange(0,n):
+								value = random.uniform(1400, 1600)
+								f.write(str(value) + " ")
+							for j in xrange(0,n):
+								if j == (n-1):
+									value = random.uniform(50,200)
+									f.write(str(value))
+									continue
+								value = random.uniform(50, 200)
+								f.write(str(value) + " ")
+							f.write("\n")
 
-    	for j in xrange(0,n):#Generate n external wall values
-    		if j == (n-1):#To avoid putting an extra space in the last external value
-    			value = random.uniform(50, 200)
-    			f.write(str(value))
-    			continue
-    		value = random.uniform(50, 200)
-    		f.write(str(value) + " ")
-    	f.write("\n")
-
-
-
-
-
-
+	elif(int(sys.argv[1]) == 2):	
+	
+		#parameters validation
+		if(len(sys.argv) < 9):
+		    print "Mode 2: Use with parameters: testgen.py <Mode> <outputTestSuitePath> <r_i> <r_e> <m+1> <n> <iso> <ninst>"
+		else:	
+			#read input data from file
+			outputFilePath = str(sys.argv[2])
+			r_i = float(sys.argv[3])
+			r_e = float(sys.argv[4])
+			m_1 = int(sys.argv[5])
+			n = int(sys.argv[6])
+			iso = int(sys.argv[7])
+			ninst = int(sys.argv[8])
+			
+			with open(outputFilePath, 'w') as f:
+			    f.write(str(r_i) + 	" " + str(r_e) + " " + str(m_1) + " " + str(n) + " " + str(iso)+ " " + str(ninst) + "\n")
+			
+			    for i in xrange(0,ninst): #Generate each instance
+			    	for j in xrange(0,n): #Generate n internal wall values
+			    		value = random.uniform(1400, 1600)
+			    		f.write(str(value) +" ")
+			
+			    	for j in xrange(0,n):#Generate n external wall values	
+			    		if j == (n-1):#To avoid putting an extra space in the last external value
+			    			value = random.uniform(50, 200)
+			    			f.write(str(value))
+			    			continue
+			    		value = random.uniform(50, 200)
+			    		f.write(str(value) + " ")
+			    	f.write("\n")
+		
+	else:
+		print "Invalid Mode"
+	
