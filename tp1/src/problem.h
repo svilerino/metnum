@@ -10,6 +10,7 @@
 #include <cassert>
 
 typedef enum metodo_resolucion {ELIM_GAUSSIANA, FACT_LU, ELIM_GAUSSIANA_CON_PIVOTEO_PARCIAL} metodo_resolucion;
+typedef enum metodo_interpolacion_isoterma {LINEAL} metodo_interpolacion_isoterma;
 
 class Problem {
 	// Abstrae funciones y datos útiles de un problema con varias instancias
@@ -23,9 +24,20 @@ public:
 	*/
     void resolver_instancias(Results &output, ostream &timing_result_os, metodo_resolucion metodo);
 
+	void interpolar_isotermas(Results &output, ostream &iso_result_os, metodo_interpolacion_isoterma metodo);
+
     void mostrar_solucion(ostream &os, Results output_results);
 
 private:
+	/* interpolacion_lineal_inversa
+	* Interpola linealmente el punto x entre puntos x1 y x2 dados los puntos fx, fx1 y fx2 
+	*/
+	double interpolacion_lineal_inversa(double fx, double x1, double x2, double fx1, double fx2);
+	/* interpolar_isoterma
+	* Interpola la isoterma y la imprime en el stream pasado por parametro,
+	 cada linea es un angulo y el valor de cada linea es el radio donde se estima la isoterma.
+	*/
+    void interpolar_isoterma(vector<double> &solucion, ostream &iso_result_os, metodo_interpolacion_isoterma metodo);
 	/* Punto
 	* Devuelve el punto (j, k) en polares dado un indice
 	*/
@@ -35,11 +47,11 @@ private:
 	*/
 	int indice(int j, int k){return j*n+k;}
 	/* Ti
-	* Devuelve la termperatura interna del horno en el angulo k y la instancia i
+	* Devuelve la temperatura interna del horno en el angulo k y la instancia i
 	*/
 	double Ti(int i, int k){return instancias_temp_internas[i][k];}
 	/* Te
-	* Devuelve la termperatura externa del horno en el angulo k y la instancia i
+	* Devuelve la temperatura externa del horno en el angulo k y la instancia i
 	*/
 	double Te(int i, int k){return instancias_temp_externas[i][k];}
 	/* Rj

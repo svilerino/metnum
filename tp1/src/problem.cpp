@@ -1,4 +1,5 @@
 #include "problem.h"
+#include <cassert>
 #define DEBUG_MESSAGES_ON 0//comentar esta linea para no hacer chequeos costosos en tiempo de ejecucion
 
 Problem::Problem(ProblemArguments &in_args) {
@@ -105,6 +106,118 @@ vector<double> Problem::armar_b(int instancia) {
 		b[indice(m, k)] = Te(instancia, k);
 	}
 	return b;
+}
+
+void Problem::interpolar_isotermas(Results &output, ostream &iso_result_os, metodo_interpolacion_isoterma metodo) {
+	for (int i = 0; i < num_instancias; i++) {
+		interpolar_isoterma(output.instances_solutions[i], iso_result_os, metodo);
+	}
+}
+
+void Problem::interpolar_isoterma(vector<double> &solucion, ostream &iso_result_os, metodo_interpolacion_isoterma metodo_interpolacion) {
+	// La idea es para cada angulo, encontrar el radio "mas apropiado" que indique isoterma_buscada grados.
+	// Para esto podemos considerar la curva de nivel que se arma cuando fijamos el angulo y variamos el radio
+	// Representaremos esta funcion (discreta) para cada angulo en el vector temp_ang.
+	
+	// Luego usando la stl, con las funciones lower_bound y upper_bound tomaremos los 2 puntos que encierren
+    // a isoterma_buscada y procederemos a hacer la interpolacion indicada por parametro
+
+	vector<double> temp_ang(m+1, 0);
+	for (int angulo = 0; angulo < n; angulo++) {
+		
+		// Armo el vector con temperaturas para el angulo actual
+		// Notar que estan al reves. los radios de afuera hacia adentro para que quede ordenado
+		// de menor a mayor
+		for (int radio = 0; radio < m+1; radio++) {
+			double temperatura = solucion[indice(radio, angulo)];
+			// cout << "temperatura en angulo: " << Tk(angulo) << ", Radio = " << Rj(radio) << ": " << temperatura << endl;
+			// temp_ang esta ordenado de mayor a menor, lo necesitamos al reves
+			temp_ang[m-radio/*m+1-1-radio*/] = temperatura;
+		}
+
+		vector<double>::iterator it_min, it_max;
+		it_min = min_element(temp_ang.begin(), temp_ang.end());
+		it_max = max_element(temp_ang.begin(), temp_ang.end());
+
+		bool isotermaEnRango = true;
+		double radio_estimado = 0;
+
+		if(*it_min > isoterma_buscada){
+			isotermaEnRango = false;
+			radio_estimado = Ri - delta_r;
+		}
+
+		if(*it_max < isoterma_buscada){
+			isotermaEnRango = false;
+			radio_estimado = Re + delta_r;
+		}
+
+		if(isotermaEnRango) {
+			// Busco cotas superiores e inferiores a la isoterma_buscada
+			vector<double>::iterator it_low, it_up;
+			// Segun la stl, it_low puede ser MAYOR O IGUAL a isoterma_buscada(una cota inferior, que puede ser el valor buscado)
+			it_low = lower_bound(temp_ang.begin(), temp_ang.end(), isoterma_buscada);
+
+			// Queremos la posicion anterior al primero que no compara menor.
+			// Es decir, el ultimo que compara menor.
+			if (it_low > temp_ang.begin()) {
+				it_low--;
+			}
+			
+			// Asimismo it_up nunca sera igual, solo mayor(cota superior estricta) o last si el target es el ultimo.
+			it_up = upper_bound(temp_ang.begin(), temp_ang.end(), isoterma_buscada);
+
+			// Como el vector de temperaturas esta revertido
+			// Los indices de up y low estan espejados
+
+			reverse(temp_ang.begin(), temp_ang.end());
+			// imprimir_vector(temp_ang, cout);
+
+			int idx_low = n - 1 -(it_low - temp_ang.begin());
+			int idx_up = n - 1 - (it_up - temp_ang.begin());
+
+			// cout << "isoterma acotada en angulo: " << Tk(angulo) << endl;
+
+			// low y up se refieren a valores numericos
+			// es decir que vale low <= isoterma_buscada <= up
+			// dado que el vector esta ordenado de mayor a menor
+			// en terminos de indices vale idx_up <= idx_low
+			// pues las temperaturas siguen ese patron del centro al exterior del horno
+
+			if(temp_ang[idx_low] > isoterma_buscada || isoterma_buscada > temp_ang[idx_up]) {
+				imprimir_vector(temp_ang, cout);
+				cout << temp_ang[idx_low] << " <= " << isoterma_buscada << " <= " << temp_ang[idx_up] << endl;
+				cout << "upper_bound at position " << idx_up << endl;
+				cout << "lower_bound at position " << idx_low << endl;
+
+				cout << "upper_bound at radio " << Rj(idx_up) << endl;
+				cout << "lower_bound at radio " << Rj(idx_low) << endl;
+			}
+
+			assert(temp_ang[idx_low] <= isoterma_buscada && isoterma_buscada <= temp_ang[idx_up]);
+
+			// Estimamos la isoterma			
+			if(metodo_interpolacion == LINEAL) {
+				radio_estimado = interpolacion_lineal_inversa(isoterma_buscada, Rj(idx_up), Rj(idx_low), temp_ang[idx_low], temp_ang[idx_up]);
+			}
+		}
+		// Imprimimos por el stream para cada angulo(linea) la posicion radial de la isoterma estimada
+		iso_result_os << radio_estimado << endl;
+	}	
+}
+
+double Problem::interpolacion_lineal_inversa(double fx, double x1, double x2, double fx1, double fx2){
+	double x=0;
+
+	// cout << x << endl;
+	// cout << x1 << endl;
+	// cout << x2 << endl;
+	// cout << fx1 << endl;
+	// cout << fx2 << endl;
+
+	x = x1 + ((x2 - x1) / (fx2 - fx1)) * (fx - fx1);
+
+	return x;
 }
 
 void Problem::resolver_instancias(Results &output, ostream &timing_result_os, metodo_resolucion metodo) {

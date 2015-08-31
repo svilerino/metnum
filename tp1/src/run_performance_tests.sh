@@ -32,7 +32,7 @@ if ls tests/*.in &> /dev/null; then
 		file="${file%.*}" #extraigo el nombre sin la extension
 
 		echo -e -n "Corriendo ${purple}[${1}]${NC} con archivo de input $file.in..."
-		"../../bin/tp1" "$file.in" "$file.out" "$method_number" "../$TIMING_OUTPUT/${1}_$file.timingout"
+		"../../bin/tp1" "$file.in" "$file.out" "$method_number" "../$TIMING_OUTPUT/${1}_$file.timingout" "$file.isoout"
 		process_exit_status=$?
 
 		#verificar que el proceso haya terminado con return 0
@@ -53,10 +53,8 @@ if ls tests/*.in &> /dev/null; then
 
 			# Plot de la solucion
 			pushd ../tools
-			# plotea el heatmap y la isoterma desde isofile<num>.out
-			# octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.out\", \"../tests/\", \"../tests/isofile$file.in\")"
-			# plotea solo el heatmap
-			octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.out\", \"../tests/\")"
+			# plotea el heatmap y la isoterma
+			octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.out\", \"../tests/\", \"../tests/$file.isoout\")"
 			popd
 		else
 			echo -e "${red}[Fail]${NC}"			

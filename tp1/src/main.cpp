@@ -18,9 +18,12 @@ int main(int argc, char** argv){
 	
 	string path_file_out = argv[2]; 
 
+
 	metodo_resolucion execution_mode = (metodo_resolucion) atoi(argv[3]); 
 	
 	string path_timings_out = (argc > 4) ? argv[4] : "timing_results.txt";
+	
+	string path_isofile_out = (argc > 5) ? argv[5] : "isofile_result.txt";
 
 	ProblemArguments in_arg;
 	
@@ -45,9 +48,20 @@ int main(int argc, char** argv){
 		exit(-1);
 	} 
 
+	// Archivo que guarda datos de isoterma
+	ofstream iso_file(path_isofile_out);
+	if (!iso_file.is_open()) {
+		cerr << "Imposible escribir en archivo de isoterma: " << path_isofile_out << endl;
+		exit(-1);
+	} 
+
 	problem.resolver_instancias(output_results, timing_file, execution_mode);
 
+	metodo_interpolacion_isoterma metodo_interpolacion = LINEAL;
+	problem.interpolar_isotermas(output_results, iso_file, metodo_interpolacion);
+
 	timing_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
+	iso_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
 
 	// Escribir resultados
 	ofstream output_file(path_file_out);

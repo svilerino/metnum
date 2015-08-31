@@ -6,6 +6,7 @@ RM=rm
 OBJECTS=main.o matriz.o io.o problem.o
 BINDIR=../bin
 TESTTIMINGOUTDIR=timings-out
+TESTS=tests
 
 .PHONY: all clean clean_tests
 
@@ -34,6 +35,9 @@ clean_tests:
 	reset
 	rm -rf $(TESTTIMINGOUTDIR)
 	mkdir -p $(TESTTIMINGOUTDIR)
+	rm -rf $(TESTS)/*.png
+	rm -rf $(TESTS)/*.out
+	rm -rf $(TESTS)/*.isoout
 
 tp1: $(OBJECTS)
 	mkdir -p $(BINDIR)
