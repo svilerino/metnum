@@ -108,33 +108,30 @@ vector<double> Problem::armar_b(int instancia) {
 	return b;
 }
 
-vector<double> Problem::determinar_seguridad_isotermas(vector< vector<double> > &isotermas, ostream &seguridad_isoterma_result_os, metodo_seguridad metodo) {
-	vector<double> res;
+vector<pair<double, double> > Problem::determinar_seguridad_isotermas(vector< vector<double> > &isotermas, ostream &seguridad_isoterma_result_os) {
+	vector<pair<double, double> > res;
 	for (int i = 0; i < num_instancias; i++) {
-		res.push_back(determinar_seguridad_isoterma(isotermas[i], seguridad_isoterma_result_os, metodo));
+		res.push_back(determinar_seguridad_isoterma(isotermas[i], seguridad_isoterma_result_os));
 	}
 	return res;
 }
 
-double Problem::determinar_seguridad_isoterma(vector<double> &isoterma, ostream &seguridad_isoterma_result_os, metodo_seguridad metodo) {
+pair<double, double> Problem::determinar_seguridad_isoterma(vector<double> &isoterma, ostream &seguridad_isoterma_result_os) {
 	// maximo, promedio
-	double metrica = 0;
-	if(metodo == MAXIMO) {
-		vector<double>::iterator it_max = max_element(isoterma.begin(), isoterma.end()); 
-		metrica = (*it_max - Ri) / (Re - Ri);
-	} else if(metodo == PROMEDIO) {
-		double promedio = 0;
-		for(double d : isoterma) {
-			promedio += d;
-		}
-		promedio = promedio/(double) isoterma.size();
-		metrica = (promedio - Ri) / (Re - Ri);
-	} else {
-		cerr << "Metodo invalido de determinacion de seguridad de isoterma" << endl;
-		exit(-1);
+	double metrica_max = 0;
+	vector<double>::iterator it_max = max_element(isoterma.begin(), isoterma.end()); 
+	metrica_max = (*it_max - Ri) / (Re - Ri);
+	
+	double metrica_promedio = 0;
+	for(double d : isoterma) {
+		metrica_promedio += d;
 	}
-	seguridad_isoterma_result_os << metrica << endl;
-	return metrica;
+	metrica_promedio = metrica_promedio/(double) isoterma.size();
+	
+	metrica_promedio = (metrica_promedio - Ri) / (Re - Ri);
+
+	seguridad_isoterma_result_os << metrica_promedio << " " << metrica_max << endl;
+	return make_pair(metrica_promedio, metrica_max);
 }
 
 void Problem::interpolar_isotermas(Results &output, vector< vector<double> > &out_isotermas, ostream &iso_result_os, metodo_interpolacion_isoterma metodo) {

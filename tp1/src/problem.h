@@ -11,7 +11,6 @@
 
 typedef enum metodo_resolucion {ELIM_GAUSSIANA, FACT_LU, ELIM_GAUSSIANA_CON_PIVOTEO_PARCIAL} metodo_resolucion;
 typedef enum metodo_interpolacion_isoterma {LINEAL} metodo_interpolacion_isoterma;
-typedef enum metodo_seguridad {MAXIMO, PROMEDIO} metodo_seguridad;
 
 class Problem {
 	// Abstrae funciones y datos útiles de un problema con varias instancias
@@ -27,7 +26,7 @@ public:
 
 	void interpolar_isotermas(Results &output, vector< vector<double> > &out_isotermas, ostream &iso_result_os, metodo_interpolacion_isoterma metodo);
 
-	vector<double> determinar_seguridad_isotermas(vector< vector<double> > &isotermas, ostream &seguridad_isoterma_result_os, metodo_seguridad metodo);
+	vector<pair<double, double> > determinar_seguridad_isotermas(vector< vector<double> > &isotermas, ostream &seguridad_isoterma_result_os);
 
     void mostrar_solucion(ostream &os, Results output_results);
 
@@ -36,7 +35,7 @@ private:
 	*	dada una isoterma determina si hay peligro de colapso
 	*/
 
-	double determinar_seguridad_isoterma(vector<double> &isoterma, ostream &seguridad_isoterma_result_os, metodo_seguridad metodo);
+	pair<double, double> determinar_seguridad_isoterma(vector<double> &isoterma, ostream &seguridad_isoterma_result_os);
 	/* interpolacion_lineal_inversa
 	* Interpola linealmente el punto x entre puntos x1 y x2 dados los puntos fx, fx1 y fx2 
 	*/

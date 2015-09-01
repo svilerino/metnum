@@ -40,19 +40,17 @@ if ls tests/*.in &> /dev/null; then
 		then
 			#extraigo la salida del archivo de timings
 			timeconsumed=$(cat "../$TIMING_OUTPUT/${1}_$file.timingout" | awk -F' ' '{print $3}' | tr '\n' ' ')
-			seguridad_isoterma=$(cat "$file.seguridadisoout" | awk -F' ' '{print $1}' | tr '\n' ' ')
+			seguridad_isoterma_promedio=$(cat "$file.seguridadisoout" | awk -F' ' '{print $1}' | tr '\n' ' ')
+			seguridad_isoterma_maximo=$(cat "$file.seguridadisoout" | awk -F' ' '{print $2}' | tr '\n' ' ')
 
 			echo -e -n "${green}[Ok in ${timeconsumed}]${NC}"
 			
-			echo -e "${purple}[Ratios-isotermas: ${seguridad_isoterma}]${NC}"
+			echo -e "${purple}[Ratios-isotermas: promedio: ${seguridad_isoterma_promedio} max: ${seguridad_isoterma_maximo}]${NC}"
 
 			#agregar resultado a la lista de timings	
 
 			cat "../$TIMING_OUTPUT/${1}_$file.timingout" >> "../$TIMING_OUTPUT/${1}.tmpplot"
 			echo "" >> "../$TIMING_OUTPUT/${1}.tmpplot"
-
-
-			#aca deberiamos armar el isofile para este archivo de entrada
 
 			# Plot de la solucion
 			pushd ../tools
@@ -61,9 +59,9 @@ if ls tests/*.in &> /dev/null; then
 			popd
 		
 			# Crear video del test 6 de la isoterma
-			ffmpeg -framerate 3/1 -start_number 1 -i "$file"_inst_%d_isomap.png -c:v libx264 -r 30 -pix_fmt yuv420p "$file"_video_isomap.mp4
+			# ffmpeg -framerate 3/1 -start_number 1 -i "$file"_inst_%d_isomap.png -c:v libx264 -r 30 -pix_fmt yuv420p "$file"_video_isomap.mp4
 			# Crear video del test 6 del calor
-			ffmpeg -framerate 3/1 -start_number 1 -i "$file"_inst_%d_heatmap.png -c:v libx264 -r 30 -pix_fmt yuv420p "$file"_video_heatmap.mp4
+			# ffmpeg -framerate 3/1 -start_number 1 -i "$file"_inst_%d_heatmap.png -c:v libx264 -r 30 -pix_fmt yuv420p "$file"_video_heatmap.mp4
 		else
 			echo -e "${red}[Fail]${NC}"			
 		fi

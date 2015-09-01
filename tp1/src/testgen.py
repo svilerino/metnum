@@ -99,11 +99,11 @@ else:
 				int_temps.append(int_value)
 				ext_temps.append(ext_value)
 
-			index = 0
+			index = m_1_s
 
 			for m in xrange(m_1_s, m_1_e+1):
 				# print index
-				currentFilePath = outputFilePath + str(index)
+				currentFilePath = outputFilePath + "_" + str(index) + "_radios.in"
 				index = index + 1
 				with open(currentFilePath, 'w') as f:
 					f.write(str(r_i) + 	" " + str(r_e) + " " + str(m) + " " + str(n) + " " + str(iso)+ " " + "1" + "\n")

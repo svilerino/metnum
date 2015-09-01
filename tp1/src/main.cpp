@@ -70,8 +70,8 @@ int main(int argc, char** argv){
 	vector< vector<double> > isotermas(in_arg.num_instancias);
 	problem.interpolar_isotermas(output_results, isotermas, iso_file, metodo_interpolacion);
 
-	vector<double> ratio_seguridad_isotermas;
-	ratio_seguridad_isotermas = problem.determinar_seguridad_isotermas(isotermas, seguridad_file, MAXIMO);
+	vector<pair<double, double> > ratio_seguridad_isotermas;
+	ratio_seguridad_isotermas = problem.determinar_seguridad_isotermas(isotermas, seguridad_file);
 
 	timing_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
 	iso_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
