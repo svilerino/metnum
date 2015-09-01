@@ -35,9 +35,13 @@ clean_tests:
 	reset
 	rm -rf $(TESTTIMINGOUTDIR)
 	mkdir -p $(TESTTIMINGOUTDIR)
+	rm -rf isofile_result.txt
+	rm -rf timing_results.txt
+	rm -rf seguridad_isoterma_result.txt
 	rm -rf $(TESTS)/*.png
 	rm -rf $(TESTS)/*.out
 	rm -rf $(TESTS)/*.isoout
+	rm -rf $(TESTS)/*.seguridadisoout
 	rm -rf $(TESTS)/*.mp4
 
 tp1: $(OBJECTS)
