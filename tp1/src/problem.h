@@ -11,6 +11,7 @@
 
 typedef enum metodo_resolucion {ELIM_GAUSSIANA, FACT_LU, ELIM_GAUSSIANA_CON_PIVOTEO_PARCIAL} metodo_resolucion;
 typedef enum metodo_interpolacion_isoterma {LINEAL} metodo_interpolacion_isoterma;
+typedef enum metodo_seguridad {MAXIMO, PROMEDIO} metodo_seguridad;
 
 class Problem {
 	// Abstrae funciones y datos útiles de un problema con varias instancias
@@ -24,11 +25,18 @@ public:
 	*/
     void resolver_instancias(Results &output, ostream &timing_result_os, metodo_resolucion metodo);
 
-	void interpolar_isotermas(Results &output, ostream &iso_result_os, metodo_interpolacion_isoterma metodo);
+	void interpolar_isotermas(Results &output, vector< vector<double> > &out_isotermas, ostream &iso_result_os, metodo_interpolacion_isoterma metodo);
+
+	vector<double> determinar_seguridad_isotermas(vector< vector<double> > &isotermas, ostream &seguridad_isoterma_result_os, metodo_seguridad metodo);
 
     void mostrar_solucion(ostream &os, Results output_results);
 
 private:
+	/* Determinar seguridad isotetma
+	*	dada una isoterma determina si hay peligro de colapso
+	*/
+
+	double determinar_seguridad_isoterma(vector<double> &isoterma, ostream &seguridad_isoterma_result_os, metodo_seguridad metodo);
 	/* interpolacion_lineal_inversa
 	* Interpola linealmente el punto x entre puntos x1 y x2 dados los puntos fx, fx1 y fx2 
 	*/
@@ -37,7 +45,7 @@ private:
 	* Interpola la isoterma y la imprime en el stream pasado por parametro,
 	 cada linea es un angulo y el valor de cada linea es el radio donde se estima la isoterma.
 	*/
-    void interpolar_isoterma(vector<double> &solucion, ostream &iso_result_os, metodo_interpolacion_isoterma metodo);
+    void interpolar_isoterma(vector<double> &solucion, vector<double> &out_isoterma, ostream &iso_result_os, metodo_interpolacion_isoterma metodo);
 	/* Punto
 	* Devuelve el punto (j, k) en polares dado un indice
 	*/

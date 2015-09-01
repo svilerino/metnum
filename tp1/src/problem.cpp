@@ -108,13 +108,42 @@ vector<double> Problem::armar_b(int instancia) {
 	return b;
 }
 
-void Problem::interpolar_isotermas(Results &output, ostream &iso_result_os, metodo_interpolacion_isoterma metodo) {
+vector<double> Problem::determinar_seguridad_isotermas(vector< vector<double> > &isotermas, ostream &seguridad_isoterma_result_os, metodo_seguridad metodo) {
+	vector<double> res;
 	for (int i = 0; i < num_instancias; i++) {
-		interpolar_isoterma(output.instances_solutions[i], iso_result_os, metodo);
+		res.push_back(determinar_seguridad_isoterma(isotermas[i], seguridad_isoterma_result_os, metodo));
+	}
+	return res;
+}
+
+double Problem::determinar_seguridad_isoterma(vector<double> &isoterma, ostream &seguridad_isoterma_result_os, metodo_seguridad metodo) {
+	// maximo, promedio
+	double metrica = 0;
+	if(metodo == MAXIMO) {
+		vector<double>::iterator it_max = max_element(isoterma.begin(), isoterma.end()); 
+		metrica = (*it_max - Ri) / (Re - Ri);
+	} else if(metodo == PROMEDIO) {
+		double promedio = 0;
+		for(double d : isoterma) {
+			promedio += d;
+		}
+		promedio = promedio/(double) isoterma.size();
+		metrica = (promedio - Ri) / (Re - Ri);
+	} else {
+		cerr << "Metodo invalido de determinacion de seguridad de isoterma" << endl;
+		exit(-1);
+	}
+	seguridad_isoterma_result_os << metrica << endl;
+	return metrica;
+}
+
+void Problem::interpolar_isotermas(Results &output, vector< vector<double> > &out_isotermas, ostream &iso_result_os, metodo_interpolacion_isoterma metodo) {
+	for (int i = 0; i < num_instancias; i++) {
+		interpolar_isoterma(output.instances_solutions[i], out_isotermas[i], iso_result_os, metodo);
 	}
 }
 
-void Problem::interpolar_isoterma(vector<double> &solucion, ostream &iso_result_os, metodo_interpolacion_isoterma metodo_interpolacion) {
+void Problem::interpolar_isoterma(vector<double> &solucion, vector<double> &out_isoterma, ostream &iso_result_os, metodo_interpolacion_isoterma metodo_interpolacion) {
 	// La idea es para cada angulo, encontrar el radio "mas apropiado" que indique isoterma_buscada grados.
 	// Para esto podemos considerar la curva de nivel que se arma cuando fijamos el angulo y variamos el radio
 	// Representaremos esta funcion (discreta) para cada angulo en el vector temp_ang.
@@ -210,6 +239,7 @@ void Problem::interpolar_isoterma(vector<double> &solucion, ostream &iso_result_
 		}
 		// Imprimimos por el stream para cada angulo(linea) la posicion radial de la isoterma estimada
 		iso_result_os << radio_estimado << endl;
+		out_isoterma.push_back(radio_estimado);
 	}	
 }
 

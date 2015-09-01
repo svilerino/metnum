@@ -25,6 +25,8 @@ int main(int argc, char** argv){
 	
 	string path_isofile_out = (argc > 5) ? argv[5] : "isofile_result.txt";
 
+	string path_seguridad_isofile_out = (argc > 6) ? argv[6] : "seguridad_isoterma_result.txt";
+
 	ProblemArguments in_arg;
 	
 	ifstream input_file(path_file_in);
@@ -55,13 +57,25 @@ int main(int argc, char** argv){
 		exit(-1);
 	} 
 
+	// Archivo que guarda datos de isoterma
+	ofstream seguridad_file(path_seguridad_isofile_out);
+	if (!seguridad_file.is_open()) {
+		cerr << "Imposible escribir en archivo de seguridad isoterma: " << path_seguridad_isofile_out << endl;
+		exit(-1);
+	} 
+
 	problem.resolver_instancias(output_results, timing_file, execution_mode);
 
 	metodo_interpolacion_isoterma metodo_interpolacion = LINEAL;
-	problem.interpolar_isotermas(output_results, iso_file, metodo_interpolacion);
+	vector< vector<double> > isotermas(in_arg.num_instancias);
+	problem.interpolar_isotermas(output_results, isotermas, iso_file, metodo_interpolacion);
+
+	vector<double> ratio_seguridad_isotermas;
+	ratio_seguridad_isotermas = problem.determinar_seguridad_isotermas(isotermas, seguridad_file, MAXIMO);
 
 	timing_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
 	iso_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
+	seguridad_file.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1);
 
 	// Escribir resultados
 	ofstream output_file(path_file_out);

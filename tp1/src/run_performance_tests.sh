@@ -32,7 +32,7 @@ if ls tests/*.in &> /dev/null; then
 		file="${file%.*}" #extraigo el nombre sin la extension
 
 		echo -e -n "Corriendo ${purple}[${1}]${NC} con archivo de input $file.in..."
-		"../../bin/tp1" "$file.in" "$file.out" "$method_number" "../$TIMING_OUTPUT/${1}_$file.timingout" "$file.isoout"
+		"../../bin/tp1" "$file.in" "$file.out" "$method_number" "../$TIMING_OUTPUT/${1}_$file.timingout" "$file.isoout" "$file.seguridadisoout"
 		process_exit_status=$?
 
 		#verificar que el proceso haya terminado con return 0
@@ -40,8 +40,11 @@ if ls tests/*.in &> /dev/null; then
 		then
 			#extraigo la salida del archivo de timings
 			timeconsumed=$(cat "../$TIMING_OUTPUT/${1}_$file.timingout" | awk -F' ' '{print $3}' | tr '\n' ' ')
+			seguridad_isoterma=$(cat "$file.seguridadisoout" | awk -F' ' '{print $1}' | tr '\n' ' ')
 
-			echo -e "${green}[Ok in ${timeconsumed}]${NC}"
+			echo -e -n "${green}[Ok in ${timeconsumed}]${NC}"
+			
+			echo -e "${purple}[Ratios-isotermas: ${seguridad_isoterma}]${NC}"
 
 			#agregar resultado a la lista de timings	
 
