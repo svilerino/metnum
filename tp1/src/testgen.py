@@ -5,7 +5,8 @@ import random
 
 if(len(sys.argv) < 2):
 	print "The first parameter specifies the test generation mode: 1 for the first method (varying n and m) "
-	print "and 2 for the second method (given fixed n and m, change the temperatures). For help for each mode, run testgen.py <Mode>"
+	print " 2 for the second method (given fixed n and m, change the temperatures). "
+	print "3 for the third method (given fixed m and temperatures, vary n) For help for each mode, run testgen.py <Mode>"
 else:
 
 	if(int(sys.argv[1]) == 1):
@@ -35,7 +36,7 @@ else:
 						f.write(str(r_i) + 	" " + str(r_e) + " " + str(m) + " " + str(n) + " " + str(iso)+ " " + str(ninst) + "\n")
 						for i in xrange(0,ninst):
 							for j in xrange(0,n):
-								value = random.uniform(1400, 1600)
+								value = random.uniform(1450, 1550)
 								f.write(str(value) + " ")
 							for j in xrange(0,n):
 								if j == (n-1):
@@ -66,7 +67,7 @@ else:
 			
 			    for i in xrange(0,ninst): #Generate each instance
 			    	for j in xrange(0,n): #Generate n internal wall values
-			    		value = random.uniform(1400, 1600)
+			    		value = random.uniform(1450, 1550)
 			    		f.write(str(value) +" ")
 			
 			    	for j in xrange(0,n):#Generate n external wall values	
@@ -77,7 +78,42 @@ else:
 			    		value = random.uniform(50, 200)
 			    		f.write(str(value) + " ")
 			    	f.write("\n")
-		
+	elif(int(sys.argv[1]) == 3):
+		if(len(sys.argv) < 9):
+			print "Mode 3: Use with parameters: testgen.py <Mode> <outputTestSuitePath#> <r_i> <r_e> <m+1_s> <m+1_e> <n> <iso>"
+		else:
+			outputFilePath = str(sys.argv[2])
+			r_i = float(sys.argv[3])
+			r_e = float(sys.argv[4])
+			m_1_s = int(sys.argv[5])
+			m_1_e = int(sys.argv[6])
+			n = int(sys.argv[7])
+			iso = int(sys.argv[8])
+
+			int_temps = []
+			ext_temps = []
+
+			for i in xrange(0,n):
+				int_value = random.uniform(1450, 1550)
+				ext_value = random.uniform(50, 200)
+				int_temps.append(int_value)
+				ext_temps.append(ext_value)
+
+			index = 0
+
+			for m in xrange(m_1_s, m_1_e+1):
+				print index
+				currentFilePath = outputFilePath + str(index)
+				index = index + 1
+				with open(currentFilePath, 'w') as f:
+					f.write(str(r_i) + 	" " + str(r_e) + " " + str(m) + " " + str(n) + " " + str(iso)+ " " + "1" + "\n")
+					for j in xrange(0,n):
+						f.write(str(int_temps[j]) + " ")
+					for k in xrange(0,n):
+						f.write(str(ext_temps[k]) + " ")
+
+
+
 	else:
 		print "Invalid Mode"
 	
