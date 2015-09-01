@@ -102,7 +102,7 @@ else:
 			index = 0
 
 			for m in xrange(m_1_s, m_1_e+1):
-				print index
+				# print index
 				currentFilePath = outputFilePath + str(index)
 				index = index + 1
 				with open(currentFilePath, 'w') as f:
