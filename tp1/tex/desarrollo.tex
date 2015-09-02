@@ -154,7 +154,7 @@ Podemos probar entonces que si bien nuestra matriz no es \emph{estrictamente} di
 \end{proof}
 
 \subsection{Experimentos y mediciones}
-En esta seccion desarrollaremos acerca de los experimentos planteados, desde la generacion de instancias de prueba hasta los criterios de medicion utilizados.
+En esta seccion desarrollaremos acerca de los experimentos planteados, desde la generacion de instancias de prueba hasta los criterios de medicion utilizados y los experimentos planteados.
 \subsubsection{Consideraciones iniciales}
 \begin{itemize}
     \item La pared interna del horno en teoria deberia ser de 1500 grados constantes, nosotros consideramos mas realista que al variar los angulos de la pared interna, la temperatura varie uniformemente entre 1450 y 1550.
@@ -168,29 +168,34 @@ En esta seccion desarrollaremos acerca de los experimentos planteados, desde la 
 
 \subsubsection{Metodo de posicionamiento estimado de la isoterma}
 El problema consiste en estimar, para cada angulo, la posicion radial de la isoterma \texttt{$\alpha$}.\\
-Consideremos la funcion de temperatura $T(r,\theta)$. Si fijamos $\theta = \theta_i$ podemos definir la funcion $g_{\theta_i}(r) = T(r,\theta_i)$ como la funcion de temperatura sobre todos los radios del angulo $\theta_i$. Esto reduce el problema a encontrar un elemento $ x \in Dom(g_{\theta_i}) $ tal que $g_{\theta_i}(x) = \alpha$. El metodo propuesto consiste en aplicar el siguiente algoritmo a cada funcion $g_{\theta_i}$ para todo angulo i.
+Consideremos la funcion de temperatura $T(r,\theta)$. Si fijamos $\theta = \theta_i$ podemos definir la funcion $g_{\theta_i}(r) = T(r,\theta_i)$ como la funcion de temperatura sobre todos los radios del angulo $\theta_i$. Dado que nosotros conocemos $m+1$ puntos aproximados de dicha funcion, esto reduce el problema a aproximar el elemento $ z_\alpha \in Dom(g_{\theta_i}) $ tal que $g_{\theta_i}(z_\alpha) = \alpha$. El metodo propuesto consiste en aplicar el siguiente algoritmo a las aproximaciones discretas conocidas de las funciones $g_{\theta_i}$, para todos los angulos.
 \begin{theorem}[Metodo de estimacion de la isoterma k]
-    Sea $g_{\theta_i}$ la funcion de temperatura de un angulo i.
+    Sea $\hat{g_{\theta_i}}$ la funcion \textbf{discreta de aproximaciones} de temperatura de un angulo i.
     \begin{enumerate}
-        \item Buscar $ x_1, x_2 \in Dom(g_{\theta_i}) $ tales que $ g_{\theta_i}(x_1) \leq \alpha \leq g_{\theta_i}(x_2)$ y esta cota sea estrictamente ajustada.
+        \item Buscar $ x_1, x_2 \in Dom(\hat{g_{\theta_i}}) $ tales que $ \hat{g_{\theta_i}}(x_1) \leq \alpha \leq \hat{g_{\theta_i}}(x_2)$ y esta cota sea ajustada.
         
-        \item $z = x_1 + \left(\frac{x_2 - x_1}{g_{\theta_i}(x_2) - g_{\theta_i}(x_1)}\right) * (\alpha - g_{\theta_i}(x_1))$
+        \item $z_\alpha = x_1 + \left(\frac{x_2 - x_1}{\hat{g_{\theta_i}}(x_2) - \hat{g_{\theta_i}}(x_1)}\right) * (\alpha - \hat{g_{\theta_i}}(x_1))$
 
-        \item Devolver z.
+        \item Devolver $z_\alpha$.
     \end{enumerate}
-    z es la posicion estimada de la isoterma tal que $g_{\theta_i}(z) = \alpha$.
+    $z_\alpha$ es la posicion estimada de la isoterma tal que $g_{\theta_i}(z_\alpha) = \alpha$.
 \end{theorem}
 
 \begin{proposition}[Dominio de correctitud de la estimacion]
-    El algoritmo anterior estima linealmente la isoterma $\alpha$ entre $x_1$ y $x_2$ si $\displaystyle\min_{x \in Dom(g_{\theta_i})}{g_{\theta_i}(x)} \leq \alpha$ $\land$ $\displaystyle\max_{x \in Dom(g_{\theta_i})}{g_{\theta_i}(x)} \geq \alpha$ $\land$ $\alpha \notin Im(g_{\theta_i})$.\\
+    El algoritmo anterior estima linealmente la isoterma $\alpha$ entre $x_1$ y $x_2$ si:
+    \begin{itemize}
+        \item $\displaystyle\min_{x \in Dom(\hat{g_{\theta_i}})}{\hat{g_{\theta_i}}(x)} \leq \alpha \leq \displaystyle\max_{x \in Dom(\hat{g_{\theta_i}})}{\hat{g_{\theta_i}}(x)}$.
+        \item $\alpha \notin Im(\hat{g_{\theta_i}})$.
+    \end{itemize}
     \begin{itemize}
         \item En caso de que $\alpha$ este fuera del rango $[min..max]$ por convencion se establece que la isoterma se encuentra en una posicion radial $R_i - \epsilon$ o $R_e + \epsilon$ segun corresponda.
-        \item En caso de que $\alpha \in Im(g_{\theta_i})$ entonces $z = x_1 = x_2$ y no es necesario ajuste lineal.
+        \item En caso de que $\alpha \in Im(\hat{g_{\theta_i}})$ entonces $z = x_1 = x_2$ y no es necesario ajuste lineal.
     \end{itemize}
 \end{proposition}
 \begin{proof}
-    Si se cumplen las hipotesis de la proposicion anterior. Entonces el algoritmo va a encontrar correctamente la cota ajustada y procedera a hacer el calculo del paso siguiente, que no es mas que un ajuste lineal entre los dos puntos de las cotas. Es decir, estamos asumiendo que el calor se disipa linealmente entre 2 puntos cualesquiera de la funcion.\\
-    \textbf{Nota:} Asumir esto no es necesariamente correcto, se podria hacer un analisis mas fino graficando las funciones $g_{\theta_i}$ y aplicando metodos mas avanzados, por simplicidad solo consideramos el ajuste lineal en este trabajo.
+    Si se cumplen las hipotesis de la proposicion anterior. Entonces la cota existe y el algoritmo  procedera a hacer el calculo aproximado del paso siguiente, que no es mas que un ajuste lineal entre los dos puntos de las cotas. Es decir, estamos asumiendo que el calor se disipa linealmente entre 2 puntos cualesquiera de la funcion.\\
+    \vspace{0.3cm}
+    \textbf{Nota:} Asumir esto no es necesariamente correcto, se podria hacer un analisis mas fino graficando las funciones $g_{\theta_i}$ y aplicando metodos mas avanzados de estimacion para que la curva quede mas suave. Por simplicidad solo consideramos el ajuste lineal en este trabajo.
 \end{proof}
 
 \subsubsection{Metricas de seguridad de la isoterma}
@@ -198,7 +203,7 @@ Plantemos una metrica que estima la \texttt{estabilidad} o \texttt{seguridad} de
 \begin{proposition}[Metrica de seguridad del horno basada en la posicion relativa de la isoterma]
     Consideremos $\Delta_{iso_\alpha} = \left( \frac{f(iso_\alpha) - R_i}{R_e - R_i} \right)$.\\
     Donde $f(iso_\alpha)$ es una funcion de la isoterma, en nuestro caso, consideramos que el maximo o el promedio son buenas metricas.\\
-    Salvo casos patologicos, vale que $0 \leq \Delta_(iso_\alpha)\leq 1$. Luego basta establecer un \textbf{limite de seguridad} $0 \leq \gamma_0 \leq 1$ tal que si vale $Delta_(iso_\alpha) > \gamma_0$ se considera \texttt{inestable} o \texttt{insegura} la pared del horno.
+    Salvo casos patologicos, vale que $0 \leq \Delta_{iso_\alpha}\leq 1$. Luego basta establecer un \textbf{limite de seguridad} $0 \leq \gamma_0 \leq 1$ tal que si vale $\Delta_{iso_\alpha} > \gamma_0$ se considera \texttt{inestable} o \texttt{insegura} la pared del horno.
 \end{proposition}
 
 
@@ -219,5 +224,6 @@ Para evaluar la calidad de nuestros estimadores. Planteamos el siguiente experim
 \end{itemize}
 
 Se espera poder obtener conclusiones acerca de la suavidad de la curva estimada de la isoterma a medida que disminuye la granularidad de la discretizacion(aumenta la cantidad de radios). Asimismo en las funciones que grafican el maximo y el promedio, se espera poder obtener conclusiones similares respecto a la variacion radial de la curva polar de la isoterma.\\
+\vspace{0.3cm}
 \textbf{Se consideraron 2 experimentos de este tipo con diferente la cantidad de angulos y temperaturas aleatorias distintas entre los experimentos.}
 
