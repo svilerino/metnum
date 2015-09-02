@@ -83,7 +83,7 @@ if ls tests/*.in &> /dev/null; then
 
 	#llamo al plotter de python
 	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 0 -1
-	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 0 1
+	#./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 0 1
 	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 1
 	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 2
 	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 3

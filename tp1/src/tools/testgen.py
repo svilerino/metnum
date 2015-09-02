@@ -30,7 +30,7 @@ else:
 
 			for m in xrange(m_1_s, m_1_e+1):
 				for n in xrange(n_s, n_e+1):
-					currentFilePath = outputFilePath + '{0:03d}'.format(index)
+					currentFilePath = outputFilePath + '{0:03d}'.format(index) + ".in"
 					index = index + 1
 					with open(currentFilePath, 'w') as f:
 						f.write(str(r_i) + 	" " + str(r_e) + " " + str(m) + " " + str(n) + " " + str(iso)+ " " + str(ninst) + "\n")
