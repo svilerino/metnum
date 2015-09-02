@@ -131,4 +131,27 @@ else:
 					plt.grid()
 					#plt.show()
 					plt.savefig(outputFilePath)
+				else:
+					if(graphictype == 5):
+						graphic_x = []
+						graphic_y1 = []
+						graphic_y2 = []
+						dataFile = open(sys.argv[2], 'r')
+						for line in dataFile:
+							#parse line data
+							cant_radios = float(line.split()[0])
+							metrico_promedio = float(line.split()[1])
+							metrico_maximo = float(line.split()[2])
+							graphic_x.append(cant_radios)
+							graphic_y1.append(metrico_promedio)
+							graphic_y2.append(metrico_maximo)
+
+						plt.plot(graphic_x, graphic_y1, 'g-', graphic_x, graphic_y2, 'b-', label="")
+						plt.xlabel('x = Cantidad de radios', fontsize=14)
+						plt.ylabel('\nf(x)', fontsize=14)
+						plt.title("Distancia relativa de la isoterma 500 al radio exterior")
+						# plt.yscale('log')
+						plt.grid()
+						#plt.show()
+						plt.savefig(outputFilePath)
 plt.close()
