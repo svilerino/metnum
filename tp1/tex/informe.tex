@@ -23,8 +23,12 @@
 \usepackage{enumitem}
 \usepackage{placeins}
 \usepackage{booktabs}
+\usepackage{color}
 % \usepackage[margin=1in]{geometry}
 
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{corollary}{Corolario}[theorem]
+\newtheorem{definition}[theorem]{Definicion}
 
 \newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
 \newtheorem{proposition}{Proposici\'on}
