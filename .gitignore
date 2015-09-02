@@ -43,6 +43,7 @@ bin/
 *.out
 *.synctex.gz
 *.tex.backup
+*.kilepr
 
 #### Dropbox ####
 *.dropbox.attr
