@@ -60,25 +60,95 @@ Para poder armar el sistema $Ax=b$ equivalente, es necesario:
     
     $$ (0,0); (0,1); ... ; (0,n-1); (1,0); (1,1); ... ; (j,n-1); (j+1,0); (j,1); ... ; (m, n-1)$$ % TODO: estaría bueno hacer una imagen representativa, que muestre un toque la espiral rara esta. No sé usar mucho ninguna herramienta como para hacerlo :(.
     
-    tanto para las filas como para las columnas. Sobre el proceso llevado adelante para su elección hablaremos en la sección \ref{banda}.
+    tanto para las filas como para las columnas. Este orden garantiza que la distancia máxima de un punto hasta sus vecinos en la matriz es de $n$ posiciones (para los casos $j+1, k$ y $j-1, k$) y por lo tanto el ``ancho'' de la banda es de $2n$.
+    
+    Notar que las filas que coinciden con la identidad no afectan esta propiedad, dado que son ``banda'' de ancho $1$.
 \end{itemize}
 
 Una vez realizados estos pasos estamos en condiciones de plantear el sistema de ecuaciones $Ax=b$:
 
-Lo primero que debemos notar es que como hay $n*(m+1)$ puntos diferentes tendremos $n*(m+1)$ incógnitas diferentes. Luego, $A \in \mathbb{R}^{n(m+1)*n(m+1)}$: cada columna y cada fila de $A$ corresponden a un punto $t_{j,k}$ del sistema. Asimismo, $x \in \mathbb{R}^{n(m+1)}$ y $b \in \mathbb{R}^{n(m+1)}$. 
+Lo primero que debemos notar es que como hay $n*(m+1)$ puntos diferentes tendremos $n*(m+1)$ incógnitas diferentes. Luego, $A \in \mathbb{R}^{n(m+1)*n(m+1)}$: cada columna y cada fila de $A$ corresponden a un punto $P_{j,k}$ del sistema. Asimismo, $x \in \mathbb{R}^{n(m+1)}$ y $b \in \mathbb{R}^{n(m+1)}$. 
 
-Lo segundo que debemos notar es que, por coincidir el orden elegido para filas y para columnas, el índice de la fila correspondiente al punto $t_{j,k}$ coincide con el de la columna correspondiente a ese punto. Llamaremos a este índice $i(j,k)$. Notar que podemos computar $i$ fácilmente como $i(j,k)=j*n+k$ (suponiendo que indexamos por 0 tanto filas como columnas).
+Lo segundo que debemos notar es que, por coincidir el orden elegido para filas y para columnas, el índice de la fila correspondiente al punto $P_{j,k}$ coincide con el de la columna correspondiente a ese punto. Llamaremos a este índice $i(j,k)$. Notar que podemos computar $i$ fácilmente como $i(j,k)=j*n+k$ (suponiendo que indexamos por 0 tanto filas como columnas).
 
-Por el orden elegido, las primeras $n$ filas corresponden a los puntos $t_{0,k}$ con $k=0,...,n-1$. Mirando el sistema de ecuaciones, las primeras $n$ filas de $A$ coinciden con la identidad (1 en la diagonal y 0 en el resto) y las primeras $n$ filas de $b$ coinciden con $T_i(\theta_k)$.
+Por el orden elegido, las primeras $n$ filas corresponden a los puntos $P_{0,k}$ con $k=0,...,n-1$. Mirando el sistema de ecuaciones, las primeras $n$ filas de $A$ coinciden con la identidad (1 en la diagonal y 0 en el resto) y las primeras $n$ filas de $b$ coinciden con $T_i(\theta_k)$.
 
-Lo mismo vale para las últimas $n$ filas: corresponden a los puntos $t_{m,k}$ con $k=0,...,n-1$, las filas correspondientes de $A$ coinciden con la identidad y las componentes de $b$ con $T_e(\theta_k)$.
+Lo mismo vale para las últimas $n$ filas: corresponden a los puntos $P_{m,k}$ con $k=0,...,n-1$, las filas correspondientes de $A$ coinciden con la identidad y las componentes de $b$ con $T_e(\theta_k)$.
 
 Llegado este punto podemos definir completamente $b$: todas sus demás componentes son nulas (por ser $0$ la solución al resto de las ecuaciones del sistema), por lo que resulta:
 
 $$b = (T_i(0), T_i(1), ..., T_i(n-1), 0, ..., 0, T_e(0), T_e(1), ..., T_e(n-1)) $$
 
-Para $j \not = 0, j \not = m$, las filas $i(j,k)$ de $A$ tendrán cinco componentes no-nulas (que corresponden a los vecinos de $t_{j,k}$ en el modelo). Fijados $j$ y $k$ ($0\not=j\not=m, 0\not=k\not=n-1$), estas componentes serán $i(j-1,k); i(j,k); i(j+1,k); i(j,k-1)$ e $i(j,k+1)$ y coincidirán con lo que anteriormente llamamos $M(j-1,k); M(j,k); M(j+1,k); M(j,k-1)$ y $M(j,k+1)$ respectivamente. 
+Para $j \not = 0, j \not = m$, las filas $i(j,k)$ de $A$ tendrán cinco componentes no-nulas (que corresponden a los vecinos de $P_{j,k}$ en el modelo). Fijados $j$ y $k$ ($0\not=j\not=m, 0\not=k\not=n-1$), estas componentes serán $i(j-1,k); i(j,k); i(j+1,k); i(j,k-1)$ e $i(j,k+1)$ y coincidirán con lo que anteriormente llamamos $M(j-1,k); M(j,k); M(j+1,k); M(j,k-1)$ y $M(j,k+1)$ respectivamente. 
 
 Resta simplemente considerar los casos $k=0$ y $k=n-1$, pero no reviste mayor complejidad que tomar módulo $n$ después de las operaciones que involucren $k$.
 
 \subsection{Resolución del sistema de ecuaciones}
+\subsubsection{Caracterización de la matriz}
+
+\begin{proposition}
+
+La matriz $A$ es banda y diagonal dominante (no estricta) por filas.
+
+\begin{proof}
+
+El hecho de que es banda fue fundamentado al momento de construirla.
+
+Resta ver que es diagonal dominante (no estricta) por filas, es decir, que $$|a_{i, i}| \geq \sum\limits_{j \neq i}^{n*(m+1)} |a_{i, j}| \hspace{10pt} \forall i = 1, ..., n*(m+1)$$
+
+Las primeras y últimas $n$ filas de $A$ coinciden con la identidad, por lo que esto vale trivialmente. Dada cualquier otra fila $i(j, k)$ con $j \neq 0, j \neq m$ debemos recordar que hay solo 5 valores no nulos, por lo que en realidad queremos probar $$|M_{j, k}| \geq |M_{j-1, k}| + |M_{j+1, k}| + |M_{j, k-1}| + |M_{j, k+1}|$$
+
+Reemplazando por los valores de los multiplicadores, se obtiene
+
+$$\left|\frac{-2}{(\Delta r)^2} + \frac{1}{r_j \Delta r} - \frac{2}{{r_j}^2 (\Delta \theta)^2}\right| \geq \left|\frac{1}{(\Delta r)^2} - \frac{1}{r_j \Delta r}\right| + \left|\frac{1}{(\Delta r)^2}\right| + 2 * \left|\frac{1}{{r_j}^2(\Delta \theta)^2}\right| $$
+
+Quitando el módulo en los valores claramente positivos y reordenando, tenemos
+
+$$\left|\frac{1}{r_j \Delta r} - \frac{2}{(\Delta r)^2} - \frac{2}{{r_j}^2 (\Delta \theta)^2}\right| \geq \left|\frac{1}{(\Delta r)^2} - \frac{1}{r_j \Delta r}\right| + \frac{1}{(\Delta r)^2} + \frac{2}{{r_j}^2(\Delta \theta)^2} $$
+
+En este punto nos detuvimos a analizar cada caso en particular, pero pronto descubrimos que solo vale la pena uno:
+como sabemos $j \neq 0$, entonces $r_j \geq \Delta r$ para cualquier valor de $j$, pues hasta el primer radio distinto al interior hay por lo menos un incremento en la discretización. Por lo tanto 
+$$\frac{1}{r_j \Delta r} \leq \frac{1}{(\Delta r)^2}$$
+$$0 \leq \frac{1}{(\Delta r)^2} - \frac{1}{r_j \Delta r}$$
+
+Por lo que podemos omitir el módulo de la derecha. Asimismo, 
+$$ \frac{1}{r_j \Delta r} \leq \frac{1}{(\Delta r)^2} $$
+$$ \frac{1}{r_j \Delta r} < \frac{2}{(\Delta r)^2} $$
+$$ \frac{1}{r_j \Delta r} - \frac{2}{(\Delta r)^2} < 0 $$
+
+Y por ser $\frac{2}{{r_j}^2 (\Delta \theta)^2} > 0$ podemos afirmar
+$$ \frac{1}{r_j \Delta r} - \frac{2}{(\Delta r)^2} - \frac{2}{{r_j}^2 (\Delta \theta)^2} < 0 $$
+
+Por lo que podemos deshacernos del módulo de la izquierda negando sus términos. 
+$$\frac{2}{(\Delta r)^2} - \frac{1}{r_j \Delta r} + \frac{2}{{r_j}^2 (\Delta \theta)^2} \geq \frac{1}{(\Delta r)^2} - \frac{1}{r_j \Delta r} + \frac{1}{(\Delta r)^2} + \frac{2}{{r_j}^2(\Delta \theta)^2} $$
+
+$$\frac{2}{(\Delta r)^2} - \frac{1}{r_j \Delta r} + \frac{2}{{r_j}^2 (\Delta \theta)^2} \geq \frac{2}{(\Delta r)^2} - \frac{1}{r_j \Delta r} + \frac{2}{{r_j}^2(\Delta \theta)^2} $$
+
+Con lo cual la desigualdad es trivialmente cierta (y de hecho resulta ser una igualdad, lo cual explica por qué no es ``estrictamente'' diagonal dominante).
+\end{proof}
+\end{proposition}
+\subsubsection{Resolución sin pivoteo}
+Nos interesa demostrar que es posible aplicar Eliminación Gaussiana sin pivoteo en la matriz $A$.
+
+
+Para su demostración usaremos la propiedad vista en clase teórica de que aplicar un paso de la Eliminación Gaussiana sobre una matriz estrictamente diagonal dominante preserva esa propiedad en la matriz resultante, y el siguiente lema
+\begin{lemma}\label{izquierda}
+ Toda fila $i(j,k)$ de la matriz $A$ tiene un elemento no nulo a la izquierda de la diagonal, salvo aquellas que coinciden con la identidad ($j=0$ y $j=m$).
+\end{lemma}
+\begin{proof}
+Surge directamente de analizar el orden elegido para los puntos: como $j \neq 0$ todo punto $P_{j, k}$ tiene un vecino $P_{j-1,k}$ que necesariamente está antes en el orden elegido.
+\end{proof}
+
+Podemos probar entonces que si bien nuestra matriz no es \emph{estrictamente} diagonal dominante por filas sí lo serán las filas con las que trabaje la Eliminación Gaussiana.
+
+\begin{proposition}\label{pivoteo}
+ A cada paso $k$ de la Eliminación Gaussiana (empezando por 0), la fila $k$ con la que trabaje será estrictamente diagonal dominante (y por lo tanto no tendrá un 0 en el elemento de la diagonal y podrá operar normalmente).
+\end{proposition}
+\begin{proof}
+ Inducción global en $k$.
+ 
+ El caso $k < n$ es trivial, dado que las filas coinciden con la identidad (y por lo tanto son estrictamente diagonal dominantes).
+ 
+ Para el caso $k = n$, vale el lema \ref{izquierda} que nos dice que la fila $k$ tenía un elemento no nulo a la izquierda de la diagonal en la matriz $A$. Pero para el paso $k$, las $k$ primeras columnas fueron anuladas, es decir $A_{k,j}^{(k)}=0$ $\forall j < k$. Y como por encima de $A_{k,k}$ solo había 0, la fila ahora es diagonal dominante estricta.
+ 
+\end{proof}

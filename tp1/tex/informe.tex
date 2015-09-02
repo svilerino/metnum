@@ -1,28 +1,22 @@
 \documentclass[10pt, a4paper,english,spanish]{article}
+
 \usepackage[spanish]{babel}
 \parindent = 0 pt
-\parskip = 11 pt
+\parskip = 5 pt
 \usepackage[width=15.5cm, left=3cm, top=2.5cm, height= 24.5cm]{geometry}
-
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{verbatim}
 \usepackage{color}
-\usepackage{amsmath}
-\usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{multicol}
 \usepackage{makeidx}
 \usepackage{hyperref}
 \usepackage{caption}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage[utf8]{inputenc}
-\usepackage{verbatim}
 \usepackage{listings}
 \usepackage{algpseudocode}
 \usepackage{courier}
@@ -34,6 +28,8 @@
 
 \newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
 \newtheorem{proposition}{Proposici\'on}
+\newtheorem{lemma}{Lema}
+\renewcommand{\qedsymbol}{}
 \lstset{language=C++, showstringspaces=false, tabsize=2, breaklines=true, title=\lstname}
 
 \makeindex
@@ -63,7 +59,9 @@
 \end{tabular}
 
 \medskip
-En este trabajo aplicamos dos métodos de resolución de sistemas de ecuaciones lineales (factorización LU y eliminación gaussiana) para el cálculo de isotermas de sectores circulares, dadas las temperaturas de las circunferencias interior y exterior. % TODO: agregar algo breve con conclusiones
+En este trabajo aplicamos dos métodos de resolución de sistemas de ecuaciones lineales (Factorización LU y Eliminación Gaussiana) para el cálculo de isotermas de sectores circulares, dadas las temperaturas de las circunferencias interior y exterior.
+
+Pudimos verificar experimentalmente que el método de factorización LU resulta más eficiente si se tienen varias posibles soluciones para una misma matriz, pero que para una única instancia es conveniente usar la eliminación gaussiana.
 
 \medskip
 Palabras clave: factorización LU, eliminación gaussiana, sistemas de ecuaciones lineales, matriz banda
