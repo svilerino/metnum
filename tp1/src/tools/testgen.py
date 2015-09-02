@@ -30,7 +30,7 @@ else:
 
 			for m in xrange(m_1_s, m_1_e+1):
 				for n in xrange(n_s, n_e+1):
-					currentFilePath = outputFilePath + str(index)
+					currentFilePath = outputFilePath + '{0:03d}'.format(index)
 					index = index + 1
 					with open(currentFilePath, 'w') as f:
 						f.write(str(r_i) + 	" " + str(r_e) + " " + str(m) + " " + str(n) + " " + str(iso)+ " " + str(ninst) + "\n")
@@ -47,7 +47,7 @@ else:
 								f.write(str(value) + " ")
 							f.write("\n")
 
-	elif(int(sys.argv[1]) == 2):	
+	elif(int(sys.argv[1]) == 2):
 	
 		#parameters validation
 		if(len(sys.argv) < 9):
@@ -103,7 +103,7 @@ else:
 
 			for m in xrange(m_1_s, m_1_e+1):
 				# print index
-				currentFilePath = outputFilePath + "_" + str(index) + "_radios.in"
+				currentFilePath = outputFilePath + "_" + '{0:03d}'.format(index) + "_radios.in"
 				index = index + 1
 				with open(currentFilePath, 'w') as f:
 					f.write(str(r_i) + 	" " + str(r_e) + " " + str(m) + " " + str(n) + " " + str(iso)+ " " + "1" + "\n")

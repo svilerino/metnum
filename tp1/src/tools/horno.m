@@ -19,8 +19,9 @@ deltaRad = (radioe-radioi)/(radios-1);
 
 for k = 1:ninst
     [pathstr, fileinname, ext] = fileparts(inputfile);
-    out_heatmappath = strcat(output_img_path, fileinname, '_inst_', num2str(k), '_heatmap.png');
-    out_isomap = strcat(output_img_path, fileinname, '_inst_', num2str(k), '_isomap.png');
+
+    out_heatmappath = strcat(output_img_path, fileinname, '_inst_', sprintf('%03d', k), '_heatmap.png');
+    out_isomap = strcat(output_img_path, fileinname, '_inst_', sprintf('%03d', k), '_isomap.png');
 
     %armado de b 
     b = zeros(puntos,1);
