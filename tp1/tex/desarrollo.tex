@@ -1,5 +1,70 @@
+\subsection{Detalle de los algoritmos utilizados}
+\subsubsection{Eliminación Gaussiana}
+La Eliminación Gaussiana es un método que consiste en resolver el sistema triangulando la matriz (aplicando restas entre filas) y aplicando las mismas operaciones al vector solución, para obtener un sistema equivalente pero con una matriz triangular superior que se puede resolver de manera sencilla mediante \emph{backward substitution}.
+
+El algoritmo de trabaja con la matriz ampliada del sistema:
+
+\[\left(\begin{array}{ccc|c}
+a_{11} & \ldots & a_{1n} & b_1\\
+\vdots & \ddots & \vdots & \vdots\\
+a_{n1} & \ldots & a_{nn} & b_n
+\end{array}\right)\]
+
+En cada paso $k$ el algoritmo produce, mediante operaciones de filas, la aparición de ceros debajo de la diagonal en la columna $k$:
+
+\begin{align*}
+&F_i \leftarrow F_i - \frac{a_{i1}^{(0)}}{a_{11}^{(0)}}F_1 &\forall i = 2, \ldots, n \\
+&F_i \leftarrow F_i - \frac{a_{i2}^{(1)}}{a_{22}^{(1)}}F_2 &\forall i = 3, \ldots, n \\
+&\ldots \\
+&F_i \leftarrow F_i - \frac{a_{ik}^{(k - 1)}}{a_{kk}^{(k - 1)}}F_k &\forall i = k + 1, \ldots, n \\
+&\ldots \\
+&F_n \leftarrow F_n - \frac{a_{n(n-1)}^{(n-2)}}{a_{(n-1)(n-1)}^{(n-2)}}F_{n - 1} &
+\end{align*}
+
+Notemos que es necesario pedir que ningún valor de la diagonal se anule en ningún paso del algoritmo. Más adelante veremos que esto se puede garantizar gracias a la estructura de nuestra matriz.
+
+El algoritmo tiene complejidad $\mathcal{O}(n^3)$ para una matriz $A \in \mathbb{R}^{n \times n}$ ya que realiza $\mathcal{O}(n)$ operaciones escalares por fila por paso; hay $n$ filas y realiza $n-1$ pasos.
+
+\subsubsection{Backward substitution}
+Dada una matriz triangular superior $A$ sin elementos nulos en la diagonal, entonces el vector solución $x$ es único, y se obtiene haciendo
+
+\begin{align*}
+x_n &= \frac{b_n}{a_{nn}}	\\
+x_{n - 1} &= \frac{b_{n - 1} - a_{(n-1)n} x_n}{a_{(n-1)(n-1)}}	\\
+&\vdots \\
+x_1 &= \frac{b_1 - a_{12}x_2 - a_{13}x_3 - \ldots - a_{1n} x_n}{a_{11}}
+\end{align*}
+
+Notemos nuevamente la importancia de que los elementos de la diagonal sean no nulos para que las operaciones estén bien definidas.
+
+Este algoritmo tiene complejidad $\mathcal{O}(n^2)$ pues para despejar cada incógnita realiza $\mathcal{O}(n)$ operaciones y hay $n$ incógnitas.
+
+\subsubsection{Factorización LU}
+
+El método de Factorización LU consiste en aplicar el método de Eliminación Gaussiana pero ``almacenando'' las operaciones realizadas para obtener una factorización $A = LU$ con $L$ triangular inferior (con unos en la diagonal) y $U$ triangular superior. Más formalmente, cada paso $k$ de la Eliminación Gaussiana es equivalente a multiplicar a la matriz $A^{(k-1)}$ a izquierda por la matriz
+
+\[
+M_k = 
+\begin{pmatrix} 
+1 		& \ldots 	& 0 				& \ldots 	& 0 \\
+0 		& \ddots 	& 0 				& \ldots 	& 0 \\
+\vdots 	& 			& 1 				& 			& \vdots\\
+0		& \ldots		& -\frac{a_{(k+1)k}^{(k - 1)}}{a_{kk}^{(k - 1)}} 	& \ldots		& 0\\
+\vdots	& 			& \vdots		 	& \ddots		& \vdots\\
+0		& \ldots		& -\frac{a_{(n)k}^{(k - 1)}}{a_{kk}^{(k - 1)}}	& \ldots		& 1\\
+\end{pmatrix}
+\]
+
+por lo que el resultado de la Eliminación Gaussiana es una matriz triangular superior $U$ que coincide con $M_{n-1} \ldots M_1 A$. Pero como todas las matrices $M_k$ son inversibles por ser triangulares inferiores con unos en la diagonal, vale $A = M_1^{-1}\ldots M_{n - 1}^{-1} U = LU$.
+
+Notemos que es posible ir armando $L$ a cada paso de la Eliminación Gaussiana por lo que la complejidad computacional se mantiene: computar la factorización $LU$ toma también $\mathcal{O}(n^3)$.
+
+Luego, dado cualquier vector $b$, para resolver el sistema $Ax=b$ alcanza con calcular $y$ tal que $Ly=b$ y luego $x$ tal que $Ux=y$. El primer sistema se puede resolver en $\mathcal{O}(n^2)$ por ser $L$ triangular inferior (usamos \emph{forward substitution}, que es igual que \emph{backward} pero a la inversa) y el segundo también, por ser $U$ triangular superior (usamos \emph{backward substitution} normalmente).
+
+De este modo vemos que, si para una misma matriz $A$ y mútliples vectores $b_1, \ldots, b_k$ queremos resolver todos los sistemas $Ax=b_i$, en lugar de aplicar $k$ veces la Eliminación Gaussiana (que toma $\mathcal{O}(n^3)$) parecería conveniente calcular una única vez la factorización LU en $\mathcal{O}(n^3)$ y luego usarla para resolver los $k$ sistemas en $\mathcal{O}(n^2)$. Este trabajo práctico tiene como objetivo principal contrastar dicha conjetura experimentalmente.
+
 \subsection{Discretización}
-Para discretizar el problema limitaremos la cantidad de radios y la cantida de ángulos a evaluar, y una vez elegidas dichas cantidades los distribuiremos de manera uniforme por la corona circular. Así, los puntos de la discretización serán los puntos $P_{j,k}$ de radio $r_j$ y ángulo $\theta_k$ con $j = 0, \ldots, m$; $k = 0, \ldots, n$ que cumplan $$r_0 = r_i$$ $$r_m = r_e$$ $$\theta_0 = 0$$ $$\theta_n = 2\pi$$ $$r_{j+1}-r_{j} = \Delta r \text{ constante } \forall j = 0, \ldots, m-1$$ $$\theta_{k+1}-\theta{k} = \Delta \theta \text{ constante } \forall \theta = 0, \ldots, n-1$$
+Para discretizar el problema limitaremos la cantidad de radios y la cantidad de ángulos a evaluar, y una vez elegidas dichas cantidades los distribuiremos de manera uniforme por la corona circular. Así, los puntos de la discretización serán los puntos $P_{j,k}$ de radio $r_j$ y ángulo $\theta_k$ con $j = 0, \ldots, m$; $k = 0, \ldots, n$ que cumplan $$r_0 = r_i$$ $$r_m = r_e$$ $$\theta_0 = 0$$ $$\theta_n = 2\pi$$ $$r_{j+1}-r_{j} = \Delta r \text{ constante } \forall j = 0, \ldots, m-1$$ $$\theta_{k+1}-\theta{k} = \Delta \theta \text{ constante } \forall \theta = 0, \ldots, n-1$$
 
 Llamaremos $t_{j,k}$ a la temperatura del punto $P_{j,k}$ una vez alcanzado el equilibrio térmico.
 
@@ -15,9 +80,7 @@ Esta ecuación vale para cada punto $P_{j, k}$ del modelo salvo los límites, so
 Para poder armar el sistema $Ax=b$ es necesario:
 \begin{itemize}
  \item
-    Extraer los factores que multiplican a cada una de las cinco incógnitas: $t_{j-1,k}$; $t_{j,k}$; $t_{j+1,k}$; $t_{j,k-1}$ y $t_{j,k+1}$.
-
-    Estos se obtienen de la ecuación \ref{calor}.
+    Extraer los factores que multiplican a cada una de las cinco incógnitas en la ecuación \ref{calor}: $t_{j-1,k}$; $t_{j,k}$; $t_{j+1,k}$; $t_{j,k-1}$ y $t_{j,k+1}$
     \begin{align*}
         t_{j-1, k}&*\left(\frac{1}{(\Delta r)^2} - \frac{1}{r_j \Delta r}\right) \\
         t_{j, k}  &*\left(\frac{-2}{(\Delta r)^2} + \frac{1}{r_j \Delta r} - \frac{2}{{r_j}^2 (\Delta \theta)^2}\right) \\
@@ -73,9 +136,9 @@ Llegado este punto podemos definir completamente $b$: todas sus demás component
 
 $$b = (T_i(0), T_i(1), \ldots, T_i(n-1), 0, \ldots, 0, T_e(0), T_e(1), \ldots, T_e(n-1)) $$
 
-Para $j \not = 0, j \not = m$, las filas $i(j,k)$ de $A$ tendrán cinco componentes no-nulas (que corresponden a los vecinos de $P_{j,k}$ en el modelo). Fijados $j$ y $k$ ($0\not=j\not=m, 0\not=k\not=n-1$), estas componentes serán $i(j-1,k); i(j,k); i(j+1,k); i(j,k-1)$ e $i(j,k+1)$ y coincidirán con lo que anteriormente llamamos $M(j-1,k); M(j,k); M(j+1,k); M(j,k-1)$ y $M(j,k+1)$ respectivamente. 
+Para $j \not = 0, j \not = m$, las filas $i(j,k)$ de $A$ tendrán cinco componentes no-nulas (que corresponden a los vecinos de $P_{j,k}$ en la discretización). Fijados $j$ y $k$ ($0\not=j\not=m, 0\not=k\not=n-1$), estas componentes serán $i(j-1,k); i(j,k); i(j+1,k); i(j,k-1)$ e $i(j,k+1)$ y coincidirán con lo que anteriormente llamamos $M(j-1,k); M(j,k); M(j+1,k); M(j,k-1)$ y $M(j,k+1)$ respectivamente. 
 
-Resta simplemente considerar los casos $k=0$ y $k=n-1$, pero no reviste mayor complejidad que tomar módulo $n$ después de las operaciones que involucren $k$.
+Resta simplemente considerar los casos $k=0$ y $k=n-1$, pero no revisten mayor complejidad que tomar módulo $n$ después de las operaciones que involucren $k$.
 
 \subsection{Resolución del sistema de ecuaciones}
 \subsubsection{Caracterización de la matriz}
@@ -136,18 +199,18 @@ Para su demostración usaremos los siguientes lemas:
  A cada paso $k$ de la Eliminación Gaussiana la fila $F_k$ con la que trabaje tendrá un elemento no nulo en la columna $k+n$, o bien será una fila de la identidad.
 \end{lemma}
 \begin{proof}
- Empecemos por ver que el ancho de la banda de la matriz es estricto para las filas que no coinciden con la identidad: toda fila $F_k$ tiene siempre como último elemento no nulo el de la columna $k+n$ o bien es una fila de la identidad. Esto surge directamente de observar el orden elegido para las incógnitas.
+ Empecemos por ver que el ancho de la banda de la matriz es estricto para las filas que no coinciden con la identidad: toda fila $F_k$ tiene siempre como último elemento no nulo el de la columna $k+n$ o bien es una fila de la identidad. Esto surge directamente de observar el orden elegido para las incógnitas y viendo que todas tienen un elemento no nulo correspondiente al vecino $j+1, k$.
 
- Ya vimos que en la matriz original $A$ toda fila $F_k$ o bien coincide con la identidad o bien tenía como último elemento no nulo el de la columna $k+n$. Veamos ahora que esto no se puede haber alterado en ningún paso del algoritmo: de alterarse, quiere decir que a la fila $F_k$ se le restó una fila $F_x$ en algún paso $x$, $x<k$ que tenía un elemento no nulo en la columna $k+n$. Pero por ser $x<k$, el último elemento no nulo de la fila $F_x$ debe ser $x+n < k+x$. Absurdo, que provino de suponer que se podría alterar la propiedad en algún paso del algoritmo.
+ Ya vimos que en la matriz original $A$ toda fila $F_k$ o bien coincide con la identidad o bien tenía como último elemento no nulo el de la columna $k+n$. Veamos ahora que esto no se puede haber alterado en ningún paso del algoritmo: de alterarse, quiere decir que a la fila $F_k$ se le restó una fila $F_x$ en algún paso $x$, $x<k$, que tenía un elemento no nulo en la columna $k+n$. Pero por ser $x<k$, el último elemento no nulo de la fila $F_x$ debe ser $x+n < k+x$. Absurdo, que provino de suponer que se podría alterar la propiedad en algún paso del algoritmo.
 \end{proof}
 
 \begin{proposition}\label{pivoteo}
- A cada paso $k$ de la Eliminación Gaussiana la fila $k$ con la que trabaje tendrá un componente no nulo en la columna $k$, y por lo tanto el algoritmo podrá continuar normalmente sin realizar pivoteo.
+ A cada paso $k$ de la Eliminación Gaussiana la fila $k$ con la que trabaje tendrá un elemento no nulo en la columna $k$, y por lo tanto el algoritmo podrá continuar normalmente sin realizar pivoteo.
 \end{proposition}
 \begin{proof}
  Queremos ver que al comenzar el paso $k$ de la Eliminación Gaussiana $a_{kk}^{(k-1)} \neq 0$.
 
- Por el lema \ref{submatriz}, al comenzar el paso $k$ de la Eliminación Gaussiana la submatriz que aún resta triangular (llamémosla $B$) es diagonal dominante. $B$ incluye parte de la fila $F_k$, en particular a partir de la columna $k$ en adelante, por lo que $a_{kk}$ es parte de su diagonal.
+ Por el lema \ref{submatriz}, al comenzar el paso $k$ de la Eliminación Gaussiana la submatriz que aún resta triangular (llamémosla $B$) es diagonal dominante. $B$ incluye parte de la fila $F_k$, en particular a partir de la columna $k$ en adelante, por lo que $a_{kk}$ es parte de su diagonal (en particular es su primer elemento).
  
  A su vez, por el lema \ref{ancho}, al comenzar el paso $k$ de la Eliminación Gaussiana la fila $F_k$ tiene un elemento no nulo en su columna $k+n$. Es decir, el elemento $a_{k(k+n)}$ es no nulo, y este elemento pertenece a $B$. Por lo que, por definición de diagonal dominante $|a_{kk}| \geq |a_{k(k+1)}| \neq 0 \Rightarrow a_{kk} \neq 0$ como queríamos demostrar. 
 \end{proof}
