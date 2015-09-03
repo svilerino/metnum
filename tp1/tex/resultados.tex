@@ -12,7 +12,7 @@
 Se presentaran los resultados de los experimentos en el mismo orden en que fueron planteados en la seccion de desarrollo. Se realizara el analisis de los mismos en este mismo apartado.
 \begin{enumerate}
 	\item \begin{itemize}
-				\item \textbf{Temperaturas internas y externas:} aleatorias entre $[50\dots200]$ y $[1450\dots1550]$, pero fijas entre tests.
+				\item \textbf{Temperaturas internas y externas:} aleatorias uniformes entre $[50\dots200]$ y $[1450\dots1550]$, pero fijas entre tests.
 				\item \textbf{Radio interno:} 200
 				\item \textbf{Radio externo:} 400
 				\item \textbf{Cantidad radios:} $[5\dots100]$
@@ -115,4 +115,48 @@ En este ultimo ejemplo ocurren ambos fenomenos al mismo tiempo, hay una variacio
 Efectivamente, podemos concluir que mientras mas fina sea la discretizacion, se obtendran resultados mas \texttt{estables y confiables} acerca de la estimacion. Uno de los motivos es porque habrá menos puntos para interpolar en la posicion de la isoterma y el otro porque se tiene mas informacion de la temperatura de la pared del horno.
 
 \subsubsection{Estimacion de estabilidad de la pared del horno}
-poner imagenes bien elegidas entre las que hiciste. aclarar que el color del heatmap es relativo al minimo y maximo de la muestra, por eso temperaturas altas afuera sigue siendo azul.
+Para este experimento utilizaremos discretizaciones finas, ya vimos en los experimentos anteriores que esto provee mayor confiabilidad en las estimaciones, para discretizaciones mas gruesas las estimaciones de seguridad seran menos exactas.
+\vspace{0.5cm}
+
+\begin{itemize}
+	\item \textbf{Temperaturas internas:} $[200, 500, 750]$
+	\item \textbf{Temperaturas externas:} $[1450\dots1550]$ aleatorias uniformes.
+	\item \textbf{Radio interno:} 200
+	\item \textbf{Radio externo:} 400
+	\item \textbf{Cantidad radios:} 30
+	\item \textbf{Cantidad angulos:} 30
+	\item \textbf{Isoterma buscada:} 500
+\end{itemize}
+
+	\textbf{Temperaturas externas: } 200\\
+	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test21_030_radios_030_angulos_inst_001_heatmap.png}
+	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test21_030_radios_030_angulos_inst_001_isomap.png}
+
+	\textbf{Temperaturas externas: } 500\\
+	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test22_030_radios_030_angulos_inst_001_heatmap.png}
+	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test22_030_radios_030_angulos_inst_001_isomap.png}
+
+	\textbf{Temperaturas externas: } 750\\
+	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test23_030_radios_030_angulos_inst_001_heatmap.png}
+	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test23_030_radios_030_angulos_inst_001_isomap.png}
+
+\vspace{0.5cm}
+
+La escala de color de los mapas de temperaturas se hace en base al minimo y maximo de la muestra, es por esto que la variacion de temperaturas externas no provee una variacion en los colores de los radios del borde. \\
+Asimismo, se ve que la posicion de la isoterma en los casos $200, 500$ se posiciona segun lo esperado dentro de la pared del horno. Mientras que en el caso $750$, al ser $750 > 500$, por convencion posicionamos la isoterma en $R_i - \epsilon$.
+
+\vspace{0.5cm}
+
+En la siguiente tabla se puede observar que las metricas de seguridad nos dan una pauta acerca de la posicion promedio y maxima de la isoterma dentro de la pared del horno. Si utilizamos $\gamma_0 = 0.75$ como limite de seguridad, podemos establecer conclusiones acerca de la seguridad: en el caso donde hay 200 grados en el exterior es seguro, mientras que 500 grados, no lo es.
+
+\begin{center}
+	\begin{tabular}{| c | c | c | c |}
+	 	\hline
+	 	$T_e$ & $\Delta_{max_{iso500}}$ & $\Delta_{prom_{iso500}}$ & Seguro bajo $\gamma_0 = 0.75$\\
+	 	\hline			
+		200 & 0.709145 & 0.71037 & Si\\
+		\hline
+		500 & 0.965517 & 0.965517 & No\\
+		\hline  
+	\end{tabular}
+\end{center}
