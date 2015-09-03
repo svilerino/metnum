@@ -1,22 +1,22 @@
-\subsection{Metodologia de experimentacion}
-En esta seccion desarrollaremos acerca de los experimentos planteados, desde la generacion de instancias de prueba hasta los criterios de medicion utilizados y los detalles de los experimentos planteados.
+\subsection{Métodología de experimentación}
+En esta sección desarrollaremos los experimentos planteados, desde la generació de instancias de prueba hasta los criterios de medición utilizados y los detalles de los experimentos.
 \subsubsection{Consideraciones iniciales}
 \begin{itemize}
-    \item La pared interna del horno en teoria deberia ser de 1500 grados constantes, nosotros consideramos mas realista que al variar los angulos de la pared interna, la temperatura varie uniformemente entre $1500 \pm \epsilon$, con $\epsilon$ pequeño.
+    \item La pared interna del horno en teoría debería ser de 1500 grados constantes, nosotros consideramos más realista que al variar los ángulos de la pared interna, la temperatura varíe uniformemente entre $1500 \pm \epsilon$, con $\epsilon$ pequeño.
 \end{itemize}
 
-\subsubsection{Generacion de casos de prueba}
+\subsubsection{Generación de casos de prueba}
 \textcolor{red}{Mati, let the game begin, explica tu testgen}
 
-\subsubsection{Metricas de performance}
-\textcolor{red}{Demo teorica o empirica de que como $dim = n*(m+1)$ entonces los algoritmos son $\mathcal{O}(n^k.m^k)$ con k variando segun el grado polinomial de la complejidad del algoritmo.}
-\textcolor{red}{explica un poco que medis solo el procesamiento de los algoritmos sin el tiempo de IO, y explica con itemizes los casos de test que estas considerando(como hice yo aca abajo), yo no hablaria de graficos aca todavia, eso mandalo en resultados, cuando pongas el grafico, explicalo y manda conclushon ahi.}
+\subsubsection{Métricas de performance}
+\textcolor{red}{Demo teorica o empirica de que como $dim = n*(m+1)$ entonces los algoritmos son $\mathcal{O}(n^k.m^k)$ con k variando según el grado polinomial de la complejidad del algoritmo.}
+\textcolor{red}{explica un poco que medis solo el procesamiento de los algoritmos sin el tiempo de IO, y explica con ítemizes los casos de test que estas considerando(como hice yo aca abajo), yo no hablaria de graficos aca todavia, eso mandalo en resultados, cuando pongas el grafico, explicalo y manda conclushon ahi.}
 
-\subsubsection{Metodo de posicionamiento estimado de la isoterma}
-El problema consiste en estimar, para cada angulo, la posicion radial de la isoterma \texttt{$\alpha$}.\\
-Consideremos la funcion de temperatura $T(r,\theta)$. Si fijamos $\theta = \theta_i$ podemos definir la funcion $g_{\theta_i}(r) = T(r,\theta_i)$ como la funcion de temperatura sobre todos los radios del angulo $\theta_i$. Dado que nosotros conocemos $m+1$ puntos aproximados de dicha funcion, esto reduce el problema a aproximar el elemento $ z_\alpha \in Dom(g_{\theta_i}) $ tal que $g_{\theta_i}(z_\alpha) = \alpha$. El metodo propuesto consiste en aplicar el siguiente algoritmo a las aproximaciones discretas conocidas de las funciones $g_{\theta_i}$, para todos los angulos.
-\begin{theorem}[Metodo de estimacion de la isoterma k]
-    Sea $\hat{g_{\theta_i}}$ la funcion \textbf{discreta de aproximaciones} de temperatura de un angulo i.
+\subsubsection{Método de posiciónamiento estimado de la isoterma}
+El problema consiste en estimar, para cada ángulo, la posición radial de la isoterma \texttt{$\alpha$}.\\
+Consideremos la función de temperatura $T(r,\theta)$. Si fijamos $\theta = \theta_i$ podemos definir la función $g_{\theta_i}(r) = T(r,\theta_i)$ como la función de temperatura sobre todos los radios del ángulo $\theta_i$. Dado que nosotros conocemos $m+1$ puntos aproximados de dicha función, esto reduce el problema a aproximar el elemento $ z_\alpha \in Dom(g_{\theta_i}) $ tal que $g_{\theta_i}(z_\alpha) = \alpha$. El método propuesto consiste en aplicar el siguiente algoritmo a las aproximaciones discretas conocidas de las funciones $g_{\theta_i}$, para todos los ángulos.
+\begin{theorem}[Método de estimación de la isoterma k]
+    Sea $\hat{g_{\theta_i}}$ la función \textbf{discreta de aproximaciones} de temperatura de un ángulo i.
     \begin{enumerate}
         \item Buscar $ x_1, x_2 \in Dom(\hat{g_{\theta_i}}) $ tales que $ \hat{g_{\theta_i}}(x_1) \leq \alpha \leq \hat{g_{\theta_i}}(x_2)$ y esta cota sea ajustada.
         
@@ -24,84 +24,85 @@ Consideremos la funcion de temperatura $T(r,\theta)$. Si fijamos $\theta = \thet
 
         \item Devolver $z_\alpha$.
     \end{enumerate}
-    $z_\alpha$ es la posicion estimada de la isoterma tal que $g_{\theta_i}(z_\alpha) = \alpha$.
+    $z_\alpha$ es la posición estimada de la isoterma tal que $g_{\theta_i}(z_\alpha) = \alpha$.
 \end{theorem}
 
-\begin{proposition}[Dominio de correctitud de la estimacion]
+\begin{proposition}[Dominio de correctitud de la estimación]
     El algoritmo anterior estima linealmente la isoterma $\alpha$ entre $x_1$ y $x_2$ si:
     \begin{itemize}
         \item $\displaystyle\min_{x \in Dom(\hat{g_{\theta_i}})}{\hat{g_{\theta_i}}(x)} \leq \alpha \leq \displaystyle\max_{x \in Dom(\hat{g_{\theta_i}})}{\hat{g_{\theta_i}}(x)}$.
         \item $\alpha \notin Im(\hat{g_{\theta_i}})$.
     \end{itemize}
     \begin{itemize}
-        \item En caso de que $\alpha$ este fuera del rango $[min..max]$ por convencion se establece que la isoterma se encuentra en una posicion radial $R_i - \epsilon$ o $R_e + \epsilon$ segun corresponda.
+        \item En caso de que $\alpha$ esté fuera del rango $[min..max]$ por convención se establece que la isoterma se encuentra en una posición radial $R_i - \epsilon$ o $R_e + \epsilon$ según corresponda.
         \item En caso de que $\alpha \in Im(\hat{g_{\theta_i}})$ entonces $z = x_1 = x_2$ y no es necesario ajuste lineal.
     \end{itemize}
 \end{proposition}
 \begin{proof}
-    Si se cumplen las hipotesis de la proposicion anterior. Entonces la cota existe y el algoritmo  procedera a hacer el calculo aproximado del paso siguiente, que no es mas que un ajuste lineal entre los dos puntos de las cotas. Es decir, estamos asumiendo que el calor se disipa linealmente entre 2 puntos cualesquiera de la funcion.\\
+    Si se cumplen las hipótesis de la proposición anterior entonces la cota existe y el algoritmo procederá a hacer el cálculo aproximado del paso siguiente, que no es más que un ajuste lineal entre los dos puntos de las cotas. Es decir, estamos asumiendo que el calor se disipa linealmente entre 2 puntos cualesquiera de la función.\\
     \vspace{0.3cm}
-    \textbf{Nota:} Asumir esto no es necesariamente correcto, se podria hacer un analisis mas fino graficando las funciones $g_{\theta_i}$ y aplicando metodos mas avanzados de estimacion para que la curva quede mas suave. Por simplicidad solo consideramos el ajuste lineal en este trabajo.
+    \textbf{Nota:} Asumir esto no es necesariamente correcto, se podría hacer un analisis más fino graficando las funciones $g_{\theta_i}$ y aplicando métodos más avanzados de estimación para que la curva quede más suave. Por simplicidad solo consideramos el ajuste lineal en este trabajo.
 \end{proof}
 
-\subsubsection{Metricas de seguridad de la isoterma}
-Plantemos una metrica que estima la \texttt{estabilidad} o \texttt{seguridad} de la pared del horno estableciendo una relacion relativa entre la posicion de la isoterma y el radio externo. 
-\begin{proposition}[Metrica de seguridad del horno basada en la posicion relativa de la isoterma]
+\subsubsection{Métricas de seguridad de la isoterma}
+Plantemos una métrica que estima la \texttt{estabilidad} o \texttt{seguridad} de la pared del horno estableciendo una relacion relativa entre la posición de la isoterma y el radio externo. 
+\begin{proposition}[Métrica de seguridad del horno basada en la posición relativa de la isoterma]
     Consideremos $\Delta_{iso_\alpha} = \left( \frac{f(iso_\alpha) - R_i}{R_e - R_i} \right)$.\\
-    Donde $f(iso_\alpha)$ es una funcion de la isoterma, en nuestro caso, consideramos que el maximo o el promedio son buenas metricas.\\
-    Salvo casos patologicos, vale que $0 \leq \Delta_{iso_\alpha}\leq 1$. Luego basta establecer un \textbf{limite de seguridad} $0 \leq \gamma_0 \leq 1$ tal que si vale $\Delta_{iso_\alpha} > \gamma_0$ se considera \texttt{inestable} o \texttt{insegura} la pared del horno.
+    Donde $f(iso_\alpha)$ es una función de la isoterma, en nuestro caso, consideramos que el máximo o el promedio son buenas métricas.\\
+    Salvo casos patológicos, vale que $0 \leq \Delta_{iso_\alpha}\leq 1$. Luego basta establecer un \textbf{límite de seguridad} $0 \leq \gamma_0 \leq 1$ tal que si vale $\Delta_{iso_\alpha} > \gamma_0$ se considera \texttt{inestable} o \texttt{insegura} la pared del horno.
 \end{proposition}
 
-\subsection{Esquema de experimentacion}
-\subsubsection{Evolucion de la temperatura y posicion de la isoterma con distintas discretizaciones}
-Para evaluar la calidad de nuestros estimadores y la evolucion de la posicion de la isoterma. Planteamos los siguientes experimentos:\\
-Experimentos de estimacion de isoterma con distintas discretizaciones:
+\subsection{Esquema de experimentación}
+\subsubsection{Evolución de la temperatura y posición de la isoterma con distintas discretizaciones}
+Para evaluar la calidad de nuestros estimadores y la evolucion de la posición de la isoterma planteamos los siguientes experimentos:\\
+Experimentos de estimación de isoterma con distintas discretizaciones:
 \begin{enumerate}
-    \item \textbf{Variacion de cantidad de radios.} La cantidad de angulos, las temperaturas (internas y externas) y los demas parametros, se mantienen invariantes entre los tests de este experimento\begin{itemize}
+    \item \textbf{Variación de cantidad de radios.} La cantidad de ángulos, las temperaturas (internas y externas) y los demás parametros se mantienen invariantes entre los tests de este experimento
+    \begin{itemize}
         \item Se plantean los radios internos, externos y la isoterma buscada y se mantienen fijos durante todo el experimento.
         \item Se plantean un conjunto de temperaturas internas y externas \textbf{aleatorias uniformes} iniciales y se mantienen fijas durante todo el experimento.
-        \item Se plantea un numero de angulos de la discretizacion y se mantiene fijo durante todo el experimento. 
+        \item Se plantea un numero de ángulos de la discretización y se mantiene fijo durante todo el experimento. 
         \item Se plantea un rango $[r_{min}, r_{max}]$ que denota la cobertura de discretizaciones distintas del experimento.
-        \item Se generan archivos de entrada $test_i$ variando unicamente la cantidad de radios de la discretizacion a utilizar con una instancia por archivo.
-        \item Se ejecutan todos los archivos de entrada con el metodo de resolucion mas conveniente.
-        \item Se grafica, para cada archivo de test, la posicion de la isoterma y el mapa de temperaturas del horno.
-        \item Se considera un video que tiene por frames los graficos ordenados en el rango $[r_{min}..r_{max}]$ del item anterior relacionado con la posicion de la isoterma.
-        \item Se considera un video que tiene por frames los graficos ordenados en el rango $[r_{min}..r_{max}]$ del item anterior relacionado con la temperatura de la pared del horno.
-        \item Se grafica una funcion en el plano que denota la \textbf{maxima} posicion relativa de la isoterma en la pared del horno a medida que varia ordenadamente el rango $[r{min}..r_{max}]$.
-        \item Se grafica una funcion en el plano que denota la posicion relativa \textbf{promedio} de la isoterma en la pared del horno a medida que varia ordenadamente el rango $[r{min}..r_{max}]$.
-    \end{itemize}  Estos ultimos 2 items corresponden a cuantificar el error de la estimacion lineal de las funciones $g_{\theta_i}$ a medida que aumentan los radios, y en consecuencia teniendo mas puntos discretos en las funciones $\hat{g_{\theta_i}}$.
+        \item Se generan archivos de entrada $test_i$ variando unicamente la cantidad de radios de la discretización a utilizar con una instancia por archivo.
+        \item Se ejecutan todos los archivos de entrada con el método de resolución más conveniente.
+        \item Se grafica, para cada archivo de test, la posición de la isoterma y el mapa de temperaturas del horno.
+        \item Se considera un video que tiene por frames los graficos ordenados en el rango $[r_{min}..r_{max}]$ del ítem anterior relacionado con la posición de la isoterma.
+        \item Se considera un video que tiene por frames los graficos ordenados en el rango $[r_{min}..r_{max}]$ del ítem anterior relacionado con la temperatura de la pared del horno.
+        \item Se grafica una función en el plano que denota la \textbf{máxima} posición relativa de la isoterma en la pared del horno a medida que varía ordenadamente el rango $[r{min}..r_{max}]$.
+        \item Se grafica una función en el plano que denota la posición relativa \textbf{promedio} de la isoterma en la pared del horno a medida que varía ordenadamente el rango $[r{min}..r_{max}]$.
+    \end{itemize}  Estos ultimos 2 ítems corresponden a cuantificar el error de la estimación lineal de las funciones $g_{\theta_i}$ a medida que aumentan los radios, y en consecuencia teniendo más puntos discretos en las funciones $\hat{g_{\theta_i}}$.
 
-    \item \textbf{Variacion de cantidad de angulos.} La cantidad de radios, las temperaturas (internas y externas) y los demas parametros, se mantienen invariantes entre los tests de este experimento\begin{itemize}
+    \item \textbf{Variación de cantidad de ángulos.} La cantidad de radios, las temperaturas (internas y externas) y los demás parametros, se mantienen invariantes entre los tests de este experimento\begin{itemize}
         \item Se plantean los radios internos, externos y la isoterma buscada y se mantienen fijos durante todo el experimento.
-        \item Se plantean un conjunto de temperaturas internas y externas \textbf{constantes} (si son aleatorias no asegurar misma solucion entre tests del experimento) y se mantienen fijas durante todo el experimento, usandose en la creacion de cada archivo de input con diferente cantidad de angulos.
-        \item Se plantea un numero de radios de la discretizacion y se mantiene fijo durante todo el experimento. 
+        \item Se plantean un conjunto de temperaturas internas y externas \textbf{constantes} (si son aleatorias no asegurar misma solución entre tests del experimento) y se mantienen fijas durante todo el experimento, usándose en la creación de cada archivo de input con diferente cantidad de ángulos.
+        \item Se plantea un numero de radios de la discretización y se mantiene fijo durante todo el experimento. 
         \item Se plantea un rango $[\theta_{min}, \theta_{max}]$ que denota la cobertura de discretizaciones distintas del experimento.
-        \item Se generan archivos de entrada $test_i$ variando unicamente la cantidad de angulos de la discretizacion a utilizar con una instancia por archivo.
-        \item Se ejecutan todos los archivos de entrada con el metodo de resolucion mas conveniente.
-        \item Se grafica, para cada archivo de test, la posicion de la isoterma y el mapa de temperaturas del horno.
-        \item Se considera un video que tiene por frames los graficos ordenados en el rango $[\theta_{min}, \theta_{max}]$ del item anterior relacionado con la posicion de la isoterma.
-        \item Se considera un video que tiene por frames los graficos ordenados en el rango $[\theta_{min}, \theta_{max}]$ del item anterior relacionado con la temperatura de la pared del horno.
+        \item Se generan archivos de entrada $test_i$ variando unicamente la cantidad de ángulos de la discretización a utilizar con una instancia por archivo.
+        \item Se ejecutan todos los archivos de entrada con el método de resolución más conveniente.
+        \item Se grafica, para cada archivo de test, la posición de la isoterma y el mapa de temperaturas del horno.
+        \item Se considera un video que tiene por frames los graficos ordenados en el rango $[\theta_{min}, \theta_{max}]$ del ítem anterior relacionado con la posición de la isoterma.
+        \item Se considera un video que tiene por frames los graficos ordenados en el rango $[\theta_{min}, \theta_{max}]$ del ítem anterior relacionado con la temperatura de la pared del horno.
     \end{itemize}    
 
-    \item \textbf{Variacion conjunta de cantidad de radios y angulos.} Las temperaturas (internas y externas) y los demas parametros, se mantienen invariantes entre los tests de este experimento\begin{itemize}
+    \item \textbf{Variación conjunta de cantidad de radios y ángulos.} Las temperaturas (internas y externas) y los demás parametros, se mantienen invariantes entre los tests de este experimento\begin{itemize}
         \item Se plantean los radios internos, externos y la isoterma buscada y se mantienen fijos durante todo el experimento.
-        \item Se plantean un conjunto de temperaturas internas y externas \textbf{constantes} (si son aleatorias no asegurar misma solucion entre tests del experimento) y se mantienen fijas durante todo el experimento.
+        \item Se plantean un conjunto de temperaturas internas y externas \textbf{constantes} (si son aleatorias no asegurar misma solución entre tests del experimento) y se mantienen fijas durante todo el experimento.
         \item Se plantea un rango $[r_{min}, r_{max}]$ que denota la cobertura de discretizaciones distintas del experimento.        
         \item Se plantea un rango $[\theta_{min}, \theta_{max}]$ que denota la cobertura de discretizaciones distintas del experimento.
-        \item Se generan archivos de entrada $test_i$ variando ambos rangos mencionados anteriormente en la discretizacion a utilizar con una instancia por archivo.
-        \item Se ejecutan todos los archivos de entrada con el metodo de resolucion mas conveniente.
-        \item Se grafica, para cada archivo de test, la posicion de la isoterma y el mapa de temperaturas del horno.
-        \item Se considera un video que tiene por frames los graficos ordenados convenientemente segun granularidad, del item anterior relacionado con la posicion de la isoterma.
-        \item Se considera un video que tiene por frames los graficos ordenados convenientemente segun granularidad, del item anterior relacionado con la temperatura de la pared del horno.
+        \item Se generan archivos de entrada $test_i$ variando ambos rangos mencionados anteriormente en la discretización a utilizar con una instancia por archivo.
+        \item Se ejecutan todos los archivos de entrada con el método de resolución más conveniente.
+        \item Se grafica, para cada archivo de test, la posición de la isoterma y el mapa de temperaturas del horno.
+        \item Se considera un video que tiene por frames los graficos ordenados convenientemente según granularidad, del ítem anterior relacionado con la posición de la isoterma.
+        \item Se considera un video que tiene por frames los graficos ordenados convenientemente según granularidad, del ítem anterior relacionado con la temperatura de la pared del horno.
     \end{itemize}    
 \end{enumerate}
 
-Los experimentos aqui planteados, tienen la misma solucion entre tests, variando unicamente las discretizaciones, esto nos deberia dar la pauta de como cambia la posicion estimada de la isoterma al cambiar la discretizacion.
+Los experimentos aquí planteados, tienen la misma solución entre tests, variando unicamente las discretizaciones, esto nos debería dar la pauta de como cambia la posición estimada de la isoterma al cambiar la discretización.
 
-Se espera poder obtener conclusiones acerca de la suavidad de la curva estimada de la isoterma a medida que disminuye la granularidad de la discretizacion. Asimismo en las funciones que grafican el maximo y el promedio, se espera poder obtener conclusiones similares respecto a la variacion radial de la curva polar de la isoterma.\\
+Se espera poder obtener conclusiones acerca de la suavidad de la curva estimada de la isoterma a medida que disminuye la granularidad de la discretización. Asimismo en las funciones que grafican el máximo y el promedio, se espera poder obtener conclusiones similares respecto a la variacion radial de la curva polar de la isoterma.\\
 
-\subsubsection{Evolucion de la posicion de la isoterma con distintas discretizaciones y temperaturas externas}
-Experimentos de estimacion de \texttt{estabilidad} de la pared del horno:
+\subsubsection{Evolución de la posición de la isoterma con distintas discretizaciones y temperaturas externas}
+Experimentos de estimación de \texttt{estabilidad} de la pared del horno:
 \begin{enumerate}
-    \item Para distintas discretizaciones, se plantea una variacion gradual en las temperaturas externas entre 50 y 1350 grados. Esto modifica la posicion estimada de la isoterma 500, asimismo cambiando el coeficiente de seguridad mencionado mas arriba.
+    \item Para distintas discretizaciones, se plantea una variacion gradual en las temperaturas externas entre 50 y 1350 grados. Esto modifica la posición estimada de la isoterma 500, asimismo cambiando el coeficiente de seguridad mencionado más arriba.
 \end{enumerate}

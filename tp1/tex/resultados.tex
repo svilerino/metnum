@@ -8,114 +8,114 @@
 
 
 
-\subsubsection{Evolucion estimacion de la isoterma y temperatura}
-Se presentaran los resultados de los experimentos en el mismo orden en que fueron planteados en la seccion de desarrollo. Se realizara el analisis de los mismos en este mismo apartado.
+\subsubsection{Evolución estimación de la isoterma y temperatura}
+Se presentarán los resultados de los experimentos en el mismo orden en que fueron planteados en la sección de desarrollo. Se realizará el análisis de los mismos en este mismo apartado.
 \begin{enumerate}
 	\item \begin{itemize}
 				\item \textbf{Temperaturas internas y externas:} aleatorias uniformes entre $[50\dots200]$ y $[1450\dots1550]$, pero fijas entre tests.
 				\item \textbf{Radio interno:} 200
 				\item \textbf{Radio externo:} 400
 				\item \textbf{Cantidad radios:} $[5\dots100]$
-				\item \textbf{Cantidad angulos:} 100
+				\item \textbf{Cantidad ángulos:} 100
 				\item \textbf{Isoterma buscada:} 500
 			\end{itemize}
-Se adjunta con el trabajo practico un video que expone la evolucion del sistema mientras se incrementa la cantidad de radios. Expondremos estaticamente algunos frames, pero es conveniente ver el video primero. Se encuentra en la misma carpeta que el pdf. (variacion\_radial\_isomap.mp4, variacion\_radial\_heatmap.mp4).
+Se adjunta con el trabajo práctico un video que expone la evolución del sistema mientras se incrementa la cantidad de radios. Expondremos estáticamente algunos frames, pero es conveniente ver el video primero. Se encuentra en la misma carpeta que el pdf. (variación\_radial\_isomap.mp4, variación\_radial\_heatmap.mp4).
 
 \vspace{0.5cm}
 
-  	\textbf{Variacion de la estimacion de la isoterma entre 5 y 6 radios de discretizacion}\\
+  	\textbf{Variación de la estimación de la isoterma entre 5 y 6 radios de discretización}\\
 	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/test2/test6_006_radios_inst_001_isomap.png}
 	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/test2/test6_007_radios_inst_001_isomap.png}
 	
-  	\textbf{Variacion de la temperatura entre 6 y 7 radios de discretizacion}\\
+  	\textbf{Variación de la temperatura entre 6 y 7 radios de discretización}\\
 	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/test2/test6_006_radios_inst_001_heatmap.png}
 	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/test2/test6_007_radios_inst_001_heatmap.png}
 
- 	\textbf{Variacion de la estimacion de la isoterma entre 99 y 100 radios de discretizacion}\\
+ 	\textbf{Variación de la estimación de la isoterma entre 99 y 100 radios de discretización}\\
 	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/test2/test6_099_radios_inst_001_isomap.png}
 	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/test2/test6_100_radios_inst_001_isomap.png}
 	
-	\textbf{Variacion de la temperatura entre 99 y 100 radios de discretizacion}\\
+	\textbf{Variación de la temperatura entre 99 y 100 radios de discretización}\\
 	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/test2/test6_099_radios_inst_001_heatmap.png}
 	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/test2/test6_100_radios_inst_001_heatmap.png}
 
 \vspace{0.5cm}
 
-Se observa es que a medida que se aumenta la cantidad de radios de la discretizacion, la variacion radial de la curva de la isoterma disminuye entre tests, es decir, se hace mas fina la estimacion, de forma tal que entre $i$ e $i+1$ radios la diferencia de la posicion de la isoterma es menor a medida que $i$ crece. Para ver mejor esto se graficaron, para cada test de $i$ cantidad de radios de la discretizacion, el maximo y el promedio radial de la isoterma.
+Se observa es que a medida que se aumenta la cantidad de radios de la discretización, la variación radial de la curva de la isoterma disminuye entre tests, es decir, se hace más fina la estimación, de forma tal que entre $i$ e $i+1$ radios la diferencia de la posición de la isoterma es menor a medida que $i$ crece. Para ver mejor esto se graficaron, para cada test de $i$ cantidad de radios de la discretización, el máximo y el promedio radial de la isoterma.
 
-	\textbf{Evolucion de la variacion radial de la isoterma con cantidad creciente de radios}\\
+	\textbf{Evolución de la variación radial de la isoterma con cantidad creciente de radios}\\
 	\includegraphics[scale=0.5]{experimentos1a_1b/evolucion_estimacion_seguridad_isoterma/100ang_5to100radios.png}\\
 
 	\item \begin{itemize}
-					\item \textbf{Temperaturas internas y externas:} constantes, 100 y 1500. Esto es para que tenga la misma solucion cada test del experimento.
+					\item \textbf{Temperaturas internas y externas:} constantes, 100 y 1500. Esto es para que tenga la misma solución cada test del experimento.
 					\item \textbf{Radio interno:} 200
 					\item \textbf{Radio externo:} 400
 					\item \textbf{Cantidad radios:} 50
-					\item \textbf{Cantidad angulos:} $[5\dots50]$
+					\item \textbf{Cantidad ángulos:} $[5\dots50]$
 					\item \textbf{Isoterma buscada:} 500
 				\end{itemize}
-	Se adjunta con el trabajo practico un video que expone la evolucion del sistema mientras se incrementa la cantidad de radios. Expondremos estaticamente algunos frames, pero es conveniente ver el video primero. Se encuentra en la misma carpeta que el pdf. (variacion\_angular\_isomap.mp4, variacion\_angular\_heatmap.mp4).
+	Se adjunta con el trabajo práctico un video que expone la evolución del sistema mientras se incrementa la cantidad de radios. Expondremos estáticamente algunos frames, pero es conveniente ver el video primero. Se encuentra en la misma carpeta que el pdf. (variación\_angular\_isomap.mp4, variación\_angular\_heatmap.mp4).
 
 	\vspace{0.5cm}
-	  	\textbf{Variacion de la estimacion de la isoterma entre 5 y 6 angulos de discretizacion}\\
+	  	\textbf{Variación de la estimación de la isoterma entre 5 y 6 ángulos de discretización}\\
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_angulos_radio_fijo_se_suaviza_isoterma/test10_050_radios_005_angulos_inst_001_isomap.png}
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_angulos_radio_fijo_se_suaviza_isoterma/test10_050_radios_006_angulos_inst_001_isomap.png}
 
-	  	\textbf{Variacion de la temperatura entre 5 y 6 angulos de discretizacion}\\
+	  	\textbf{Variación de la temperatura entre 5 y 6 ángulos de discretización}\\
 	  	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_angulos_radio_fijo_se_suaviza_isoterma/test10_050_radios_005_angulos_inst_001_heatmap.png}
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_angulos_radio_fijo_se_suaviza_isoterma/test10_050_radios_006_angulos_inst_001_heatmap.png}	  	
 
-	  	\textbf{Variacion de la estimacion de la isoterma entre 49 y 50 angulos de discretizacion}\\
+	  	\textbf{Variación de la estimación de la isoterma entre 49 y 50 ángulos de discretización}\\
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_angulos_radio_fijo_se_suaviza_isoterma/test10_050_radios_049_angulos_inst_001_isomap.png}
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_angulos_radio_fijo_se_suaviza_isoterma/test10_050_radios_050_angulos_inst_001_isomap.png}
 
-		\textbf{Variacion de la temperatura entre 49 y 50 angulos de discretizacion}\\
+		\textbf{Variación de la temperatura entre 49 y 50 ángulos de discretización}\\
 	  	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_angulos_radio_fijo_se_suaviza_isoterma/test10_050_radios_049_angulos_inst_001_heatmap.png}
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_angulos_radio_fijo_se_suaviza_isoterma/test10_050_radios_050_angulos_inst_001_heatmap.png}
 
 \vspace{0.5cm}
 
-Aqui el radio es el mismo, pero se gana en precision al tener mas angulos por no tener que linealizar la posicion de la isoterma angularmente. Nuevamente, la posicion entre dos tests consecutivos se estabiliza al aumentar la cantidad de angulos. Tambien se observa que al cambiar el $\Delta_\theta$ los angulos entre tests consecutivos no son los mismos.
+Aquí el radio es el mismo, pero se gana en precisión al tener más ángulos por no tener que linealizar la posición de la isoterma angularmente. Nuevamente, la posición entre dos tests consecutivos se estabiliza al aumentar la cantidad de ángulos. Tambien se observa que al cambiar el $\Delta_\theta$ los ángulos entre tests consecutivos no son los mismos.
 
 	\item \begin{itemize}
-						\item \textbf{Temperaturas internas y externas:} constantes, 100 y 1500. Esto es para que tenga la misma solucion cada test del experimento.
+						\item \textbf{Temperaturas internas y externas:} constantes, 100 y 1500. Esto es para que tenga la misma solución cada test del experimento.
 						\item \textbf{Radio interno:} 200
 						\item \textbf{Radio externo:} 400
 						\item \textbf{Cantidad radios:} $[15\dots60]$
-						\item \textbf{Cantidad angulos:} $[15\dots60]$
+						\item \textbf{Cantidad ángulos:} $[15\dots60]$
 						\item \textbf{Isoterma buscada:} 500
 					\end{itemize}
-	Se adjunta con el trabajo practico un video que expone la evolucion del sistema mientras se incrementa la cantidad de radios. Expondremos estaticamente algunos frames, pero es conveniente ver el video primero. Se encuentra en la misma carpeta que el pdf. (variacion\_doble\_isomap.mp4, variacion\_doble\_heatmap.mp4).
+	Se adjunta con el trabajo práctico un video que expone la evolución del sistema mientras se incrementa la cantidad de radios. Expondremos estáticamente algunos frames, pero es conveniente ver el video primero. Se encuentra en la misma carpeta que el pdf. (variación\_doble\_isomap.mp4, variación\_doble\_heatmap.mp4).
 
 	\vspace{0.5cm}
-	  	\textbf{Variacion de la estimacion de la isoterma entre 15 y 16 radios, angulos de discretizacion}\\
+	  	\textbf{Variación de la estimación de la isoterma entre 15 y 16 radios, ángulos de discretización}\\
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_radios_angulos_se_reduce_diferencia_radial/test11_testord_001_inst_001_isomap.png}
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_radios_angulos_se_reduce_diferencia_radial/test11_testord_002_inst_001_isomap.png}
 
-	  	\textbf{Variacion de la temperatura entre 59 y 60 radios, angulos de discretizacion}\\
+	  	\textbf{Variación de la temperatura entre 59 y 60 radios, ángulos de discretización}\\
 	  	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_radios_angulos_se_reduce_diferencia_radial/test11_testord_001_inst_001_heatmap.png}
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_radios_angulos_se_reduce_diferencia_radial/test11_testord_002_inst_001_heatmap.png}
 
-	  	\textbf{Variacion de la estimacion de la isoterma entre 15 y 16 radios, angulos de discretizacion}\\
+	  	\textbf{Variación de la estimación de la isoterma entre 15 y 16 radios, ángulos de discretización}\\
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_radios_angulos_se_reduce_diferencia_radial/test11_testord_045_inst_001_isomap.png}
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_radios_angulos_se_reduce_diferencia_radial/test11_testord_046_inst_001_isomap.png}
 
-		\textbf{Variacion de la temperatura entre 59 y 60 radios, angulos de discretizacion}\\
+		\textbf{Variación de la temperatura entre 59 y 60 radios, ángulos de discretización}\\
 	  	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_radios_angulos_se_reduce_diferencia_radial/test11_testord_045_inst_001_heatmap.png}
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_radios_angulos_se_reduce_diferencia_radial/test11_testord_046_inst_001_heatmap.png}
 
 \vspace{0.5cm}
 
-En este ultimo ejemplo ocurren ambos fenomenos al mismo tiempo, hay una variacion radial menor a medida que crecen los radios y la curva se suaviza al aumentar los angulos.
+En este último ejemplo ocurren ambos fenomenos al mismo tiempo, hay una variación radial menor a medida que crecen los radios y la curva se suaviza al aumentar los ángulos.
 
 \end{enumerate}
 
 \vspace{0.5cm}
 
-Efectivamente, podemos concluir que mientras mas fina sea la discretizacion, se obtendran resultados mas \texttt{estables y confiables} acerca de la estimacion. Uno de los motivos es porque habrá menos puntos para interpolar en la posicion de la isoterma y el otro porque se tiene mas informacion de la temperatura de la pared del horno.
+Efectivamente, podemos concluir que mientras más fina sea la discretización, se obtendrán resultados más \texttt{estables y confiables} acerca de la estimación. Uno de los motivos es porque habrá menos puntos para interpolar en la posición de la isoterma y el otro porque se tiene más informacion de la temperatura de la pared del horno.
 
-\subsubsection{Estimacion de estabilidad de la pared del horno}
-Para este experimento utilizaremos discretizaciones finas, ya vimos en los experimentos anteriores que esto provee mayor confiabilidad en las estimaciones, para discretizaciones mas gruesas las estimaciones de seguridad seran menos exactas.
+\subsubsection{Estimación de estabilidad de la pared del horno}
+Para este experimento utilizaremos discretizaciones finas, ya vimos en los experimentos anteriores que esto provee mayor confiabilidad en las estimaciones, para discretizaciones más gruesas las estimaciones de seguridad serán menos exactas.
 \vspace{0.5cm}
 
 \begin{itemize}
@@ -124,7 +124,7 @@ Para este experimento utilizaremos discretizaciones finas, ya vimos en los exper
 	\item \textbf{Radio interno:} 200
 	\item \textbf{Radio externo:} 400
 	\item \textbf{Cantidad radios:} 30
-	\item \textbf{Cantidad angulos:} 30
+	\item \textbf{Cantidad ángulos:} 30
 	\item \textbf{Isoterma buscada:} 500
 \end{itemize}
 
@@ -142,12 +142,12 @@ Para este experimento utilizaremos discretizaciones finas, ya vimos en los exper
 
 \vspace{0.5cm}
 
-La escala de color de los mapas de temperaturas se hace en base al minimo y maximo de la muestra, es por esto que la variacion de temperaturas externas no provee una variacion en los colores de los radios del borde. \\
-Asimismo, se ve que la posicion de la isoterma en los casos $200, 500$ se posiciona segun lo esperado dentro de la pared del horno. Mientras que en el caso $750$, al ser $750 > 500$, por convencion posicionamos la isoterma en $R_i - \epsilon$.
+La escala de color de los mapas de temperaturas se hace en base al mínimo y máximo de la muestra, es por esto que la variación de temperaturas externas no provee una variación en los colores de los radios del borde. \\
+Asimismo, se ve que la posición de la isoterma en los casos $200, 500$ se posiciona según lo esperado dentro de la pared del horno. Mientras que en el caso $750$, al ser $750 > 500$, por convención posicionamos la isoterma en $R_i - \epsilon$.
 
 \vspace{0.5cm}
 
-En la siguiente tabla se puede observar que las metricas de seguridad nos dan una pauta acerca de la posicion promedio y maxima de la isoterma dentro de la pared del horno. Si utilizamos $\gamma_0 = 0.75$ como limite de seguridad, podemos establecer conclusiones acerca de la seguridad: en el caso donde hay 200 grados en el exterior es seguro, mientras que 500 grados, no lo es.
+En la siguiente tabla se puede observar que las métricas de seguridad nos dan una pauta acerca de la posición promedio y maxima de la isoterma dentro de la pared del horno. Si utilizamos $\gamma_0 = 0.75$ como limite de seguridad, podemos establecer conclusiones acerca de la seguridad: en el caso donde hay 200 grados en el exterior es seguro, mientras que 500 grados, no lo es.
 
 \begin{center}
 	\begin{tabular}{| c | c | c | c |}
