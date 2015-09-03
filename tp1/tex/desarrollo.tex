@@ -1,84 +1,77 @@
-% TODO
+\subsection{Discretización}
+Para discretizar el problema limitaremos la cantidad de radios y la cantida de ángulos a evaluar, y una vez elegidas dichas cantidades los distribuiremos de manera uniforme por la corona circular. Así, los puntos de la discretización serán los puntos $P_{j,k}$ de radio $r_j$ y ángulo $\theta_k$ con $j = 0, \ldots, m$; $k = 0, \ldots, n$ que cumplan $$r_0 = r_i$$ $$r_m = r_e$$ $$\theta_0 = 0$$ $$\theta_n = 2\pi$$ $$r_{j+1}-r_{j} = \Delta r \text{ constante } \forall j = 0, \ldots, m-1$$ $$\theta_{k+1}-\theta{k} = \Delta \theta \text{ constante } \forall \theta = 0, \ldots, n-1$$
 
-% Deben  explicarse  los  metodos  numericos  que  utilizaron  y  su  aplicacion  al  problema
-% concreto  involucrado  en  el  trabajo  practico.   Se  deben  mencionar  los  pasos  que  si-
-% guieron para implementar los algoritmos, las dicultades que fueron encontrando y la
-% descripcion de como las fueron resolviendo.  Explicar tambien como fueron planteadas
-% y realizadas las mediciones experimentales.  Los ensayos fallidos, hipotesis y conjeturas
-% equivocadas,  experimentos  y  metodos  malogrados  deben  gurar  en  esta  seccion,  con
-% una breve explicacion de los motivos de estas fallas (en caso de ser conocidas).
-\subsection{Detalle de los principales algoritmos a utilizar}
+Llamaremos $t_{j,k}$ a la temperatura del punto $P_{j,k}$ una vez alcanzado el equilibrio térmico.
 
-\subsection{Armado del sistema de ecuaciones}
-De la discretización de la ecuación del calor provista por el informe resulta una nueva ecuación que nos va a servir para armar nuestro sistema discreto.
+De la discretización elegida y de la ecuación \ref{calor-continuo} resulta una nueva ecuación que nos permitirá armar nuestro sistema de ecuaciones\footnote{Los detalles sobre la discretización de la ecuación pueden encontrarse en el Apéndice \ref{enunciado}}.
 
 \begin{equation}\label{calor}
 \frac{t_{j-1,k}-2t_{jk}+t_{j+1,k}}{(\Delta r)^2}+\frac{1}{r_j}\frac{t_{j,k}-t_{j-1,k}}{\Delta r}+\frac{1}{{r_j}^2}\frac{t_{j,k-1}-2t_{jk}+t_{j,k+1}}{(\Delta \theta)^2} = 0 
 \end{equation}
 
-Esta ecuación vale para cada punto $(r_j, \theta_k)$ del modelo salvo los límites, sobre los cuales hablaremos en breve.
+Esta ecuación vale para cada punto $P_{j, k}$ del modelo salvo los límites, sobre los cuales hablaremos en breve.
 
-Para poder armar el sistema $Ax=b$ equivalente, es necesario:
+\subsection{Armado del sistema de ecuaciones}
+Para poder armar el sistema $Ax=b$ es necesario:
 \begin{itemize}
  \item
     Extraer los factores que multiplican a cada una de las cinco incógnitas: $t_{j-1,k}$; $t_{j,k}$; $t_{j+1,k}$; $t_{j,k-1}$ y $t_{j,k+1}$.
 
     Estos se obtienen de la ecuación \ref{calor}.
     \begin{align*}
-        t_{j-1, k}&*(\frac{1}{(\Delta r)^2} - \frac{1}{r_j \Delta r}) \\
-        t_{j, k}  &*(\frac{-2}{(\Delta r)^2} + \frac{1}{r_j \Delta r} - \frac{2}{{r_j}^2 (\Delta \theta)^2}) \\
-        t_{j+1, k}&*(\frac{1}{(\Delta r)^2}) \\
-        t_{j, k-1}&*(\frac{1}{{r_j}^2(\Delta \theta)^2}) \\
-        t_{j, k+1}&*(\frac{1}{{r_j}^2(\Delta \theta)^2})
+        t_{j-1, k}&*\left(\frac{1}{(\Delta r)^2} - \frac{1}{r_j \Delta r}\right) \\
+        t_{j, k}  &*\left(\frac{-2}{(\Delta r)^2} + \frac{1}{r_j \Delta r} - \frac{2}{{r_j}^2 (\Delta \theta)^2}\right) \\
+        t_{j+1, k}&*\left(\frac{1}{(\Delta r)^2}\right) \\
+        t_{j, k-1}&*\left(\frac{1}{{r_j}^2(\Delta \theta)^2}\right) \\
+        t_{j, k+1}&*\left(\frac{1}{{r_j}^2(\Delta \theta)^2}\right)
     \end{align*}
     Por cuestiones de espacio, en adelante llamaremos $M_{j,k}$ al factor que multiplica a la incógnita $t_{j,k}$, $M_{j-1,k}$ al que multiplica a $t_{j-1,k}$ y así sucesivamente. Y resumiremos $Mt_{j,k} = M_{j,k}*t_{j,k}$, $Mt_{j-1,k}=M_{j-1,k}*t_{j-1,k}$, etc.
  \item
     Analizar los ``casos borde'': aquellos puntos donde la ecuación \ref{calor} no vale.
     
-    Para evitar confusiones de variables, tomaremos $\theta_0 = 0$ como el menor valor posible de $\theta$ y $\theta_{n-1}$ como el mayor, pues vale $(r_j, \theta_n) = (r_j, \theta_0)$ para cualquier $j$. 
+    Para evitar confusiones, tomaremos $\theta_0 = 0$ como el menor valor posible de $\theta$ y $\theta_{n-1}$ como el mayor, pues vale $P_{j, n} = P_{j, 0}$ para cualquier $j$. 
     
     Los casos interesantes para valores de $j, k$ entonces son:
     \begin{enumerate}
-     \item La pared interior del horno ($j = 0$; $k = 0, ..., n-1$). La ecuación en esos casos es $t_{0, k} = T_i(\theta_k)$.
-     \item La pared exterior del horno ($j = m$; $k = 0, ..., n-1$). La ecuación en esos casos es $t_{m, k} = T_e(\theta_k)$.
-     \item El valor mínimo de $\theta$ ($j = 0, ..., m$; $k = 0$). Se debe reemplazar $t_{j, k-1}$ por $t_{j, n-1}$ en todas las ecuaciones correspondientes.
-     \item El valor máximo de $\theta$ ($j = 0, ..., m$; $k = n-1$). Se debe reemplazar $t_{j, k+1}$ por $t_{j, 0}$ en todas las ecuaciones correspondientes.
+     \item La pared interior del horno ($j = 0$; $k = 0, \ldots, n-1$). La ecuación en esos casos es $$t_{0, k} = T_i(\theta_k)$$
+     \item La pared exterior del horno ($j = m$; $k = 0, \ldots, n-1$). La ecuación en esos casos es $$t_{m, k} = T_e(\theta_k)$$
+     \item El valor mínimo de $\theta$ ($j = 0, \ldots, m$; $k = 0$). Se debe reemplazar $t_{j, k-1}$ por $t_{j, n-1}$ en todas las ecuaciones correspondientes.
+     \item El valor máximo de $\theta$ ($j = 0, \ldots, m$; $k = n-1$). Se debe reemplazar $t_{j, k+1}$ por $t_{j, 0}$ en todas las ecuaciones correspondientes.
     \end{enumerate}
-    Estos últimos reemplazos se pueden resumir en $$(j, k) \Rightarrow (j, k \text{ mod } n)$$
+    Estos últimos dos reemplazos se pueden resumir en $$(j, k) \Rightarrow (j, k \text{ mod } n)$$
  \item
     Combinar los puntos anteriores para plantear el sistema de ecuaciones a resolver:
     \begin{align*}\label{sistema}
-    &t_{0, k} = T_i(\theta_k)                                           &\forall k = 0, ..., n-1  \\
-    &t_{m, k} = T_e(\theta_k)                                           &\forall k = 0, ..., n-1  \\
-    &Mt_{j-1,k} + Mt_{j,k} + Mt_{j+1,k} + Mt_{j,k-1} + Mt_{j,k+1} = 0  &\forall j=1, ..., m-1; k = 1, ... , n-2 \\
-    &Mt_{j-1,0} + Mt_{j,0} + Mt_{j+1,0} + Mt_{j,n-1} + Mt_{j,1} = 0    &\forall j=1, ..., m-1 \\
-    &Mt_{j-1,n-1} + Mt_{j,n-1} + Mt_{j+1,n-1} + Mt_{j,n-2} + Mt_{j,0} = 0    &\forall j=1, ..., m-1
+    &t_{0, k} = T_i(\theta_k)                                           &\forall k = 0, \ldots, n-1  \\
+    &t_{m, k} = T_e(\theta_k)                                           &\forall k = 0, \ldots, n-1  \\
+    &Mt_{j-1,k} + Mt_{j,k} + Mt_{j+1,k} + Mt_{j,k-1} + Mt_{j,k+1} = 0  &\forall j=1, \ldots, m-1; k = 1, \ldots , n-2 \\
+    &Mt_{j-1,0} + Mt_{j,0} + Mt_{j+1,0} + Mt_{j,n-1} + Mt_{j,1} = 0    &\forall j=1, \ldots, m-1 \\
+    &Mt_{j-1,n-1} + Mt_{j,n-1} + Mt_{j+1,n-1} + Mt_{j,n-2} + Mt_{j,0} = 0    &\forall j=1, \ldots, m-1
     \end{align*}
 
     Del mismo podemos obtener la matriz $A$ (que tendrá 5 valores no nulos por fila a lo sumo) y el vector $b$ (que será nulo en todas sus componentes salvo aquellas correspondientes a $j=0$ y $j=m$).
   \item
-    Pensar un orden para las incógnitas que permita asegurar que la matriz resultante sea $banda$. El mismo es:
+    Pensar un orden para las incógnitas que permita asegurar que la matriz resultante sea $banda$. La importancia de esta propiedad se tratará en breve. El mismo es:
     
-    $$ (0,0); (0,1); ... ; (0,n-1); (1,0); (1,1); ... ; (j,n-1); (j+1,0); (j,1); ... ; (m, n-1)$$ % TODO: estaría bueno hacer una imagen representativa, que muestre un toque la espiral rara esta. No sé usar mucho ninguna herramienta como para hacerlo :(.
+    $$ t_{0,0}; t_{0,1}; \ldots ; t_{0,n-1}; t_{1,0}; t_{1,1}; \ldots ; t_{j,n-1}; t_{j+1,0}; t_{j+1,1}; \ldots ; t_{m, n-2} ; t_{m, n-1}$$ % TODO: estaría bueno hacer una imagen representativa, que muestre un toque la espiral rara esta. No sé usar mucho ninguna herramienta como para hacerlo :(.
     
-    tanto para las filas como para las columnas. Este orden garantiza que la distancia máxima de un punto hasta sus vecinos en la matriz es de $n$ posiciones (para los casos $j+1, k$ y $j-1, k$) y por lo tanto el ``ancho'' de la banda es de $2n$.
+    tanto para las filas como para las columnas. Este orden garantiza que la distancia máxima de un punto $P_{j,k}$ hasta sus vecinos en la matriz es de $n$ posiciones (para los casos $P_{j+1, k}$ y $P_{j-1, k}$) y por lo tanto el ``ancho'' de la banda es de $2n$ (salvo para las filas que coinciden con la identidad, cuyo ancho es 1).
     
-    Notar que las filas que coinciden con la identidad no afectan esta propiedad, dado que son ``banda'' de ancho $1$.
 \end{itemize}
 
 Una vez realizados estos pasos estamos en condiciones de plantear el sistema de ecuaciones $Ax=b$:
 
-Lo primero que debemos notar es que como hay $n*(m+1)$ puntos diferentes tendremos $n*(m+1)$ incógnitas diferentes. Luego, $A \in \mathbb{R}^{n(m+1)*n(m+1)}$: cada columna y cada fila de $A$ corresponden a un punto $P_{j,k}$ del sistema. Asimismo, $x \in \mathbb{R}^{n(m+1)}$ y $b \in \mathbb{R}^{n(m+1)}$. 
+Lo primero que debemos notar es que como hay $n*(m+1)$ puntos diferentes tendremos $n*(m+1)$ incógnitas diferentes. Luego, $A \in \mathbb{R}^{n(m+1)\times n(m+1)}$: cada columna y cada fila de $A$ corresponden a un punto $P_{j,k}$ del sistema. Asimismo, $x \in \mathbb{R}^{n(m+1)}$ y $b \in \mathbb{R}^{n(m+1)}$. 
 
 Lo segundo que debemos notar es que, por coincidir el orden elegido para filas y para columnas, el índice de la fila correspondiente al punto $P_{j,k}$ coincide con el de la columna correspondiente a ese punto. Llamaremos a este índice $i(j,k)$. Notar que podemos computar $i$ fácilmente como $i(j,k)=j*n+k$ (suponiendo que indexamos por 0 tanto filas como columnas).
 
-Por el orden elegido, las primeras $n$ filas corresponden a los puntos $P_{0,k}$ con $k=0,...,n-1$. Mirando el sistema de ecuaciones, las primeras $n$ filas de $A$ coinciden con la identidad (1 en la diagonal y 0 en el resto) y las primeras $n$ filas de $b$ coinciden con $T_i(\theta_k)$.
+Por el orden elegido, las primeras $n$ filas corresponden a los puntos $P_{0,k}$ con $k=0,\ldots,n-1$. Mirando el sistema de ecuaciones, las primeras $n$ filas de $A$ coinciden con la identidad (1 en la diagonal y 0 en el resto) y las primeras $n$ filas de $b$ coinciden con $T_i(\theta_k)$.
 
-Lo mismo vale para las últimas $n$ filas: corresponden a los puntos $P_{m,k}$ con $k=0,...,n-1$, las filas correspondientes de $A$ coinciden con la identidad y las componentes de $b$ con $T_e(\theta_k)$.
+Lo mismo vale para las últimas $n$ filas: corresponden a los puntos $P_{m,k}$ con $k=0,\ldots,n-1$, las filas correspondientes de $A$ coinciden con la identidad y las componentes de $b$ con $T_e(\theta_k)$.
 
 Llegado este punto podemos definir completamente $b$: todas sus demás componentes son nulas (por ser $0$ la solución al resto de las ecuaciones del sistema), por lo que resulta:
 
-$$b = (T_i(0), T_i(1), ..., T_i(n-1), 0, ..., 0, T_e(0), T_e(1), ..., T_e(n-1)) $$
+$$b = (T_i(0), T_i(1), \ldots, T_i(n-1), 0, \ldots, 0, T_e(0), T_e(1), \ldots, T_e(n-1)) $$
 
 Para $j \not = 0, j \not = m$, las filas $i(j,k)$ de $A$ tendrán cinco componentes no-nulas (que corresponden a los vecinos de $P_{j,k}$ en el modelo). Fijados $j$ y $k$ ($0\not=j\not=m, 0\not=k\not=n-1$), estas componentes serán $i(j-1,k); i(j,k); i(j+1,k); i(j,k-1)$ e $i(j,k+1)$ y coincidirán con lo que anteriormente llamamos $M(j-1,k); M(j,k); M(j+1,k); M(j,k-1)$ y $M(j,k+1)$ respectivamente. 
 
@@ -95,7 +88,7 @@ La matriz $A$ es banda y diagonal dominante (no estricta) por filas.
 
 El hecho de que es banda fue fundamentado al momento de construirla.
 
-Resta ver que es diagonal dominante (no estricta) por filas, es decir, que $$|a_{i, i}| \geq \sum\limits_{j \neq i}^{n*(m+1)} |a_{i, j}| \hspace{10pt} \forall i = 1, ..., n*(m+1)$$
+Resta ver que es diagonal dominante (no estricta) por filas, es decir, que $$|a_{i, i}| \geq \sum\limits_{j \neq i}^{n*(m+1)} |a_{i, j}| \hspace{10pt} \forall i = 1, \ldots, n*(m+1)$$
 
 Las primeras y últimas $n$ filas de $A$ coinciden con la identidad, por lo que esto vale trivialmente. Dada cualquier otra fila $i(j, k)$ con $j \neq 0, j \neq m$ debemos recordar que hay solo 5 valores no nulos, por lo que en realidad queremos probar $$|M_{j, k}| \geq |M_{j-1, k}| + |M_{j+1, k}| + |M_{j, k-1}| + |M_{j, k+1}|$$
 
@@ -125,31 +118,36 @@ $$\frac{2}{(\Delta r)^2} - \frac{1}{r_j \Delta r} + \frac{2}{{r_j}^2 (\Delta \th
 
 $$\frac{2}{(\Delta r)^2} - \frac{1}{r_j \Delta r} + \frac{2}{{r_j}^2 (\Delta \theta)^2} \geq \frac{2}{(\Delta r)^2} - \frac{1}{r_j \Delta r} + \frac{2}{{r_j}^2(\Delta \theta)^2} $$
 
-Con lo cual la desigualdad es trivialmente cierta (y de hecho resulta ser una igualdad, lo cual explica por qué no es ``estrictamente'' diagonal dominante).
+Con lo cual la desigualdad es trivialmente cierta (y de hecho resulta ser una igualdad, lo cual fundamenta por qué no es ``estrictamente'' diagonal dominante).
 \end{proof}
 \end{proposition}
 \subsubsection{Resolución sin pivoteo}
 Nos interesa demostrar que es posible aplicar Eliminación Gaussiana sin pivoteo en la matriz $A$.
 
-
-Para su demostración usaremos la propiedad vista en clase teórica de que aplicar un paso de la Eliminación Gaussiana sobre una matriz estrictamente diagonal dominante preserva esa propiedad en la matriz resultante, y el siguiente lema
-\begin{lemma}\label{izquierda}
- Toda fila $i(j,k)$ de la matriz $A$ tiene un elemento no nulo a la izquierda de la diagonal, salvo aquellas que coinciden con la identidad ($j=0$ y $j=m$).
+Para su demostración usaremos los siguientes lemas:
+\begin{lemma}\label{submatriz}
+ Aplicar un paso de la Eliminación Gaussiana sobre una matriz diagonal dominante preserva esa propiedad en la submatriz que resta triangular.
 \end{lemma}
-\begin{proof}
-Surge directamente de analizar el orden elegido para los puntos: como $j \neq 0$ todo punto $P_{j, k}$ tiene un vecino $P_{j-1,k}$ que necesariamente está antes en el orden elegido.
+\begin{proof}[Idea de demostración]
+ Igual que la demostración vista en clase teórica de que un paso de la Eliminación Gaussiana sobre una matriz \emph{estrictamente} diagonal dominante preserva esa propiedad en la submatriz que resta triangular, pero relajando la condición de \emph{estrictamente} para pedir que simplemente preserve la propiedad de diagonal dominante (cambiar los $<$ por $\leq$).
 \end{proof}
 
-Podemos probar entonces que si bien nuestra matriz no es \emph{estrictamente} diagonal dominante por filas sí lo serán las filas con las que trabaje la Eliminación Gaussiana.
+\begin{lemma}\label{ancho}
+ A cada paso $k$ de la Eliminación Gaussiana la fila $F_k$ con la que trabaje tendrá un elemento no nulo en la columna $k+n$, o bien será una fila de la identidad.
+\end{lemma}
+\begin{proof}
+ Empecemos por ver que el ancho de la banda de la matriz es estricto para las filas que no coinciden con la identidad: toda fila $F_k$ tiene siempre como último elemento no nulo el de la columna $k+n$ o bien es una fila de la identidad. Esto surge directamente de observar el orden elegido para las incógnitas.
+
+ Ya vimos que en la matriz original $A$ toda fila $F_k$ o bien coincide con la identidad o bien tenía como último elemento no nulo el de la columna $k+n$. Veamos ahora que esto no se puede haber alterado en ningún paso del algoritmo: de alterarse, quiere decir que a la fila $F_k$ se le restó una fila $F_x$ en algún paso $x$, $x<k$ que tenía un elemento no nulo en la columna $k+n$. Pero por ser $x<k$, el último elemento no nulo de la fila $F_x$ debe ser $x+n < k+x$. Absurdo, que provino de suponer que se podría alterar la propiedad en algún paso del algoritmo.
+\end{proof}
 
 \begin{proposition}\label{pivoteo}
- A cada paso $k$ de la Eliminación Gaussiana (empezando por 0), la fila $k$ con la que trabaje será estrictamente diagonal dominante (y por lo tanto no tendrá un 0 en el elemento de la diagonal y podrá operar normalmente).
+ A cada paso $k$ de la Eliminación Gaussiana la fila $k$ con la que trabaje tendrá un componente no nulo en la columna $k$, y por lo tanto el algoritmo podrá continuar normalmente sin realizar pivoteo.
 \end{proposition}
 \begin{proof}
- Inducción global en $k$.
+ Queremos ver que al comenzar el paso $k$ de la Eliminación Gaussiana $a_{kk}^{(k-1)} \neq 0$.
+
+ Por el lema \ref{submatriz}, al comenzar el paso $k$ de la Eliminación Gaussiana la submatriz que aún resta triangular (llamémosla $B$) es diagonal dominante. $B$ incluye parte de la fila $F_k$, en particular a partir de la columna $k$ en adelante, por lo que $a_{kk}$ es parte de su diagonal.
  
- El caso $k < n$ es trivial, dado que las filas coinciden con la identidad (y por lo tanto son estrictamente diagonal dominantes).
- 
- Para el caso $k = n$, vale el lema \ref{izquierda} que nos dice que la fila $k$ tenía un elemento no nulo a la izquierda de la diagonal en la matriz $A$. Pero para el paso $k$, las $k$ primeras columnas fueron anuladas, es decir $A_{k,j}^{(k)}=0$ $\forall j < k$. Y como por encima de $A_{k,k}$ solo había 0, la fila ahora es diagonal dominante estricta.
- 
+ A su vez, por el lema \ref{ancho}, al comenzar el paso $k$ de la Eliminación Gaussiana la fila $F_k$ tiene un elemento no nulo en su columna $k+n$. Es decir, el elemento $a_{k(k+n)}$ es no nulo, y este elemento pertenece a $B$. Por lo que, por definición de diagonal dominante $|a_{kk}| \geq |a_{k(k+1)}| \neq 0 \Rightarrow a_{kk} \neq 0$ como queríamos demostrar. 
 \end{proof}

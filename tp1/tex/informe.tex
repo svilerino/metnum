@@ -24,6 +24,8 @@
 \usepackage{placeins}
 \usepackage{booktabs}
 \usepackage{color}
+
+% \usepackage[lined, ruled, linesnumbered]{algorithm2e}
 % \usepackage[margin=1in]{geometry}
 
 \newtheorem{theorem}{Teorema}[section]
@@ -33,7 +35,6 @@
 \newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
 \newtheorem{proposition}{Proposici\'on}
 \newtheorem{lemma}{Lema}
-\renewcommand{\qedsymbol}{}
 \lstset{language=C++, showstringspaces=false, tabsize=2, breaklines=true, title=\lstname}
 
 \makeindex
@@ -46,7 +47,7 @@
 
 \raggedright
 \vspace{3cm}
-{\Huge \bfseries Trabajo Práctico 1 \\ Cálculo de isotermas en sectores circulares}
+{\Huge \bfseries Trabajo Práctico 1 \\ Con 15 $\theta$s discretizo alto horno\ldots}
 \rule{\textwidth}{0.02in}
 \large Jueves 3 de septiembre de 2015 \hfill Métodos Numéricos
 \vspace{1.5cm}
@@ -63,7 +64,7 @@
 \end{tabular}
 
 \medskip
-En este trabajo aplicamos dos métodos de resolución de sistemas de ecuaciones lineales (Factorización LU y Eliminación Gaussiana) para el cálculo de isotermas de sectores circulares, dadas las temperaturas de las circunferencias interior y exterior.
+En este trabajo aplicamos dos métodos de resolución de sistemas de ecuaciones lineales (Factorización LU y Eliminación Gaussiana) para el cálculo de isotermas de una corona circular, dadas las temperaturas de las circunferencias interior y exterior.
 
 Pudimos verificar experimentalmente que el método de factorización LU resulta más eficiente si se tienen varias posibles soluciones para una misma matriz, pero que para una única instancia es conveniente usar la eliminación gaussiana.
 
@@ -124,9 +125,7 @@ http://www.fcen.uba.ar
 
 \section{Apéndice}
 \subsection{Apéndice A: Enunciado}\label{enunciado}
-% \input{tp1.tex}
-\subsection{Apéndice B: Elección del orden de las incógintas para obtener una matriz banda}\label{banda}
-% \input{banda.tex}
+  \input{tp1.tex}
 
-\section{Referencias}
+% \section{Referencias}
 \end{document}
