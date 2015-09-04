@@ -15,6 +15,19 @@ Los casos de prueba son generados mediante un script de python llamado testgen.p
 \end{enumerate}
 
 \subsubsection{Métricas de performance}
+
+Los experimentos de performance se dividen en tres secciones:
+
+\begin{enumerate}
+
+\item \textbf {Performance de los m\'etodos en funci\'on de la discretizaci\'on para una instancia:}  Se generaron diversas discretizaciones del problema, fijando la cantidad de \'angulos en 30, y variando la cantidad de radios de 5 a 30, con una instancia para cada discretizaci\'on. El objetivo es analizar la evoluci\'on del tiempo de c\'omputo a mayor granulaidad de la discretizaci\'on, y comprobar emp\'iricamente que la complejidad de ambos algoritmos es del orden c\'ubico.
+\item \textbf {Performance de los m\'etodos en funci\'on de la cantidad de instancias:} Para una misma discretizaci\'on elegida de 30 \'angulos y 30 radios, se generaron 3 archivos con distinto n\'umero de instancias, el primero de una instancia, el segundo de 5 instancias, y el tercero de 10. En cada instancia cambian las condiciones de borde. Se medir\'a el tiempo total de ejecuci\'on de cada uno de los dos m\'etodos para cada archivo, de forma de poder comparar la perfomance de ambos m\'etodos bajo una misma discretizaci\'on, variando la cantidad de instancias a resolver.
+\item \textbf {Performance de los m\'etodos en funci\'on de la discretizaci\'on para varias instancias:}
+Se compara la perfomance de ambos m\'etodos en un caso combinado de los anteriores. Dado un n\'umero fijo de 50 instancias, se medir\'a el tiempo total de c\'omputo en tres discretizaciones: 20 \'angulos y 20 radios, 40 \'angulos y radios, y 60 \'angulos y radios. 
+
+\end{enumerate}
+
+
 \textcolor{red}{Demo teorica o empirica de que como $dim = n*(m+1)$ entonces los algoritmos son $\mathcal{O}(n^k.m^k)$ con k variando según el grado polinomial de la complejidad del algoritmo.}
 \textcolor{red}{explica un poco que medis solo el procesamiento de los algoritmos sin el tiempo de IO, y explica con ítemizes los casos de test que estas considerando(como hice yo aca abajo), yo no hablaria de graficos aca todavia, eso mandalo en resultados, cuando pongas el grafico, explicalo y manda conclushon ahi.}
 

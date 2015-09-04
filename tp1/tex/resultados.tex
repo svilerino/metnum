@@ -5,8 +5,6 @@
 \subsection{Performance}
 \subsubsection{Gauss vs LU para una sola instancia variando discretizaciones}
 
-Se generaron diversas discretizaciones, fijando la cantidad de \'angulos en 30, y variando la cantidad de radios de 5 a 30, con una instancia para cada discretizaci\'on. El objetivo es analizar la evoluci\'on del tiempo de c\'omputo a mayor granulaidad de la discretizaci\'on, y comprobar emp\'iricamente que la complejidad de ambos algoritmos es del orden c\'ubico.
-
   	\textbf{Perfomance de factorizai\'on LU para distinta granularidad de radios}\\
 
 \begin{center}
@@ -51,7 +49,6 @@ A continuaci\'on, usaremos una heur\'istica para poder determinar mejor el orden
 
 \subsubsection{Gauss vs LU para varias instancias de una misma discretizacion}
 
-Para una misma discretizaci\'on elegida de 30 \'angulos y 30 radios, se generaron 3 archivos con distinto n\'umero de instancias, el primero de una instancia, el segundo de 5 instancias, y el tercero de 10. En cada instancia cambian las condiciones de borde. Se medir\'a el tiempo total de ejecuci\'on de cada uno de los dos m\'etodos para cada archivo, de forma de poder comparar la perfomance de ambos m\'etodos bajo una misma discretizaci\'on, variando la cantidad de instancias a resolver.
 
 \vspace{0.5cm}
 
@@ -76,9 +73,7 @@ Con aumentar en nada m\'as que 4 el n\'umero de instancias, ya se nota una ampli
 
 Al aumentar el n\'umero de instancias se sigue notando la misma tendencia, y el ratio de mejora de LU sobre Gauss se hace m\'as pequeño a medida que crece el n\'umero de instancias. \textbf{Ratio LU/Gauss: 0.2264}
 
-\subsubsection{Gauss vs LU para 50 instancias variando discretizaciones}
-
-Se compara la perfomance de ambos m\'etodos en el caso opuesto al anterior. Dado un n\'umero fijo de 50 instancias, se medir\'a el tiempo total de c\'omputo en tres discretizaciones: 20 \'angulos y 20 radios, 40 \'angulos y radios, y 60 \'angulos y radios. 
+\subsubsection{Gauss vs LU para 50 instancias variando discretizaciones para varias instancias}
 
   	\textbf{Comparaci\'on de Perfomance para 20 \'angulos y radios }\\
 \begin{center}
