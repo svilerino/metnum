@@ -4,6 +4,51 @@
 % cada resultado.  No se incluiran aqu corridas de maquina.
 \subsection{Performance}
 \subsubsection{Gauss vs LU para una sola instancia variando discretizaciones}
+
+Se generaron diversas discretizaciones, fijando la cantidad de \'angulos en 30, y variando la cantidad de radios de 5 a 30, con una instancia para cada discretizaci\'on. El objetivo es analizar la evoluci\'on del tiempo de c\'omputo a mayor granulaidad de la discretizaci\'on, y comprobar emp\'iricamente que la complejidad de ambos algoritmos es del orden c\'ubico.
+
+  	\textbf{Perfomance de factorizai\'on LU para distinta granularidad de radios}\\
+
+\begin{center}
+\includegraphics[scale=0.65]{experimentos2a_2b/gaussMed.png}
+\end{center}
+
+  	\textbf{Perfomance de Gauss para distinta granularidad de radios}\\
+
+\begin{center}
+\includegraphics[scale=0.65]{experimentos2a_2b/Lumed.png}
+\end{center}
+
+A continuaci\'on, usaremos una heur\'istica para poder determinar mejor el orden c\'ubico de la curva resultado. Esta es, sea $x$ el valor del tiempo de c\'omputo, dividir $x/f(x)$, siendo $f(x)$ polinomio de orden $2$ y $3$. De ser de orden c\'ubica la curva, esperar\'iamos que para el polinomio de orden 2 el resultado se asemeje a una funci\'on lineal, y para el de orden 3 el resultado se asemeje a una constante.
+
+  	\textbf{Perfomance de factorizai\'on LU sobre cuadrado}\\
+
+\begin{center}
+\includegraphics[scale=0.65]{experimentos2a_2b/Lucuadrado.png}
+\end{center}
+
+  	\textbf{Perfomance de Gauss sobre cuadrado}\\
+
+\begin{center}
+\includegraphics[scale=0.65]{experimentos2a_2b/GaussCuadrado.png}
+\end{center}
+
+ \textbf{Perfomance de factorizai\'on LU sobre cubo}\\
+
+
+\begin{center}
+\includegraphics[scale=0.65]{experimentos2a_2b/LuCubo.png}
+\end{center}
+
+ \textbf{Perfomance de Gauss sobre cubo}\\
+
+
+\begin{center}
+\includegraphics[scale=0.65]{experimentos2a_2b/GaussCubo.png}
+\end{center}
+
+
+
 \subsubsection{Gauss vs LU para varias instancias de una misma discretizacion}
 
 Para una misma discretizaci\'on elegida de 30 \'angulos y 30 radios, se generaron 3 archivos con distinto n\'umero de instancias, el primero de una instancia, el segundo de 5 instancias, y el tercero de 10. En cada instancia cambian las condiciones de borde. Se medir\'a el tiempo total de ejecuci\'on de cada uno de los dos m\'etodos para cada archivo, de forma de poder comparar la perfomance de ambos m\'etodos bajo una misma discretizaci\'on, variando la cantidad de instancias a resolver.
