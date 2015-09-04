@@ -4,17 +4,9 @@
 % cada resultado.  No se incluiran aqu corridas de maquina.
 \subsection{Performance}
 \subsubsection{Gauss vs LU para una sola instancia variando discretizaciones}
-\subsubsection{Gauss vs LU para muchas instancias variando discretizaciones}
+\subsubsection{Gauss vs LU para varias instancias de una misma discretizacion}
 
 Para una misma discretizaci\'on elegida de 30 \'angulos y 30 radios, se generaron 3 archivos con distinto n\'umero de instancias, el primero de una instancia, el segundo de 5 instancias, y el tercero de 10. En cada instancia cambian las condiciones de borde. Se medir\'a el tiempo total de ejecuci\'on de cada uno de los dos m\'etodos para cada archivo, de forma de poder comparar la perfomance de ambos m\'etodos bajo una misma discretizaci\'on, variando la cantidad de instancias a resolver.
-
-El generador de tests fue ejecutado con los siguientes par\'ametros:
-
-\begin{enumerate}
-\item \textbf{Archivo  1:} $ python \: testgen.py \: 2 \: 2b  \: 200 \: 400 \: 30 \: 30 \: 500 \: 1$
-\item \textbf{Archivo  2:} $ python \: testgen.py \: 2 \: 2b1 \: 200 \: 400 \: 30 \: 30 \: 500 \:  5$
-\item \textbf{Archivo  3:} $ python \: testgen.py \: 2 \: 2b2 \: 200 \: 400 \: 30 \: 30 \: 500 \:  10$
-\end{enumerate}
 
 \vspace{0.5cm}
 
@@ -38,6 +30,33 @@ Con aumentar en nada m\'as que 4 el n\'umero de instancias, ya se nota una ampli
 \end{center}
 
 Al aumentar el n\'umero de instancias se sigue notando la misma tendencia, y el ratio de mejora de LU sobre Gauss se hace m\'as pequeño a medida que crece el n\'umero de instancias. \textbf{Ratio LU/Gauss: 0.2264}
+
+\subsubsection{Gauss vs LU para 50 instancias variando discretizaciones}
+
+Se compara la perfomance de ambos m\'etodos en el caso opuesto al anterior. Dado un n\'umero fijo de 50 instancias, se medir\'a el tiempo total de c\'omputo en tres discretizaciones: 20 \'angulos y 20 radios, 40 \'angulos y radios, y 60 \'angulos y radios. 
+
+  	\textbf{Comparaci\'on de Perfomance para 20 \'angulos y radios }\\
+\begin{center}
+\includegraphics[scale=0.7]{experimentos2a_2b/2b2020.png}
+\end{center}
+
+ \textbf{Ratio LU/Gauss: 0.2059}
+
+  	\textbf{Comparaci\'on de Perfomance para 40 \'angulos y radios }\\
+\begin{center}
+\includegraphics[scale=0.7]{experimentos2a_2b/2b4040.png}
+\end{center}
+
+ \textbf{Ratio LU/Gauss: 0.090}
+
+  	\textbf{Comparaci\'on de Perfomance para 60 \'angulos y radios }\\
+\begin{center}
+\includegraphics[scale=0.7]{experimentos2a_2b/2b6060.png}
+\end{center}
+
+ \textbf{Ratio LU/Gauss: 0.066}
+
+Podemos notar como, a medida que mejora la discretizaci\'on, tambi\'en mejora la diferencia de perfomance de la factorizaci\'on LU por sobre Gauss, dando muestra de la diferencia de un orden polinomial de Gauss sobre LU (para la segunda instancia en adelante)
 
 \subsubsection{Evolución estimación de la isoterma y temperatura}
 Se presentarán los resultados de los experimentos en el mismo orden en que fueron planteados en la sección de desarrollo. Se realizará el análisis de los mismos en este mismo apartado.
