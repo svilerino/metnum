@@ -47,6 +47,26 @@ A continuaci\'on, usaremos una heur\'istica para poder determinar mejor el orden
 
 A pesar de ser una heur\'istica, podemos corroborar que la curva sobre cubo se asemeja mucho a una constante, por lo que podemos decir que probamos emp\'iricamente que los algoritmos son del orden c\'ubico.
 
+\textbf{Consideraci\'on Adicional:} 
+
+Durante la implementaci\'on de los algoritmos, se agreg\'o la siguiente sentencia condicional:
+
+\begin{lstlisting}
+			.
+			.
+			.
+for (int j = i+1; j < numfilas; j++) {
+
+            if (_A[j][i] == 0) {
+                continue;
+            }
+			.
+			.
+			.
+\end{lstlisting}
+
+Es decir, si el elemento a analizar de la matriz es un cero, el algoritmo no realiza el c\'alculo del coeficiente multiplicador ni tampoco opera sobre la fila multiplicando cada elemento por \'este. Al agregar esta sentencia y realizar un experimento id\'entico al anterior, obtuvimos como resultado que la complejidad emp\'irica de ambos algoritmos era de orden cuadr\'atico.
+
 \subsubsection{Gauss vs LU para varias instancias de una misma discretizacion}
 
 
@@ -97,6 +117,8 @@ Al aumentar el n\'umero de instancias se sigue notando la misma tendencia, y el 
  \textbf{Ratio LU/Gauss: 0.066}
 
 Podemos notar como, a medida que mejora la discretizaci\'on, tambi\'en mejora la diferencia de perfomance de la factorizaci\'on LU por sobre Gauss, dando muestra de la diferencia de un orden polinomial de Gauss sobre LU (para la segunda instancia en adelante)
+
+
 
 \subsubsection{Evolución estimación de la isoterma y temperatura}
 Se presentarán los resultados de los experimentos en el mismo orden en que fueron planteados en la sección de desarrollo. Se realizará el análisis de los mismos en este mismo apartado.
