@@ -6,7 +6,38 @@
 \subsubsection{Gauss vs LU para una sola instancia variando discretizaciones}
 \subsubsection{Gauss vs LU para muchas instancias variando discretizaciones}
 
+Para una misma discretizaci\'on elegida de 30 \'angulos y 30 radios, se generaron 3 archivos con distinto n\'umero de instancias, el primero de una instancia, el segundo de 5 instancias, y el tercero de 10. En cada instancia cambian las condiciones de borde. Se medir\'a el tiempo total de ejecuci\'on de cada uno de los dos m\'etodos para cada archivo, de forma de poder comparar la perfomance de ambos m\'etodos bajo una misma discretizaci\'on, variando la cantidad de instancias a resolver.
 
+El generador de tests fue ejecutado con los siguientes par\'ametros:
+
+\begin{enumerate}
+\item \textbf{Archivo  1:} $ python \: testgen.py \: 2 \: 2b  \: 200 \: 400 \: 30 \: 30 \: 500 \: 1$
+\item \textbf{Archivo  2:} $ python \: testgen.py \: 2 \: 2b1 \: 200 \: 400 \: 30 \: 30 \: 500 \:  5$
+\item \textbf{Archivo  3:} $ python \: testgen.py \: 2 \: 2b2 \: 200 \: 400 \: 30 \: 30 \: 500 \:  10$
+\end{enumerate}
+
+\vspace{0.5cm}
+
+  	\textbf{Comparaci\'on de Perfomance para una instancia}\\
+\begin{center}
+\includegraphics[scale=0.7]{experimentos2a_2b/2bUnaInstancia.png}
+\end{center}
+
+Puede verse claramente como, comparando por una instancia, la mayor constante en la complejidad te\'orica de la factorizaci\'on LU se refleja en la experimentaci\'on. \textbf{Ratio LU/Gauss: 1.577}
+
+ \textbf{Comparaci\'on de Perfomance para cinco instancias}\\
+\begin{center}
+\includegraphics[scale=0.7]{experimentos2a_2b/2bCincoInstancias.png}
+\end{center}
+
+Con aumentar en nada m\'as que 4 el n\'umero de instancias, ya se nota una amplia mejora en el tiempo de c\'omputo de factorizaci\'on LU, ya que, al no variar la discretizaci\'on y variar las temperaturas externas e internas, se hace uso al m\'aximo de la mayor ventaja del algoritmo de factorizac\'on LU: para una misma matriz A (discretizaci\'on), y distintas temperaturas (cambia el vector V), luego de la primera vez que resuelve el sistema (que cuesta $O(n^3)$), las subsiguientes veces cuesta $O(n^2)$, dado que simplemente tiene que realizar substituciones. \textbf{Ratio LU/Gauss: 0.3178}
+
+ \textbf{Comparaci\'on de Perfomance para diez instancias}\\
+\begin{center}
+\includegraphics[scale=0.7]{experimentos2a_2b/2bDiezInstancias.png}
+\end{center}
+
+Al aumentar el n\'umero de instancias se sigue notando la misma tendencia, y el ratio de mejora de LU sobre Gauss se hace m\'as pequeño a medida que crece el n\'umero de instancias. \textbf{Ratio LU/Gauss: 0.2264}
 
 \subsubsection{Evolución estimación de la isoterma y temperatura}
 Se presentarán los resultados de los experimentos en el mismo orden en que fueron planteados en la sección de desarrollo. Se realizará el análisis de los mismos en este mismo apartado.
