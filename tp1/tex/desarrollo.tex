@@ -56,6 +56,31 @@ M_k =
 \]
 
 por lo que el resultado de la Eliminación Gaussiana es una matriz triangular superior $U$ que coincide con $M_{n-1} \ldots M_1 A$. Pero como todas las matrices $M_k$ son inversibles por ser triangulares inferiores con unos en la diagonal, vale $A = M_1^{-1}\ldots M_{n - 1}^{-1} U = LU$.
+ 
+Si bien ya hemos llegado a la factorización LU de $A$, podemos simplificar la expresión de $L$. Notemos que $M_k = I_n - m_k e_k^t$ con $m_k = \begin{pmatrix}0\\ \vdots \\ 0 \\ m_{(k+1)k} \\ \vdots \\ m_{nk}\end{pmatrix}$ y $e_k$ el $k$-ésimo vector canónico de $\mathbb{R}^n$. Usando esta escritura es fácil ver que $M_k^{-1} = I_n + m_k e_k^t$, ya que
+
+\begin{align*}
+(I_n - m_k e_k^t)(I_n + m_k e_k^t) & = I_n^2 + m_k e_k^t - m_k e_k^t - m_k e_k^t m_k e_k^t &\\
+& = I_n^2 - m_k e_k^t m_k e_k^t &\\
+& = I_n & \text{(pues } e_k^t m_k = 0\text{)}
+\end{align*}
+
+Luego,
+
+\begin{align*}
+L & = M_1^{-1} \cdots M_{n - 1}^{-1} &\\
+    & = (I_n + m_1 e_1^t) \cdots (I_n + m_{n - 1} e_{n - 1}^t) &\\
+    & = I_n + m_1 e_1^t + \cdots + m_{n - 1} e_{n - 1}^t & \text{(pues } e_i^t m_j = 0 \text{ si } i \leq j \text{)}
+\end{align*}
+
+En definitiva $A = LU$ con $L = \begin{pmatrix} 
+1           & \cdots    & 0                 & \cdots    & 0 \\
+m_{21}      & \ddots    & 0                 & \cdots    & 0 \\
+\vdots      &           & 1                 &           & \vdots\\
+m_{(k+1)1}  & \cdots        & m_{(k+1)k}    & \cdots        & 0\\
+\vdots      &           & \vdots            & \ddots        & \vdots\\
+m_{n1}      & \cdots        & m_{nk}        & \cdots        & 1\\
+\end{pmatrix}$.
 
 Notemos que es posible ir armando $L$ a cada paso de la Eliminación Gaussiana por lo que la complejidad computacional se mantiene: computar la factorización $LU$ toma también $\mathcal{O}(n^3)$.
 

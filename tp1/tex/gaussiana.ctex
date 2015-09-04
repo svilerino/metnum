@@ -1,0 +1,37 @@
+// Triangular la matriz ampliada del sistema
+    for (int i = 0; i < numcolumnas - 1; i++) {
+
+        for (int j = i+1; j < numfilas; j++) {
+
+            // Aumenta la performance este chequeo
+            if (_A[j][i] == 0) {
+                // Ya hay un cero alli, no hay nada que hacer
+                continue;
+            }
+
+            // Calculo el coeficiente multiplicador
+            double m = _A[j][i] / _A[i][i];
+            
+            // Opero sobre la fila 
+            for (int k = i; k < numcolumnas; k++) {
+                _A[j][k] -= m * _A[i][k];
+            }
+
+            // Tambien hay que modificar el vector b!
+            _b[j] -= m * _b[i];
+        }
+    }
+
+    // Calculo el vector X de soluciones con backward substitution.
+    for (int i = numfilas - 1; i >= 0; i--) {
+        // Obtener suma de la fila por el b
+        double sumaAcum = 0;
+        for (int j = i+1; j < numcolumnas; j++) {
+            if (i<numfilas && j < numcolumnas) {
+                sumaAcum += _A[i][j] * vec_sol[j];
+            }
+        }
+
+        // Despejar el xi
+        vec_sol[i] = (_b[i] - sumaAcum) / _A[i][i];
+    }

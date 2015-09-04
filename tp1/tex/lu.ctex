@@ -1,0 +1,62 @@
+void SistemaEcuaciones::resolver_con_LU(FactorizacionLU& factorizacion, vector<double> &resX) {
+    int sizeB = _b.size();
+    vector<double> resY(sizeB);
+
+    int numfilas = _A.get_filas();
+
+    // Calculo resY
+    for (int i = 0 ; i < numfilas; i++) {
+        double suma = 0;
+        for (int j = 0; j < i; j++) {
+            suma += factorizacion._L[i][j] * resY[j];
+        }
+        resY[i] = (_b[i] - suma) / factorizacion._L[i][i];
+    }
+
+    // Calculo resX
+    for (int i = numfilas - 1 ; i>=0; i--) {
+        double suma = 0;
+        for (int j=i+1; j < numfilas; j++) {
+            suma += factorizacion._U[i][j] * resX[j];
+        }
+        resX[i] = (resY[i] - suma) / factorizacion._U[i][i];
+    }
+}
+
+void SistemaEcuaciones::factorizar_LU(FactorizacionLU& lu) {
+    int numfilas = _A.get_filas();
+    int numcolumnas = _A.get_columnas();
+
+    // L identidad
+    lu._L.resize(numfilas, numcolumnas);
+
+    for (int i = 0; i<numfilas; i++) {
+        lu._L[i][i] = 1;
+    }
+    
+    // U comienza siendo la matriz A
+    lu._U = _A;
+
+    for (int i = 0; i < numcolumnas - 1; i++) {
+        for (int j = i+1; j < numfilas; j++) {
+
+            // Aumenta la performance este chequeo
+            if (lu._U[j][i] == 0) {
+                // Ya hay un cero alli, no hay nada que hacer
+                continue;
+            }
+
+            // Calculo el coeficiente multiplicador para L y U
+            double multiplicadorU = (lu._U[j][i] / lu._U[i][i]);
+
+            // Opero sobre la fila 
+            for (int k = i; k < numcolumnas; k++) {
+                // modifico los elementos de U
+                lu._U[j][k] -= multiplicadorU * lu._U[i][k];
+            }
+
+            // Guardo los elementos de L
+            lu._L[j][i] = multiplicadorU;
+        }
+    }
+}
