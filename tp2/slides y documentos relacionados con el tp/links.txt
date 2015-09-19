@@ -1,0 +1,3 @@
+http://setosa.io/ev/markov-chains/
+http://setosa.io/ev/eigenvectors-and-eigenvalues/
+http://www.math.harvard.edu/~knill/teaching/math19b_2011/handouts/lecture33.pdf
