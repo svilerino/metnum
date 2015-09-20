@@ -1,6 +1,6 @@
 \subsection{Detalle de los algoritmos utilizados}
 \subsubsection{Eliminación Gaussiana}
-La Eliminación Gaussiana es un método que consiste en resolver el sistema triangulando la matriz (aplicando restas entre filas) y aplicando las mismas operaciones al vector solución, para obtener un sistema equivalente pero con una matriz triangular superior que se puede resolver de manera sencilla mediante \emph{backward substitution}.
+La Eliminación Gaussiana es un método que consiste en resolver el sistema triangulando la matriz (aplicando operaciones entre filas) y aplicando las mismas operaciones al vector solución, para obtener un sistema equivalente pero con una matriz triangular superior que se puede resolver de manera sencilla mediante \emph{backward substitution}.
 
 El algoritmo de trabaja con la matriz ampliada del sistema:
 
@@ -38,6 +38,9 @@ x_1 &= \frac{b_1 - a_{12}x_2 - a_{13}x_3 - \ldots - a_{1n} x_n}{a_{11}}
 Notemos nuevamente la importancia de que los elementos de la diagonal sean no nulos para que las operaciones estén bien definidas.
 
 Este algoritmo tiene complejidad $\mathcal{O}(n^2)$ pues para despejar cada incógnita realiza $\mathcal{O}(n)$ operaciones y hay $n$ incógnitas.
+
+\subsubsection{Forward substitution}
+La idea es idéntica a backward substitution para matrices triangulares inferiores.
 
 \subsubsection{Factorización LU}
 
