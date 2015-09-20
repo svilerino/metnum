@@ -1,6 +1,7 @@
 #include "matriz.h"
 using namespace std;
 #define DEBUG_MESSAGES_ON 0//comentar esta linea para no hacer chequeos costosos en tiempo de ejecucion
+#define EPSILON_TOLERANCIA 0.0001
 
 /**
 * 
@@ -364,7 +365,7 @@ void SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<
 
         for (int j = i+1; j < numfilas; j++) {
 
-            if (_A[j][i] == 0) {
+            if (abs(_A[j][i]) < EPSILON_TOLERANCIA) {
                 // Ya hay un cero allí, no hay nada que hacer
                 continue;
             }
@@ -373,7 +374,7 @@ void SistemaEcuaciones::eliminacion_gaussiana(bool usar_pivoteo_parcial, vector<
             double m = _A[j][i] / _A[i][i];
             
             #ifdef DEBUG_MESSAGES_ON
-                if ( _A[i][i] == 0) {
+                if ( abs(_A[i][i]) < EPSILON_TOLERANCIA) {
                     cerr << "\e[0;31m[ERROR] DIVISION POR CERO EN PIVOTE DE GAUSS\e[0m";
                     exit(-1);
                 } 
@@ -470,13 +471,13 @@ void SistemaEcuaciones::factorizar_LU(FactorizacionLU& lu) {
     for (int i = 0; i < numcolumnas - 1; i++) {
         for (int j = i+1; j < numfilas; j++) {
 
-            if (lu._U[j][i] == 0) {
+            if (abs(lu._U[j][i]) < EPSILON_TOLERANCIA) {
                 // Ya hay un cero allí, no hay nada que hacer
                 continue;
             }
             
             #ifdef DEBUG_MESSAGES_ON
-                if ( lu._U[i][i] == 0) {
+                if ( abs(lu._U[i][i]) < EPSILON_TOLERANCIA) {
                     cerr << "\e[0;31m[ERROR] DIVISION POR CERO (U[i][i] == 0) en Factorizacion LU\e[0m";
                     exit(-1);
                 }
