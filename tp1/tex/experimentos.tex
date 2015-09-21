@@ -62,16 +62,34 @@ Plantemos una métrica que estima la \texttt{estabilidad} o \texttt{seguridad} d
 \end{proposition}
 
 \subsection{Esquema de experimentación}
-\subsubsection{Medida de la performance}
+\subsubsection{Experimentos focalizados en la performance}
 
-Los experimentos de performance se dividen en tres secciones:
+\begin{proposition}[La performance es invariante bajo cambios de datos iniciales cualitativos del problema] La variacion de las condiciones iniciales del problema, es decir, temperaturas internas y externas no cambian el tiempo de resolucion del sistema de ecuaciones.(Utilizando los algoritmos estandares sin optimizaciones). Esto se debe a que la matriz resultante no cambia su dimension al cambiar estos parametros y la complejidad de los algoritmos reside en el tamaño de la matriz y no sus elementos.
+\end{proposition}
+
+\begin{proposition}[Relacion entre variables de la discretizacion y tamaño de la matriz del sistema] La performance de los algoritmos se puede medir incrementando las variables (n, m+1) del problema conjuntamente.
+\end{proposition}
+
+ Dado que en la seccion de desarrollo especificamos que $A \in \mathbb{R}^{n(m+1)\times n(m+1)}$ donde n y $m+1$ representan los parametros de la discretizacion. Tenemos que la dimension de la matriz es $n(m+1)\times n(m+1)$. Ademas, sabemos que los algoritmos tienen una complejidad teorica definida sobre una variable $k = n(m+1)$, que expresa el tamaño de una matriz cuadrada $A \in \mathbb{R}^{k\times k}$ (ie. LU y Gauss son $\mathcal{O}(k^3)$), luego podemos afirmar que la complejidad teorica de gauss y lu se puede escribir como $\mathcal{O}((n*(m+1))^3) = \mathcal{O}((n*m + n))^3) = \mathcal{O}((n*m)^3) $ pues ($m\geq1$). \\
+ Veamos como se comporta la funcion $z = n*m$ con valores de $n, m$ en el rango $[10..80]$.\\
+
+\begin{center}
+\includegraphics[scale=0.65]{img/nTimesM-3dPlot.png}
+\end{center}
+
+En el grafico puede verse, que fijando n y variando m, o al reves, se obtiene un crecimiento lineal en esa direccion. Asimismo, variando n y m al mismo tiempo, se obtiene un crecimiento lineal(mas pronunciado) por la diagonal entre $(0,0)$ y $(80,80)$
+
+Dado que nosotros queremos ver como se comportan los algoritmos cuando $k = m*n$ aumenta, nos parece representativo solo tomar combinaciones de $n, m$ que varien conjuntamente, es decir, movernos por la diagonal del plano entre $(0, 0)$ y $(n_{max}, m_{max})$.
+\vspace{0.3cm}
+
+Los experimentos de performance se dividen en dos secciones:
 
 \begin{enumerate}
 
-\item \textbf {Performance de los m\'etodos en funci\'on de la discretizaci\'on para una instancia:}  Se generaron diversas discretizaciones del problema, fijando la cantidad de \'angulos en 30, y variando la cantidad de radios de 5 a 30, con una instancia para cada discretizaci\'on. El objetivo es analizar la evoluci\'on del tiempo de c\'omputo a mayor granulaidad de la discretizaci\'on, y comprobar emp\'iricamente que la complejidad de ambos algoritmos es del orden c\'ubico.
-\item \textbf {Performance de los m\'etodos en funci\'on de la cantidad de instancias:} Para una misma discretizaci\'on elegida de 30 \'angulos y 30 radios, se generaron 3 archivos con distinto n\'umero de instancias, el primero de una instancia, el segundo de 5 instancias, y el tercero de 10. En cada instancia cambian las condiciones de borde. Se medir\'a el tiempo total de ejecuci\'on de cada uno de los dos m\'etodos para cada archivo, de forma de poder comparar la perfomance de ambos m\'etodos bajo una misma discretizaci\'on, variando la cantidad de instancias a resolver.
-\item \textbf {Performance de los m\'etodos en funci\'on de la discretizaci\'on para varias instancias:}
-Se compara la perfomance de ambos m\'etodos en un caso combinado de los anteriores. Dado un n\'umero fijo de 50 instancias, se medir\'a el tiempo total de c\'omputo en tres discretizaciones: 20 \'angulos y 20 radios, 40 \'angulos y radios, y 60 \'angulos y radios. 
+\item \textbf {Performance de los m\'etodos en funci\'on de la discretizaci\'on para una instancia:}  Se generaron diversas discretizaciones del problema, variando la cantidad de radios y angulos, conjuntamente, de 5 a 60, con una instancia para cada discretizaci\'on. El objetivo es analizar la evoluci\'on del tiempo de c\'omputo a mayor granularidad de la discretizaci\'on, y comprobar emp\'iricamente que la complejidad de ambos algoritmos es del orden c\'ubico. Asimismo, factorizacion LU deberia tomar mas tiempo pues su constante es mas grande al realizar mas operaciones que simple triangulación.
+
+\item \textbf{Performance de EG vs LU variando la cantidad de instancias y la granularidad de la discretizacion: } Para varias cantidades de instancias por archivo de test, se generan muchas discretizaciones diferentes. El objetivo de este test es analizar que ocurre con el tiempo de ejecución cuando se resuelven muchas instancias utilizando EG o LU. Tambien se evalua la influencia de las diferentes discretizaciones para cada cantidad de instancias.
+
 \end{enumerate}
 
 \subsubsection{Evolución de la temperatura y posición de la isoterma con distintas discretizaciones}
