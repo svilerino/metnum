@@ -5,13 +5,13 @@
 \subsection{Performance}
 \subsubsection{Gauss vs LU para una sola instancia variando discretizaciones}
 
-  	\textbf{Perfomance de factorizai\'on LU para distinta granularidad de radios}\\
+  	\textbf{Performance de factorizai\'on LU para distinta granularidad de radios}\\
 
 \begin{center}
 \includegraphics[scale=0.65]{experimentos2a_2b/gaussMed.png}
 \end{center}
 
-  	\textbf{Perfomance de Gauss para distinta granularidad de radios}\\
+  	\textbf{Performance de Gauss para distinta granularidad de radios}\\
 
 \begin{center}
 \includegraphics[scale=0.65]{experimentos2a_2b/Lumed.png}
@@ -19,26 +19,26 @@
 
 A continuaci\'on, usaremos una heur\'istica para poder determinar mejor el orden c\'ubico de la curva resultado. Esta es, sea $x$ el valor del tiempo de c\'omputo, dividir $x/f(x)$, siendo $f(x)$ polinomio de orden $2$ y $3$. De ser de orden c\'ubica la curva, esperar\'iamos que para el polinomio de orden 2 el resultado se asemeje a una funci\'on lineal, y para el de orden 3 el resultado se asemeje a una constante.
 
-  	\textbf{Perfomance de factorizai\'on LU sobre cuadrado}\\
+  	\textbf{Performance de factorizai\'on LU sobre cuadrado}\\
 
 \begin{center}
 \includegraphics[scale=0.65]{experimentos2a_2b/Lucuadrado.png}
 \end{center}
 
-  	\textbf{Perfomance de Gauss sobre cuadrado}\\
+  	\textbf{Performance de Gauss sobre cuadrado}\\
 
 \begin{center}
 \includegraphics[scale=0.65]{experimentos2a_2b/GaussCuadrado.png}
 \end{center}
 
- \textbf{Perfomance de factorizai\'on LU sobre cubo}\\
+ \textbf{Performance de factorizai\'on LU sobre cubo}\\
 
 
 \begin{center}
 \includegraphics[scale=0.65]{experimentos2a_2b/LuCubo.png}
 \end{center}
 
- \textbf{Perfomance de Gauss sobre cubo}\\
+ \textbf{Performance de Gauss sobre cubo}\\
 
 
 \begin{center}
@@ -65,28 +65,28 @@ for (int j = i+1; j < numfilas; j++) {
 			.
 \end{lstlisting}
 
-Es decir, si el elemento a analizar de la matriz es un cero(con tolerancia epsilon, en nuestro caso 0.0001), el algoritmo no realiza el c\'alculo del coeficiente multiplicador ni tampoco opera sobre la fila multiplicando cada elemento por \'este. Al agregar esta sentencia y realizar un experimento id\'entico al anterior, obtuvimos como resultado que la complejidad emp\'irica de ambos algoritmos era de orden cuadr\'atico. Creemos que esto se debe a la condición banda de la matriz, y que en muchos casos esta condición de corte evita que el algoritmo ingrese en la tercera iteracion anidada.
+Es decir, si el elemento a analizar de la matriz es un cero(con tolerancia epsilon, en nuestro caso $exp(10, -9)$), el algoritmo no realiza el c\'alculo del coeficiente multiplicador ni tampoco opera sobre la fila multiplicando cada elemento por \'este. Al agregar esta sentencia y realizar un experimento id\'entico al anterior, obtuvimos como resultado que la complejidad emp\'irica de ambos algoritmos era de orden cuadr\'atico. Creemos que esto se debe a la condición banda de la matriz, y que en muchos casos esta condición de corte evita que el algoritmo ingrese en la tercera iteracion anidada.
 
 \subsubsection{Gauss vs LU para varias instancias de una misma discretizacion}
 
 
 \vspace{0.5cm}
 
-  	\textbf{Comparaci\'on de Perfomance para una instancia}\\
+  	\textbf{Comparaci\'on de Performance para una instancia}\\
 \begin{center}
 \includegraphics[scale=0.7]{experimentos2a_2b/2bUnaInstancia.png}
 \end{center}
 
 Puede verse claramente como, comparando por una instancia, la mayor constante en la complejidad te\'orica de la factorizaci\'on LU se refleja en la experimentaci\'on. \textbf{Ratio LU/Gauss: 1.577}
 
- \textbf{Comparaci\'on de Perfomance para cinco instancias}\\
+ \textbf{Comparaci\'on de Performance para cinco instancias}\\
 \begin{center}
 \includegraphics[scale=0.7]{experimentos2a_2b/2bCincoInstancias.png}
 \end{center}
 
 Con aumentar en nada m\'as que 4 el n\'umero de instancias, ya se nota una amplia mejora en el tiempo de c\'omputo de factorizaci\'on LU, ya que, al no variar la discretizaci\'on y variar las temperaturas externas e internas, se hace uso al m\'aximo de la mayor ventaja del algoritmo de factorizac\'on LU: para una misma matriz A (discretizaci\'on), y distintas temperaturas (cambia el vector V), luego de la primera vez que resuelve el sistema (que cuesta $O(n^3)$), las subsiguientes veces cuesta $O(n^2)$, dado que simplemente tiene que realizar substituciones. \textbf{Ratio LU/Gauss: 0.3178}
 
- \textbf{Comparaci\'on de Perfomance para diez instancias}\\
+ \textbf{Comparaci\'on de Performance para diez instancias}\\
 \begin{center}
 \includegraphics[scale=0.7]{experimentos2a_2b/2bDiezInstancias.png}
 \end{center}
@@ -95,28 +95,28 @@ Al aumentar el n\'umero de instancias se sigue notando la misma tendencia, y el 
 
 \subsubsection{Gauss vs LU para 50 instancias variando discretizaciones para varias instancias}
 
-  	\textbf{Comparaci\'on de Perfomance para 20 \'angulos y radios }\\
+  	\textbf{Comparaci\'on de Performance para 20 \'angulos y radios }\\
 \begin{center}
 \includegraphics[scale=0.7]{experimentos2a_2b/2b2020.png}
 \end{center}
 
  \textbf{Ratio LU/Gauss: 0.2059}
 
-  	\textbf{Comparaci\'on de Perfomance para 40 \'angulos y radios }\\
+  	\textbf{Comparaci\'on de Performance para 40 \'angulos y radios }\\
 \begin{center}
 \includegraphics[scale=0.7]{experimentos2a_2b/2b4040.png}
 \end{center}
 
  \textbf{Ratio LU/Gauss: 0.090}
 
-  	\textbf{Comparaci\'on de Perfomance para 60 \'angulos y radios }\\
+  	\textbf{Comparaci\'on de Performance para 60 \'angulos y radios }\\
 \begin{center}
 \includegraphics[scale=0.7]{experimentos2a_2b/2b6060.png}
 \end{center}
 
  \textbf{Ratio LU/Gauss: 0.066}
 
-Podemos notar como, a medida que mejora la discretizaci\'on, tambi\'en mejora la diferencia de perfomance de la factorizaci\'on LU por sobre Gauss, dando muestra de la diferencia de un orden polinomial de Gauss sobre LU (para la segunda instancia en adelante)
+Podemos notar como, a medida que mejora la discretizaci\'on, tambi\'en mejora la diferencia de Performance de la factorizaci\'on LU por sobre Gauss, dando muestra de la diferencia de un orden polinomial de Gauss sobre LU (para la segunda instancia en adelante)
 
 
 
