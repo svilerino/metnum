@@ -22,8 +22,10 @@ Se medir\'a y comparar\'a la performance de ambos m\'etodos en la resoluci\'on d
 
 \subsubsection{Método de posiciónamiento estimado de la isoterma}
 El problema consiste en estimar, para cada ángulo, la posición radial de la isoterma \texttt{$\alpha$}.\\
-Consideremos la función de temperatura $T(r,\theta)$. Si fijamos $\theta = \theta_i$ podemos definir la función $g_{\theta_i}(r) = T(r,\theta_i)$ como la función de temperatura sobre todos los radios del ángulo $\theta_i$. Dado que nosotros conocemos $m+1$ puntos aproximados de dicha función, esto reduce el problema a aproximar el elemento $ z_\alpha \in Dom(g_{\theta_i}) $ tal que $g_{\theta_i}(z_\alpha) = \alpha$. El método propuesto consiste en aplicar el siguiente algoritmo a las aproximaciones discretas conocidas de las funciones $g_{\theta_i}$, para todos los ángulos.
-\begin{theorem}[Método de estimación de la isoterma k]
+Consideremos la función \textbf{contínua} de temperatura $T(r,\theta)$ definida sobre las coordenadas polares $r,\theta$. Si fijamos $\theta = \theta_i$ podemos definir la función $g_{\theta_i}(r) = T(r,\theta_i)$ como la función de temperatura sobre todos los radios \textbf{contínuos} del ángulo $\theta_i$ fijado. Dado que nosotros conocemos $m+1$ puntos aproximados de dicha función, esto reduce el problema a aproximar el elemento $ z_\alpha \in Dom(g_{\theta_i}) = { [R_i \dots R_e] }$ tal que $g_{\theta_i}(z_\alpha) = \alpha$. \\
+El método propuesto consiste en aplicar el siguiente algoritmo a las aproximaciones discretas conocidas de las funciones $g_{\theta_i}$, para todos los ángulos.
+
+\begin{proposition}[Algoritmo de estimación de la isoterma k por ajuste lineal]
     Sea $\hat{g_{\theta_i}}$ la función \textbf{discreta de aproximaciones} de temperatura de un ángulo i.
     \begin{enumerate}
         \item Buscar $ x_1, x_2 \in Dom(\hat{g_{\theta_i}}) $ tales que $ \hat{g_{\theta_i}}(x_1) \leq \alpha \leq \hat{g_{\theta_i}}(x_2)$ y esta cota sea ajustada.
@@ -32,8 +34,8 @@ Consideremos la función de temperatura $T(r,\theta)$. Si fijamos $\theta = \the
 
         \item Devolver $z_\alpha$.
     \end{enumerate}
-    $z_\alpha$ es la posición estimada de la isoterma tal que $g_{\theta_i}(z_\alpha) = \alpha$.
-\end{theorem}
+    $z_\alpha$ es la posición estimada linealmente de la isoterma tal que $g_{\theta_i}(z_\alpha) = \alpha$.
+\end{proposition}
 
 \begin{proposition}[Dominio de correctitud de la estimación]
     El algoritmo anterior estima linealmente la isoterma $\alpha$ entre $x_1$ y $x_2$ si:
@@ -46,17 +48,16 @@ Consideremos la función de temperatura $T(r,\theta)$. Si fijamos $\theta = \the
         \item En caso de que $\alpha \in Im(\hat{g_{\theta_i}})$ entonces $z = x_1 = x_2$ y no es necesario ajuste lineal.
     \end{itemize}
 \end{proposition}
-\begin{proof}
+\begin{proposition}[Idea intuitiva de la correctitud del algoritmo de estimacion lineal]
     Si se cumplen las hipótesis de la proposición anterior entonces la cota existe y el algoritmo procederá a hacer el cálculo aproximado del paso siguiente, que no es más que un ajuste lineal entre los dos puntos de las cotas. Es decir, estamos asumiendo que el calor se disipa linealmente entre 2 puntos cualesquiera de la función.\\
     \vspace{0.3cm}
     \textbf{Nota:} Asumir esto no es necesariamente correcto, se podría hacer un analisis más fino graficando las funciones $g_{\theta_i}$ y aplicando métodos más avanzados de estimación para que la curva quede más suave. Por simplicidad solo consideramos el ajuste lineal en este trabajo.
-\end{proof}
+\end{proposition}
 
 \subsubsection{Métricas de seguridad de la isoterma}
 Plantemos una métrica que estima la \texttt{estabilidad} o \texttt{seguridad} de la pared del horno estableciendo una relacion relativa entre la posición de la isoterma y el radio externo. 
-\begin{proposition}[Métrica de seguridad del horno basada en la posición relativa de la isoterma]
-    Consideremos $\Delta_{iso_\alpha} = \left( \frac{f(iso_\alpha) - R_i}{R_e - R_i} \right)$.\\
-    Donde $f(iso_\alpha)$ es una función de la isoterma, en nuestro caso, consideramos que el máximo o el promedio son buenas métricas.\\
+\begin{proposition}[Métrica de seguridad del horno basada en la posición relativa de la isoterma] Sea $iso_\alpha$ la solucion del sistema, es decir, el conjunto de radios para cada angulo que indica la posicion radial de la isoterma.\\
+    Consideremos $\Delta_{iso_\alpha} = \left( \frac{f(iso_\alpha) - R_i}{R_e - R_i} \right)$, donde $f(iso_\alpha)$ es una función de la isoterma, en nuestro caso, consideramos que el máximo o el promedio son buenas métricas.\\
     Salvo casos patológicos, vale que $0 \leq \Delta_{iso_\alpha}\leq 1$. Luego basta establecer un \textbf{límite de seguridad} $0 \leq \gamma_0 \leq 1$ tal que si vale $\Delta_{iso_\alpha} > \gamma_0$ se considera \texttt{inestable} o \texttt{insegura} la pared del horno.
 \end{proposition}
 
