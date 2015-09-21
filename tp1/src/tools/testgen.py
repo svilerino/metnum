@@ -28,24 +28,25 @@ else:
 
 			index = 0
 
-			for m in xrange(m_1_s, m_1_e+1):
-				for n in xrange(n_s, n_e+1):
-					currentFilePath = outputFilePath + "_" + '{0:03d}'.format(m) + "_radios"+ "_" + '{0:03d}'.format(n) + "_angulos.in"
-					index = index + 1
-					with open(currentFilePath, 'w') as f:
-						f.write(str(r_i) + 	" " + str(r_e) + " " + str(m) + " " + str(n) + " " + str(iso)+ " " + str(ninst) + "\n")
-						for i in xrange(0,ninst):
-							for j in xrange(0,n):
-								value = random.uniform(1450, 1550)
-								f.write(str(value) + " ")
-							for j in xrange(0,n):
-								if j == (n-1):
-									value = random.uniform(50,200)
-									f.write(str(value))
-									continue
-								value = random.uniform(50, 200)
-								f.write(str(value) + " ")
-							f.write("\n")
+			for m in xrange(m_1_s, m_1_e+1, 3):
+				#for n in xrange(n_s, n_e+1):
+				n = m
+				currentFilePath = outputFilePath + "_" + '{0:03d}'.format(m) + "_radios"+ "_" + '{0:03d}'.format(n) + "_angulos.in"
+				index = index + 1
+				with open(currentFilePath, 'w') as f:
+					f.write(str(r_i) + 	" " + str(r_e) + " " + str(m) + " " + str(n) + " " + str(iso)+ " " + str(ninst) + "\n")
+					for i in xrange(0,ninst):
+						for j in xrange(0,n):
+							value = random.uniform(1500, 1500)
+							f.write(str(value) + " ")
+						for j in xrange(0,n):
+							if j == (n-1):
+								value = random.uniform(100, 100)
+								f.write(str(value))
+								continue
+							value = random.uniform(100, 100)
+							f.write(str(value) + " ")
+						f.write("\n")
 
 	elif(int(sys.argv[1]) == 2):
 	

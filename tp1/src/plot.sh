@@ -11,36 +11,36 @@ if [ -e $file ]; then
 	echo "Procesando $file para tipo de grafico $tipoGrafico..."	
 	if [ $tipoGrafico -eq 0 ]
 	then	
-		echo -n "    * Graficando $file""_time_consumed_med.png..."
-		python plotter.py "$file"_time_consumed_med.png "$file" 0 "${3}"
+		echo -n "    * Graficando $file""_time_consumed.png..."
+		python plotter2.py "$file"_time_consumed.png "$file" 0 "${3}"
 		echo -e "${green}Ok!${NC}"
 	fi
 
 	if [ $tipoGrafico -eq 1 ]
 	then	
-		echo -n "    * Graficando $file""_time_consumed_med_over_n.png..."
-		python plotter.py "$file"_time_consumed_med_over_n.png "$file" 1
+		echo -n "    * Graficando $file""_time_consumed_over_n.png..."
+		python plotter2.py "$file"_time_consumed_over_n.png "$file" 1
 		echo -e "${green}Ok!${NC}"
 	fi
 
 	if [ $tipoGrafico -eq 2 ]
 	then	
-		echo -n "    * Graficando $file""_time_consumed_med_over_n_square.png..."
-		python plotter.py "$file"_time_consumed_med_over_n_square.png "$file" 2
+		echo -n "    * Graficando $file""_time_consumed_over_n_square.png..."
+		python plotter2.py "$file"_time_consumed_over_n_square.png "$file" 2
 		echo -e "${green}Ok!${NC}"
 	fi
 
 	if [ $tipoGrafico -eq 3 ]
 	then	
-		echo -n "    * Graficando $file""_time_consumed_med_over_n_cube.png..."
-		python plotter.py "$file"_time_consumed_med_over_n_cube.png "$file" 3
+		echo -n "    * Graficando $file""_time_consumed_over_n_cube.png..."
+		python plotter2.py "$file"_time_consumed_over_n_cube.png "$file" 3
 		echo -e "${green}Ok!${NC}"
 	fi
 
 	if [ $tipoGrafico -eq 4 ]
 	then	
-		echo -n "    * Graficando $file""_time_consumed_med_over_n_fourth.png..."
-		python plotter.py "$file"_time_consumed_med_over_n_fourth.png "$file" 4
+		echo -n "    * Graficando $file""_time_consumed_over_n_fourth.png..."
+		python plotter2.py "$file"_time_consumed_over_n_fourth.png "$file" 4
 		echo -e "${green}Ok!${NC}"
 	fi
 
