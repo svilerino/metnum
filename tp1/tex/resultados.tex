@@ -65,7 +65,7 @@ for (int j = i+1; j < numfilas; j++) {
 			.
 \end{lstlisting}
 
-Es decir, si el elemento a analizar de la matriz es un cero, el algoritmo no realiza el c\'alculo del coeficiente multiplicador ni tampoco opera sobre la fila multiplicando cada elemento por \'este. Al agregar esta sentencia y realizar un experimento id\'entico al anterior, obtuvimos como resultado que la complejidad emp\'irica de ambos algoritmos era de orden cuadr\'atico. Creemos que esto se debe a la condición banda de la matriz, y que en muchos casos esta condición de corte evita que el algoritmo ingrese en la tercera iteracion anidada.
+Es decir, si el elemento a analizar de la matriz es un cero(con tolerancia epsilon, en nuestro caso 0.0001), el algoritmo no realiza el c\'alculo del coeficiente multiplicador ni tampoco opera sobre la fila multiplicando cada elemento por \'este. Al agregar esta sentencia y realizar un experimento id\'entico al anterior, obtuvimos como resultado que la complejidad emp\'irica de ambos algoritmos era de orden cuadr\'atico. Creemos que esto se debe a la condición banda de la matriz, y que en muchos casos esta condición de corte evita que el algoritmo ingrese en la tercera iteracion anidada.
 
 \subsubsection{Gauss vs LU para varias instancias de una misma discretizacion}
 
