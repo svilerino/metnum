@@ -93,6 +93,19 @@ Los experimentos de performance se dividen en dos secciones:
 
 \end{enumerate}
 
+\subsubsection{Diferencia numérica de soluciones entre EG y LU}
+El objetivo de estos experimentos es analizar la diferencia numérica de la solución de un determinado sistema con EG y LU. Lo que nos va a interesar ver es distintas métricas de \texttt{distancia} entre dos soluciones $\hat{x} , x$ para el mismo sistema $Ax=b$, resueltas con EG y LU. Consideramos para estos experimentos, variar el tamaño de la matriz A, usando el mismo criterio que en la sección de performance, variando n y m al mismo tiempo.
+
+\vspace{0.3cm}
+
+Métricas de distancia utilizadas:
+\begin{itemize}
+    \item $\norm{ x - \hat{x} }_\infty$: distancia maxima entre $x$ y $\hat{x}$
+    \item $\norm{ x - \hat{x} }_2$ : distancia euclídea entre $x$ y $\hat{x}$
+\end{itemize}
+
+\textbf{Nota: } Las temperaturas externas(1500) e internas(100) son \textbf{constantes} en todos los tests. 
+
 \subsubsection{Evolución de la temperatura y posición de la isoterma con distintas discretizaciones}
 
 El objetivo de los experimentos planteados en esta sección es analizar la posicion de la isoterma a medida que se varían las discretizaciones en diferentes direcciones(radios, angulos y ambas al mismo tiempo.). Para realizar esto, necesitamos que cada test de un experimento \textbf{tenga la misma solución}. Todos los experimentos mencionados debajo comienzan con una discretización gruesa y se van afinando a medida que crece la componente correspondiente(según el experimento). Se espera que la posicion de la isoterma \texttt{converja} a la posicion \texttt{real}.
