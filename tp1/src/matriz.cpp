@@ -1,7 +1,7 @@
 #include "matriz.h"
 using namespace std;
 #define DEBUG_MESSAGES_ON 0//comentar esta linea para no hacer chequeos costosos en tiempo de ejecucion
-#define EPSILON_TOLERANCIA 0.0001
+#define EPSILON_TOLERANCIA 0.000000001
 
 /**
 * 

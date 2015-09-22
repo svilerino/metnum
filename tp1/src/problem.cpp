@@ -271,6 +271,8 @@ void Problem::resolver_instancias(Results &output, ostream &timing_result_os, me
 	timing_result_os.precision(5);
     timing_result_os.setf(ios::fixed, ios::floatfield);
 
+    double tiempo_total_instancias = 0.0;
+
 	for (int instancia = 0; instancia < num_instancias; instancia++) {
 		// Reinicializar vector de soluciones y vector de terminos independientes
 		res.resize(dimension, 0);
@@ -309,13 +311,17 @@ void Problem::resolver_instancias(Results &output, ostream &timing_result_os, me
 
 		// cant_angulos cant_radios dimension_matriz num_instancias metodo_utilizado promedio_medicion
 		//timing_result_os << m+1 << " " << n << " " << dimension << " " << num_instancias << " " << metodo << " " << promedio_medicion_instancia;
-		timing_result_os << (m+1) << " " << n << " " << promedio_medicion_instancia;
+		//timing_result_os << (m+1)*n << " " << promedio_medicion_instancia;
 
-    	if(instancia < num_instancias - 1){
-    		timing_result_os << endl;// La medicion esta en microsegundos !
-    	}
+    	//if(instancia < num_instancias - 1){
+    	//	timing_result_os << endl;// La medicion esta en microsegundos !
+    	//}
 
     	// Escribir resultados en parametro out.
     	output.instances_solutions.push_back(res);
+
+    	tiempo_total_instancias += promedio_medicion_instancia;
 	}
+	timing_result_os << (m+1)*n << " " << tiempo_total_instancias;
+
 }

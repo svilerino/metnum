@@ -53,10 +53,10 @@ if ls tests/*.in &> /dev/null; then
 			echo "" >> "../$TIMING_OUTPUT/${1}.tmpplot"
 
 			# Plot de la solucion
-			pushd ../tools
+#			pushd ../tools
 			# plotea el heatmap y la isoterma
-			octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.out\", \"../tests/\", \"../tests/$file.isoout\")"
-			popd
+#			octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.out\", \"../tests/\", \"../tests/$file.isoout\")"
+#			popd
 		
 			# Crear video del test 6 de la isoterma
 			# ffmpeg -framerate 3/1 -start_number 1 -i "$file"_inst_%d_isomap.png -c:v libx264 -r 30 -pix_fmt yuv420p "$file"_video_isomap.mp4
@@ -78,16 +78,11 @@ if ls tests/*.in &> /dev/null; then
 	#TENER EN CUENTA QUE EN ARCHIVOS MULTIINSTANCIA, SOBRETODO EN LU ORDENAR ESTO 
 	#ES UN PROBLEMA PORQUE SE PIERDE EL ORDEN RELATIVO DE RESULTADOS DENTRO INSTANCIAS DE UN MISMO TEST
 
-	sort "$TIMING_OUTPUT/${1}.tmpplot" -k1,1 --numeric-sort > "$TIMING_OUTPUT/${1}.tmpplot.tmp"
+	sort "$TIMING_OUTPUT/${1}.tmpplot" -k1 --numeric-sort > "$TIMING_OUTPUT/${1}.tmpplot.tmp"
 	mv "$TIMING_OUTPUT/${1}.tmpplot.tmp" "$TIMING_OUTPUT/${1}.tmpplot"
 
 	#llamo al plotter de python
 	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 0 -1
-	#./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 0 1
-	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 1
-	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 2
-	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 3
-	./plot.sh "$TIMING_OUTPUT/${1}.tmpplot" 4
 else
     echo "[WARN] NO existen archivos de testing"
 fi
