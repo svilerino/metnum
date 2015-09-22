@@ -8,15 +8,20 @@ using namespace std;
 * Operaciones entre vectores
 * 
 */
-
-void imprimir_vector(vector<double> &vec, ostream &os) {
+void mostrar_vector(vector<double> &vec, ostream &os) {
     os.precision(5);
     os.setf(ios::fixed,ios::floatfield);
     os << "[";
-    int sizeV = vec.size();
-    for (int i = 0; i < sizeV; i++)
-    {
-        os << vec[i] << (i == sizeV-1 ? "" : ", ");
+    for (uint i = 0; i < vec.size(); i++) {
+        os << vec[i] << (i == vec.size()-1 ? "" : ", ");
+    }
+    os << "]" << endl;
+}
+
+void mostrar_vector(vector<int> &vec, ostream &os) {
+    os << "[";
+    for (uint i = 0; i < vec.size(); i++) {
+        os << vec[i] << (i == vec.size()-1 ? "" : ", ");
     }
     os << "]" << endl;
 }
@@ -58,8 +63,8 @@ double normap(vector<double> &v, int p) {
     return pow(acum, 1/(double)p);
 }
 
-void normalizar(vector<double> &v, int norma) {
-    double norm = normap(v, norma);
+void normalizar(vector<double> &v, int p) {
+    double norm = normap(v, p);
     int sizeV = v.size();
     for (int i = 0; i < sizeV; i++) {
         v[i] = v[i] / norm;
@@ -78,85 +83,150 @@ double producto_interno(vector<double>& vec1, vector<double>& vec2) {
 }
 
 /**
-* 
-* Implementacion clase Matriz
-* 
+* MatrizDoK
 */
-Matriz::Matriz() {
-    _matriz.clear();
-    _numfilas = 0;
-    _numcolumnas = 0;
+MatrizDoK::MatrizDoK(istream &is) {
+
 }
 
-Matriz::Matriz(int n, int m) {
-    resize(n, m);   // resize inicializa con ceros
+double MatrizDoK::operator()(int fila, int columna) {
+    if (fila >= filas() || columna >= columnas()) {
+        cerr << "Se intentó acceder a una posición inexistente de una matriz DoK";
+        exit(-1);    
+    }
+    if (_dict.count(pair<int,int>(fila, columna)) == 0) {
+        return 0;
+    } else {
+        return _dict[pair<int,int>(fila, columna)];
+    }
 }
 
-void Matriz::resize(int n, int m) {
-    _numfilas = n;
-    _numcolumnas = m;
-
-    vector<double> vec_fila(_numcolumnas, 0/*inicializo con ceros*/);
-    _matriz.resize(_numfilas, vec_fila);
+void MatrizDoK::set(int fila, int columna, double valor) {
+    if (fila >= filas() || columna >= columnas()) {
+        cerr << "Se intentó acceder a una posición inexistente de una matriz DoK";
+        exit(-1);    
+    }
+    _dict[pair<int,int>(fila, columna)] = valor;
 }
-
-void Matriz::cargar(istream &is) {
-	is >> _numfilas;
-    is >> _numcolumnas;
     
-    _matriz.clear();
-    
-    vector<double> fila;
-	for (int i = 0; i < _numfilas; i++) {
-		for (int j = 0; j < _numcolumnas; j++) {
-		    double val;
-			is >> val;
-			fila.push_back(val);
-		}
-		_matriz.push_back(fila);
-		fila.clear();
-	}
+void MatrizDoK::elementos_ordenado(vector<values_with_index> &elementos) {
+    for (auto it = _dict.begin(); it != _dict.end(); it++) {
+        elementos.push_back(*it);
+    }
+    sort(elementos.begin(), elementos.end()); // funciona, ver http://www.cplusplus.com/reference/utility/pair/operators
 }
 
-void Matriz::mostrar(ostream &os) {
+void MatrizDoK::mostrar(ostream &os) {
     os.precision(5);
     os.setf(ios::fixed,ios::floatfield);
 
-	for (int i = 0 ; i<_numfilas; i++) {
-		os << "[";
-		for (int j = 0; j < _numcolumnas; j++) {
-		    // seteo la precisión en función del signo para obtener ancho fijo
-            if (_matriz[i][j] < 0) {
-                os.precision(4);  
-            } else {
-                os.precision(5);  
-            } 
-           
-            if (j == _numcolumnas-1) {
-                os << _matriz[i][j];
-            } else {
-                os << _matriz[i][j] << ", ";
-            }
+    for (int fila = 0; fila < filas(); fila++) {
+        os << "[";
+        for (int columna = 0; columna < columnas(); columna++) {
+            // seteo la precisión en función del signo para obtener ancho fijo
+            os.precision((*this)(fila, columna) < 0 ? 4 : 5);
+            os << (*this)(fila, columna) << (columna == columnas()-1 ? "" : ", ");
         }
         os << "]" << endl;
     }
     os << endl;
 }
 
-void Matriz::mostrar_esparsa(ostream &os) {
+void MatrizDoK::mostrar_esparsa(ostream &os) {
     os.precision(5);
     os.setf(ios::fixed,ios::floatfield);
 
-    for (int i = 0 ; i<_numfilas; i++) {
-        for (int j = 0; j < _numcolumnas; j++) {
-            if (_matriz[i][j] < 0) {
-                os.precision(4);  
-            } else if (_matriz[i][j] > 0) {
-                os.precision(5);  
-            } else {
-                continue;
-            }
-            os << "(" << i << ", " << j << ") = " << _matriz[i][j] << endl;
+    vector<values_with_index> elementos;
+    elementos_ordenado(elementos);
+    for (auto it = elementos.begin(); it != elementos.end(); it++) {
+        int fila = it->first.first;
+        int columna = it->first.second;
+        double valor = it->second;
+        os << "(" << fila << ", " << columna << ") = " << valor << endl;
+    }
+    os << endl;
+}
+
+/**
+* MatrizCSR
+*/
+MatrizCSR::MatrizCSR(MatrizDoK &dok) :
+        _numfilas(dok.filas()),
+        _numcolumnas(dok.columnas()),
+        _values(),
+        _columns_index(),
+        _rows_start() {
+    vector <values_with_index> elementos;
+    dok.elementos_ordenado(elementos);
+    int ultima_fila = 0;
+    _rows_start.push_back(ultima_fila);
+    for (uint i = 0; i < elementos.size(); i++) {
+        int fila = elementos[i].first.first;
+        int columna = elementos[i].first.second;
+        double valor = elementos[i].second;
+        _values.push_back(valor);
+        _columns_index.push_back(columna);
+        for (int f = ultima_fila; f < fila; f++){
+            _rows_start.push_back(i);
+        }
+        ultima_fila = fila;
+    }
+    _rows_start.push_back(elementos.size());
+}
+
+void MatrizCSR::get_fila(int fila, vector<double> &elementos, vector<int> &columnas) {
+    if (fila > filas()){
+        cerr << "Se intentó acceder a una posición inexistente de una matriz CSR";
+        exit(-1);
+    }
+    for (int i = _rows_start[fila]; i < _rows_start[fila+1]; i++){
+        elementos.push_back(_values[i]);
+        columnas.push_back(_columns_index[i]);
+    }
+}
+
+double MatrizCSR::operator()(int fila, int columna) {
+    if (fila >= filas() || columna >= columnas()) {
+        cerr << "Se intentó acceder a una posición inexistente de una matriz CSR";
+        exit(-1);
+    }
+    vector<double> elementos;
+    vector<int> columnas;
+    get_fila(fila, elementos, columnas);
+    for (uint i = 0; i < columnas.size(); i++){
+        if (columna == columnas[i]){
+            return elementos[i];
+        }
+    }
+    return 0;
+}
+
+void MatrizCSR::mostrar(ostream &os) {
+    os.precision(5);
+    os.setf(ios::fixed,ios::floatfield);
+
+    for (int fila = 0; fila < filas(); fila++) {
+        os << "[";
+        for (int columna = 0; columna < columnas(); columna++) {
+            // seteo la precisión en función del signo para obtener ancho fijo
+            os.precision((*this)(fila, columna) < 0 ? 4 : 5);
+            os << (*this)(fila, columna) << (columna == columnas()-1 ? "" : ", ");
+        }
+        os << "]" << endl;
+    }
+    os << endl;
+}
+
+void MatrizCSR::mostrar_esparsa(ostream &os) {
+    os.precision(5);
+    os.setf(ios::fixed,ios::floatfield);
+
+    for (int fila = 0; fila < filas(); fila++) {
+        vector<double> elementos;
+        vector<int> columnas;
+        get_fila(fila, elementos, columnas);
+        for (uint i = 0; i < elementos.size(); i++){
+            os << "(" << fila << ", " << columnas[i] << ") = " << elementos[i] << endl;
         }
     }
     os << endl;

@@ -2,94 +2,167 @@
 #define MATRIZ_H
 
 #include <stdlib.h>
-#include <vector>
+#include <unordered_map>
 #include <fstream>
-#include <math.h>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <algorithm>
+#include <math.h>
 
 using namespace std;
 
 /**
 * Operaciones de vectores
 */
-void imprimir_vector(vector<double> &vec, ostream &os);
-void check_dimensiones(int dimA, int dimB, const char* function_name);
+void mostrar_vector(vector<double> &vec, ostream &os);
+void mostrar_vector(vector<int> &vec, ostream &os);
+void check_dimensiones(int dimA, int dimB,  char* function_name);
 void sumar(vector<double> &a, vector<double> &b, vector<double> &res);
 void restar(vector<double> &a, vector<double> &b, vector<double> &res);
 double producto_interno(vector<double>&, vector<double>&);
 double normap(vector<double>&, int p);
-void normalizar(vector<double> &v, int norma);
+void normalizar(vector<double> &v, int p);
 
-class Matriz {
 /**
-* Matriz
-* Representa una matriz de doubles usando vector de vectores
+* Hash para pares de enteros
 */
+struct hash_pair{
 public:
-    /*********************** CONSTRUCTORES ***********************/
-	/**
-    * Constructor por defecto
-    */
-	Matriz();
-	
-    /**
-    * Constructor
-    * Construye la matriz identidad de n*n.
-    */
-    Matriz(int n);
-	
-    /**
-    * Constructor
-    * Toma el alto (primer parámetro) y el ancho (segundo parámetro)
-    * y devuelve una matriz del tamaño especificado inicializada con ceros.
-    */
-    Matriz(int n, int m);
+    size_t operator()(pair<int, int> p) const {
+        // http://www.boost.org/doc/libs/1_53_0/doc/html/hash/reference.html#boost.hash_combine
+        size_t seed = 0;
+        seed ^= hash<int>()(p.first) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        seed ^= hash<int>()(p.second) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        return seed;
+    };
+};
 
-    /**
-    * Cargar
-    * Carga una matriz de un archivo. La primer línea del archivo debe ser,
-    * en este orden, dos enteros que especifiquen el alto y el ancho.
-    * A partir de la segunda línea deben estar los elementos separados por espacios.
-    * No hace falta que haya saltos de línea entre filas.
-    */
-   	void cargar(istream &is);
+/**
+* Typedefs útiles
+*/
+typedef pair<pair<int, int>, double> values_with_index;
+typedef unordered_map<pair<int, int>, double, hash_pair> dict_of_keys;
 
+/**
+* MatrizDoK
+* Representa una matriz esparsa de doubles usando Dictionary of Keys
+*/
+class MatrizDoK {
+public:
+    /************************ RUCTORES ************************/
     /**
-    * Resize
-    * Borra la matriz y crea una nueva de alto n y ancho m.
+    * ructor por defecto
+    * Crea una matriz de 0 filas y 0 columnas
     */
-    void resize(int n, int m);
+    MatrizDoK() : _numfilas(0), _numcolumnas(0), _dict() {}
+    /**
+    * ructor vacío
+    * ruye una matriz llena de ceros
+    */
+    MatrizDoK(int filas, int columnas) : _numfilas(filas), _numcolumnas(columnas), _dict() {}
+    /**
+    * ructor desde archivo
+    * Carga la matriz de un stream de entrada.
+    */
+    MatrizDoK(istream &is);
 
-    /************************ VARIOS ************************/
-	/**
-    * []
-    * Permite acceder a los elementos de la matriz usando notación estándar M[i][j].
+    /************************ GETTERS Y SETTERS ************************/
+    /**
+    * Operador ()
+    * Permite acceder al elemento i, j de la matriz usando la notación A(i, j)
     */
-    vector<double>& operator[](int i){return _matriz[i];}
+    double operator()(int fila, int columna) ;
+    /**
+    * Set
+    * Permite asignar un valor al elemento i, j de la matriz
+    */
+    void set(int fila, int columna, double valor);
+    /**
+    * Cantidad de filas y columnas
+    */
+    int filas() {return _numfilas;}
+    int columnas() {return _numcolumnas;}
     
+    /************************ ELEMENTOS ORDENADOS ************************/
     /**
-    * Mostrar
-    * Muestra una matriz por el stream 'os'.
+    * Elementos en orden
+    * Recibe un vector vacío y lo llena con triplas < <int, int>, double> que indican 
+    * los índices y valores de los elementos no nulos de la matriz, ordenados de
+    * arriba hacia abajo y de izquierda a derecha.
     */
-    void mostrar(ostream &os);
-    
-    /**
-    * Mostrar esparsa
-    * Muestra los valores no nulos de una matriz por el stream 'os'.
-    */
-    void mostrar_esparsa(ostream &os);
-    /************************ Estructura interna *****************************/
+    void elementos_ordenado(vector<values_with_index> &elements) ; 
 
-    int get_filas() const {return _numfilas;}
-    int get_columnas() const {return _numcolumnas;}
+    /************************ OUTPUT ************************/
+    /**
+    * Salida
+    * Imprime la matriz completa en un stream de salida.
+    */
+    void mostrar(ostream &os) ;
+    /**
+    * Salida comprimida
+    * Imprime los elementos no nulos de la matriz en un stream de salida.
+    */
+    void mostrar_esparsa(ostream &os) ;
 
 private:
     int _numfilas;
-	int _numcolumnas;
-    vector<vector <double> > _matriz;
+    int _numcolumnas;
+    dict_of_keys _dict;
+};
+
+/**
+* MatrizCSR
+* Representa una matriz esparsa de doubles usando Compressed Sparse Row
+* La matriz es inmutable: una vez ruida no se puede modificar
+*/
+class MatrizCSR{
+public:
+    /************************ RUCTORES ************************/
+    /**
+    * ructor por defecto
+    */
+    MatrizCSR() : _numfilas(0), _numcolumnas(0), _values(), _columns_index(), _rows_start() {}
+    /**
+    * ructor a partir de Matriz DoK
+    */
+    MatrizCSR(MatrizDoK &dok);
+
+    /************************ GETTERS ************************/
+    /**
+    * get_fila
+    * Carga en 'elementos' y en 'columnas' los valores e índices de columna de la fila 'fila'
+    */
+    void get_fila(int fila, vector<double> &elementos, vector<int> &columnas) ;
+    /**
+    * Operador ()
+    * Permite acceder al elemento i, j de la matriz usando la notación A(i, j)
+    */
+    double operator()(int fila, int columna) ;
+    /**
+    * Cantidad de filas y columnas
+    */
+    int filas() {return _numfilas;}
+    int columnas() {return _numcolumnas;}
+
+    /************************ OUTPUT ************************/
+    /**
+    * Salida
+    * Imprime la matriz completa en un stream de salida.
+    */
+    void mostrar(ostream &os) ;
+    /**
+    * Salida comprimida
+    * Imprime los elementos no nulos de la matriz en un stream de salida.
+    */
+    void mostrar_esparsa(ostream &os) ;
+    
+private:
+    int _numfilas;
+    int _numcolumnas;
+    vector<double> _values;
+    vector<int> _columns_index;
+    vector<int> _rows_start;
 };
 
 #endif

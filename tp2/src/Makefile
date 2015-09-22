@@ -15,7 +15,7 @@ all: tp2
 clean:
 	reset
 	rm -rf $(BINDIR)	
-	- $(RM) -rf *.o *~ tp2
+	rm -rf *.o *~ tp2
 
 clean_tests:
 	reset
