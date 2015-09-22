@@ -28,7 +28,7 @@ else:
 
 			index = 0
 
-			for m in xrange(m_1_s, m_1_e+1, 3):
+			for m in xrange(m_1_s, m_1_e+1):
 				#for n in xrange(n_s, n_e+1):
 				n = m
 				currentFilePath = outputFilePath + "_" + '{0:03d}'.format(m) + "_radios"+ "_" + '{0:03d}'.format(n) + "_angulos.in"
