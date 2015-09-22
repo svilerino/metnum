@@ -12,9 +12,10 @@ Los casos de prueba son generados mediante un script de python llamado testgen.p
 \begin{enumerate}
     \item \textbf{Modo 1:} Dados por par\'ametro un radio interno, externo e isoterma fijas, toma adem\'as  una cantidad de radios inicial, una final, una cantidad de \'angulos inicial, una final, y para cada combinaci\'on de cantidades de ellos genera un n\'umero de instancias tambi\'en provisto por par\'ametro. En cada instancia, las temperaturas internas y externas son generadas pseudoaleatoriamente, ejecutando el comando \textbf{random.uniform(1450, 1550)} para las temperaturas internas y \textbf{random.uniform(50, 200)}.
     \item \textbf{Modo 2:} Dados un radio interno, externo, isoterma, n\'umero de \'angulos y radios fijos por par\'ametro, genera un \'unico archivo en el que var\'ia las temperatura de esa discretizaci\'on particular (usando los comandos descriptos anteriormente), generando un n\'umero de instancias provisto por par\'ametro.
-    \item \textbf{Modo 3:} Dados un radio interno, externo, isoterma, y n\'umero de radios fijos por par\'ametro, se le especifica una cantidad de radios inicial y una final.  Para cada cantidad de radios genera un \'unico vector de temperaturas internas y externas, y genera tantas instancias como se le especifique.
+    \item \textbf{Modo 3:} Dados un radio interno, externo, isoterma, y n\'umero de ángulos fijos por par\'ametro, se le especifica una cantidad de radios inicial y una final.  Para cada cantidad de radios genera un \'unico vector de temperaturas internas y externas, y genera tantas instancias como se le especifique.
 
 \end{enumerate}
+\textbf{Nota: } Para algunos experimentos consideramos apropiado fijar las temperaturas externas en 1500 y las internas en 100.
 
 \subsubsection{Métricas de performance}
 
