@@ -147,10 +147,10 @@ else:
 							graphic_y2.append(metrico_maximo)
 
 						plt.plot(graphic_x, graphic_y1, 'g-', graphic_x, graphic_y2, 'b-', label="")
-						plt.xlabel('x = Cantidad de radios', fontsize=14)
+						plt.xlabel('x = Temperaturas externas', fontsize=14)
 						plt.ylabel('\nf(x)', fontsize=14)
 						plt.title("Distancia relativa de la isoterma 500 al radio exterior")
-						# plt.yscale('log')
+						#plt.yscale('log')
 						plt.grid()
 						#plt.show()
 						plt.savefig(outputFilePath)

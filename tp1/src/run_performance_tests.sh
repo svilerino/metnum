@@ -53,10 +53,10 @@ if ls tests/*.in &> /dev/null; then
 			echo "" >> "../$TIMING_OUTPUT/${1}.tmpplot"
 
 			# Plot de la solucion
-#			pushd ../tools
+			pushd ../tools
 			# plotea el heatmap y la isoterma
-#			octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.out\", \"../tests/\", \"../tests/$file.isoout\")"
-#			popd
+			octave --eval "horno(\"../tests/$file.in\", \"../tests/$file.out\", \"../tests/\", \"../tests/$file.isoout\")"
+			popd
 		
 			# Crear video del test 6 de la isoterma
 			# ffmpeg -framerate 3/1 -start_number 1 -i "$file"_inst_%d_isomap.png -c:v libx264 -r 30 -pix_fmt yuv420p "$file"_video_isomap.mp4

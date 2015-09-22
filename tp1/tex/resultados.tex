@@ -237,48 +237,60 @@ En este último ejemplo ocurren ambos fenomenos al mismo tiempo, hay una variaci
 Efectivamente, podemos concluir que mientras más fina sea la discretización, se obtendrán resultados más \texttt{estables y confiables} acerca de la estimación. Uno de los motivos es porque habrá menos puntos para interpolar en la posición de la isoterma y el otro porque se tiene más informacion de la temperatura de la pared del horno.
 
 \subsubsection{Estimación de estabilidad de la pared del horno}
-Para este experimento utilizaremos discretizaciones finas, ya vimos en los experimentos anteriores que esto provee mayor confiabilidad en las estimaciones, para discretizaciones más gruesas las estimaciones de seguridad serán menos exactas.
+
+Se presentarán a continuación los resultados de la estimacion de la estabilidad del horno. Para varios tipos de discretizaciones donde la cantidad de ángulos y radios son iguales, se evalua el cambio de posicion de la isoterma a medida que va aumentando la temperatura externa entre 100 y 300 grados, de a 2 grados por paso. Dado que las temperaturas son constantes, el máximo y el promedio coinciden como métricas de posicionamiento relativo de la isoterma.
+
+\begin{figure}[h]
+\centering
+
+\includegraphics[scale=0.3]{experimentos1a_1b/evolucion_estimacion_seguridad_isoterma/variacion_25.png}
+\includegraphics[scale=0.3]{experimentos1a_1b/evolucion_estimacion_seguridad_isoterma/variacion_50.png}	
+
+\caption{Cantidad de radios y ángulos: 25(Izq) 50(Der)}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+
+\includegraphics[scale=0.3]{experimentos1a_1b/evolucion_estimacion_seguridad_isoterma/variacion_75.png}
+\includegraphics[scale=0.3]{experimentos1a_1b/evolucion_estimacion_seguridad_isoterma/variacion_100.png}	
+
+\caption{Cantidad de radios y ángulos: 75(Izq) 100(Der)}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+
+\includegraphics[scale=0.5]{experimentos1a_1b/evolucion_estimacion_seguridad_isoterma/variacion_125.png}
+
+\caption{Cantidad de radios y ángulos: 125}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+
+\includegraphics[scale=0.5]{experimentos1a_1b/evolucion_estimacion_seguridad_isoterma/variacion_30a_200r.png}
+\caption{Cantidad de radios 200 - ángulos: 30}
+
+\includegraphics[scale=0.5]{experimentos1a_1b/evolucion_estimacion_seguridad_isoterma/variacion_5a_500r.png}
+\caption{Cantidad de radios 500 - ángulos: 5}
+\end{figure}
+
+Los gráficos son un poco mas extraños de lo esperado. Se observa que, para cualquier discretizacion fija, al aumentar la temperatura externa, la isoterma tiende a acercarse a la pared externa. Esto es lo esperable, el método propuesto para determinar la seguridad de la isoterma consiste en fijar un umbral sobre la posicion relativa máxima o promedio. Lo que se observa como raro es la curva \texttt{dentada} a medida que crecen las temperaturas. Veamos además que estos \texttt{dientes} disminuyen su intensidad a medida que se van agregando radios a la discretizacion. 
+
+\begin{proposition} 
+	Bajo que las temperaturas internas y externas constantes, la posicion radial de la isoterma es la misma en todo ángulo.	
+\end{proposition}
+
+Dada esta última proposición, podemos hacer experimentos con muy pocos ángulos y muchos radios que nos den pauta de que ocurre con esos \texttt{dientes} en los gráficos. \\
+Se puede observar en las figuras con 200 y 500 radios, que a medida que $m\to\infty$ , la curva se suaviza. Lo cual nos hace pensar, que la estimacion lineal de la isoterma esta generando esta distorsión.
+
 \vspace{0.5cm}
 
-\begin{itemize}
-	\item \textbf{Temperaturas internas:} $[200, 500, 750]$
-	\item \textbf{Temperaturas externas:} $[1450\dots1550]$ aleatorias uniformes.
-	\item \textbf{Radio interno:} 200
-	\item \textbf{Radio externo:} 400
-	\item \textbf{Cantidad radios:} 30
-	\item \textbf{Cantidad ángulos:} 30
-	\item \textbf{Isoterma buscada:} 500
-\end{itemize}
+Consideremos nuevamente $\hat{g_{\theta_i}}$: la función \textbf{discreta de aproximaciones} de temperatura de un ángulo i. A medida que las temperaturas aumentan linealmente, los 2 puntos $x$ y $x'$ que acotan la isoterma buscada en dicha función van aumentando linealmente tambien, generando que la estimacion del punto intermedio entre ellos decrezca. Creemos que cuando esos 2 puntos dejan se encerrar el valor buscado, es que se produce el \texttt{salto} en el gráfico.
 
-	\textbf{Temperaturas externas: } 200\\
-	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test21_030_radios_030_angulos_inst_001_heatmap.png}
-	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test21_030_radios_030_angulos_inst_001_isomap.png}
+\begin{proposition}
+	El método de umbral de seguridad es inconsistente tomando la distancia máxima relativa o distancia promedio relativa a la pared exterior.
+\end{proposition}
 
-	\textbf{Temperaturas externas: } 500\\
-	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test22_030_radios_030_angulos_inst_001_heatmap.png}
-	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test22_030_radios_030_angulos_inst_001_isomap.png}
-
-	\textbf{Temperaturas externas: } 750\\
-	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test23_030_radios_030_angulos_inst_001_heatmap.png}
-	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_isoterma_cambios_temperatura_varias_discretizaciones/test23_030_radios_030_angulos_inst_001_isomap.png}
-
-\vspace{0.5cm}
-
-La escala de color de los mapas de temperaturas se hace en base al mínimo y máximo de la muestra, es por esto que la variación de temperaturas externas no provee una variación en los colores de los radios del borde. \\
-Asimismo, se ve que la posición de la isoterma en los casos $200, 500$ se posiciona según lo esperado dentro de la pared del horno. Mientras que en el caso $750$, al ser $750 > 500$, por convención posicionamos la isoterma en $R_i - \epsilon$.
-
-\vspace{0.5cm}
-
-En la siguiente tabla se puede observar que las métricas de seguridad nos dan una pauta acerca de la posición promedio y maxima de la isoterma dentro de la pared del horno. Si utilizamos $\gamma_0 = 0.75$ como limite de seguridad, podemos establecer conclusiones acerca de la seguridad: en el caso donde hay 200 grados en el exterior es seguro, mientras que 500 grados, no lo es.
-
-\begin{center}
-	\begin{tabular}{| c | c | c | c |}
-	 	\hline
-	 	$T_e$ & $\Delta_{max_{iso500}}$ & $\Delta_{prom_{iso500}}$ & Seguro bajo $\gamma_0 = 0.75$\\
-	 	\hline			
-		200 & 0.709145 & 0.71037 & Si\\
-		\hline
-		500 & 0.965517 & 0.965517 & No\\
-		\hline  
-	\end{tabular}
-\end{center}
+En los resultados anteriores y en el gráfico presentado en el primer experimento de ubicacion de la isoterma (convergencia radial de la isoterma). Se puede observar claramente, que trazando una recta horizontal en algún punto del eje Y, la determinación de colapso no es consistente. Es decir, existen $t_1 < t_2 < t_3$ temperaturas crecientes donde tanto la posicion máxima relativa o la posicion promedio relativa, indican peligro de colapso para $t_2$ pero no para $t_1$ ni $t_3$. Sin embargo, cuando $m\to\infty$ esto tiende a ser \texttt{menos inconsistente}.

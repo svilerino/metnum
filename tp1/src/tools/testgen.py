@@ -30,8 +30,10 @@ else:
 
 			for m in xrange(m_1_s, m_1_e+1):
 				#for n in xrange(n_s, n_e+1):
-				n = m
-				currentFilePath = outputFilePath + "_" + '{0:03d}'.format(m) + "_radios"+ "_" + '{0:03d}'.format(n) + "_angulos.in"
+				m = 500
+				n = 5
+				#currentFilePath = outputFilePath + "_" + '{0:03d}'.format(m) + "_radios"+ "_" + '{0:03d}'.format(n) + "_angulos.in"
+				currentFilePath = outputFilePath + "_" + '{0:03d}'.format(m) + "_radios"+ "_" + '{0:03d}'.format(n) + "_angulos" + "_inst_" + '{0:03d}'.format(index) + ".in"
 				index = index + 1
 				with open(currentFilePath, 'w') as f:
 					f.write(str(r_i) + 	" " + str(r_e) + " " + str(m) + " " + str(n) + " " + str(iso)+ " " + str(ninst) + "\n")
@@ -41,10 +43,10 @@ else:
 							f.write(str(value) + " ")
 						for j in xrange(0,n):
 							if j == (n-1):
-								value = random.uniform(100, 100)
+								value = random.uniform(100, 100) + 2*index
 								f.write(str(value))
 								continue
-							value = random.uniform(100, 100)
+							value = random.uniform(100, 100) + 2*index
 							f.write(str(value) + " ")
 						f.write("\n")
 
