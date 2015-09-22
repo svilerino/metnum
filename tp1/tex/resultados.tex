@@ -3,53 +3,62 @@
 % para  su  presentacion.   Deberan  especicar  claramente  a  que  experiencia  corresponde
 % cada resultado.  No se incluiran aqu corridas de maquina.
 \subsection{Performance}
-\subsubsection{Gauss vs LU para una sola instancia variando discretizaciones}
-
-  	\textbf{Performance de factorizai\'on LU para distinta granularidad de radios}\\
-
-\begin{center}
-\includegraphics[scale=0.65]{experimentos2a_2b/gaussMed.png}
-\end{center}
-
-  	\textbf{Performance de Gauss para distinta granularidad de radios}\\
+\subsubsection{Performance de los m\'etodos en funci\'on de la discretizaci\'on para una instancia}
+Utilizamos una heur\'istica para poder determinar mejor el orden c\'ubico de la curva resultado. Sea $f(x)$ el valor del tiempo de c\'omputo, graficar $f(x)/x^k$, siendo $k \in \left[ 2, 3, 4 \right] $ . De ser $f(x)$ de orden c\'ubico, esperar\'iamos que para el polinomio de orden 2 el resultado sea una funci\'on creciente, para el de orden 3 el resultado se asemeje a una constante y para el de orden 4, una funcion decreciente.
 
 \begin{center}
-\includegraphics[scale=0.65]{experimentos2a_2b/Lumed.png}
+\textbf{1 instancia por archivo de test}\\
+\includegraphics[scale=0.35]{experimentos2a_2b/tiempos_nm_fitteo_1_inst/eliminacion_gaussiana_time_consumed.png}
+\includegraphics[scale=0.35]{experimentos2a_2b/tiempos_nm_fitteo_1_inst/factorizacion_lu_time_consumed.png}
 \end{center}
 
-A continuaci\'on, usaremos una heur\'istica para poder determinar mejor el orden c\'ubico de la curva resultado. Esta es, sea $x$ el valor del tiempo de c\'omputo, dividir $x/f(x)$, siendo $f(x)$ polinomio de orden $2$ y $3$. De ser de orden c\'ubica la curva, esperar\'iamos que para el polinomio de orden 2 el resultado se asemeje a una funci\'on lineal, y para el de orden 3 el resultado se asemeje a una constante.
+A pesar de ser una heur\'istica, podemos corroborar que la curva sobre cubo se asemeja mucho a una constante, mientras que al cuadrado y a la cuarta funciones crecientes y decrecientes, respectivamente. Por lo que podemos decir que probamos emp\'iricamente que los algoritmos son del orden c\'ubico.
 
-  	\textbf{Performance de factorizai\'on LU sobre cuadrado}\\
+\subsubsection{Performance de EG vs LU variando la cantidad de instancias y la granularidad de la discretizacion}
+
+Para comenzar esta seccion, compararemos la performance de EG vs LU variando las discretizaciones, con archivos de entrada de una sola instancia. A continuacion se presentan los graficos de comparación entre EG y LU, en diferentes escalas.
 
 \begin{center}
-\includegraphics[scale=0.65]{experimentos2a_2b/Lucuadrado.png}
+\textbf{1 instancia por archivo de test}\\
+\includegraphics[scale=0.35]{experimentos2a_2b/tiempos_nm_fitteo_1_inst/gauss_vs_lu_time_consumed_abs.png}
+\includegraphics[scale=0.35]{experimentos2a_2b/tiempos_nm_fitteo_1_inst/gauss_vs_lu_time_consumed_log.png}
 \end{center}
 
-  	\textbf{Performance de Gauss sobre cuadrado}\\
+Dado que factorizacion LU, es identico a EG, pero guardando los coeficientes en la matriz L, tiene sentido que para una sola instancia sea mas costoso realizar la factorizacion lu y resolver el sistema que simplemente resolver usando EG.
+
+\vspace{0.5cm}
+
+A continuacion, se presentan graficos comparativos entre LU y EG para distintas cantidades de instancias. Lo que se observa es que, la brecha entre EG y LU se acentúa cada vez más a medida que aumenta la cantidad de instancias(ver gráficos con escala lineal). Esto se debe a que la complejidad teorica de resolver k instancias (misma matriz A, distinto vector b, en un sistema Ax=b) usando EG es $\mathcal{O}( k * (n + m)^3 )$. Por otro lado, la complejidad de resolver k instancias usando LU es $\mathcal{O}((n + m)^3 + k*(n + m)^2)$, es decir: Complejidad cúbica para hallar la descomposicion LU, y luego $k$ resoluciones de los sistemas triangulares $Ly=b$ y $Ux=y$ que cuestan orden cuadrático cada uno. 
 
 \begin{center}
-\includegraphics[scale=0.65]{experimentos2a_2b/GaussCuadrado.png}
+\textbf{10 instancias por archivo de test}\\
+\includegraphics[scale=0.35]{experimentos2a_2b/gauss_vs_lu_10_inst/gauss_vs_lu_time_consumed_abs.png}
+\includegraphics[scale=0.35]{experimentos2a_2b/gauss_vs_lu_10_inst/gauss_vs_lu_time_consumed_log.png}
 \end{center}
-
- \textbf{Performance de factorizai\'on LU sobre cubo}\\
-
 
 \begin{center}
-\includegraphics[scale=0.65]{experimentos2a_2b/LuCubo.png}
+\textbf{50 instancias por archivo de test}\\
+\includegraphics[scale=0.35]{experimentos2a_2b/gauss_vs_lu_50_inst/gauss_vs_lu_time_consumed_abs.png}
+\includegraphics[scale=0.35]{experimentos2a_2b/gauss_vs_lu_50_inst/gauss_vs_lu_time_consumed_log.png}
 \end{center}
-
- \textbf{Performance de Gauss sobre cubo}\\
-
 
 \begin{center}
-\includegraphics[scale=0.65]{experimentos2a_2b/GaussCubo.png}
+\textbf{150 instancias por archivo de test}\\
+\includegraphics[scale=0.35]{experimentos2a_2b/gauss_vs_lu_150_inst/gauss_vs_lu_time_consumed_abs.png}
+\includegraphics[scale=0.35]{experimentos2a_2b/gauss_vs_lu_150_inst/gauss_vs_lu_time_consumed_log.png}
 \end{center}
 
-A pesar de ser una heur\'istica, podemos corroborar que la curva sobre cubo se asemeja mucho a una constante, por lo que podemos decir que probamos emp\'iricamente que los algoritmos son del orden c\'ubico.
+\begin{center}
+\textbf{500 instancias por archivo de test}\\
+\includegraphics[scale=0.35]{experimentos2a_2b/gauss_vs_lu_500_inst/gauss_vs_lu_time_consumed_abs.png}
+\includegraphics[scale=0.35]{experimentos2a_2b/gauss_vs_lu_500_inst/gauss_vs_lu_time_consumed_log.png}
+\end{center}
+
+Tambien se observa en los graficos con escala logaritmica que la brecha entre EG y LU para una cantidad de instancias fija se acentua a medida que se aumenta el tamaño de la matriz del sistema, pues el ratio LU/EG decrece. Creemos que esto se debe a que al dejar k fijo y aumentar $n+m$, tenemos que $\mathcal{O}((n + m)^3 + k*(n + m)^2)$ es mas pequeño que $\mathcal{O}(k*(n + m)^3)$ en terminos empíricos. 
 
 \textbf{Consideraci\'on Adicional:} 
 
-Durante la implementaci\'on de los algoritmos, se agreg\'o la siguiente sentencia condicional:
+Luego de la experimentacion, se nos ocurrio una optimizacion de la implementaci\'on de los algoritmos, se agreg\'o la siguiente sentencia condicional al código de EG y la parte de triangulacion de LU:
 
 \begin{lstlisting}
 			.
@@ -65,60 +74,7 @@ for (int j = i+1; j < numfilas; j++) {
 			.
 \end{lstlisting}
 
-Es decir, si el elemento a analizar de la matriz es un cero(con tolerancia epsilon, en nuestro caso $exp(10, -9)$), el algoritmo no realiza el c\'alculo del coeficiente multiplicador ni tampoco opera sobre la fila multiplicando cada elemento por \'este. Al agregar esta sentencia y realizar un experimento id\'entico al anterior, obtuvimos como resultado que la complejidad emp\'irica de ambos algoritmos era de orden cuadr\'atico. Creemos que esto se debe a la condición banda de la matriz, y que en muchos casos esta condición de corte evita que el algoritmo ingrese en la tercera iteracion anidada.
-
-\subsubsection{Gauss vs LU para varias instancias de una misma discretizacion}
-
-
-\vspace{0.5cm}
-
-  	\textbf{Comparaci\'on de Performance para una instancia}\\
-\begin{center}
-\includegraphics[scale=0.7]{experimentos2a_2b/2bUnaInstancia.png}
-\end{center}
-
-Puede verse claramente como, comparando por una instancia, la mayor constante en la complejidad te\'orica de la factorizaci\'on LU se refleja en la experimentaci\'on. \textbf{Ratio LU/Gauss: 1.577}
-
- \textbf{Comparaci\'on de Performance para cinco instancias}\\
-\begin{center}
-\includegraphics[scale=0.7]{experimentos2a_2b/2bCincoInstancias.png}
-\end{center}
-
-Con aumentar en nada m\'as que 4 el n\'umero de instancias, ya se nota una amplia mejora en el tiempo de c\'omputo de factorizaci\'on LU, ya que, al no variar la discretizaci\'on y variar las temperaturas externas e internas, se hace uso al m\'aximo de la mayor ventaja del algoritmo de factorizac\'on LU: para una misma matriz A (discretizaci\'on), y distintas temperaturas (cambia el vector V), luego de la primera vez que resuelve el sistema (que cuesta $O(n^3)$), las subsiguientes veces cuesta $O(n^2)$, dado que simplemente tiene que realizar substituciones. \textbf{Ratio LU/Gauss: 0.3178}
-
- \textbf{Comparaci\'on de Performance para diez instancias}\\
-\begin{center}
-\includegraphics[scale=0.7]{experimentos2a_2b/2bDiezInstancias.png}
-\end{center}
-
-Al aumentar el n\'umero de instancias se sigue notando la misma tendencia, y el ratio de mejora de LU sobre Gauss se hace m\'as pequeño a medida que crece el n\'umero de instancias. \textbf{Ratio LU/Gauss: 0.2264}
-
-\subsubsection{Gauss vs LU para 50 instancias variando discretizaciones para varias instancias}
-
-  	\textbf{Comparaci\'on de Performance para 20 \'angulos y radios }\\
-\begin{center}
-\includegraphics[scale=0.7]{experimentos2a_2b/2b2020.png}
-\end{center}
-
- \textbf{Ratio LU/Gauss: 0.2059}
-
-  	\textbf{Comparaci\'on de Performance para 40 \'angulos y radios }\\
-\begin{center}
-\includegraphics[scale=0.7]{experimentos2a_2b/2b4040.png}
-\end{center}
-
- \textbf{Ratio LU/Gauss: 0.090}
-
-  	\textbf{Comparaci\'on de Performance para 60 \'angulos y radios }\\
-\begin{center}
-\includegraphics[scale=0.7]{experimentos2a_2b/2b6060.png}
-\end{center}
-
- \textbf{Ratio LU/Gauss: 0.066}
-
-Podemos notar como, a medida que mejora la discretizaci\'on, tambi\'en mejora la diferencia de Performance de la factorizaci\'on LU por sobre Gauss, dando muestra de la diferencia de un orden polinomial de Gauss sobre LU (para la segunda instancia en adelante)
-
-
+Es decir, si el elemento a analizar de la matriz es un cero(con tolerancia epsilon, en nuestro caso $exp(10, -9)$), el algoritmo no realiza el c\'alculo del coeficiente multiplicador ni tampoco opera sobre la fila multiplicando cada elemento por \'este. Al agregar esta sentencia y realizar los experimentos de fitteo de orden de complejidad, obtuvimos como resultado que la complejidad emp\'irica de ambos algoritmos era de orden cuadr\'atico. Creemos que esto se debe a la condición banda de la matriz, y que en muchos casos esta condición de corte evita que el algoritmo ingrese en la tercera iteracion anidada.
 
 \subsubsection{Evolución estimación de la isoterma y temperatura}
 Se presentarán los resultados de los experimentos en el mismo orden en que fueron planteados en la sección de desarrollo. Se realizará el análisis de los mismos en este mismo apartado.
