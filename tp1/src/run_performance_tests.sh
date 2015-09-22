@@ -39,7 +39,7 @@ if ls tests/*.in &> /dev/null; then
 		if [ $process_exit_status -eq 0 ] 
 		then
 			#extraigo la salida del archivo de timings
-			timeconsumed=$(cat "../$TIMING_OUTPUT/${1}_$file.timingout" | awk -F' ' '{print $3}' | tr '\n' ' ')
+			timeconsumed=$(cat "../$TIMING_OUTPUT/${1}_$file.timingout" | awk -F' ' '{print $2}' | tr '\n' ' ')
 			seguridad_isoterma_promedio=$(cat "$file.seguridadisoout" | awk -F' ' '{print $1}' | tr '\n' ' ')
 			seguridad_isoterma_maximo=$(cat "$file.seguridadisoout" | awk -F' ' '{print $2}' | tr '\n' ' ')
 
