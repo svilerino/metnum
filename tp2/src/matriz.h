@@ -2,6 +2,7 @@
 #define MATRIZ_H
 
 #include <stdlib.h>
+#include <map>
 #include <unordered_map>
 #include <fstream>
 #include <cmath>
@@ -9,6 +10,8 @@
 #include <iostream>
 #include <algorithm>
 #include <math.h>
+#include "sparse_vector.tpp"
+#include "dok_matrix.tpp"
 
 using namespace std;
 
@@ -43,31 +46,18 @@ public:
 */
 typedef pair<pair<int, int>, double> values_with_index;
 typedef unordered_map<pair<int, int>, double, hash_pair> dict_of_keys;
+typedef unsigned int uint;
+
 
 /**
-* MatrizDoK
-* Representa una matriz esparsa de doubles usando Dictionary of Keys
+* Dictionary of Keys
 */
 class MatrizDoK {
 public:
-    /************************ RUCTORES ************************/
-    /**
-    * ructor por defecto
-    * Crea una matriz de 0 filas y 0 columnas
-    */
     MatrizDoK() : _numfilas(0), _numcolumnas(0), _dict() {}
-    /**
-    * ructor vacío
-    * ruye una matriz llena de ceros
-    */
     MatrizDoK(int filas, int columnas) : _numfilas(filas), _numcolumnas(columnas), _dict() {}
-    /**
-    * ructor desde archivo
-    * Carga la matriz de un stream de entrada.
-    */
     MatrizDoK(istream &is);
 
-    /************************ GETTERS Y SETTERS ************************/
     /**
     * Operador ()
     * Permite acceder al elemento i, j de la matriz usando la notación A(i, j)

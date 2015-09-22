@@ -1,6 +1,6 @@
 CC=g++
 LD=g++
-CFLAGS=-Wall -O2 -std=c++0x -ggdb
+CFLAGS=-Wall -O2 -std=c++11
 LDFLAGS=
 RM=rm
 OBJECTS=main.o matriz.o io.o problem.o
