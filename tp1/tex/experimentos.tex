@@ -78,7 +78,7 @@ Plantemos una métrica que estima la \texttt{estabilidad} o \texttt{seguridad} d
 \includegraphics[scale=0.65]{img/nTimesM-3dPlot.png}
 \end{center}
 
-En el grafico puede verse, que fijando n y variando m, o al reves, se obtiene un crecimiento lineal en esa direccion. Asimismo, variando n y m al mismo tiempo, se obtiene un crecimiento lineal(mas pronunciado) por la diagonal entre $(0,0)$ y $(80,80)$
+En el grafico puede verse, que fijando n y variando m, o al reves, se obtiene un crecimiento lineal en esa direccion. Asimismo, variando n y m al mismo tiempo, se obtiene un crecimiento lineal por la diagonal entre $(0,0)$ y $(80,80)$
 
 Dado que nosotros queremos ver como se comportan los algoritmos cuando $k = m*n$ aumenta, nos parece representativo solo tomar combinaciones de $n, m$ que varien conjuntamente, es decir, movernos por la diagonal del plano entre $(0, 0)$ y $(n_{max}, m_{max})$.
 \vspace{0.3cm}
@@ -94,13 +94,27 @@ Los experimentos de performance se dividen en dos secciones:
 \end{enumerate}
 
 \subsubsection{Evolución de la temperatura y posición de la isoterma con distintas discretizaciones}
-Para evaluar la calidad de nuestros estimadores y la evolucion de la posición de la isoterma planteamos los siguientes experimentos:\\
-Experimentos de estimación de isoterma con distintas discretizaciones:
+
+El objetivo de los experimentos planteados en esta sección es analizar la posicion de la isoterma a medida que se varían las discretizaciones en diferentes direcciones(radios, angulos y ambas al mismo tiempo.). Para realizar esto, necesitamos que cada test de un experimento \textbf{tenga la misma solución}. Todos los experimentos mencionados debajo comienzan con una discretización gruesa y se van afinando a medida que crece la componente correspondiente(según el experimento). Se espera que la posicion de la isoterma \texttt{converja} a la posicion \texttt{real}.
+
+\begin{proposition}[Convergencia de la solucion] Dado que estamos aproximando una función contínua con discretizaciones, asumimos que si hacemos $n \to\infty \land m\to\infty$, la solucion obtenida se parece cada vez a la solucion \texttt{real}. En otras palabras, la posición de la isoterma converge.
+\end{proposition}
+
+Para corroborar esta proposición tomamos dos funciones sobre la solución(posicion radial de la isoterma), máximo y promedio. Al graficar estas funciones de la solucion a medida que se incrementa la discretización esperamos obtener un gráfico convergente. Esta misma proposición se puede analizar viendo los videos de las soluciónes de cada experimento, ahi se ve claramente como converge la isoterma.
+
+\begin{proposition} A medida que crece la discretización en la dimension radial, la interpolacion lineal radial de la isoterma es cada vez mas exacta.
+\end{proposition}
+Esto puede corroborarse viendo el algoritmo de interpolación planteado en la sección anterior, si tenemos mas puntos discretos, la distancia entre la cota inferior y superior es mas pequeña, y se comete menos error al estimar.
+
+\vspace{0.3cm}
+
+Los \textbf{distintos} experimentos planteados son los siguientes:
+
 \begin{enumerate}
     \item \textbf{Variación de cantidad de radios.} La cantidad de ángulos, las temperaturas (internas y externas) y los demás parametros se mantienen invariantes entre los tests de este experimento
     \begin{itemize}
         \item Se plantean los radios internos, externos y la isoterma buscada y se mantienen fijos durante todo el experimento.
-        \item Se plantean un conjunto de temperaturas internas y externas \textbf{aleatorias uniformes} iniciales y se mantienen fijas durante todo el experimento.
+        \item Se plantean un conjunto de temperaturas internas y externas \textbf{aleatorias uniformes iniciales y se mantienen fijas durante todo el experimento para mantener la misma solucion entre tests}.
         \item Se plantea un numero de ángulos de la discretización y se mantiene fijo durante todo el experimento. 
         \item Se plantea un rango $[r_{min}, r_{max}]$ que denota la cobertura de discretizaciones distintas del experimento.
         \item Se generan archivos de entrada $test_i$ variando unicamente la cantidad de radios de la discretización a utilizar con una instancia por archivo.
@@ -114,7 +128,7 @@ Experimentos de estimación de isoterma con distintas discretizaciones:
 
     \item \textbf{Variación de cantidad de ángulos.} La cantidad de radios, las temperaturas (internas y externas) y los demás parametros, se mantienen invariantes entre los tests de este experimento\begin{itemize}
         \item Se plantean los radios internos, externos y la isoterma buscada y se mantienen fijos durante todo el experimento.
-        \item Se plantean un conjunto de temperaturas internas y externas \textbf{constantes} (si son aleatorias no asegurar misma solución entre tests del experimento) y se mantienen fijas durante todo el experimento, usándose en la creación de cada archivo de input con diferente cantidad de ángulos.
+        \item Se plantean un conjunto de temperaturas internas y externas \textbf{constantes} (si son aleatorias no aseguran misma solución entre tests del experimento) y se mantienen fijas durante todo el experimento, usándose en la creación de cada archivo de input con diferente cantidad de ángulos.
         \item Se plantea un numero de radios de la discretización y se mantiene fijo durante todo el experimento. 
         \item Se plantea un rango $[\theta_{min}, \theta_{max}]$ que denota la cobertura de discretizaciones distintas del experimento.
         \item Se generan archivos de entrada $test_i$ variando unicamente la cantidad de ángulos de la discretización a utilizar con una instancia por archivo.
@@ -137,9 +151,9 @@ Experimentos de estimación de isoterma con distintas discretizaciones:
     \end{itemize}    
 \end{enumerate}
 
-Los experimentos aquí planteados, tienen la misma solución entre tests, variando unicamente las discretizaciones, esto nos debería dar la pauta de como cambia la posición estimada de la isoterma al cambiar la discretización.
+\textbf{Nota:} Los experimentos aquí planteados, tienen la misma solución entre tests, variando unicamente las discretizaciones, esto nos debería dar la pauta de como cambia la posición estimada de la isoterma al cambiar la discretización.
 
-Se espera poder obtener conclusiones acerca de la suavidad de la curva estimada de la isoterma a medida que disminuye la granularidad de la discretización. Asimismo en las funciones que grafican el máximo y el promedio, se espera poder obtener conclusiones similares respecto a la variacion radial de la curva polar de la isoterma.\\
+Se espera poder obtener conclusiones acerca de la suavidad de la curva estimada de la isoterma a medida que disminuye la granularidad de la discretización. Asimismo en las funciones que grafican el máximo y el promedio, se espera poder obtener conclusiones respecto a la convergencia de la variacion radial de la isoterma.\\
 
 \subsubsection{Evolución de la posición de la isoterma con distintas discretizaciones y temperaturas externas}
 Experimentos de estimación de \texttt{estabilidad} de la pared del horno:
