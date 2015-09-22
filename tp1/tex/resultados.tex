@@ -144,6 +144,26 @@ Se observa es que a medida que se aumenta la cantidad de radios de la discretiza
 	\textbf{Evolución de la variación radial de la isoterma con cantidad creciente de radios}\\
 	\includegraphics[scale=0.5]{experimentos1a_1b/evolucion_estimacion_seguridad_isoterma/100ang_5to100radios.png}\\
 
+
+Para evitar distorsiones en el gráfico anterior, se realizo un experimento muy similar al anterior pero con condiciones de borde \textbf{constantes e iguales}.
+\begin{itemize}
+	\item \textbf{Temperaturas internas y externas:} constantes, 100 y 1500. Esto es para que tenga la misma solución cada test del experimento.
+	\item \textbf{Radio interno:} 200
+	\item \textbf{Radio externo:} 400
+	\item \textbf{Cantidad radios:} $[10\dots200]$
+	\item \textbf{Cantidad ángulos:} 75
+	\item \textbf{Isoterma buscada:} 500
+\end{itemize}
+
+No expondremos los resultados acerca de la evolucion de la temperatura y posicion de la isoterma, pues son similares al experimento anterior, la isoterma converge a medida que aumenta la cantidad de radios utilizada en la discretización. Si expondremos el gráfico respecto al promedio/maximo de la isoterma a medida que aumentan los radios.
+
+\includegraphics[scale=0.5]{experimentos1a_1b/evolucion_estimacion_seguridad_isoterma/75ang_10to200rad_evol_maxpromradio.png}\\
+\textbf{Nota:} Al ser las condiciones de borde iguales, la isoterma tiene radio constante para cada experimento, con lo cual maximo y promedio coinciden, con lo cual se ve una sola curva.
+
+\vspace{0.2cm}
+
+Se puede ver que, al igual que en el experimento anterior, al aumentar la cantidad de radios, la posicion de la isoterma converge. Tambien se observa que en ambos experimentos, la posicion relativa de la isoterma converge aproximadamente a 0.64/0.66, lo cual tiene sentido ya que el experimento anterior tenia temperaturas aleatorias uniformes, pero \texttt{casi} alrededor de las temperaturas fijadas en el segundo experimento.\\
+
 	\item \begin{itemize}
 					\item \textbf{Temperaturas internas y externas:} constantes, 100 y 1500. Esto es para que tenga la misma solución cada test del experimento.
 					\item \textbf{Radio interno:} 200
