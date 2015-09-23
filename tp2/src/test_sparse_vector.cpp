@@ -1,7 +1,7 @@
-#include <vector>
-#include <iostream>
-#include <cstring>
-#include "matriz.h"
+#include<vector>
+#include<iostream>
+#include<cstring>
+#include<matriz.hpp>
 
 
 int main(int argc, char** argv) {

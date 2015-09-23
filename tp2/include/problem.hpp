@@ -2,10 +2,10 @@
 #define PROBLEM_H
 #define CANT_ITERS_MEDICION 1
 
-#include <math.h>
-#include "io.h"
-#include "timing.h"
-#include <cassert>
+#include<math.h>
+#include<io.hpp>
+#include<timing.hpp>
+#include<cassert>
 
 class Problem {
 	// Abstrae funciones y datos útiles de un problema
