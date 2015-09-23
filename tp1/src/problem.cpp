@@ -232,6 +232,14 @@ void Problem::interpolar_isoterma(vector<double> &solucion, vector<double> &out_
 			// Estimamos la isoterma			
 			if(metodo_interpolacion == LINEAL) {
 				radio_estimado = interpolacion_lineal_inversa(isoterma_buscada, Rj(idx_up), Rj(idx_low), temp_ang[idx_low], temp_ang[idx_up]);
+				
+//				cout << "radio inferior" << Rj(idx_up) << endl;
+//				cout << "radio superior" << Rj(idx_low) << endl;
+//				cout << "Cota inferior" << temp_ang[idx_low] << endl;
+//				cout << "Cota superior" << temp_ang[idx_up] << endl;
+//				cout << "Radio aproximado" << radio_estimado << endl;
+//				cout << endl;
+//				cout << endl;
 			}
 		}
 		// Imprimimos por el stream para cada angulo(linea) la posicion radial de la isoterma estimada
