@@ -7,11 +7,15 @@
 #include<fstream>
 #include<iostream>
 #include<matriz.hpp>
-
-using namespace std;
+#include<string>
 
 typedef struct ProblemArguments {
-
+    //In order of appareance
+    bool not_pagerank;
+    double prob_teletransportation_c;
+    bool is_deportes;
+    std::string input_file;
+    double pow_method_tolerance;
 } ProblemArguments;
 
 typedef struct Results {
