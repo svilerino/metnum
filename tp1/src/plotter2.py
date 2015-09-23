@@ -49,14 +49,21 @@ import matplotlib.pyplot as plt
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 
 #read input data from file
 outputFilePath = str(sys.argv[1])
 dataFile = open(sys.argv[2], 'r')
 
+
+
+
+
+
 x = []
 time = []
+time_over_logx = []
 time_over_x = []
 time_over_x_cuad = []
 time_over_x_cub = []
@@ -66,30 +73,43 @@ for line in dataFile:
 	matrix_dim = int(line.split()[0])
 	time_consumed = float(line.split()[1])
 	
-	time.append(time_consumed)
-	time_over_x.append(time_consumed / float(matrix_dim))
-	time_over_x_cuad.append(time_consumed / float(pow(matrix_dim, 2)))
-	time_over_x_cub.append(time_consumed / float(pow(matrix_dim, 3)))
-	time_over_x_cuart.append(time_consumed / float(pow(matrix_dim, 4)))
-	
-	x.append(matrix_dim)
+	if(matrix_dim > 1 ):
+		time.append(time_consumed)
+		time_over_logx.append(time_consumed / math.log10(matrix_dim))
+		time_over_x.append(time_consumed / float(matrix_dim))
+		time_over_x_cuad.append(time_consumed / float(pow(matrix_dim, 2)))
+		time_over_x_cub.append(time_consumed / float(pow(matrix_dim, 3)))
+		time_over_x_cuart.append(time_consumed / float(pow(matrix_dim, 4)))
+		
+		x.append(matrix_dim)
 
-plt.gca().set_color_cycle(['red', 'green', 'black', 'blue'])
+#plt.plot(x, time, 'b-', x, time, 'b*')
 
-#plt.plot(x, time)
+plt.gca().set_color_cycle(['blue', 'green', 'black', 'red'])
+
+fit_order = 1
+coefficients = np.polyfit(x, time, fit_order)
+polynomial = np.poly1d(coefficients)
+y_fit = polynomial(x)
+
+plt.plot(x, time)
+plt.plot(x, y_fit)
+
+#plt.plot(x, time_over_logx)
 #plt.plot(x, time_over_x)
 #plt.plot(x, time_over_x_cuad)
-plt.plot(x, time_over_x_cub)
+#plt.plot(x, time_over_x_cub)
 #plt.plot(x, time_over_x_cuart)
 
-plt.legend(['f(x)/n^3'], loc='upper right')
+plt.legend(['f(x)', 'fitteo lineal'], loc='upper right')
 #plt.legend(['f(x)', 'f(x)/n', 'f(x)/n^2', 'f(x)/n^3'], loc='upper right')
 #plt.yscale('log')
+plt.grid()
 
 ax = plt.gca()
-ax.set_title("Evolucion de rendimiento respecto a la dimension de la matriz")    
-ax.set_xlabel('Dimension de la matriz: x = n*(m+1)')
-ax.set_ylabel('f(x) = Tiempo en microsegundos')
+ax.set_title("Disipacion del calor en una direccion fija")    
+ax.set_xlabel('Distancia al centro del horno')
+ax.set_ylabel('f(x) = Temperatura en grados')
 
 plt.savefig(outputFilePath)
 plt.close()

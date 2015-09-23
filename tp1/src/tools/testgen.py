@@ -30,8 +30,8 @@ else:
 
 			for m in xrange(m_1_s, m_1_e+1):
 				#for n in xrange(n_s, n_e+1):
-				m = 500
-				n = 5
+				m = 50
+				n = 4
 				#currentFilePath = outputFilePath + "_" + '{0:03d}'.format(m) + "_radios"+ "_" + '{0:03d}'.format(n) + "_angulos.in"
 				currentFilePath = outputFilePath + "_" + '{0:03d}'.format(m) + "_radios"+ "_" + '{0:03d}'.format(n) + "_angulos" + "_inst_" + '{0:03d}'.format(index) + ".in"
 				index = index + 1
