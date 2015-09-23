@@ -1,16 +1,13 @@
 #include<io.hpp>
-using namespace std;
 
-void read_args_from_stream(istream &is, ProblemArguments &args) {
-
+void read_args_from_stream(std::istream &is, ProblemArguments &args) {
 }
 
-void write_results_to_stream(ostream &os, Results output_results) {
+void write_results_to_stream(std::ostream &os, Results output_results) {
     os.precision(5);
-    os.setf(ios::fixed,ios::floatfield);
-
+    os.setf(std::ios::fixed,std::ios::floatfield);
 }
 
-void mostrar_datos_entrada(ProblemArguments args, ostream &os) {
+void mostrar_datos_entrada(ProblemArguments args, std::ostream &os) {
 
 }

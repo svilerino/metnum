@@ -5,10 +5,11 @@
 #include<sparse_vector.tpp>
 #endif
 
-#include <map>
-#include <algorithm>
-#include <iostream>
-#include <cassert>
+#include<map>
+#include<algorithm>
+#include<iostream>
+#include<cassert>
+#include<matrix_value.tpp>
 
 typedef unsigned int uint;
 
@@ -20,29 +21,13 @@ class DoK
         sparse_matrix matrix;
 
     public:
-        struct matrix_value
-        {
-            uint row,col;
-            T& val;
-
-            matrix_value(uint row, uint col, T& val) : row(row),col(col),val(val){};
-        };
-
-        struct const_matrix_value
-        {
-            uint row,col;
-            const T& val;
-
-            const_matrix_value(uint row, uint col,const T& val) : row(row),col(col),val(val){};
-        };
-
-
-        class iterator
+        class iterator : public matrix_value<T>
         {
             private:
                 sparse_matrix& matrix;
                 typename sparse_vector<T>::iterator it_cols;
                 typename sparse_matrix::iterator it_rows;
+                matrix_value<T> value;
 
             public:
                 typedef iterator self_type;
@@ -62,12 +47,11 @@ class DoK
                         }
                     }
 
+                    value.row = it_rows->first; value.col = it_cols->first; value.val = it_cols->second;
                     return *this;
                 };
-                matrix_value operator*(){
-                    return matrix_value(it_rows->first,it_cols->first,it_cols->second);
-                };
-                //matrix_value* operator->(){return &(*this);};
+                matrix_value<T> operator*(){return value;};
+                matrix_value<T>* operator->(){return &value;};
                 bool operator==(const self_type& it) const
                 {
                     return it_cols == it.it_cols && it_rows == it.it_rows && matrix == it.matrix;
@@ -89,12 +73,13 @@ class DoK
                 };
         };
 
-        class const_iterator
+        class const_iterator : public const_matrix_value<T>
         {
             private:
                 const sparse_matrix& matrix;
                 typename sparse_vector<T>::const_iterator it_cols;
                 typename sparse_matrix::const_iterator it_rows;
+                const_matrix_value<T> value;
 
             public:
                 typedef const_iterator self_type;
@@ -114,12 +99,11 @@ class DoK
                         }
                     }
 
+                    value.row = it_rows->first; value.col = it_cols->first; value.val = it_cols->second;
                     return *this;
                 };
-                const_matrix_value operator*(){
-                    return const_matrix_value(it_rows->first,it_cols->first,it_cols->second);
-                };
-                //const matrix_value* operator->(){return &(*this);};
+                const_matrix_value<T> operator*(){return value;};
+                const_matrix_value<T>* operator->(){return &value;};
                 bool operator==(const self_type& it) const
                 {
                     return it_cols == it.it_cols && it_rows == it.it_rows && matrix == it.matrix;
@@ -162,7 +146,7 @@ class DoK
 
         DoK() : matrix() {};
         DoK(uint rows) : matrix(rows) {};
-    };
+};
 
 template<class T>
 std::ostream& operator<< (std::ostream& os,const DoK<T>& dok)

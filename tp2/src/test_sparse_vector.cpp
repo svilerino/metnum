@@ -1,7 +1,7 @@
 #include<vector>
 #include<iostream>
 #include<cstring>
-#include<matriz.hpp>
+#include<sparse_vector.tpp>
 
 
 int main(int argc, char** argv) {
@@ -16,11 +16,11 @@ int main(int argc, char** argv) {
 
 	sparse_vector<double> vector2(15);
 	std::cout << "Vector == vector2: " << (vector == vector2) << std::endl;
-	cout << "Vector != vector2: " << (vector != vector2) << std::endl;
+	std::cout << "Vector != vector2: " << (vector != vector2) << std::endl;
 	vector2[9] = 1.666;
 	vector2[15] = 2;
-	cout << "Vector == vector2: " << (vector == vector2) << std::endl;
-	cout << "Vector != vector2: " << (vector != vector2) << std::endl;
+	std::cout << "Vector == vector2: " << (vector == vector2) << std::endl;
+	std::cout << "Vector != vector2: " << (vector != vector2) << std::endl;
 
 	return 0;
 }

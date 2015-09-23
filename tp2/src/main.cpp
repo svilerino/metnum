@@ -8,13 +8,14 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-    string path_file_in = argv[1];
-    string path_file_out = argv[2];
-    string path_timings_out = (argc > 4) ? argv[4] : "timing_results.txt";
-    string path_isofile_out = (argc > 5) ? argv[5] : "isofile_result.txt";
+    bool not_pagerank = argv[1];
+    double prob_teletransportation_c = argv[2];
+    bool is_deportes = argv[3];
+    std::string path_file_in = argv[4];
+    double pow_method_tolerance = argv[5];
+
     ProblemArguments in_arg;
     ifstream input_file(path_file_in);
-
     if (input_file.is_open()) {
         read_args_from_stream(input_file, in_arg);
         input_file.close();
@@ -23,6 +24,7 @@ int main(int argc, char** argv) {
         exit(-1);
     }
 
+    /*
     //mostrar_datos_entrada(in_arg, cout);
 
     Problem problem(in_arg);
@@ -48,5 +50,7 @@ int main(int argc, char** argv) {
         cerr << "Imposible escribir en archivo de salida: " << path_file_out << endl;
         exit(-1);
     }
+    */
+
     return 0;
 }
