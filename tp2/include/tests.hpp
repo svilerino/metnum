@@ -1,7 +1,7 @@
 #ifndef TESTS_H
 #define TESTS_H
 
-#include "matriz.h"
+#include<matriz.hpp>
 
 void run_test(){
     MatrizDoK A(4, 4);

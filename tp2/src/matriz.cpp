@@ -1,12 +1,12 @@
-#include "matriz.h"
+#include<matriz.hpp>
 using namespace std;
 #define DEBUG_MESSAGES_ON 0 //comentar esta linea para no hacer chequeos costosos en tiempo de ejecucion
 #define EPSILON_TOLERANCIA 0.0001
 
 /**
-* 
+*
 * Operaciones entre vectores
-* 
+*
 */
 void mostrar_vector(vector<double> &vec, ostream &os) {
     os.precision(5);
@@ -46,7 +46,7 @@ void sumar(vector<double> &a, vector<double> &b, vector<double> &res) {
 
 void restar(vector<double> &a, vector<double> &b, vector<double> &res) {
     check_dimensiones(a.size(), b.size(), __FUNCTION__);
-    
+
     int sizeA = a.size();
     for (int i = 0; i < sizeA; i++) {
         res[i] = a[i] - b[i];
@@ -73,8 +73,8 @@ void normalizar(vector<double> &v, int p) {
 
 double producto_interno(vector<double>& vec1, vector<double>& vec2) {
     double res = 0;
-    check_dimensiones(vec1.size(), vec2.size(), __FUNCTION__);    
-    
+    check_dimensiones(vec1.size(), vec2.size(), __FUNCTION__);
+
     int sizeV = vec1.size();
     for (int i = 0; i < sizeV; i++) {
         res += (vec1[i] * vec2[i]);
@@ -92,7 +92,7 @@ MatrizDoK::MatrizDoK(istream &is) {
 double MatrizDoK::operator()(int fila, int columna) {
     if (fila >= filas() || columna >= columnas()) {
         cerr << "Se intentó acceder a una posición inexistente de una matriz DoK";
-        exit(-1);    
+        exit(-1);
     }
     if (_dict.count(pair<int,int>(fila, columna)) == 0) {
         return 0;
@@ -104,11 +104,11 @@ double MatrizDoK::operator()(int fila, int columna) {
 void MatrizDoK::set(int fila, int columna, double valor) {
     if (fila >= filas() || columna >= columnas()) {
         cerr << "Se intentó acceder a una posición inexistente de una matriz DoK";
-        exit(-1);    
+        exit(-1);
     }
     _dict[pair<int,int>(fila, columna)] = valor;
 }
-    
+
 void MatrizDoK::elementos_ordenado(vector<values_with_index> &elementos) {
     for (auto it = _dict.begin(); it != _dict.end(); it++) {
         elementos.push_back(*it);

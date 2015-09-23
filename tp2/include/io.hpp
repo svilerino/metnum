@@ -1,12 +1,12 @@
 #ifndef IO_H
 #define IO_H
 
-#include <stdlib.h>
-#include <vector>
-#include <cstring>
-#include <fstream>
-#include <iostream>
-#include "matriz.h"
+#include<stdlib.h>
+#include<vector>
+#include<cstring>
+#include<fstream>
+#include<iostream>
+#include<matriz.hpp>
 
 using namespace std;
 

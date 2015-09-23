@@ -1,7 +1,7 @@
-#include <vector>
-#include <iostream>
-#include <cstring>
-#include "matriz.h"
+#include<vector>
+#include<iostream>
+#include<cstring>
+#include<matriz.hpp>
 
 
 int main(int argc, char** argv) {
@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 	std::cout << "Dok1 Cols: " << dok1.cols() << std::endl;
 	//std::cout << "dok1[0][9]: " << dok1[0][9] << std::endl;
 	std::cout << "dok1[2][5]: " << dok1[2][5] << std::endl;
-	std::cout << "Tamaños: " << dok1.matrix.size() << std::endl;
+	//std::cout << "Tamaños: " << dok1.matrix.size() << std::endl;
 	std::cout << dok1 << std::endl;
 
 	return 0;

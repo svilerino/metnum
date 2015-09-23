@@ -1,17 +1,17 @@
 #ifndef MATRIZ_H
 #define MATRIZ_H
 
-#include <stdlib.h>
-#include <map>
-#include <unordered_map>
-#include <fstream>
-#include <cmath>
-#include <iomanip>
-#include <iostream>
-#include <algorithm>
-#include <math.h>
-#include "sparse_vector.tpp"
-#include "dok_matrix.tpp"
+#include<stdlib.h>
+#include<map>
+#include<unordered_map>
+#include<fstream>
+#include<cmath>
+#include<iomanip>
+#include<iostream>
+#include<algorithm>
+#include<math.h>
+#include<sparse_vector.tpp>
+#include<dok_matrix.tpp>
 
 using namespace std;
 
@@ -73,15 +73,15 @@ public:
     */
     int filas() {return _numfilas;}
     int columnas() {return _numcolumnas;}
-    
+
     /************************ ELEMENTOS ORDENADOS ************************/
     /**
     * Elementos en orden
-    * Recibe un vector vacío y lo llena con triplas < <int, int>, double> que indican 
+    * Recibe un vector vacío y lo llena con triplas < <int, int>, double> que indican
     * los índices y valores de los elementos no nulos de la matriz, ordenados de
     * arriba hacia abajo y de izquierda a derecha.
     */
-    void elementos_ordenado(vector<values_with_index> &elements) ; 
+    void elementos_ordenado(vector<values_with_index> &elements) ;
 
     /************************ OUTPUT ************************/
     /**
@@ -146,7 +146,7 @@ public:
     * Imprime los elementos no nulos de la matriz en un stream de salida.
     */
     void mostrar_esparsa(ostream &os) ;
-    
+
 private:
     int _numfilas;
     int _numcolumnas;

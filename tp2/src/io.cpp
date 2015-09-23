@@ -1,4 +1,4 @@
-#include "io.h"
+#include<io.hpp>
 using namespace std;
 
 void read_args_from_stream(istream &is, ProblemArguments &args) {
