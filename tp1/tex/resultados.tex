@@ -303,11 +303,7 @@ El resultado de los gráficos muestra que la temperatura no se disipa linealment
 
 Esto fortalece nuestra hipótesis de la sección anterior de que la forma de diente de sierra de los gráficos podía deberse a la interpolacion de algo no lineal, mediante una recta en puntos consecutivos.
 
-%\begin{figure}[h]
-%\centering
-%\includegraphics[scale=0.5]{efecto_interpolacion_lineal.png}
-%\caption{Efecto interpolacion lineal entre puntos de algo no lineal}
-%\end{figure}
+En la siguiente figura aproximada se ve lo que podría estar ocurriendo al aproximar linealmente 2 puntos de una curva que realmente no es lineal. La recta entre dos puntos queda por encima de la curva real, luego, si se quiere hallar el $x$ tal que $g(x) = \alpha$ , la aproximación falla por un $\epsilon$ que depende de la concavidad de la curva respecto a la recta. A medida que se van agregando radios a la discretizacion, la distancia entre los puntos que se aproximan disminuye, disminuyendo el error cometido al estimar. 
 
 \begin{figure}[h]
 \centering
@@ -329,3 +325,11 @@ Esto fortalece nuestra hipótesis de la sección anterior de que la forma de die
 \includegraphics[scale=0.34]{funcion_temp_500_radios_ti_1500_te_102.png}
 \caption{Cantidad de radios: 150(izq) , 500(der)}
 \end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.8]{efecto_interpolacion_lineal.png}
+\caption{Esquema aproximado: Efecto interpolacion lineal entre puntos de algo no lineal}
+\end{figure}
+
+\textbf{Nota:} Se me complica que latex ponga las figuras en el orden que quiero respecto al texto.
