@@ -76,7 +76,7 @@ for (int j = i+1; j < numfilas; j++) {
 
 Es decir, si el elemento a analizar de la matriz es un cero(con tolerancia epsilon, en nuestro caso $exp(10, -9)$), el algoritmo no realiza el c\'alculo del coeficiente multiplicador ni tampoco opera sobre la fila multiplicando cada elemento por \'este. Al agregar esta sentencia y realizar los experimentos de fitteo de orden de complejidad, obtuvimos como resultado que la complejidad emp\'irica de ambos algoritmos era de orden cuadr\'atico. Creemos que esto se debe a la condición banda de la matriz, y que en muchos casos esta condición de corte evita que el algoritmo ingrese en la tercera iteracion anidada.
 
-\subsubsection{Diferencia numérica de soluciones entre EG y LU}
+\subsection{Diferencia numérica de soluciones entre EG y LU}
 En esta sección se mostraran los resultados de comparar las soluciones a un mismo sistema de ecuaciones $Ax=b$ usando LU y EG. Se realizo una variación en el tamaño de la matriz del sistema para ver la evolucion de las mediciones.\\
 
 \vspace{0.3cm}
@@ -106,7 +106,7 @@ Dado este sorprendente resultado a primera vista, hicimos un análisis mas fino 
 
 Sin embargo, en los casos planteados esto no ocurre. Como futuro trabajo, se podrian fabricar casos de test muy especificos donde se fuercen errores numericos clásicos. (ie. sumas con números de distinto orden, restas con numeros muy cercanos, etc.) en las operaciones de resolucion de los sistemas triangulares, se esperaría que LU acarree mas error ya que realiza mas operaciones para resolver el sistema original $Ax=b$.
 
-\subsubsection{Evolución estimación de la isoterma y temperatura}
+\subsection{Evolución estimación de la isoterma y temperatura}
 Se presentarán los resultados de los experimentos en el mismo orden en que fueron planteados en la sección de desarrollo. Se realizará el análisis de los mismos en este mismo apartado.
 \begin{enumerate}
 	\item \begin{itemize}
@@ -328,12 +328,13 @@ Esto fortalece nuestra hipótesis de la sección anterior de que la forma de die
 \end{figure}
 \FloatBarrier
 
-\begin{figure}[h]\label{aprox}
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.8]{efecto_interpolacion_lineal.png}
 \caption{Esquema aproximado: Efecto interpolacion lineal entre puntos de algo no lineal}
+\label{fig:aprox}
 \end{figure}
 \FloatBarrier
 
-En la figura se ve lo que podría estar ocurriendo al aproximar linealmente 2 puntos de una curva que realmente no es lineal. La recta entre dos puntos queda por encima de la curva real, luego, si se quiere hallar el $x$ tal que $g(x) = \alpha$ , la aproximación falla por un $\epsilon$ que depende de la concavidad de la curva respecto a la recta. A medida que se van agregando radios a la discretizacion, la distancia entre los puntos que se aproximan disminuye, disminuyendo el error cometido al estimar. 
+En la figura \ref{fig:aprox} se ve lo que podría estar ocurriendo al aproximar linealmente 2 puntos de una curva que realmente no es lineal. La recta entre dos puntos queda por encima de la curva real, luego, si se quiere hallar el $x$ tal que $g(x) = \alpha$ , la aproximación falla por un $\epsilon$ que depende de la concavidad de la curva respecto a la recta. A medida que se van agregando radios a la discretizacion, la distancia entre los puntos que se aproximan disminuye, disminuyendo el error cometido al estimar. 
 
