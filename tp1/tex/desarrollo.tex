@@ -12,35 +12,49 @@ a_{n1} & \ldots & a_{nn} & b_n
 
 En cada paso $k$ el algoritmo produce, mediante operaciones de filas, la aparición de ceros debajo de la diagonal en la columna $k$:
 
-\begin{align*}
-&F_i \leftarrow F_i - \frac{a_{i1}^{(0)}}{a_{11}^{(0)}}F_1 &\forall i = 2, \ldots, n \\
-&F_i \leftarrow F_i - \frac{a_{i2}^{(1)}}{a_{22}^{(1)}}F_2 &\forall i = 3, \ldots, n \\
-&\ldots \\
-&F_i \leftarrow F_i - \frac{a_{ik}^{(k - 1)}}{a_{kk}^{(k - 1)}}F_k &\forall i = k + 1, \ldots, n \\
-&\ldots \\
-&F_n \leftarrow F_n - \frac{a_{n(n-1)}^{(n-2)}}{a_{(n-1)(n-1)}^{(n-2)}}F_{n - 1} &
-\end{align*}
+\begin{algorithmic}
+ \For{$k \gets 1 \ldots n$}
+  \For{$i \gets k+1 \ldots n$}
+   \For{$j \gets k \ldots n$}
+    \State $A[i, j] \gets A[i, j] - A[k, j]*(A[i, j]/A[k, k])$
+   \EndFor
+  \EndFor
+ \EndFor
+\end{algorithmic}
 
 Notemos que es necesario pedir que ningún valor de la diagonal se anule en ningún paso del algoritmo. Más adelante veremos que esto se puede garantizar gracias a la estructura de nuestra matriz.
 
 El algoritmo tiene complejidad $\mathcal{O}(n^3)$ para una matriz $A \in \mathbb{R}^{n \times n}$ ya que realiza $\mathcal{O}(n)$ operaciones escalares por fila por paso; hay $n$ filas y realiza $n-1$ pasos.
 
 \subsubsection{Backward substitution}
-Dada una matriz triangular superior $A$ sin elementos nulos en la diagonal, entonces el vector solución $x$ es único, y se obtiene haciendo
+Dada una matriz triangular superior $A$ sin elementos nulos en la diagonal, entonces el vector solución $x$ es único y se obtiene haciendo
 
-\begin{align*}
-x_n &= \frac{b_n}{a_{nn}}	\\
-x_{n - 1} &= \frac{b_{n - 1} - a_{(n-1)n} x_n}{a_{(n-1)(n-1)}}	\\
-&\vdots \\
-x_1 &= \frac{b_1 - a_{12}x_2 - a_{13}x_3 - \ldots - a_{1n} x_n}{a_{11}}
-\end{align*}
+\begin{algorithmic}
+ \For{$i \gets n \ldots 1$}
+  \State $x[i] \gets b_n$
+  \For{$j \gets i+1 \ldots n$}
+   \State $x[i] \gets x[i] - A[i,j]*x[j]$
+  \EndFor
+  \State $x[i] \gets x[i] / A[i, i]$
+ \EndFor
+\end{algorithmic}
 
 Notemos nuevamente la importancia de que los elementos de la diagonal sean no nulos para que las operaciones estén bien definidas.
 
 Este algoritmo tiene complejidad $\mathcal{O}(n^2)$ pues para despejar cada incógnita realiza $\mathcal{O}(n)$ operaciones y hay $n$ incógnitas.
 
 \subsubsection{Forward substitution}
-La idea es idéntica a backward substitution para matrices triangulares inferiores.
+La idea es idéntica a backward substitution para matrices triangulares inferiores, invirtiendo el orden en que se despejan las incógnitas.
+
+\begin{algorithmic}
+ \For{$i \gets 1 \ldots n$}
+  \State $x[i] \gets b_n$
+  \For{$j \gets 1 \ldots i-1$}
+   \State $x[i] \gets x[i] - A[i,j]*x[j]$
+  \EndFor
+  \State $x[i] \gets x[i] / A[i, i]$
+ \EndFor
+\end{algorithmic}
 
 \subsubsection{Factorización LU}
 
@@ -92,7 +106,7 @@ Luego, dado cualquier vector $b$, para resolver el sistema $Ax=b$ alcanza con ca
 De este modo vemos que, si para una misma matriz $A$ y mútliples vectores $b_1, \ldots, b_k$ queremos resolver todos los sistemas $Ax=b_i$, en lugar de aplicar $k$ veces la Eliminación Gaussiana (que toma $\mathcal{O}(n^3)$) parecería conveniente calcular una única vez la factorización LU en $\mathcal{O}(n^3)$ y luego usarla para resolver los $k$ sistemas en $\mathcal{O}(n^2)$. Este trabajo práctico tiene como objetivo principal contrastar dicha conjetura experimentalmente.
 
 \subsection{Discretización}
-Para discretizar el problema limitaremos la cantidad de radios y la cantidad de ángulos a evaluar, y una vez elegidas dichas cantidades los distribuiremos de manera uniforme por la corona circular. Así, los puntos de la discretización serán los puntos $P_{j,k}$ de radio $r_j$ y ángulo $\theta_k$ con $j = 0, \ldots, m$; $k = 0, \ldots, n$ que cumplan $$r_0 = r_i$$ $$r_m = r_e$$ $$\theta_0 = 0$$ $$\theta_n = 2\pi$$ $$r_{j+1}-r_{j} = \Delta r \text{ constante } \forall j = 0, \ldots, m-1$$ $$\theta_{k+1}-\theta{k} = \Delta \theta \text{ constante } \forall \theta = 0, \ldots, n-1$$
+Para discretizar el problema limitaremos la cantidad de radios y la cantidad de ángulos a evaluar, y una vez elegidas dichas cantidades los distribuiremos de manera uniforme por la corona circular. Así, los puntos de la discretización serán los puntos $P_{j,k}$ de radio $r_j$ y ángulo $\theta_k$ con $j = 0, \ldots, m$; $k = 0, \ldots, n$ que cumplan $$r_0 = r_i$$ $$r_m = r_e$$ $$\theta_0 = 0$$ $$\theta_n = 2\pi$$ $$r_{j+1}-r_{j} = \Delta r \text{ constante } \forall j = 0, \ldots, m-1$$ $$\theta_{k+1}-\theta_{k} = \Delta \theta \text{ constante } \forall \theta = 0, \ldots, n-1$$
 
 Llamaremos $t_{j,k}$ a la temperatura del punto $P_{j,k}$ una vez alcanzado el equilibrio térmico.
 
