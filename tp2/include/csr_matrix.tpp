@@ -277,6 +277,18 @@ void MatrizCSR::mostrar_esparsa(ostream &os) {
 */
 
 template<class T>
+std::vector<T>& CSR<T>::operator*(const std::vector<T>& x) const {};
+
+template<class T>
+void CSR<T>::operator*(std::vector<T>& x) const {};
+
+template<class T>
+std::vector<T>& CSR<T>::power_method(const std::vector<T>& x) const {};
+
+template<class T>
+void CSR<T>::power_method(std::vector<T>& x) const {};
+
+template<class T>
 std::ostream& operator<< (std::ostream& os,CSR<T>& csr){
     os << "Values: ";
     for(auto it=csr._values.cbegin();it!=csr._values.cend();++it)
