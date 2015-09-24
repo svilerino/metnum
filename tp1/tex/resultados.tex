@@ -225,7 +225,7 @@ Aquí el radio es el mismo, pero se gana en precisión al tener más ángulos po
 		\textbf{Variación de la temperatura entre 59 y 60 radios, ángulos de discretización}\\
 	  	\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_radios_angulos_se_reduce_diferencia_radial/test11_testord_045_inst_001_heatmap.png}
 		\includegraphics[scale=0.35]{experimentos1a_1b/evolucion_posicion_isoterma_temperatura/variacion_radios_angulos_se_reduce_diferencia_radial/test11_testord_046_inst_001_heatmap.png}
-
+\FloatBarrier
 \vspace{0.5cm}
 
 En este último ejemplo ocurren ambos fenomenos al mismo tiempo, hay una variación radial menor a medida que crecen los radios y la curva se suaviza al aumentar los ángulos.
@@ -275,6 +275,7 @@ Se presentarán a continuación los resultados de la estimacion de la estabilida
 \includegraphics[scale=0.5]{experimentos1a_1b/evolucion_estimacion_seguridad_isoterma/variacion_5a_500r.png}
 \caption{Cantidad de radios 500 - ángulos: 5}
 \end{figure}
+\FloatBarrier
 
 Los gráficos son un poco mas extraños de lo esperado. Se observa que, para cualquier discretizacion fija, al aumentar la temperatura externa, la isoterma tiende a acercarse a la pared externa. Esto es lo esperable, el método propuesto para determinar la seguridad de la isoterma consiste en fijar un umbral sobre la posicion relativa máxima o promedio. Lo que se observa como raro es la curva \texttt{dentada} a medida que crecen las temperaturas. Veamos además que estos \texttt{dientes} disminuyen su intensidad a medida que se van agregando radios a la discretizacion. 
 
@@ -303,14 +304,13 @@ El resultado de los gráficos muestra que la temperatura no se disipa linealment
 
 Esto fortalece nuestra hipótesis de la sección anterior de que la forma de diente de sierra de los gráficos podía deberse a la interpolacion de algo no lineal, mediante una recta en puntos consecutivos.
 
-En la siguiente figura aproximada se ve lo que podría estar ocurriendo al aproximar linealmente 2 puntos de una curva que realmente no es lineal. La recta entre dos puntos queda por encima de la curva real, luego, si se quiere hallar el $x$ tal que $g(x) = \alpha$ , la aproximación falla por un $\epsilon$ que depende de la concavidad de la curva respecto a la recta. A medida que se van agregando radios a la discretizacion, la distancia entre los puntos que se aproximan disminuye, disminuyendo el error cometido al estimar. 
-
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.34]{funcion_temp_50_radios_ti_1500_te_102.png}
 \includegraphics[scale=0.34]{funcion_temp_50_radios_ti_1500_te_202.png}
 \caption{Distintas temperaturas externas - Cantidad de radios: 50}
 \end{figure}
+\FloatBarrier
 
 \begin{figure}[h]
 \centering
@@ -318,6 +318,7 @@ En la siguiente figura aproximada se ve lo que podría estar ocurriendo al aprox
 \includegraphics[scale=0.34]{funcion_temp_75_radios_ti_1500_te_202.png}
 \caption{Distintas temperaturas externas - Cantidad de radios: 75}
 \end{figure}
+\FloatBarrier
 
 \begin{figure}[h]
 \centering
@@ -325,11 +326,14 @@ En la siguiente figura aproximada se ve lo que podría estar ocurriendo al aprox
 \includegraphics[scale=0.34]{funcion_temp_500_radios_ti_1500_te_102.png}
 \caption{Cantidad de radios: 150(izq) , 500(der)}
 \end{figure}
+\FloatBarrier
 
-\begin{figure}[h]
+\begin{figure}[h]\label{aprox}
 \centering
 \includegraphics[scale=0.8]{efecto_interpolacion_lineal.png}
 \caption{Esquema aproximado: Efecto interpolacion lineal entre puntos de algo no lineal}
 \end{figure}
+\FloatBarrier
 
-\textbf{Nota:} Se me complica que latex ponga las figuras en el orden que quiero respecto al texto.
+En la figura se ve lo que podría estar ocurriendo al aproximar linealmente 2 puntos de una curva que realmente no es lineal. La recta entre dos puntos queda por encima de la curva real, luego, si se quiere hallar el $x$ tal que $g(x) = \alpha$ , la aproximación falla por un $\epsilon$ que depende de la concavidad de la curva respecto a la recta. A medida que se van agregando radios a la discretizacion, la distancia entre los puntos que se aproximan disminuye, disminuyendo el error cometido al estimar. 
+
