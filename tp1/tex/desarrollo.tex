@@ -116,7 +116,7 @@ Para poder armar el sistema $Ax=b$ es necesario:
         t_{j, k-1}&*\left(\frac{1}{{r_j}^2(\Delta \theta)^2}\right) \\
         t_{j, k+1}&*\left(\frac{1}{{r_j}^2(\Delta \theta)^2}\right)
     \end{align*}
-    Por cuestiones de espacio, en adelante llamaremos $M_{j,k}$ al factor que multiplica a la incógnita $t_{j,k}$, $M_{j-1,k}$ al que multiplica a $t_{j-1,k}$ y así sucesivamente. Y resumiremos $Mt_{j,k} = M_{j,k}*t_{j,k}$, $Mt_{j-1,k}=M_{j-1,k}*t_{j-1,k}$, etc.
+
  \item
     Analizar los ``casos borde'': aquellos puntos donde la ecuación \ref{calor} no vale.
     
@@ -135,12 +135,15 @@ Para poder armar el sistema $Ax=b$ es necesario:
     \begin{align*}\label{sistema}
     &t_{0, k} = T_i(\theta_k)                                           &\forall k = 0, \ldots, n-1  \\
     &t_{m, k} = T_e(\theta_k)                                           &\forall k = 0, \ldots, n-1  \\
-    &Mt_{j-1,k} + Mt_{j,k} + Mt_{j+1,k} + Mt_{j,k-1} + Mt_{j,k+1} = 0  &\forall j=1, \ldots, m-1; k = 1, \ldots , n-2 \\
-    &Mt_{j-1,0} + Mt_{j,0} + Mt_{j+1,0} + Mt_{j,n-1} + Mt_{j,1} = 0    &\forall j=1, \ldots, m-1 \\
-    &Mt_{j-1,n-1} + Mt_{j,n-1} + Mt_{j+1,n-1} + Mt_{j,n-2} + Mt_{j,0} = 0    &\forall j=1, \ldots, m-1
+    &   t_{j-1, k}\left(\frac{1}{(\Delta r)^2} - \frac{1}{r_j \Delta r}\right) + 
+        t_{j, k}  \left(\frac{-2}{(\Delta r)^2} + \frac{1}{r_j \Delta r} - \frac{2}{{r_j}^2 (\Delta \theta)^2}\right) + \\
+    &   t_{j+1, k}\left(\frac{1}{(\Delta r)^2}\right) + 
+        t_{j, k-1}\left(\frac{1}{{r_j}^2(\Delta \theta)^2}\right) + 
+        t_{j, k+1}\left(\frac{1}{{r_j}^2(\Delta \theta)^2}\right) = 0  &\forall j=1, \ldots, m-1; k = 1, \ldots , n-2 \\
     \end{align*}
-
-    Del mismo podemos obtener la matriz $A$ (que tendrá 5 valores no nulos por fila a lo sumo) y el vector $b$ (que será nulo en todas sus componentes salvo aquellas correspondientes a $j=0$ y $j=m$).
+    Y, para $k = 0$, $k = n-1$, nuevamente la última ecuación pero tomando $\text{mod } n$ luego de sumarle o restarle $1$ a $k$.
+    
+    Del sistema podemos obtener la matriz $A$ (que tendrá 5 valores no nulos por fila a lo sumo) y el vector $b$ (que será nulo en todas sus componentes salvo aquellas correspondientes a $j=0$ y $j=m$).
   \item
     Pensar un orden para las incógnitas que permita asegurar que la matriz resultante sea $banda$. La importancia de esta propiedad se tratará en breve. El mismo es:
     
@@ -164,7 +167,7 @@ Llegado este punto podemos definir completamente $b$: todas sus demás component
 
 $$b = (T_i(0), T_i(1), \ldots, T_i(n-1), 0, \ldots, 0, T_e(0), T_e(1), \ldots, T_e(n-1)) $$
 
-Para $j \not = 0, j \not = m$, las filas $i(j,k)$ de $A$ tendrán cinco componentes no-nulas (que corresponden a los vecinos de $P_{j,k}$ en la discretización). Fijados $j$ y $k$ ($0\not=j\not=m, 0\not=k\not=n-1$), estas componentes serán $i(j-1,k); i(j,k); i(j+1,k); i(j,k-1)$ e $i(j,k+1)$ y coincidirán con lo que anteriormente llamamos $M(j-1,k); M(j,k); M(j+1,k); M(j,k-1)$ y $M(j,k+1)$ respectivamente. 
+Para $j \not = 0, j \not = m$, las filas $i(j,k)$ de $A$ tendrán cinco componentes no-nulas (que corresponden a los vecinos de $P_{j,k}$ en la discretización). Fijados $j$ y $k$ ($0\not=j\not=m, 0\not=k\not=n-1$), estas componentes serán $i(j-1,k); i(j,k); i(j+1,k); i(j,k-1)$ e $i(j,k+1)$ y coincidirán con lo que en el sistema de ecuaciones aparece multiplicando a cada una de esas incógnitas.
 
 Resta simplemente considerar los casos $k=0$ y $k=n-1$, pero no revisten mayor complejidad que tomar módulo $n$ después de las operaciones que involucren $k$.
 
