@@ -21,7 +21,7 @@ class DoK
         sparse_matrix matrix;
 
     public:
-        class iterator : public matrix_value<T>
+        class iterator
         {
             private:
                 sparse_matrix& matrix;
@@ -47,7 +47,7 @@ class DoK
                         }
                     }
 
-                    value.row = it_rows->first; value.col = it_cols->first; value.val = it_cols->second;
+                    value.row = it_rows->first; value.col = it_cols->first; value.val = &it_cols->second;
                     return *this;
                 };
                 matrix_value<T> operator*(){return value;};
@@ -64,6 +64,7 @@ class DoK
                     {
                         it_rows = matrix.begin();
                         it_cols = it_rows->second.begin();
+                        value.row = it_rows->first; value.col = it_cols->first; value.val = &it_cols->second;
                     } else {
                         it_rows = matrix.end();
                         --it_rows;
@@ -73,7 +74,7 @@ class DoK
                 };
         };
 
-        class const_iterator : public const_matrix_value<T>
+        class const_iterator
         {
             private:
                 const sparse_matrix& matrix;
@@ -99,7 +100,7 @@ class DoK
                         }
                     }
 
-                    value.row = it_rows->first; value.col = it_cols->first; value.val = it_cols->second;
+                    value.row = it_rows->first; value.col = it_cols->first; value.val = &it_cols->second;
                     return *this;
                 };
                 const_matrix_value<T> operator*(){return value;};
@@ -116,6 +117,7 @@ class DoK
                     {
                         it_rows = matrix.cbegin();
                         it_cols = it_rows->second.cbegin();
+                        value.row = it_rows->first; value.col = it_cols->first; value.val = &it_cols->second;
                     } else {
                         it_rows = matrix.cend();
                         --it_rows;

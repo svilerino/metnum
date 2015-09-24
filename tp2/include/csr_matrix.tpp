@@ -4,6 +4,7 @@
 #include<vector>
 #include<algorithm>
 #include<ostream>
+#include<limits>
 #include<sparse_vector.tpp>
 #include<dok_matrix.tpp>
 #include<matrix_value.tpp>
@@ -16,10 +17,10 @@ class CSR
     public:
         /********************** CONSTRUCTORES *********************/
         CSR() : _numfilas(0), _numcolumnas(0), _values(), _columns_index(), _rows_start() {};
-        CSR(const DoK<T>&);
+        CSR(DoK<T>&);
 
         /************************ ITERADORES *********************/
-        class iterator : public matrix_value<T>
+        class iterator
         {
             private:
                 typename std::vector<T>& _values;
@@ -83,7 +84,7 @@ class CSR
 
         };
 
-        class const_iterator : public const_matrix_value<T>
+        class const_iterator
         {
             private:
                 const typename std::vector<T>& _values;
@@ -187,24 +188,44 @@ class CSR
 };
 
 template<class T>
-CSR<T>::CSR(const DoK<T>& dok) :
+CSR<T>::CSR(DoK<T>& dok) :
         _numfilas(dok.rows()),
         _numcolumnas(dok.cols()),
         _values(),
         _columns_index(),
         _rows_start()
 {
-    uint not_null_counter = 0,last_row_value = 0;
+    uint not_null_counter = 0,last_row_processed = 0;
+
+    //Inicializacion de primera fila
+    auto it=dok.cbegin();
+    if(it->row == 0)
+    {
+        _values.push_back(*it->val);
+        _columns_index.push_back(it->col);
+        _rows_start.push_back(_values.size()-1);
+
+    } else { //entonces la primera fila esta vacia
+        _rows_start.push_back(std::numeric_limits<uint>::max());
+    };
+
+    //Resto de las filas a partir de k
     for(auto it=dok.cbegin();it!=dok.cend();++it)
     {
-        _values.push_back(it->val);
+        _values.push_back(*it->val);
         _columns_index.push_back(it->col);
-        if(last_row_value < it->row) 
+        if(last_row_processed == it->row-1) //puede haber overflow, por eso "=="
         {
-            for(++last_row_value;last_row_value<it->row;++last_row_value) //inserto 0 en caso de filas nulas
-                _rows_start.push_back(0);
+            std::cout << "filas contiguas" << std::endl;
             _rows_start.push_back(_values.size()-1);
-        }
+            ++last_row_processed;
+
+        } else if(last_row_processed != it->row){ //entonces hay filas vacias 
+            for(++last_row_processed;last_row_processed<it->row;++last_row_processed) //inserto oo en caso de filas nulas
+                _rows_start.push_back(std::numeric_limits<uint>::max());
+            _rows_start.push_back(_values.size()-1);
+        };
+        std::cout << last_row_processed << std::endl;
         ++not_null_counter;
     }
     _rows_start.push_back(not_null_counter+1);
