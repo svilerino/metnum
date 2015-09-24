@@ -4,7 +4,7 @@
 #include<vector>
 #include<algorithm>
 #include<ostream>
-//#include<sparse_vector.tpp>
+#include<sparse_vector.tpp>
 #include<dok_matrix.tpp>
 #include<matrix_value.tpp>
 
@@ -15,14 +15,7 @@ class CSR
 {
     public:
         /********************** CONSTRUCTORES *********************/
-        /**
-        * Constructorructor por defecto
-        */
-        CSR() : _numfilas(0), _numcolumnas(0), _values(), _columns_index(), _rows_start() {}
-
-        /**
-        * Constructor a partir de Matriz DoK
-        */
+        CSR() : _numfilas(0), _numcolumnas(0), _values(), _columns_index(), _rows_start() {};
         CSR(const DoK<T>&);
 
         /************************ ITERADORES *********************/
@@ -160,11 +153,9 @@ class CSR
         const_iterator cend() const {return const_iterator(_values,_columns_index,_rows_start,_values.size());};
 
         /************************ GETTERS ************************/
-        /**
-        * get_fila
-        * Carga en 'elementos' y en 'columnas' los valores e índices de columna de la fila 'fila'
-        */
         //void get_fila(uint fila, vector<T> &elementos, vector<uint> &columnas) ;
+        uint filas() const {return _numfilas;}
+        uint columnas() const {return _numcolumnas;}
 
         /**
         * Operador ()
@@ -172,11 +163,12 @@ class CSR
         */
         T operator()(uint fila, uint columna) ;
 
-        /**
-        * Cantidad de filas y columnas
-        */
-        uint filas() const {return _numfilas;}
-        uint columnas() const {return _numcolumnas;}
+	/************************ METODOS ***********************/
+	std::vector<T>& operator*(const std::vector<T>&) const;
+	void operator*(std::vector<T>&) const;
+
+	std::vector<T>& power_method(const std::vector<T>&) const;
+	void power_method(std::vector<T>&) const;
 
         /************************ OUTPUT ************************/
         /**
