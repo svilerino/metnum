@@ -12,8 +12,11 @@ int main(int argc, char** argv) {
     dok1[3][2] = 3.33;
     dok1[5][5] = 5.55;
     dok1[9][9] = 9.99;
+    /*
     for(auto it=dok1.begin();it!=dok1.end();++it)
         std::cout << "dok1[" << it->row << "][" << it->col << "] = " << *it->val << std::endl;
+    */
+    std::cout << dok1 << std::endl;
 
     CSR<double> csr1;
     CSR<double> csr2(dok1);
@@ -24,20 +27,38 @@ int main(int argc, char** argv) {
     std::cout << "CSR1[0][0]: " << csr1(0,0) << std::endl;
     std::cout << "Filas CSR2: " << csr2.filas() << std::endl;
     std::cout << "Columnas CSR2: " << csr2.columnas() << std::endl;
-    */
+    /
     for(uint i = 0;i<csr2.filas();++i)
         for(uint j=0;j<csr2.columnas();++j)
             std::cout << "CSR2[" << i << "][" << j << "]: " << csr2(i,j) << std::endl;
 
-    /*
+    /
     std::cout << "CSR2[0][0]: " << csr2(0,0) << std::endl;
+    std::cout << "CSR2[0][5]: " << csr2(0,5) << std::endl;
     std::cout << "CSR2[2][5]: " << csr2(2,5) << std::endl;
     std::cout << "CSR2[1][4]: " << csr2(1,4) << std::endl;
     std::cout << "CSR2[3][2]: " << csr2(3,2) << std::endl;
     std::cout << "CSR2[5][5]: " << csr2(5,5) << std::endl;
     std::cout << "CSR2[9][9]: " << csr2(9,9) << std::endl;
+
+    auto it = csr2.begin();
+    std::cout << it->row << " " << it->col << " " << *it->val << std::endl;
+    ++it;
+    std::cout << it->row << " " << it->col << " " << *it->val << std::endl;
     */
     std::cout << csr2 << std::endl;
 
-	return 0;
+    std::vector<double> a(10,6.66);
+    std::vector<double> b(10,2.22);
+    a+=b;
+    std::cout << a << std::endl;
+    a*=2.5;
+    std::cout << a << std::endl;
+    b = a*2.5;
+    std::cout << b << std::endl;
+    std::vector<double> c = a+b;
+    std::cout << c << std::endl;
+    c = a-b;
+    std::cout << c << std::endl;
+    return 0;
 }
