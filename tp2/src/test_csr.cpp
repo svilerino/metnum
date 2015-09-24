@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
     std::cout << "CSR2[5][5]: " << csr2(5,5) << std::endl;
     std::cout << "CSR2[9][9]: " << csr2(9,9) << std::endl;
     */
-    //std::cout << csr2 << std::endl;
+    std::cout << csr2 << std::endl;
 
 	return 0;
 }

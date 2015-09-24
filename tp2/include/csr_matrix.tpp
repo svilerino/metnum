@@ -44,7 +44,7 @@ class CSR
                             val.row = 0;
                             val.val = 0;
                         } else {
-                            val.val = _values[idx];
+                            val.val = &_values[idx];
                             val.col = _cols_idx[idx];
                             if(_rows_start[val.row+1] == idx) ++val.row;
                         }
@@ -75,7 +75,7 @@ class CSR
                                         _rows_start(rows_start),
                                         idx(offset)
                 {
-                    val.val = _values[idx];
+                    val.val = &_values[idx];
                     val.col = _cols_idx[idx];
                     std::vector<uint>::const_iterator it = 
                         std::lower_bound(_rows_start.cbegin(),_rows_start.cend(),idx);
@@ -149,8 +149,8 @@ class CSR
 
         };
 
-        iterator begin() {return const_iterator(_values,_columns_index,_rows_start,0);};
-        iterator end() {return const_iterator(_values,_columns_index,_rows_start,_values.size());};
+        iterator begin() {return iterator(_values,_columns_index,_rows_start,0);};
+        iterator end() {return iterator(_values,_columns_index,_rows_start,_values.size());};
         const_iterator cbegin() const {return const_iterator(_values,_columns_index,_rows_start,0);};
         const_iterator cend() const {return const_iterator(_values,_columns_index,_rows_start,_values.size());};
 
@@ -179,7 +179,7 @@ class CSR
         */
         //void mostrar(ostream &os) ;
 
-    private:
+    //private:
         uint _numfilas;
         uint _numcolumnas;
 
@@ -328,6 +328,9 @@ std::ostream& operator<< (std::ostream& os,CSR<T>& csr){
     for(auto it=csr._rows_start.cbegin();it!=csr._rows_start.cend();++it)
         os << *it << " ";
     os << std::endl;
+
+    for(auto it=csr.begin();it!=csr.end();++it)
+        os << "[" << it->row << "][" << it->col << "]: " << *it->val << std::endl;
 
     return os;
 };
