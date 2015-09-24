@@ -10,6 +10,7 @@
 #include<matrix_value.tpp>
 
 typedef unsigned int uint;
+#define EMPTY_ROW_CODE std::numeric_limits<uint>::max()
 
 template<class T>
 class CSR
@@ -164,12 +165,12 @@ class CSR
         */
         T operator()(uint fila, uint columna) ;
 
-	/************************ METODOS ***********************/
-	std::vector<T>& operator*(const std::vector<T>&) const;
-	void operator*(std::vector<T>&) const;
+        /************************ METODOS ***********************/
+        std::vector<T>& operator*(const std::vector<T>&) const;
+        void operator*(std::vector<T>&) const;
 
-	std::vector<T>& power_method(const std::vector<T>&) const;
-	void power_method(std::vector<T>&) const;
+        std::vector<T>& power_method(const std::vector<T>&) const;
+        void power_method(std::vector<T>&) const;
 
         /************************ OUTPUT ************************/
         /**
@@ -178,7 +179,7 @@ class CSR
         */
         //void mostrar(ostream &os) ;
 
-    //private:
+    private:
         uint _numfilas;
         uint _numcolumnas;
 
@@ -195,7 +196,7 @@ CSR<T>::CSR(DoK<T>& dok) :
         _columns_index(),
         _rows_start()
 {
-    uint not_null_counter = 0,last_row_processed = 0;
+    uint last_row_processed = 0;
 
     //Inicializacion de primera fila
     auto it=dok.cbegin();
@@ -206,30 +207,27 @@ CSR<T>::CSR(DoK<T>& dok) :
         _rows_start.push_back(_values.size()-1);
 
     } else { //entonces la primera fila esta vacia
-        _rows_start.push_back(std::numeric_limits<uint>::max());
+        _rows_start.push_back(EMPTY_ROW_CODE);
     };
 
     //Resto de las filas a partir de k
-    for(auto it=dok.cbegin();it!=dok.cend();++it)
+    for(++it;it!=dok.cend();++it)
     {
         _values.push_back(*it->val);
         _columns_index.push_back(it->col);
         if(last_row_processed == it->row-1) //puede haber overflow, por eso "=="
         {
-            std::cout << "filas contiguas" << std::endl;
             _rows_start.push_back(_values.size()-1);
             ++last_row_processed;
 
         } else if(last_row_processed != it->row){ //entonces hay filas vacias 
             for(++last_row_processed;last_row_processed<it->row;++last_row_processed) //inserto oo en caso de filas nulas
-                _rows_start.push_back(std::numeric_limits<uint>::max());
+                _rows_start.push_back(EMPTY_ROW_CODE);
             _rows_start.push_back(_values.size()-1);
         };
-        std::cout << last_row_processed << std::endl;
-        ++not_null_counter;
     }
-    _rows_start.push_back(not_null_counter+1);
-}
+    _rows_start.push_back(_values.size()); //No le sumo +1 ya que en realidad indexamos desde el 0 en lugar del 1
+};
 
 /*void MatrizCSR::get_fila(int fila, vector<double> &elementos, vector<int> &columnas) {
     if (fila > filas()){
@@ -249,15 +247,20 @@ T CSR<T>::operator()(uint fila, uint columna) {
         exit(-1);
     }
 
-    T result = 0;
+    T result = T();
     uint first_row_value_index = _rows_start[fila];
-    uint next_row_value_index = _rows_start[fila+1]; //no se indefine por el ultimo valor agregado a _rows_start
+    if(first_row_value_index != EMPTY_ROW_CODE)
+    {
+        //la siguiente variable no se indefine por el ultimo valor agregado a _rows_start, siguiendo la convencion CSR
+        uint next_row_value_index = *std::find_if(_rows_start.cbegin()+fila+1,
+                                                    _rows_start.cend(),
+                                                    [](uint index){return index != EMPTY_ROW_CODE;});
 
-    std::vector<uint>::const_iterator it_low = 
-        std::lower_bound(_columns_index.cbegin()+first_row_value_index,
-                         _columns_index.cbegin()+next_row_value_index,
-                         columna);
-    if(*it_low == columna) result = _values[it_low - _columns_index.cbegin()];
+        auto it_low = std::lower_bound(_columns_index.cbegin()+first_row_value_index,
+                                        _columns_index.cbegin()+next_row_value_index,
+                                        columna);
+        if(*it_low == columna) result = _values[it_low - _columns_index.cbegin()];
+    }
     
     return result;
 }
