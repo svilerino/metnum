@@ -128,19 +128,34 @@ class CSR
                         ++idx;
                         if (idx == _values.size())
                         {
+                    #ifdef _DOK_SPARSE_VECTOR
                             val.col = 0;
                             val.row = 0;
                             val.val = NULL;
                         } else {
                             val.val = &_values[idx];
                             val.col = _cols_idx[idx];
-
                             if(idx == *it_next_row_value_index) //llegue a la siguiente fila
                             {
                                 val.row = it_next_row_value_index - _rows_start.cbegin();
                                 it_next_row_value_index = next_row_value_index(val.row);
                             }
                         }
+                    #else
+                            val.first.second = 0;
+                            val.first.first = 0;
+                            val.second = 0;
+                        } else {
+                            val.second = _values[idx];
+                            val.first.second = _cols_idx[idx];
+
+                            if(idx == *it_next_row_value_index) //llegue a la siguiente fila
+                            {
+                                val.first.first = it_next_row_value_index - _rows_start.cbegin();
+                                it_next_row_value_index = next_row_value_index(val.first.first);
+                            }
+                        }
+                    #endif
                     }
                     return *this;
                 };
@@ -255,6 +270,7 @@ CSR<T>::CSR(const DoK<T>& dok) :
         _columns_index(),
         _rows_start()
 {
+    #ifdef _DOK_SPARSE_VECTOR
     uint last_row_processed = 0;
 
     //Inicializacion de primera fila
@@ -287,6 +303,41 @@ CSR<T>::CSR(const DoK<T>& dok) :
         };
     }
     _rows_start.push_back(_values.size()); //No le sumo +1 ya que en realidad indexamos desde el 0 en lugar del 1
+
+    #else //DoK hecho con unordered_map
+    uint last_row_processed = 0;
+
+    //Inicializacion de primera fila
+    auto it=dok.cbegin();
+    if(it->first.first == 0)
+    {
+        _values.push_back(it->second);
+        _columns_index.push_back(it->first.second);
+        _rows_start.push_back(_values.size()-1);
+        ++it;
+
+    } else { //entonces la primera fila esta vacia
+        _rows_start.push_back(EMPTY_ROW_CODE);
+    };
+
+    //Resto de las filas
+    for(;it!=dok.cend();++it)
+    {
+        _values.push_back(it->second);
+        _columns_index.push_back(it->first.second);
+        if(last_row_processed == it->first.first-1) //puede haber overflow, por eso "=="
+        {
+            _rows_start.push_back(_values.size()-1);
+            ++last_row_processed;
+
+        } else if(last_row_processed != it->first.first){ //entonces hay filas vacias 
+            for(++last_row_processed;last_row_processed<it->first.first;++last_row_processed) //inserto oo en caso de filas nulas
+                _rows_start.push_back(EMPTY_ROW_CODE);
+            _rows_start.push_back(_values.size()-1);
+        };
+    }
+
+    #endif
 };
 
 template<class T>
@@ -406,8 +457,11 @@ std::ostream& operator<< (std::ostream& os,const CSR<T>& csr)
     */
 
     for(auto it=csr.cbegin();it!=csr.cend();++it)
+        #ifdef _DOK_SPARSE_VECTOR
         os << "[" << it->row << "][" << it->col << "]: " << *it->val << std::endl;
-
+        #else
+        os << "[" << it->first.first << "][" << it->first.second << "]: " << it->second << std::endl;
+        #endif
     return os;
 };
 
