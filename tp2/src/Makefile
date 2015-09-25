@@ -1,6 +1,9 @@
 CC=g++
 LD=g++
+#merca mode off
 CFLAGS=-Wall -O2 -std=c++11 -I../include/
+#merca mode on
+#CFLAGS=-Wall -O2 -ftree-vectorize -ftree-vectorizer-verbose=1 -mavx -std=c++11 -I../include/
 LDFLAGS=
 RM=rm
 OBJECTS=main.o matriz.o io.o problem.o
