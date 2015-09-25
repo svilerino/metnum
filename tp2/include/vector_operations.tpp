@@ -1,6 +1,8 @@
 #ifndef VECTOR_OPS_TPP
 #define VECTOR_OPS_TPP
 
+#include <iostream>
+
 #include<algorithm>
 #include<cassert>
 #include<functional>
@@ -74,5 +76,17 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
 
     return os;
 }
+
+double norma1(std::vector<double>& a, bool asumir_todos_positivos)
+{
+    double norma = 0.0; 
+    size_t size = a.size();
+    
+    for (int i = 0; i < size; i++)
+    {
+        norma += (asumir_todos_positivos ? a[i] : std::abs(a[i]));
+    }    
+    return norma;
+};
 
 #endif
