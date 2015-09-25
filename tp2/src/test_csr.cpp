@@ -7,10 +7,12 @@
 
 int main(int argc, char** argv) {
     DoK<double> dok1(10);
-    dok1[0][0] = 6.66;
+    //dok1[0][0] = 6.66;
     dok1[2][5] = 2.22;
     dok1[3][2] = 3.33;
     dok1[5][5] = 5.55;
+    dok1[5][6] = 5.66;
+    dok1[5][8] = 5.88;
     dok1[9][9] = 9.99;
     /*
     for(auto it=dok1.begin();it!=dok1.end();++it)
@@ -59,6 +61,19 @@ int main(int argc, char** argv) {
     std::vector<double> c = a+b;
     std::cout << c << std::endl;
     c = a-b;
-    std::cout << c << std::endl;
+    std::cout << c << std::endl << std::endl;
+
+    std::vector<uint> d(0);
+    a.erase(a.begin(),a.end());
+    csr2.get_row((uint)0,a,d);
+    std::cout << "Elementos: " << a << std::endl;
+    std::cout << "Columnas : " << d << std::endl;
+
+    a.erase(a.begin(),a.end());
+    d.erase(d.begin(),d.end());
+    csr2.get_row((uint)5,a,d);
+    std::cout << "Elementos: " << a << std::endl;
+    std::cout << "Columnas : " << d << std::endl;
+
     return 0;
 }

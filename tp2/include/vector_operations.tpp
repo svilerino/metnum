@@ -63,10 +63,14 @@ template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
 {
     os << "(";
-    auto it=v.cbegin();
-    for(;it!=v.cend()-1;++it)
-        os << *it << ", ";
-    os << *it << ")";
+    if(v.size()>0)
+    {
+        auto it=v.cbegin();
+        for(;it!=v.cend()-1;++it)
+            os << *it << ", ";
+        os << *it;
+    };
+    os << ")";
 
     return os;
 }

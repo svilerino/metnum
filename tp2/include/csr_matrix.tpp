@@ -2,6 +2,7 @@
 #define CSR_TPP
 
 #include<vector>
+#include <cassert>
 #include<algorithm>
 #include<ostream>
 #include<limits>
@@ -42,13 +43,11 @@ class CSR
                             val.val = &_values[idx];
                             val.col = _cols_idx[idx];
 
-                            it_next_row_value_index = std::find_if(it_next_row_value_index,
-                                                                    _rows_start.end(),
-                                                                    [this](uint index){return index != EMPTY_ROW_CODE
-                                                                                            && index >= idx;});
-
-                            val.row = it_next_row_value_index - _rows_start.cbegin();
-                            if(*it_next_row_value_index != idx) --val.row;
+                            if(idx == *it_next_row_value_index) //llegue a la siguiente fila
+                            {
+                                val.row = it_next_row_value_index - _rows_start.cbegin();
+                                it_next_row_value_index = next_row_value_index(val.row);
+                            }
                         }
                     }
                     return *this;
@@ -83,13 +82,19 @@ class CSR
                         val.val = &_values[idx];
                         val.col = _cols_idx[idx];
 
-                        it_next_row_value_index = std::find_if(_rows_start.begin(),
-                                                                _rows_start.end(),
-                                                                [this](uint index){return index != EMPTY_ROW_CODE
-                                                                                        && index >= idx;});
-
-                        val.row = it_next_row_value_index - _rows_start.cbegin();
-                        if(*it_next_row_value_index != idx) --val.row;
+                        //calculo la primer fila
+                        auto it_row = std::find_if(_rows_start.begin(),
+                                                    _rows_start.end(),
+                                                    [this](uint index){return index != EMPTY_ROW_CODE
+                                                                        && index >= idx;});
+                        if(*it_row != idx)
+                        {
+                            for(--it_row;
+                                *it_row == EMPTY_ROW_CODE;
+                                --it_row){};
+                        };
+                        val.row = it_row - _rows_start.begin();
+                        it_next_row_value_index = next_row_value_index(val.row);
 
                     } else {
                             val.col = 0;
@@ -100,6 +105,8 @@ class CSR
                 };
 
             private:
+                std::vector<uint>::iterator next_row_value_index(uint cur_row);
+
                 typename std::vector<T>& _values;
                 std::vector<uint>& _cols_idx;
                 std::vector<uint>& _rows_start;
@@ -128,13 +135,11 @@ class CSR
                             val.val = &_values[idx];
                             val.col = _cols_idx[idx];
 
-                            it_next_row_value_index = std::find_if(it_next_row_value_index,
-                                                                    _rows_start.cend(),
-                                                                    [this](uint index){return index != EMPTY_ROW_CODE
-                                                                                            && index >= idx;});
-
-                            val.row = it_next_row_value_index - _rows_start.cbegin();
-                            if(*it_next_row_value_index != idx) --val.row;
+                            if(idx == *it_next_row_value_index) //llegue a la siguiente fila
+                            {
+                                val.row = it_next_row_value_index - _rows_start.cbegin();
+                                it_next_row_value_index = next_row_value_index(val.row);
+                            }
                         }
                     }
                     return *this;
@@ -169,13 +174,19 @@ class CSR
                         val.val = &_values[idx];
                         val.col = _cols_idx[idx];
 
-                        it_next_row_value_index = std::find_if(_rows_start.cbegin(),
-                                                                _rows_start.cend(),
-                                                                [this](uint index){return index != EMPTY_ROW_CODE
-                                                                                        && index >= idx;});
-
-                        val.row = it_next_row_value_index - _rows_start.cbegin();
-                        if(*it_next_row_value_index != idx) --val.row;
+                        //calculo la primer fila
+                        auto it_row = std::find_if(_rows_start.cbegin(),
+                                                    _rows_start.cend(),
+                                                    [this](uint index){return index != EMPTY_ROW_CODE
+                                                                        && index >= idx;});
+                        if(*it_row != idx)
+                        {
+                            for(--it_row;
+                                *it_row == EMPTY_ROW_CODE;
+                                --it_row){};
+                        };
+                        val.row = it_row - _rows_start.cbegin();
+                        it_next_row_value_index = next_row_value_index(val.row);
 
                     } else {
                             val.col = 0;
@@ -186,6 +197,8 @@ class CSR
                 };
 
             private:
+                std::vector<uint>::const_iterator next_row_value_index(uint cur_row);
+
                 const typename std::vector<T>& _values;
                 const std::vector<uint>& _cols_idx;
                 const std::vector<uint>& _rows_start;
@@ -202,6 +215,7 @@ class CSR
         /************************ GETTERS ************************/
         uint filas() const {return _numfilas;}
         uint columnas() const {return _numcolumnas;}
+        void get_row(uint fila, std::vector<T>& elementos, std::vector<uint>& columnas);
 
         /**
         * Operador ()
@@ -224,7 +238,7 @@ class CSR
         void show(std::ostream& os);
 
     /************************ ATRIBUTOS ************************/
-    private:
+    //private:
         uint _numfilas;
         uint _numcolumnas;
 
@@ -250,13 +264,14 @@ CSR<T>::CSR(const DoK<T>& dok) :
         _values.push_back(*it->val);
         _columns_index.push_back(it->col);
         _rows_start.push_back(_values.size()-1);
+        ++it;
 
     } else { //entonces la primera fila esta vacia
         _rows_start.push_back(EMPTY_ROW_CODE);
     };
 
     //Resto de las filas
-    for(++it;it!=dok.cend();++it)
+    for(;it!=dok.cend();++it)
     {
         _values.push_back(*it->val);
         _columns_index.push_back(it->col);
@@ -273,6 +288,48 @@ CSR<T>::CSR(const DoK<T>& dok) :
     }
     _rows_start.push_back(_values.size()); //No le sumo +1 ya que en realidad indexamos desde el 0 en lugar del 1
 };
+
+template<class T>
+std::vector<uint>::iterator CSR<T>::iterator::next_row_value_index(uint cur_row)
+{
+    assert(idx < _rows_start.size());
+    std::vector<uint>::iterator begin = _rows_start.begin()+cur_row+1;
+    for(;*begin == EMPTY_ROW_CODE && begin!=_rows_start.end();++begin){};
+
+    return begin;
+};
+
+template<class T>
+std::vector<uint>::const_iterator CSR<T>::const_iterator::next_row_value_index(uint cur_row)
+{
+    assert(idx < _rows_start.size());
+    std::vector<uint>::const_iterator begin = _rows_start.cbegin()+cur_row+1;
+    for(;*begin == EMPTY_ROW_CODE && begin!=_rows_start.cend();++begin){};
+
+    return begin;
+};
+
+template<class T>
+void CSR<T>::get_row(uint fila, std::vector<T>& elementos, std::vector<uint>& columnas) {
+    if (fila > _numfilas){
+        std::cerr << "Se intentó acceder a una posición inexistente de una matriz CSR";
+        exit(-1);
+    }
+
+    uint first_row_value_index = _rows_start[fila];
+    if(first_row_value_index != EMPTY_ROW_CODE)
+    {
+        //la siguiente variable no se indefine por el ultimo valor agregado a _rows_start, siguiendo la convencion CSR
+        uint next_row_value_index = *std::find_if(_rows_start.cbegin()+fila+1,
+                                                    _rows_start.cend(),
+                                                    [](uint index){return index != EMPTY_ROW_CODE;});
+
+        for (uint i = first_row_value_index; i < next_row_value_index; ++i){
+            elementos.push_back(_values[i]);
+            columnas.push_back(_columns_index[i]);
+        }
+    }
+}
 
 template<class T>
 T CSR<T>::operator()(uint fila, uint columna) {
