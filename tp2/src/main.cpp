@@ -1,9 +1,9 @@
-#include<vector>
-#include<iostream>
-#include<cstring>
-#include<matriz.hpp>
-#include<io.hpp>
-#include<problem.hpp>
+#include <vector>
+#include <iostream>
+#include <cstring>
+#include <matriz.hpp>
+#include <io.hpp>
+#include <problem.hpp>
 
 using namespace std;
 

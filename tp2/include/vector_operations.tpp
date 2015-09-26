@@ -1,13 +1,11 @@
 #ifndef VECTOR_OPS_TPP
 #define VECTOR_OPS_TPP
 
-#include <iostream>
-
-#include<algorithm>
-#include<cassert>
-#include<functional>
-#include<ostream>
-#include<vector>
+#include <algorithm>
+#include <cassert>
+#include <functional>
+#include <ostream>
+#include <vector>
 
 template<typename T>
 void operator+=(std::vector<T>& a, const std::vector<T>& b)

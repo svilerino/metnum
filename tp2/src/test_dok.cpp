@@ -1,7 +1,7 @@
-#include<vector>
-#include<iostream>
-#include<cstring>
-#include<dok_matrix.tpp>
+#include <vector>
+#include <iostream>
+#include <cstring>
+#include <dok_matrix.tpp>
 
 
 int main(int argc, char** argv) {

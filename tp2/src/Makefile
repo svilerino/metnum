@@ -1,8 +1,8 @@
 CC=g++
 LD=g++
-#merca mode off
+#vectorize mode off
 CFLAGS=-Wall -O2 -std=c++11 -I../include/ -D_DOK_SPARSE_VECTOR
-#merca mode on
+#vectorize mode on
 #CFLAGS=-Wall -O2 -ftree-vectorize -ftree-vectorizer-verbose=1 -mavx -std=c++11 -I../include/ -D_DOK_SPARSE_VECTOR
 LDFLAGS=
 RM=rm
@@ -24,14 +24,8 @@ clean_tests:
 	reset
 	rm -rf $(TESTTIMINGOUTDIR)
 	mkdir -p $(TESTTIMINGOUTDIR)
-	rm -rf isofile_result.txt
 	rm -rf timing_results.txt
-	rm -rf seguridad_isoterma_result.txt
-	rm -rf $(TESTS)/*.png
 	rm -rf $(TESTS)/*.out
-	rm -rf $(TESTS)/*.isoout
-	rm -rf $(TESTS)/*.seguridadisoout
-	rm -rf $(TESTS)/*.mp4
 
 tp2: $(OBJECTS)
 	mkdir -p $(BINDIR)

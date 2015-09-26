@@ -1,8 +1,8 @@
-#include "../include/vector_operations.tpp"
+#include <vector_operations.tpp>
 #include <iostream>
 #include <chrono>
 
-//reset && g++ -std=c++11 -O2 -ftree-vectorize -mavx -ftree-vectorizer-verbose=1 -o test test_timing_vector_op.cpp && ./test 
+//reset && g++ -std=c++11 -I../include/ -O2 -ftree-vectorize -mavx -ftree-vectorizer-verbose=1 -o test test_timing_vector_op.cpp && ./test 
 
 using namespace std;
 

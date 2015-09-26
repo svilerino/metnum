@@ -1,15 +1,15 @@
 #ifndef CSR_TPP
 #define CSR_TPP
 
-#include<vector>
+#include <vector>
 #include <cassert>
-#include<algorithm>
-#include<ostream>
-#include<limits>
-#include<sparse_vector.tpp>
-#include<dok_matrix.tpp>
-#include<matrix_value.tpp>
-#include<vector_operations.tpp>
+#include <algorithm>
+#include <ostream>
+#include <limits>
+#include <sparse_vector.tpp>
+#include <dok_matrix.tpp>
+#include <matrix_value.tpp>
+#include <vector_operations.tpp>
 
 typedef unsigned int uint;
 #define EMPTY_ROW_CODE std::numeric_limits<uint>::max()
