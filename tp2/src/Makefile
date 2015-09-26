@@ -7,7 +7,7 @@ RM=rm
 LDFLAGS=
 
 #vectorize mode off
-CFLAGS=-Wall -O2 -std=c++11 -I../include/ -D_DOK_SPARSE_VECTOR
+CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ -D_DOK_SPARSE_VECTOR
 
 #vectorize mode on
 #CFLAGS=-Wall -O2 -ftree-vectorize -ftree-vectorizer-verbose=1 -mavx -std=c++11 -I../include/ -D_DOK_SPARSE_VECTOR
