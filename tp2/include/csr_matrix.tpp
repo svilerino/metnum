@@ -11,6 +11,18 @@
 #include <matrix_value.tpp>
 #include <vector_operations.tpp>
 
+typedef enum criterio_terminacion_powermethod {CRT_K_FIXED_ITERS_LIMIT, CRT_K_ITERS_DELTA_DIFF, CRT_K_ITERS_NO_DIFF} criterio_terminacion_powermethod_t;
+
+typedef struct power_method_stop_criteria
+{
+    criterio_terminacion_powermethod_t criterio;
+    union Valor {
+        uint cant_iters;
+        double delta_diff;
+    } valor;
+
+} power_method_stop_criteria_t;
+
 typedef unsigned int uint;
 #define EMPTY_ROW_CODE std::numeric_limits<uint>::max()
 
@@ -227,7 +239,7 @@ class CSR
 
         void prod_Ax(const std::vector<T>&x, std::vector<T>& y/*result*/, double parametro_c) const;
 
-        void power_method(const std::vector<T>&, double, std::vector<T>& _output) const;
+        void power_method(const std::vector<T>&, double, power_method_stop_criteria_t, std::vector<T>& _output) const;
 
         /************************ OUTPUT ************************/
         /**
@@ -439,9 +451,7 @@ void CSR<T>::prod_Ax(const std::vector<T>&x, std::vector<T>& y/*resultado*/, dou
 };
 
 template<class T>
-void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametro_c, std::vector<T>& _output_vector) const {
-    double epsilon_diff_corte = 0.000000000001;
-    
+void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametro_c, power_method_stop_criteria_t criterio_parada, std::vector<T>& _output_vector) const {  
     int iters = 0;
     std::vector<T> eigenvec_candidate(_initial_vector);
     std::vector<T> new_eigenvec_candidate(eigenvec_candidate.size());
@@ -450,22 +460,53 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
     std::cout << "Initial eigenvector: "<< std::endl;
     std::cout << eigenvec_candidate << std::endl;
 
-    do{
-        
-        prod_Ax(eigenvec_candidate, new_eigenvec_candidate, parametro_c); //Ax
+    // Mejor que branchear mucho adentro de las iteraciones del metodo, voy a reusar poco codigo pero hacerlo mas eficiente codeando cada version por separado
 
-        std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
-        diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
+    if(criterio_parada.criterio == CRT_K_ITERS_DELTA_DIFF) {
         
-        eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
-        iters++;
+        double epsilon_diff_corte = criterio_parada.valor.delta_diff;
+        do{
+            
+            prod_Ax(eigenvec_candidate, new_eigenvec_candidate, parametro_c); //Ax
+
+            std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
+            diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
+            
+            eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
+            iters++;
+            
+            std::cout << "Current iteration: " << iters << " -- current diff: "<< diff << std::endl;
+            std::cout << "Current iteration: " << iters << " -- current eigenvector: "<< std::endl;
+            std::cout << eigenvec_candidate << std::endl;
+            std::cout << std::endl;
+
+        }while(diff > epsilon_diff_corte);
+
+    } else if (criterio_parada.criterio ==  CRT_K_FIXED_ITERS_LIMIT) {
+
+        uint cant_iters = criterio_parada.valor.cant_iters;
+        for (uint iters = 0; iters <= cant_iters; iters++){
         
-        std::cout << "Current iteration: " << iters << " -- current diff: "<< diff << std::endl;
-        std::cout << eigenvec_candidate << std::endl;
-        std::cout << "Current iteration: " << iters << " -- current eigenvector: "<< std::endl;
-        std::cout << eigenvec_candidate << std::endl;
-        std::cout << std::endl;
-    }while(diff > epsilon_diff_corte);
+            prod_Ax(eigenvec_candidate, new_eigenvec_candidate, parametro_c); //Ax  
+
+            std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
+            diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
+
+            eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
+                        
+            std::cout << "Current iteration: " << iters << " -- current diff: "<< diff << std::endl;
+            std::cout << eigenvec_candidate << std::endl;
+            std::cout << "Current iteration: " << iters << " -- current eigenvector: "<< std::endl;
+            std::cout << eigenvec_candidate << std::endl;
+            std::cout << std::endl;
+
+        }            
+
+    } else if (criterio_parada.criterio == CRT_K_ITERS_NO_DIFF){
+
+    } else {
+        std::cerr << "Criterio de parada erroneo en power method" << std::endl;
+    }
 
     //Escribo la salida en el parametro de salida
     _output_vector = new_eigenvec_candidate;
