@@ -4,7 +4,8 @@
 #include <vector>
 #include <cassert>
 #include <algorithm>
-#include <ostream>
+#include <iostream>
+#include <fstream>
 #include <limits>
 #include <sparse_vector.tpp>
 #include <dok_matrix.tpp>
@@ -21,6 +22,7 @@ typedef struct power_method_stop_criteria
         double delta_diff;
     } valor;
 
+    uint intervalo_iters_reporte;
 } power_method_stop_criteria_t;
 
 typedef unsigned int uint;
@@ -239,7 +241,7 @@ class CSR
 
         void prod_Ax(const std::vector<T>&x, std::vector<T>& y/*result*/, double parametro_c) const;
 
-        void power_method(const std::vector<T>&, double, power_method_stop_criteria_t, std::vector<T>& _output) const;
+        void power_method(const std::vector<T>&, double, power_method_stop_criteria_t, std::vector<T>& _output, std::ofstream & reporte) const;
 
         /************************ OUTPUT ************************/
         /**
@@ -451,14 +453,14 @@ void CSR<T>::prod_Ax(const std::vector<T>&x, std::vector<T>& y/*resultado*/, dou
 };
 
 template<class T>
-void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametro_c, power_method_stop_criteria_t criterio_parada, std::vector<T>& _output_vector) const {  
+void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametro_c, power_method_stop_criteria_t criterio_parada, std::vector<T>& _output_vector, std::ofstream& reporte_power_method) const {  
     int iters = 0;
     std::vector<T> eigenvec_candidate(_initial_vector);
     std::vector<T> new_eigenvec_candidate(eigenvec_candidate.size());
     double diff = 0.0;
 
-    std::cout << "Initial eigenvector: "<< std::endl;
-    std::cout << eigenvec_candidate << std::endl;
+    //std::cout << "Initial eigenvector: "<< std::endl;
+    //std::cout << eigenvec_candidate << std::endl;
 
     // Mejor que branchear mucho adentro de las iteraciones del metodo, voy a reusar poco codigo pero hacerlo mas eficiente codeando cada version por separado
 
@@ -473,13 +475,13 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
             diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
             
             eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
-            iters++;
             
-            std::cout << "Current iteration: " << iters << " -- current diff: "<< diff << std::endl;
-            std::cout << "Current iteration: " << iters << " -- current eigenvector: "<< std::endl;
-            std::cout << eigenvec_candidate << std::endl;
-            std::cout << std::endl;
+            if(iters % criterio_parada.intervalo_iters_reporte == 0){
+                reporte_power_method << iters << " " << diff << " " << eigenvec_candidate << std::endl;
+                reporte_power_method.flush();
+            }
 
+            iters++;
         }while(diff > epsilon_diff_corte);
 
     } else if (criterio_parada.criterio ==  CRT_K_FIXED_ITERS_LIMIT) {
@@ -493,14 +495,12 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
             diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
 
             eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
-                        
-            std::cout << "Current iteration: " << iters << " -- current diff: "<< diff << std::endl;
-            std::cout << eigenvec_candidate << std::endl;
-            std::cout << "Current iteration: " << iters << " -- current eigenvector: "<< std::endl;
-            std::cout << eigenvec_candidate << std::endl;
-            std::cout << std::endl;
 
-        }            
+            if(iters % criterio_parada.intervalo_iters_reporte == 0){
+                reporte_power_method << iters << " " << diff << " " << eigenvec_candidate << std::endl;
+                reporte_power_method.flush();
+            }
+        }
 
     } else if (criterio_parada.criterio == CRT_K_ITERS_NO_DIFF){
 
@@ -509,7 +509,7 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
     }
 
     //Escribo la salida en el parametro de salida
-    _output_vector = new_eigenvec_candidate;
+    _output_vector = new_eigenvec_candidate;    
 };
 
 
