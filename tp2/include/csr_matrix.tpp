@@ -214,7 +214,7 @@ class CSR
         /************************ GETTERS ************************/
         uint filas() const {return _numfilas;}
         uint columnas() const {return _numcolumnas;}
-        void get_row(uint fila, std::vector<T>& elementos, std::vector<uint>& columnas);
+        void get_row(uint fila, std::vector<T>& elementos, std::vector<uint>& columnas) const;
 
         /**
         * Operador ()
@@ -223,11 +223,9 @@ class CSR
         T operator()(uint fila, uint columna); //debería devolver una referencia, pero dado que a veces hay que devolver 0...
 
         /************************ METODOS ***********************/
-        std::vector<T>& operator*(const std::vector<T>&) const;
-        void operator*(std::vector<T>&) const;
+        std::vector<T> operator*(const std::vector<T>&) const;
 
-        std::vector<T>& power_method(const std::vector<T>&, double) const;
-        void power_method(std::vector<T>&, double) const;
+        void power_method(const std::vector<T>&, double, std::vector<T>& _output) const;
 
         /************************ OUTPUT ************************/
         /**
@@ -309,7 +307,7 @@ std::vector<uint>::const_iterator CSR<T>::const_iterator::next_row_value_index(u
 };
 
 template<class T>
-void CSR<T>::get_row(uint fila, std::vector<T>& elementos, std::vector<uint>& columnas) {
+void CSR<T>::get_row(uint fila, std::vector<T>& elementos, std::vector<uint>& columnas) const{
     if (fila > _numfilas){
         std::cerr << "Se intentó acceder a una posición inexistente de una matriz CSR";
         exit(-1);
@@ -370,18 +368,6 @@ void CSR<T>::show(std::ostream& os)
 }
 
 template<class T>
-std::vector<T>& CSR<T>::operator*(const std::vector<T>& x) const {};
-
-template<class T>
-void CSR<T>::operator*(std::vector<T>& x) const {};
-
-template<class T>
-std::vector<T>& CSR<T>::power_method(const std::vector<T>& x, double prob) const {};
-
-template<class T>
-void CSR<T>::power_method(std::vector<T>& x, double prob) const {};
-
-template<class T>
 std::ostream& operator<< (std::ostream& os,const CSR<T>& csr)
 {
     //os.precision(5);
@@ -408,5 +394,82 @@ std::ostream& operator<< (std::ostream& os,const CSR<T>& csr)
         os << "[" << it->row << "][" << it->col << "]: " << *it->val << std::endl;
     return os;
 };
+
+// Impl. algoritmo 1 de golub Ax
+template<class T>
+std::vector<T> CSR<T>::operator*(const std::vector<T>& x) const {
+    double prob_c = 0.85;  // TODO FIX ME FIXME: QUE HACEMOS CON ESTO?
+    
+
+    assert(_numcolumnas == x.size());// Validacion dimensiones
+    std::vector<T> y;
+    std::vector<T> cx = (x*prob_c); // y = cx
+
+    // y = Pt * cx
+    // y_i = Producto interno <fila_i, cx> = <fila_i, y>
+    
+    // Itero sobre las filas de la matriz    
+    for (uint idx_fila = 0; idx_fila < _numfilas; idx_fila++)
+    {
+        std::vector<T> fila_actual_elementos;
+        std::vector<uint> fila_actual_columnas_llenas;
+
+        get_row(idx_fila, fila_actual_elementos, fila_actual_columnas_llenas);
+
+        // Hago el producto interno <fila_i, y> = <fila_i, cx>
+        double y_i = 0;        
+
+        uint idx_elemento = 0;
+        for (uint idx_col : fila_actual_columnas_llenas)
+        {                        
+            //std::cout << "x[idx_col]: " << y[idx_col] << std::endl;
+            //std::cout << "A[fila][idx_elemento]: " << fila_actual_elementos[idx_elemento] << std::endl;
+            
+            y_i += fila_actual_elementos[idx_elemento] * cx[idx_col];
+
+            idx_elemento++;
+        }
+        y.push_back(y_i);
+    }
+
+    // Tenemos y = Pt *c*x
+
+    double w = norma1(x, false) - norma1(y, false);
+
+    std::vector<T> v(y.size(), (double)1/y.size());//personalization vector segun el paper de golub
+
+    y += v*w;
+
+    return y;
+};
+
+template<class T>
+void CSR<T>::power_method(const std::vector<T>& _initial_vector, double epsilon_diff_corte, std::vector<T>& _output_vector) const {
+    int iters = 1;
+    std::vector<T> eigenvec_candidate(_initial_vector);
+    std::vector<T> new_eigenvec_candidate(eigenvec_candidate.size());
+    double diff = 0.0;
+
+    do{
+        std::cout << "Current iteration: " << iters << " -- current eigenvector: "<< std::endl;
+        std::cout << eigenvec_candidate << std::endl;
+        
+        new_eigenvec_candidate = (*this) * eigenvec_candidate; // Ax        
+
+        std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
+        diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
+        
+        std::cout << "Current iteration: " << iters << " -- current diff: "<< diff << std::endl;
+
+        eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
+        iters++;
+        std::cout << std::endl;
+    }while(diff > epsilon_diff_corte);
+
+    //Escribo la salida en el parametro de salida
+    _output_vector = new_eigenvec_candidate;
+};
+
+
 
 #endif
