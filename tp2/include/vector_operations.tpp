@@ -81,8 +81,8 @@ double norma1(std::vector<double>& a, bool asumir_todos_positivos)
 {
     double norma = 0.0; 
     size_t size = a.size();
-    
-    for (int i = 0; i < size; i++)
+
+    for (uint i = 0; i < size; i++)
     {
         norma += (asumir_todos_positivos ? a[i] : std::abs(a[i]));
     }    

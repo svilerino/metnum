@@ -7,23 +7,13 @@
 
 int main(int argc, char** argv) {
     DoK<double> dok1(10);
-    #ifdef _DOK_SPARSE_VECTOR
-        dok1[0][0] = 6.66;
-        dok1[2][5] = 2.22;
-        dok1[3][2] = 3.33;
-        dok1[5][5] = 5.55;
-        dok1[5][6] = 5.66;
-        dok1[5][8] = 5.88;
-        dok1[9][9] = 9.99;
-    #else
-        dok1.set(0,0,6.66);
-        dok1.set(2,5,2.22);
-        dok1.set(3,2,3.33);
-        dok1.set(5,5,5.55);
-        dok1.set(5,6,5.66);
-        dok1.set(5,8,5.88);
-        dok1.set(9,9,9.99);
-    #endif
+    dok1[0][0] = 6.66;
+    dok1[2][5] = 2.22;
+    dok1[3][2] = 3.33;
+    dok1[5][5] = 5.55;
+    dok1[5][6] = 5.66;
+    dok1[5][8] = 5.88;
+    dok1[9][9] = 9.99;
 
     std::cout << dok1 << std::endl;
 
