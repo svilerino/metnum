@@ -60,19 +60,22 @@ Tambien se observa en los graficos con escala logaritmica que la brecha entre EG
 
 Luego de la experimentacion, se nos ocurrio una optimizacion de la implementaci\'on de los algoritmos, se agreg\'o la siguiente sentencia condicional al código de EG y la parte de triangulacion de LU:
 
-\begin{lstlisting}
-			.
-			.
-			.
-for (int j = i+1; j < numfilas; j++) {
-
-            if (abs(_A[j][i]) < EPSILON) {
-                continue;
-            }
-			.
-			.
-			.
-\end{lstlisting}
+\begin{algorithmic}
+			\State .
+			\State .
+			\State .
+	\For{$j \gets i+1 \ldots numfilas$}
+		\If{abs(A[i,j]) $\leq$ EPSILON}
+			\State continue
+		\EndIf  		
+			\State .
+			\State .
+			\State .
+	\EndFor
+			\State .
+			\State .
+			\State .
+\end{algorithmic}
 
 Es decir, si el elemento a analizar de la matriz es un cero(con tolerancia epsilon, en nuestro caso $exp(10, -9)$), el algoritmo no realiza el c\'alculo del coeficiente multiplicador ni tampoco opera sobre la fila multiplicando cada elemento por \'este. Al agregar esta sentencia y realizar los experimentos de fitteo de orden de complejidad, obtuvimos como resultado que la complejidad emp\'irica de ambos algoritmos era de orden cuadr\'atico. Creemos que esto se debe a la condición banda de la matriz, y que en muchos casos esta condición de corte evita que el algoritmo ingrese en la tercera iteracion anidada.
 
