@@ -223,7 +223,9 @@ class CSR
         T operator()(uint fila, uint columna); //debería devolver una referencia, pero dado que a veces hay que devolver 0...
 
         /************************ METODOS ***********************/
-        std::vector<T> operator*(const std::vector<T>&) const;
+        //std::vector<T> operator*(const std::vector<T>&) const;
+
+        void prod_Ax(const std::vector<T>&x, std::vector<T>& y/*result*/, double parametro_c) const;
 
         void power_method(const std::vector<T>&, double, std::vector<T>& _output) const;
 
@@ -397,13 +399,11 @@ std::ostream& operator<< (std::ostream& os,const CSR<T>& csr)
 
 // Impl. algoritmo 1 de golub Ax
 template<class T>
-std::vector<T> CSR<T>::operator*(const std::vector<T>& x) const {
-    double prob_c = 0.85;  // TODO FIX ME FIXME: QUE HACEMOS CON ESTO?
+void CSR<T>::prod_Ax(const std::vector<T>&x, std::vector<T>& y/*resultado*/, double parametro_c) const{
     
-
     assert(_numcolumnas == x.size());// Validacion dimensiones
-    std::vector<T> y;
-    std::vector<T> cx = (x*prob_c); // y = cx
+    assert(_numfilas == y.size());// Validacion dimensiones
+    std::vector<T> cx = (x*parametro_c); // y = cx
 
     // y = Pt * cx
     // y_i = Producto interno <fila_i, cx> = <fila_i, y>
@@ -429,7 +429,8 @@ std::vector<T> CSR<T>::operator*(const std::vector<T>& x) const {
 
             idx_elemento++;
         }
-        y.push_back(y_i);
+
+        y[idx_fila] = y_i;
     }
 
     // Tenemos y = Pt *c*x
@@ -439,30 +440,34 @@ std::vector<T> CSR<T>::operator*(const std::vector<T>& x) const {
     std::vector<T> v(y.size(), (double)1/y.size());//personalization vector segun el paper de golub
 
     y += v*w;
-
-    return y;
 };
 
 template<class T>
-void CSR<T>::power_method(const std::vector<T>& _initial_vector, double epsilon_diff_corte, std::vector<T>& _output_vector) const {
-    int iters = 1;
+void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametro_c, std::vector<T>& _output_vector) const {
+    double epsilon_diff_corte = 0.000000000001;
+    
+    int iters = 0;
     std::vector<T> eigenvec_candidate(_initial_vector);
     std::vector<T> new_eigenvec_candidate(eigenvec_candidate.size());
     double diff = 0.0;
 
+    std::cout << "Initial eigenvector: "<< std::endl;
+    std::cout << eigenvec_candidate << std::endl;
+
     do{
-        std::cout << "Current iteration: " << iters << " -- current eigenvector: "<< std::endl;
-        std::cout << eigenvec_candidate << std::endl;
         
-        new_eigenvec_candidate = (*this) * eigenvec_candidate; // Ax        
+        prod_Ax(eigenvec_candidate, new_eigenvec_candidate, parametro_c); //Ax
 
         std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
         diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
         
-        std::cout << "Current iteration: " << iters << " -- current diff: "<< diff << std::endl;
-
         eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
         iters++;
+        
+        std::cout << "Current iteration: " << iters << " -- current diff: "<< diff << std::endl;
+        std::cout << eigenvec_candidate << std::endl;
+        std::cout << "Current iteration: " << iters << " -- current eigenvector: "<< std::endl;
+        std::cout << eigenvec_candidate << std::endl;
         std::cout << std::endl;
     }while(diff > epsilon_diff_corte);
 
