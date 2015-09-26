@@ -5,6 +5,6 @@ Problem::Problem(ProblemArguments &in_args) {
 
 }
 
-void Problem::resolver_instancias(Results &output, ostream &timing_result_os) {
+void Problem::resolver_instancias(Results &output, std::ostream &timing_result_os) {
 
 }

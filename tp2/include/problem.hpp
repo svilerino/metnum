@@ -11,7 +11,7 @@ class Problem {
 public:
     Problem(ProblemArguments &in_args);
 
-    void resolver_instancias(Results &output, ostream &timing_result_os);
+    void resolver_instancias(Results &output, std::ostream &timing_result_os);
 
 private:
 

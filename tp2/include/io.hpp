@@ -6,7 +6,6 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <matriz.hpp>
 #include <string>
 
 typedef struct ProblemArguments {
@@ -16,8 +15,8 @@ typedef struct Results {
 
 } Results;
 
-void mostrar_datos_entrada(ProblemArguments args, ostream &os);
-void read_args_from_stream(istream &is, ProblemArguments& args);
-void write_results_to_stream(ostream &os, Results output_results);
+void mostrar_datos_entrada(ProblemArguments args, std::ostream &os);
+void read_args_from_stream(std::istream &is, ProblemArguments& args);
+void write_results_to_stream(std::ostream &os, Results output_results);
 
 #endif
