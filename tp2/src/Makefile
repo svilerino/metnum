@@ -17,7 +17,7 @@ CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ -D_DOK_SPARSE_VECTOR
 TP2_OBJECTS=main.o io.o problem.o
 TEST_DOK_OBJECTS= test_dok.o
 TEST_CSR_OBJECTS= test_csr.o
-
+TEST_POWMETHOD_OBJECTS= test_power_method.o
 #------- Dirs ------- 
 
 BINDIR=../bin
@@ -26,7 +26,7 @@ TESTS=tests
 
 .PHONY: all clean clean_test_results
 
-all: tp2 csr_tests dok_tests 
+all: tp2 csr_tests dok_tests power_method_tests
 
 clean:
 	reset
@@ -50,6 +50,9 @@ csr_tests: $(TEST_CSR_OBJECTS)
 
 dok_tests: $(TEST_DOK_OBJECTS)
 	$(LD) $(LDFLAGS) -o $(BINDIR)/dok_tests $(TEST_DOK_OBJECTS)
+
+power_method_tests: $(TEST_POWMETHOD_OBJECTS)
+	$(LD) $(LDFLAGS) -o $(BINDIR)/power_method_tests $(TEST_POWMETHOD_OBJECTS)
 
 %.o: %.cpp
 	$(CC) -c $(CFLAGS) -o "$@" "$<"
