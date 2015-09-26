@@ -75,7 +75,7 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
     return os;
 }
 
-double norma1(const std::vector<double>& a, bool asumir_todos_positivos)
+double norma1(const std::vector<double>& a, const bool asumir_todos_positivos)
 {
     double norma = 0.0; 
     size_t size = a.size();
