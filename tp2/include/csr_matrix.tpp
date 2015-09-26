@@ -409,11 +409,12 @@ void CSR<T>::prod_Ax(const std::vector<T>&x, std::vector<T>& y/*resultado*/, dou
     // y_i = Producto interno <fila_i, cx> = <fila_i, y>
     
     // Itero sobre las filas de la matriz    
+    std::vector<T> fila_actual_elementos;
+    std::vector<uint> fila_actual_columnas_llenas;
     for (uint idx_fila = 0; idx_fila < _numfilas; idx_fila++)
     {
-        std::vector<T> fila_actual_elementos;
-        std::vector<uint> fila_actual_columnas_llenas;
-
+        fila_actual_elementos.clear();
+        fila_actual_columnas_llenas.clear();
         get_row(idx_fila, fila_actual_elementos, fila_actual_columnas_llenas);
 
         // Hago el producto interno <fila_i, y> = <fila_i, cx>
@@ -422,12 +423,7 @@ void CSR<T>::prod_Ax(const std::vector<T>&x, std::vector<T>& y/*resultado*/, dou
         uint idx_elemento = 0;
         for (uint idx_col : fila_actual_columnas_llenas)
         {                        
-            //std::cout << "x[idx_col]: " << y[idx_col] << std::endl;
-            //std::cout << "A[fila][idx_elemento]: " << fila_actual_elementos[idx_elemento] << std::endl;
-            
-            y_i += fila_actual_elementos[idx_elemento] * cx[idx_col];
-
-            idx_elemento++;
+            y_i += fila_actual_elementos[idx_elemento++] * cx[idx_col];
         }
 
         y[idx_fila] = y_i;
@@ -435,7 +431,7 @@ void CSR<T>::prod_Ax(const std::vector<T>&x, std::vector<T>& y/*resultado*/, dou
 
     // Tenemos y = Pt *c*x
 
-    double w = norma1(x, false) - norma1(y, false);
+    double w = norma1(x, true) - norma1(y, true);//Podemos asumir que x e y tienen todas componentes >=0 y nos ahorramos el abs en la norma !
 
     std::vector<T> v(y.size(), (double)1/y.size());//personalization vector segun el paper de golub
 
