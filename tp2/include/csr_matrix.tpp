@@ -35,6 +35,8 @@ class CSR
         /********************** CONSTRUCTORES *********************/
         CSR() : _numfilas(0), _numcolumnas(0), _values(), _columns_index(), _rows_start() {};
         CSR(const DoK<T>&);
+        CSR(const DoK<T*>&);
+        ~CSR(){for(auto it=_values.begin();it!=_values.end();++it) delete *it;};
 
         /************************ ITERADORES *********************/
         class iterator
@@ -54,7 +56,7 @@ class CSR
                             val.row = 0;
                             val.val = NULL;
                         } else {
-                            val.val = &_values[idx];
+                            val.val = _values[idx];
                             val.col = _cols_idx[idx];
 
                             if(idx == *it_next_row_value_index) //llegue a la siguiente fila
@@ -84,7 +86,7 @@ class CSR
 
                 bool operator!=(const self_type& it) const {return !(*this == it);};
 
-                iterator(typename std::vector<T>& vals,
+                iterator(typename std::vector<T*>& vals,
                          std::vector<uint>& cols_idx,
                          std::vector<uint>& rows_start,
                          uint offset) : _values(vals),
@@ -93,7 +95,7 @@ class CSR
                                         idx(offset)
                 {
                     if(idx < _values.size()){
-                        val.val = &_values[idx];
+                        val.val = _values[idx];
                         val.col = _cols_idx[idx];
 
                         //calculo la primer fila
@@ -121,7 +123,7 @@ class CSR
             private:
                 std::vector<uint>::iterator next_row_value_index(uint cur_row);
 
-                typename std::vector<T>& _values;
+                typename std::vector<T*>& _values;
                 std::vector<uint>& _cols_idx;
                 std::vector<uint>& _rows_start;
                 std::vector<uint>::iterator it_next_row_value_index;
@@ -146,7 +148,7 @@ class CSR
                             val.row = 0;
                             val.val = NULL;
                         } else {
-                            val.val = &_values[idx];
+                            val.val = _values[idx];
                             val.col = _cols_idx[idx];
                             if(idx == *it_next_row_value_index) //llegue a la siguiente fila
                             {
@@ -175,7 +177,7 @@ class CSR
 
                 bool operator!=(const self_type& it) const {return !(*this == it);};
 
-                const_iterator(const typename std::vector<T>& vals,
+                const_iterator(const typename std::vector<T*>& vals,
                                 const std::vector<uint>& cols_idx,
                                 const std::vector<uint>& rows_start,
                                 uint offset) : _values(vals),
@@ -184,7 +186,7 @@ class CSR
                                                idx(offset)
                 {
                     if(idx < _values.size()){
-                        val.val = &_values[idx];
+                        val.val = _values[idx];
                         val.col = _cols_idx[idx];
 
                         //calculo la primer fila
@@ -212,7 +214,7 @@ class CSR
             private:
                 std::vector<uint>::const_iterator next_row_value_index(uint cur_row);
 
-                const typename std::vector<T>& _values;
+                const typename std::vector<T*>& _values;
                 const std::vector<uint>& _cols_idx;
                 const std::vector<uint>& _rows_start;
                 std::vector<uint>::const_iterator it_next_row_value_index;
@@ -220,15 +222,16 @@ class CSR
                 uint idx;
         };
 
-        iterator begin() {return iterator(_values,_columns_index,_rows_start,0);};
+        iterator begin() {return iterator(_values,_columns_index,_rows_start,(uint)0);};
         iterator end() {return iterator(_values,_columns_index,_rows_start,_values.size());};
-        const_iterator cbegin() const {return const_iterator(_values,_columns_index,_rows_start,0);};
+        const_iterator cbegin() const {return const_iterator(_values,_columns_index,_rows_start,(uint)0);};
         const_iterator cend() const {return const_iterator(_values,_columns_index,_rows_start,_values.size());};
 
         /************************ GETTERS ************************/
         uint rows() const {return _numfilas;}
         uint cols() const {return _numcolumnas;}
         void get_row(uint fila, std::vector<T>& elementos, std::vector<uint>& columnas) const;
+        void get_row(uint fila, std::vector<T*>& elementos, std::vector<uint>& columnas) const;
 
         /**
         * Operador ()
@@ -255,13 +258,57 @@ class CSR
         uint _numfilas;
         uint _numcolumnas;
 
-        typename std::vector<T> _values;
+        typename std::vector<T*> _values;
         std::vector<uint> _columns_index;
         std::vector<uint> _rows_start;
 };
 
+/*********************************** IMPLEMENTACIONES ******************************/
 template<class T>
 CSR<T>::CSR(const DoK<T>& dok) :
+        _numfilas(dok.rows()),
+        _numcolumnas(dok.cols()),
+        _values(),
+        _columns_index(),
+        _rows_start()
+{
+    uint last_row_processed = 0;
+
+    //Inicializacion de primera fila
+    auto it=dok.cbegin();
+    if(it->row == 0)
+    {
+        _values.push_back(new T(*it->val));
+        _columns_index.push_back(it->col);
+        _rows_start.push_back(_values.size()-1);
+        ++it;
+
+    } else { //entonces la primera fila esta vacia
+        _rows_start.push_back(EMPTY_ROW_CODE);
+    };
+
+    //Resto de las filas
+    while(it!=dok.cend())
+    {
+        _values.push_back(new T(*it->val));
+        _columns_index.push_back(it->col);
+        if(last_row_processed == it->row-1) //puede haber overflow, por eso "=="
+        {
+            _rows_start.push_back(_values.size()-1);
+            ++last_row_processed;
+
+        } else if(last_row_processed != it->row){ //entonces hay filas vacias 
+            for(++last_row_processed;last_row_processed<it->row;++last_row_processed) //inserto oo en caso de filas nulas
+                _rows_start.push_back(EMPTY_ROW_CODE);
+            _rows_start.push_back(_values.size()-1);
+        };
+        ++it;
+    }
+    _rows_start.push_back(_values.size()); //No le sumo +1 ya que en realidad indexamos desde el 0 en lugar del 1
+};
+
+template<class T>
+CSR<T>::CSR(const DoK<T*>& dok) :
         _numfilas(dok.rows()),
         _numcolumnas(dok.cols()),
         _values(),
@@ -339,6 +386,28 @@ void CSR<T>::get_row(uint fila, std::vector<T>& elementos, std::vector<uint>& co
                                                     [](uint index){return index != EMPTY_ROW_CODE;});
 
         for (uint i = first_row_value_index; i < next_row_value_index; ++i){
+            elementos.push_back(*_values[i]);
+            columnas.push_back(_columns_index[i]);
+        }
+    }
+}
+
+template<class T>
+void CSR<T>::get_row(uint fila, std::vector<T*>& elementos, std::vector<uint>& columnas) const{
+    if (fila > _numfilas){
+        std::cerr << "Se intentó acceder a una posición inexistente de una matriz CSR";
+        exit(-1);
+    }
+
+    uint first_row_value_index = _rows_start[fila];
+    if(first_row_value_index != EMPTY_ROW_CODE)
+    {
+        //la siguiente variable no se indefine por el ultimo valor agregado a _rows_start, siguiendo la convencion CSR
+        uint next_row_value_index = *std::find_if(_rows_start.cbegin()+fila+1,
+                                                    _rows_start.cend(),
+                                                    [](uint index){return index != EMPTY_ROW_CODE;});
+
+        for (uint i = first_row_value_index; i < next_row_value_index; ++i){
             elementos.push_back(_values[i]);
             columnas.push_back(_columns_index[i]);
         }
@@ -371,7 +440,7 @@ T CSR<T>::operator()(uint fila, uint columna) {
                                             // corresponda a un cero, it_low apunte a la primer
                                             // columna de la fila siguiente en lugar de cend().
             && *it_low == columna
-        ) result = _values[it_low - _columns_index.cbegin()];
+        ) result = *_values[it_low - _columns_index.cbegin()];
     }
 
     return result;
@@ -443,11 +512,11 @@ void CSR<T>::prod_Ax(const std::vector<T>&x, std::vector<T>& y/*resultado*/, dou
         get_row(idx_fila, fila_actual_elementos, fila_actual_columnas_llenas);
 
         // Hago el producto interno <fila_i, y> = <fila_i, cx>
-        double y_i = 0;        
+        double y_i = 0;
 
         uint idx_elemento = 0;
         for (uint idx_col : fila_actual_columnas_llenas)
-        {                        
+        {
             y_i += fila_actual_elementos[idx_elemento++] * cx[idx_col];
         }
 
@@ -522,7 +591,5 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
     //Escribo la salida en el parametro de salida
     _output_vector = new_eigenvec_candidate;    
 };
-
-
 
 #endif

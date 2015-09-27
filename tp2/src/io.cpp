@@ -9,7 +9,7 @@
 
 CSR<double>* read_args_from_stream(std::istream& is,const problem_arguments& args)
 {
-    DoK<double> dok_transposed;
+    DoK<double*> dok_transposed;
     if(!args.is_deportes)
     {
         uint nodes,edges;
@@ -28,11 +28,11 @@ CSR<double>* read_args_from_stream(std::istream& is,const problem_arguments& arg
             uint row,col;
             is >> row >> col;
             ++degs[row-1];
-            dok_transposed[col-1][row-1] = 1; //de momento, guardo el link
+            dok_transposed[col-1][row-1] = new double; //de momento, guardo el link
             --edges;
         };
         for(auto it=degs.begin();it!=degs.end();++it) *it = (double)1/(*it);
-        for(auto it=dok_transposed.begin();it!=dok_transposed.end();++it) *it->val = degs[it->col];
+        for(auto it=dok_transposed.begin();it!=dok_transposed.end();++it) **it->val = degs[it->col];
     };
 
     return new CSR<double>(dok_transposed);
