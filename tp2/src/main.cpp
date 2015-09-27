@@ -14,9 +14,9 @@ int main(int argc, char** argv) {
     if(argc != 6)
     {
         std::cerr << "Los parámetros de entrada no son los correctos." << std::endl;
-        std::cerr << argv[0] << " metodo prob_teletransportacion instancia archivo_entrada toleracia" << std::endl;
+        std::cerr << argv[0] << " metodo prob_teletransportacion instancia archivo_entrada tolerancia" << std::endl;
         std::cerr << "metodo: 0 para pagerank | 1 para alternativa." << std::endl;
-        std::cerr << "instacia: 0 para páginas web | 1 para deportes." << std::endl;
+        std::cerr << "instancia: 0 para páginas web | 1 para deportes." << std::endl;
 
         result = 1;
 
