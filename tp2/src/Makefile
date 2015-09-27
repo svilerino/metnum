@@ -54,5 +54,14 @@ dok_tests: $(TEST_DOK_OBJECTS)
 power_method_tests: $(TEST_POWMETHOD_OBJECTS)
 	$(LD) $(LDFLAGS) -o $(BINDIR)/power_method_tests $(TEST_POWMETHOD_OBJECTS)
 
+run_power_method_tests: tp2 power_method_tests
+	valgrind $(BINDIR)/power_method_tests
+
+run_csr_tests: tp2 csr_tests
+	valgrind $(BINDIR)/csr_tests
+
+run_dok_tests: tp2 dok_tests
+	valgrind $(BINDIR)/dok_tests
+
 %.o: %.cpp
 	$(CC) -c $(CFLAGS) -o "$@" "$<"

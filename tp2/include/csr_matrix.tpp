@@ -145,7 +145,6 @@ class CSR
         T operator()(uint fila, uint columna); //debería devolver una referencia, pero dado que a veces hay que devolver 0...
 
         /************************ METODOS ***********************/
-        //std::vector<T> operator*(const std::vector<T>&) const;
 
         void prod_Ax(const std::vector<T>& x, std::vector<T>& y/*result*/, double parametro_c) const;
 
@@ -159,7 +158,7 @@ class CSR
         void print_sparse(std::ostream& os);
 
     /************************ ATRIBUTOS ************************/
-    //private:
+    private:
         uint _numfilas;
         uint _numcolumnas;
 
