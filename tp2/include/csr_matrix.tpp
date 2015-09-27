@@ -415,7 +415,7 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
     } else if (criterio_parada.criterio == CRT_K_ITERS_NO_DIFF){
         assert(false && "CRT_K_ITERS_NO_DIFF sin implementar.");
     } else {
-        std::cerr << "Criterio de parada erroneo en power method" << std::endl;
+        assert(false && "Criterio de parada erroneo en power method.");
     }
 
     //Escribo la salida en el parametro de salida
