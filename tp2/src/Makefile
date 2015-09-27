@@ -30,7 +30,7 @@ all: tp2 csr_tests dok_tests power_method_tests
 
 clean:
 	reset
-	rm -rf $(BINDIR)	
+	rm -rf $(BINDIR)/*
 	rm -rf *.o *~ tp2
 
 clean_test_results:

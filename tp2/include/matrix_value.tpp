@@ -17,6 +17,7 @@ struct matrix_value
 
     matrix_value(){};
     matrix_value(uint row, uint col, T* val) : row(row),col(col),val(val){};
+    matrix_value(const matrix_value& mv) : row(mv.row),col(mv.col),val(mv.val){};
 };
 
 template<typename T>
@@ -31,13 +32,14 @@ struct const_matrix_value
     };
 
     const_matrix_value(){};
-    const_matrix_value(uint row, uint col,const T& val) : row(row),col(col),val(val){};
+    const_matrix_value(uint row, uint col,const T* val) : row(row),col(col),val(val){};
+    const_matrix_value(const const_matrix_value& mv) : row(mv.row),col(mv.col),val(mv.val){};
 };
 
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const matrix_value<T>& mv)
 {
-    os << "(" << mv.row << ", " << mv.col << ", " << *mv.val << ")";
+    os << "(" << mv.row << ", " << mv.col << ", " << mv.val << ")";
     return os;
 };
 

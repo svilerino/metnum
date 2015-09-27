@@ -9,10 +9,10 @@
 
 CSR<double>* read_args_from_stream(std::istream& is,const problem_arguments& args)
 {
-    DoK<double*> dok_transposed;
+    uint nodes,edges;
+    DoK<double> dok_transposed;
     if(!args.is_deportes)
     {
-        uint nodes,edges;
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         is.ignore(std::numeric_limits<std::streamsize>::max(),':');
@@ -28,11 +28,26 @@ CSR<double>* read_args_from_stream(std::istream& is,const problem_arguments& arg
             uint row,col;
             is >> row >> col;
             ++degs[row-1];
-            dok_transposed[col-1][row-1] = new double; //de momento, guardo el link
+            dok_transposed[col-1][row-1] = 1; //de momento, guardo el link
             --edges;
         };
         for(auto it=degs.begin();it!=degs.end();++it) *it = (double)1/(*it);
-        for(auto it=dok_transposed.begin();it!=dok_transposed.end();++it) **it->val = degs[it->col];
+        for(auto it=dok_transposed.begin();it!=dok_transposed.end();++it) *it->val = degs[it->col];
+
+    } else {
+        is >> nodes >> edges;
+        std::vector<uint> diff_goles_partidos_perdidos(nodes,0);
+        while(edges > 0)
+        {
+            uint fecha,team_win,goals_win,team_loser,goals_loser;
+            is >> fecha >> team_win >> goals_win >> team_loser >> goals_loser;
+            --team_win;--team_loser;
+            double goals_diff = goals_win-goals_loser;
+            diff_goles_partidos_perdidos[team_loser]+=goals_diff;
+            dok_transposed[team_loser][team_win]+=goals_diff;
+            --edges;
+        };
+        for(auto it=dok_transposed.begin();it!=dok_transposed.end();++it) *it->val/=diff_goles_partidos_perdidos[it->row];
     };
 
     return new CSR<double>(dok_transposed);

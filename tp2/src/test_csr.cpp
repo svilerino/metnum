@@ -7,7 +7,7 @@
 
 int main(int argc, char** argv) {
     DoK<double> dok1(10);
-    dok1[0][0] = 6.66;
+    //dok1[0][0] = 6.66;
     dok1[2][5] = 2.22;
     dok1[3][2] = 3.33;
     dok1[5][5] = 5.55;
@@ -47,6 +47,7 @@ int main(int argc, char** argv) {
     */
     std::cout << csr2 << std::endl << std::endl;
     csr2.print_sparse(std::cout);
+    std::cout << std::endl;
 
     std::vector<double> a(10,6.66);
     std::vector<double> b(10,2.22);
