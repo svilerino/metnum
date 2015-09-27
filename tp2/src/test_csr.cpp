@@ -45,7 +45,8 @@ int main(int argc, char** argv) {
     ++it;
     std::cout << it->row << " " << it->col << " " << *it->val << std::endl;
     */
-    std::cout << csr2 << std::endl;
+    std::cout << csr2 << std::endl << std::endl;
+    csr2.print_sparse(std::cout);
 
     std::vector<double> a(10,6.66);
     std::vector<double> b(10,2.22);

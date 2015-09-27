@@ -1,7 +1,7 @@
 #include <problem.hpp>
 #include <cassert>
 
-Problem::Problem(ProblemArguments &in_args) {
+Problem::Problem(problem_arguments& in_args) {
 
 }
 

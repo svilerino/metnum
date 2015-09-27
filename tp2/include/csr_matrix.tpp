@@ -226,8 +226,8 @@ class CSR
         const_iterator cend() const {return const_iterator(_values,_columns_index,_rows_start,_values.size());};
 
         /************************ GETTERS ************************/
-        uint filas() const {return _numfilas;}
-        uint columnas() const {return _numcolumnas;}
+        uint rows() const {return _numfilas;}
+        uint cols() const {return _numcolumnas;}
         void get_row(uint fila, std::vector<T>& elementos, std::vector<uint>& columnas) const;
 
         /**
@@ -239,7 +239,7 @@ class CSR
         /************************ METODOS ***********************/
         //std::vector<T> operator*(const std::vector<T>&) const;
 
-        void prod_Ax(const std::vector<T>&x, std::vector<T>& y/*result*/, double parametro_c) const;
+        void prod_Ax(const std::vector<T>& x, std::vector<T>& y/*result*/, double parametro_c) const;
 
         void power_method(const std::vector<T>&, double, power_method_stop_criteria_t, std::vector<T>& _output, std::ofstream & reporte) const;
 
@@ -248,10 +248,10 @@ class CSR
         * Salida
         * Imprime la matriz completa en un stream de salida.
         */
-        void show(std::ostream& os);
+        void print_sparse(std::ostream& os);
 
     /************************ ATRIBUTOS ************************/
-    //private:
+    private:
         uint _numfilas;
         uint _numcolumnas;
 
@@ -284,7 +284,7 @@ CSR<T>::CSR(const DoK<T>& dok) :
     };
 
     //Resto de las filas
-    for(;it!=dok.cend();++it)
+    while(it!=dok.cend())
     {
         _values.push_back(*it->val);
         _columns_index.push_back(it->col);
@@ -298,6 +298,7 @@ CSR<T>::CSR(const DoK<T>& dok) :
                 _rows_start.push_back(EMPTY_ROW_CODE);
             _rows_start.push_back(_values.size()-1);
         };
+        ++it;
     }
     _rows_start.push_back(_values.size()); //No le sumo +1 ya que en realidad indexamos desde el 0 en lugar del 1
 };
@@ -305,9 +306,9 @@ CSR<T>::CSR(const DoK<T>& dok) :
 template<class T>
 std::vector<uint>::iterator CSR<T>::iterator::next_row_value_index(uint cur_row)
 {
-    assert(idx < _rows_start.size());
+    assert(cur_row < _rows_start.size());
     std::vector<uint>::iterator begin = _rows_start.begin()+cur_row+1;
-    for(;*begin == EMPTY_ROW_CODE && begin!=_rows_start.end();++begin){};
+    while(*begin == EMPTY_ROW_CODE && begin!=_rows_start.cend()) ++begin;
 
     return begin;
 };
@@ -315,9 +316,9 @@ std::vector<uint>::iterator CSR<T>::iterator::next_row_value_index(uint cur_row)
 template<class T>
 std::vector<uint>::const_iterator CSR<T>::const_iterator::next_row_value_index(uint cur_row)
 {
-    assert(idx < _rows_start.size());
+    assert(cur_row < _rows_start.size());
     std::vector<uint>::const_iterator begin = _rows_start.cbegin()+cur_row+1;
-    for(;*begin == EMPTY_ROW_CODE && begin!=_rows_start.cend();++begin){};
+    while(*begin == EMPTY_ROW_CODE && begin!=_rows_start.cend()) ++begin;
 
     return begin;
 };
@@ -377,10 +378,20 @@ T CSR<T>::operator()(uint fila, uint columna) {
 }
 
 template<class T>
-void CSR<T>::show(std::ostream& os)
+void CSR<T>::print_sparse(std::ostream& os)
 {
-    //os.precision(5);
-    //os.setf(ios::fixed,ios::floatfield);
+    os.precision(5);
+    os.setf(std::ios::fixed,std::ios::floatfield);
+
+    for (uint fila = 0; fila < rows(); ++fila) {
+        os << "[";
+        for (uint columna = 0; columna < cols(); ++columna) {
+            // seteo la precisión en función del signo para obtener ancho fijo
+            os.precision((*this)(fila,columna) < 0 ? 4 : 5);
+            os << (*this)(fila,columna) << (columna == cols()-1 ? "" : ", ");
+        }
+        os << "]" << std::endl;
+    }
 }
 
 template<class T>
@@ -414,14 +425,14 @@ std::ostream& operator<< (std::ostream& os,const CSR<T>& csr)
 // Impl. algoritmo 1 de golub Ax
 template<class T>
 void CSR<T>::prod_Ax(const std::vector<T>&x, std::vector<T>& y/*resultado*/, double parametro_c) const{
-    
+
     assert(_numcolumnas == x.size());// Validacion dimensiones
     assert(_numfilas == y.size());// Validacion dimensiones
     std::vector<T> cx = (x*parametro_c); // y = cx
 
     // y = Pt * cx
     // y_i = Producto interno <fila_i, cx> = <fila_i, y>
-    
+
     // Itero sobre las filas de la matriz    
     std::vector<T> fila_actual_elementos;
     std::vector<uint> fila_actual_columnas_llenas;
@@ -465,17 +476,17 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
     // Mejor que branchear mucho adentro de las iteraciones del metodo, voy a reusar poco codigo pero hacerlo mas eficiente codeando cada version por separado
 
     if(criterio_parada.criterio == CRT_K_ITERS_DELTA_DIFF) {
-        
+
         double epsilon_diff_corte = criterio_parada.valor.delta_diff;
         do{
-            
+
             prod_Ax(eigenvec_candidate, new_eigenvec_candidate, parametro_c); //Ax
 
             std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
             diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
-            
+
             eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
-            
+
             if(iters % criterio_parada.intervalo_iters_reporte == 0){
                 reporte_power_method << iters << " " << diff << " " << eigenvec_candidate << std::endl;
                 reporte_power_method.flush();
@@ -488,7 +499,7 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
 
         uint cant_iters = criterio_parada.valor.cant_iters;
         for (uint iters = 0; iters <= cant_iters; iters++){
-        
+
             prod_Ax(eigenvec_candidate, new_eigenvec_candidate, parametro_c); //Ax  
 
             std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;

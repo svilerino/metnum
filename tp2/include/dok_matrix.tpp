@@ -156,8 +156,7 @@ class DoK
         * Salida
         * Imprime la matriz completa en un stream de salida.
         */
-        void mostrar(std::ostream& os) ;
-
+        void print_sparse(std::ostream& os) ;
 
         /********************* CONSTRUCTORES ********************/
         DoK() : matrix() {};
@@ -168,7 +167,7 @@ class DoK
 };
 
 template<class T>
-void DoK<T>::mostrar(std::ostream& os)
+void DoK<T>::print_sparse(std::ostream& os)
 {
     os.precision(5);
     os.setf(std::ios::fixed,std::ios::floatfield);
@@ -182,7 +181,6 @@ void DoK<T>::mostrar(std::ostream& os)
         }
         os << "]" << std::endl;
     }
-    os << std::endl;
 }
 
 template<class T>

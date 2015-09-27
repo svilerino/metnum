@@ -75,15 +75,16 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
     return os;
 }
 
-double norma1(const std::vector<double>& a, const bool asumir_todos_positivos)
+template<typename T>
+double norma1(const std::vector<T>& a, const bool asumir_todos_positivos)
 {
-    double norma = 0.0; 
+    double norma = 0.0;
     size_t size = a.size();
 
     for (uint i = 0; i < size; i++)
     {
         norma += (asumir_todos_positivos ? a[i] : std::abs(a[i]));
-    }    
+    }
     return norma;
 };
 

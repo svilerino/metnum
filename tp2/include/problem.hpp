@@ -7,13 +7,12 @@
 #include <cassert>
 
 class Problem {
-	// Abstrae funciones y datos útiles de un problema
-public:
-    Problem(ProblemArguments &in_args);
+// Abstrae funciones y datos útiles de un problema
+    public:
+        Problem(problem_arguments& in_args);
 
-    void resolver_instancias(Results &output, std::ostream &timing_result_os);
+        void resolver_instancias(Results& output, std::ostream& timing_result_os);
 
-private:
-
+    private:
 };
 #endif

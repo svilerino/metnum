@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 
     std::cout << dok1 << std::endl << std::endl;
     std::cout << "Y ahora la matriz esparsa" << std::endl;
-    dok1.mostrar(std::cout);
+    dok1.print_sparse(std::cout);
 
     return 0;
 }
