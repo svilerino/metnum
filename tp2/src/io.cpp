@@ -71,7 +71,7 @@ std::vector<std::pair<uint,uint> >* read_args_from_stream_indeg(std::istream& is
     {
         uint row,col;
         is >> row >> col;
-        ++(*degs_ptr)[row-1].first;
+        ++(*degs_ptr)[col-1].first;
         --edges;
     };
 
