@@ -28,19 +28,7 @@ int main(int argc, char** argv) {
         args.input_file_path = argv[4];
         args.epsilon = std::stod(argv[5],NULL);
 
-        //std::cout << args << std::endl << std::endl;
-        std::ifstream input_file(args.input_file_path,std::ifstream::in);
-        if (!input_file.is_open()) {
-            std::cerr << "Path de archivo de entrada invalido: " << args.input_file_path << std::endl;
-            result = 2;
-        } else {
-            CSR<double>* csr_ptr = read_args_from_stream(input_file,args);
-            input_file.close();
-            std::cout << "CSR: " << std::endl << *csr_ptr << std::endl;
-            csr_ptr->print_sparse(std::cout);
-
-            delete csr_ptr;
-        }
+        Problem problem(args);
     };
 //    string path_timings_out = (argc > 6) ? argv[6] : "timing_results.txt";
 //

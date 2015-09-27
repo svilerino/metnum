@@ -7,7 +7,7 @@
 #include <csr_matrix.tpp>
 #include <dok_matrix.tpp>
 
-CSR<double>* read_args_from_stream(std::istream& is,const problem_arguments& args)
+CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_arguments& args)
 {
     uint nodes,edges;
     DoK<double> dok_transposed;
@@ -53,6 +53,30 @@ CSR<double>* read_args_from_stream(std::istream& is,const problem_arguments& arg
     return new CSR<double>(dok_transposed);
 };
 
+std::vector<std::pair<uint,uint> >* read_args_from_stream_indeg(std::istream& is,const problem_arguments& args)
+{
+    uint nodes,edges;
+    is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+    is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+    is.ignore(std::numeric_limits<std::streamsize>::max(),':');
+    is >> nodes;
+    is.ignore(std::numeric_limits<std::streamsize>::max(),':');
+    is >> edges;
+    is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+    is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+
+    std::vector<std::pair<uint,uint> >* degs_ptr = new std::vector<std::pair<uint,uint> >(nodes);
+    for(uint i=1;i<=nodes;++i) (*degs_ptr)[i-1].second = i;
+    while(edges > 0)
+    {
+        uint row,col;
+        is >> row >> col;
+        ++(*degs_ptr)[row-1].first;
+        --edges;
+    };
+
+    return degs_ptr;
+};
 void write_results_to_stream(std::ostream &os, Results output_results) {
     os.precision(5);
     os.setf(std::ios::fixed,std::ios::floatfield);
