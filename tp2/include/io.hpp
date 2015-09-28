@@ -14,6 +14,7 @@ typedef struct problem_arguments
     std::string input_file_path,output_file_path;
 
     //Adicionales
+    criterio_terminacion_powermethod power_method_mode;//Default delta diff por catedra.
     bool random_initial_vector;
     std::string pm_reporte_path;
     std::string timing_path;

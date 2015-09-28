@@ -86,11 +86,27 @@ void Problem::resolver_instancia() {
             // --------------------------- Inicializo los parametros de power method ---------------------------
 
             std::vector<double> res;
-
             power_method_stop_criteria_t criterio_parada;
-            criterio_parada.criterio = CRT_K_ITERS_DELTA_DIFF;
-            criterio_parada.valor.delta_diff = args.epsilon;
+
+
             criterio_parada.intervalo_iters_reporte = 8; // Flushear info de convergencia cada x iters(si es potencia de 2 el compilador puede hacer magia performante)
+            criterio_parada.criterio = args.power_method_mode;
+
+
+            if(criterio_parada.criterio == CRT_K_FIXED_ITERS_LIMIT){
+
+                criterio_parada.valor.cant_iters = (uint)args.epsilon;
+
+            }else if(criterio_parada.criterio == CRT_K_ITERS_DELTA_DIFF){
+
+                criterio_parada.valor.delta_diff = args.epsilon;
+
+            }else if (criterio_parada.criterio == CRT_K_ITERS_NO_DIFF){
+                assert(false && "CRT_K_ITERS_NO_DIFF sin implementar.");
+            } else {
+                assert(false && "Criterio de parada erroneo en power method.");
+            }
+
             
             // --------------------------- Abro los streams de info ---------------------------
 

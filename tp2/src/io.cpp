@@ -26,14 +26,25 @@ problem_arguments::problem_arguments(char** argv, int argc)
     //  Parametros adicionales
     std::string extracted_test_name = input_file_path.substr(0, input_file_path.find_last_of("\\."));
 
+    // Modo de corte power_method    
+    if(argc > 3){
+        if(atoi(argv[3]) == 0){
+            power_method_mode = CRT_K_FIXED_ITERS_LIMIT;
+        }else if(atoi(argv[3]) == 1){
+            power_method_mode = CRT_K_ITERS_DELTA_DIFF; // fixed iters(interpreta el argumento de la tolerancia como cantidad de iters en int)
+        }
+    }else {
+        power_method_mode = CRT_K_ITERS_DELTA_DIFF; // fixed iters(interpreta el argumento de la tolerancia como cantidad de iters en int)        
+    }
+
     // Vector inicial aleatorio para power method / false => equiprobable en R**n
-    random_initial_vector = (argc > 3) ? atoi(argv[3]) : false;
+    random_initial_vector = (argc > 4) ? atoi(argv[4]) : false;
 
     // Path archivo de reporte
-    pm_reporte_path = (argc > 4) ? argv[4] : (extracted_test_name + ".convergence");
+    pm_reporte_path = (argc > 5) ? argv[5] : (extracted_test_name + ".convergence");
 
     // Path archivo de timing
-    timing_path = (argc > 5) ? argv[5] : (extracted_test_name + ".timing");
+    timing_path = (argc > 6) ? argv[6] : (extracted_test_name + ".timing");
 };
 
 CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_arguments& args)
@@ -117,7 +128,8 @@ std::ostream& operator<<(std::ostream& os, const problem_arguments& args)
     os << "Probabilidad de Teletransportación: " << args.c << std::endl;
     os << "Tipo de instancia: "; if(args.is_deportes) os << "Deportes"; else os << "Páginas Web"; os << std::endl;
     os << "Archivo de Entrada: " << args.input_file_path << std::endl;
-    os << "Tolerancia Metodo de la Potencia: " << args.epsilon << std::endl;
+    os << "Modo metodo de la Potencia: " << ((args.power_method_mode == 0) ? "Cantidad de iteraciones fijas" : "Iterar hasta diferencia menor a tolerancia") << std::endl;
+    os << "Tolerancia/Cant.iters fijas Metodo de la Potencia: " << args.epsilon << std::endl;
     os << "Vector inicial random: " << (args.random_initial_vector ? "Si" : "No") << std::endl;
     os << "Archivo de convergencia: " << args.pm_reporte_path << std::endl;
     os << "Archivo de timing: " << args.timing_path;
