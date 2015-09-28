@@ -129,7 +129,7 @@ void Problem::resolver_instancia() {
             // --------------------------- Imprimo info y cierro streams ---------------------------
 
             timing_power_method << args << std::endl;
-            timing_power_method<< "Cantidad iteraciones power_method: " << CANT_ITERS_MEDICION << std::endl;
+            timing_power_method<< "Cantidad repeticiones medicion power_method: " << CANT_ITERS_MEDICION << std::endl;
             timing_power_method<< "Promedio tiempo microsegundos power_method: " << promedio_tiempo << std::endl;
 
             reporte_power_method.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1) en el check cuando lo abro;
