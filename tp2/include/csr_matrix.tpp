@@ -368,8 +368,8 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
     std::vector<T> new_eigenvec_candidate(eigenvec_candidate.size());
     double diff = 0.0;
 
-    //std::cout << "Initial eigenvector: "<< std::endl;
-    //std::cout << eigenvec_candidate << std::endl;
+    std::cout << "Initial eigenvector: "<< std::endl;
+    std::cout << eigenvec_candidate << std::endl;
 
     // Mejor que branchear mucho adentro de las iteraciones del metodo, voy a reusar poco codigo pero hacerlo mas eficiente codeando cada version por separado
 

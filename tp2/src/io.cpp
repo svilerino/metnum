@@ -8,8 +8,10 @@
 #include <csr_matrix.tpp>
 #include <dok_matrix.tpp>
 
-problem_arguments::problem_arguments(const std::string& input_filename,const std::string& output_filename)
+problem_arguments::problem_arguments(char** argv, int argc)
 {
+    const std::string& input_filename = argv[1];
+    const std::string& output_filename = argv[2];
     std::ifstream is(input_filename,std::ifstream::in);
     if (!is.is_open())
     {
@@ -19,6 +21,16 @@ problem_arguments::problem_arguments(const std::string& input_filename,const std
 
     output_file_path = output_filename;
     is_pagerank = !is_pagerank;
+
+
+    //  Parametros adicionales
+
+    // Vector inicial aleatorio para power method / false => equiprobable en R**n
+    random_initial_vector = (argc > 3) ? atoi(argv[3]) : false;
+
+    // Path archivo de reporte
+    std::string extracted_test_name = input_file_path.substr(0, input_file_path.find_last_of("\\."));
+    pm_reporte_path = (argc > 4) ? argv[4] : (extracted_test_name + ".convergence");
 };
 
 CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_arguments& args)

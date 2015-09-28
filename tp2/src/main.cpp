@@ -9,7 +9,7 @@
 typedef unsigned int uint;
 
 int main(int argc, char** argv) {
-    if(argc != 3)
+    if(argc < 3)
     {
         std::cerr << "Los parámetros de entrada no son los correctos." << std::endl;
         std::cerr << "El primer parametro debe ser un archivo con una linea conteniendo los siguientes valores: " << std::endl;
@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
         return -1;
 
     } else {
-        problem_arguments args(argv[1],argv[2]);
+        problem_arguments args(argv, argc);
         //std::cout << args << std::endl;
         Problem problem(args);
         problem.resolver_instancia();

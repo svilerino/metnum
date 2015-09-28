@@ -41,6 +41,7 @@ clean_test_results:
 	rm -rf timing_results.txt
 	rm -rf power_method_reporte.txt
 	rm -rf $(TESTS)/*.out
+	rm -rf $(TESTS)/*.convergence
 
 tp2: $(TP2_OBJECTS)
 	mkdir -p $(BINDIR)
