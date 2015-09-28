@@ -16,12 +16,12 @@ class Problem {
         Problem(const problem_arguments&);
         ~Problem();
 
-        void resolver_instancias(Results& output, std::ostream& timing_result_os);
+        void resolver_instancia();
 
     private:
         CSR<double>* csr_ptr;
         std::vector<std::pair<uint,uint> >* in_deg_ptr;
-        bool is_pagerank;
+        problem_arguments args;
 };
 
 template<class A, class B>

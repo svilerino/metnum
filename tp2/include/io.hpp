@@ -4,13 +4,16 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <string>
 #include <csr_matrix.tpp>
 
 typedef struct problem_arguments
 {
     bool is_pagerank,is_deportes;
     double c,epsilon;
-    std::string input_file_path;
+    std::string input_file_path,output_file_path;
+
+    problem_arguments(const std::string&,const std::string&);
 } problem_arguments;
 
 typedef struct Results {

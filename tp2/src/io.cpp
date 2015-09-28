@@ -3,9 +3,23 @@
 #include <limits>
 #include <string>
 #include <vector>
+#include <string>
 
 #include <csr_matrix.tpp>
 #include <dok_matrix.tpp>
+
+problem_arguments::problem_arguments(const std::string& input_filename,const std::string& output_filename)
+{
+    std::ifstream is(input_filename,std::ifstream::in);
+    if (!is.is_open())
+    {
+        std::cerr << "Path de archivo de entrada invalido: " << input_filename << std::endl;
+        exit(-1);
+    } else is >> is_pagerank >> c >> is_deportes >> input_file_path >> epsilon;
+
+    output_file_path = output_filename;
+    is_pagerank = !is_pagerank;
+};
 
 CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_arguments& args)
 {

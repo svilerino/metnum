@@ -11,24 +11,23 @@ typedef unsigned int uint;
 int main(int argc, char** argv) {
     int result = 0;
 
-    if(argc != 6)
+    if(argc != 3)
     {
         std::cerr << "Los parámetros de entrada no son los correctos." << std::endl;
-        std::cerr << argv[0] << " metodo prob_teletransportacion instancia archivo_entrada tolerancia" << std::endl;
+        std::cerr << "El primer parametro debe ser un archivo con una linea conteniendo los siguientes valores: " << std::endl;
+        std::cerr << "metodo prob_teletransportacion instancia archivo_entrada tolerancia" << std::endl;
         std::cerr << "metodo: 0 para pagerank | 1 para alternativa." << std::endl;
         std::cerr << "instancia: 0 para páginas web | 1 para deportes." << std::endl;
 
         result = 1;
 
     } else {
-        problem_arguments args;
-        args.is_pagerank = !(bool)std::stoi(argv[1]); // conversion nasty a bool negado con el 1-x (viene not pagerank en el bool)
-        args.c = std::stod(argv[2],NULL);
-        args.is_deportes = (bool)std::stoi(argv[3]);
-        args.input_file_path = argv[4];
-        args.epsilon = std::stod(argv[5],NULL);
-
+        problem_arguments args(argv[1],argv[2]);
+        //std::cout << args << std::endl;
         Problem problem(args);
+        problem.resolver_instancia();
+
+        result = 0;
     };
 //    string path_timings_out = (argc > 6) ? argv[6] : "timing_results.txt";
 //

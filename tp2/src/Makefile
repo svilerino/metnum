@@ -26,7 +26,8 @@ TESTS=tests
 
 .PHONY: all clean clean_test_results
 
-all: tp2 csr_tests dok_tests power_method_tests
+#all: tp2 csr_tests dok_tests power_method_tests
+all: tp2
 
 clean:
 	reset

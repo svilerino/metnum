@@ -62,15 +62,13 @@ std::vector<T> operator*(const std::vector<T>& a, T k)
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
 {
-    os << "(";
-    if(v.size()>0)
+    auto it=v.cbegin();
+    while(it!=v.cend()-1)
     {
-        auto it=v.cbegin();
-        for(;it!=v.cend()-1;++it)
-            os << *it << ", ";
-        os << *it;
+        os << *it << std::endl;
+        ++it;
     };
-    os << ")";
+    os << *it;
 
     return os;
 }
