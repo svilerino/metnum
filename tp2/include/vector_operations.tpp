@@ -60,7 +60,39 @@ std::vector<T> operator*(const std::vector<T>& a, T k)
 };
 
 template<typename T>
+void operator/=(std::vector<T>& a, T k)
+{
+    for(auto it=a.begin();it!=a.end();++it)
+        *it/=k;
+};
+
+template<typename T>
+std::vector<T> operator/(const std::vector<T>& a, T k)
+{
+    std::vector<T> result(a.size(),k);
+    std::transform(a.cbegin(),a.cend(),result.cbegin(),result.begin(),std::divides<T>());
+
+    return result;
+};
+
+// Es un bardo imprimirlo asi linea por linea para debug. Dejemos este asi y usemos el especial para el output de la catedra
+template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
+{
+    auto it=v.cbegin();
+    os << "[";
+    while(it!=v.cend()-1)
+    {
+        os << *it << ",";
+        ++it;
+    };
+    os << *it << "]";
+
+    return os;
+}
+
+template<typename T>
+std::ostream& imprimir_en_linea(std::ostream& os, const std::vector<T>& v)
 {
     auto it=v.cbegin();
     while(it!=v.cend()-1)

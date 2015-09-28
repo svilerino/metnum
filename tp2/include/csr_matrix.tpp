@@ -383,7 +383,8 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
             std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
             diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
 
-            eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
+            double norma_autovec = norma1(new_eigenvec_candidate, true);
+            eigenvec_candidate = new_eigenvec_candidate/norma_autovec; // Reemplazo para proxima iteracion normalizado
 
             if(iters % criterio_parada.intervalo_iters_reporte == 0){
                 reporte_power_method << iters << " " << diff << " " << eigenvec_candidate << std::endl;
@@ -403,7 +404,8 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
             std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
             diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
 
-            eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
+            double norma_autovec = norma1(new_eigenvec_candidate, true);
+            eigenvec_candidate = new_eigenvec_candidate/norma_autovec; // Reemplazo para proxima iteracion normalizado
 
             if(iters % criterio_parada.intervalo_iters_reporte == 0){
                 reporte_power_method << iters << " " << diff << " " << eigenvec_candidate << std::endl;

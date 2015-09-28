@@ -45,7 +45,7 @@ void Problem::resolver_instancia() {
         if(!args.is_pagerank) {
             //IN-DEG
             std::sort(in_deg_ptr->begin(),in_deg_ptr->end(),std::greater<std::pair<uint,uint> >());
-            output_file << *in_deg_ptr << std::endl;
+            imprimir_en_linea(output_file, *in_deg_ptr);            
 
         } else {
             //PAGERANK
@@ -90,8 +90,8 @@ void Problem::resolver_instancia() {
             }
 
             result_stream.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1) en el check cuando lo abro;
-            */
-            output_file << res << std::endl;
+            */            
+            imprimir_en_linea(output_file, res);
         };
     };
     output_file.close();
