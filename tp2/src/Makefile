@@ -39,6 +39,7 @@ clean_test_results:
 	rm -rf $(TESTTIMINGOUTDIR)
 	mkdir -p $(TESTTIMINGOUTDIR)
 	rm -rf timing_results.txt
+	rm -rf power_method_reporte.txt
 	rm -rf $(TESTS)/*.out
 
 tp2: $(TP2_OBJECTS)
