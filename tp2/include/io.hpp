@@ -16,6 +16,7 @@ typedef struct problem_arguments
     //Adicionales
     bool random_initial_vector;
     std::string pm_reporte_path;
+    std::string timing_path;
 
     problem_arguments(char** argv, int argc);
 } problem_arguments;

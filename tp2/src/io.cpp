@@ -24,13 +24,16 @@ problem_arguments::problem_arguments(char** argv, int argc)
 
 
     //  Parametros adicionales
+    std::string extracted_test_name = input_file_path.substr(0, input_file_path.find_last_of("\\."));
 
     // Vector inicial aleatorio para power method / false => equiprobable en R**n
     random_initial_vector = (argc > 3) ? atoi(argv[3]) : false;
 
     // Path archivo de reporte
-    std::string extracted_test_name = input_file_path.substr(0, input_file_path.find_last_of("\\."));
     pm_reporte_path = (argc > 4) ? argv[4] : (extracted_test_name + ".convergence");
+
+    // Path archivo de timing
+    timing_path = (argc > 5) ? argv[5] : (extracted_test_name + ".timing");
 };
 
 CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_arguments& args)
@@ -114,6 +117,10 @@ std::ostream& operator<<(std::ostream& os, const problem_arguments& args)
     os << "Probabilidad de Teletransportación: " << args.c << std::endl;
     os << "Tipo de instancia: "; if(args.is_deportes) os << "Deportes"; else os << "Páginas Web"; os << std::endl;
     os << "Archivo de Entrada: " << args.input_file_path << std::endl;
-    os << "Tolerancia Metodo de la Potencia: " << args.epsilon;
+    os << "Tolerancia Metodo de la Potencia: " << args.epsilon << std::endl;
+    os << "Vector inicial random: " << (args.random_initial_vector ? "Si" : "No") << std::endl;
+    os << "Archivo de convergencia: " << args.pm_reporte_path << std::endl;
+    os << "Archivo de timing: " << args.timing_path;
+
     return os;
 };

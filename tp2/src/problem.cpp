@@ -4,9 +4,12 @@
 #include <functional>
 #include <chrono>
 
+#include <timing.hpp>
 #include <io.hpp>
 #include <problem.hpp>
 #include <csr_matrix.tpp>
+
+#define CANT_ITERS_MEDICION 25
 
 typedef unsigned int uint;
 
@@ -51,6 +54,8 @@ void Problem::resolver_instancia() {
         } else {
             //PAGERANK
 
+            // --------------------------- Armo el vector inicial ---------------------------
+
             std::vector<double> initial_vec;            
 
             if(args.random_initial_vector){
@@ -77,27 +82,59 @@ void Problem::resolver_instancia() {
                     initial_vec.push_back(equiprob);
                 }                
             }
+            
+            // --------------------------- Inicializo los parametros de power method ---------------------------
 
             std::vector<double> res;
 
             power_method_stop_criteria_t criterio_parada;
             criterio_parada.criterio = CRT_K_ITERS_DELTA_DIFF;
             criterio_parada.valor.delta_diff = args.epsilon;
-            criterio_parada.intervalo_iters_reporte = 1;
+            criterio_parada.intervalo_iters_reporte = 8; // Flushear info de convergencia cada x iters(si es potencia de 2 el compilador puede hacer magia performante)
+            
+            // --------------------------- Abro los streams de info ---------------------------
 
             std::ofstream reporte_power_method(args.pm_reporte_path);
 
             if (!reporte_power_method.is_open()) {
-                std::cerr << "Imposible escribir en archivo de reporte de power method: " << args.pm_reporte_path << std::endl;
+                std::cerr << "Imposible escribir en archivo de convergencia de power method: " << args.pm_reporte_path << std::endl;
                 exit(-1);
             }
 
             reporte_power_method.precision(15);
             reporte_power_method.setf(std::ios::fixed,std::ios::floatfield);
 
-            csr_ptr->power_method(initial_vec, args.c, criterio_parada, res, reporte_power_method);
+
+            std::ofstream timing_power_method(args.timing_path);
+            if (!timing_power_method.is_open()) {
+                std::cerr << "Imposible escribir en archivo de timing: " << args.timing_path << std::endl;
+                exit(-1);
+            }
+
+            timing_power_method.precision(5);
+            timing_power_method.setf(std::ios::fixed,std::ios::floatfield);
+
+            // ----------- Corro power method CANT_ITERS_MEDICION veces sin imprimir nada para medir tiempo---------
+
+            double promedio_tiempo = 0.0;
+
+            MEDIR_TIEMPO_PROMEDIO(
+                csr_ptr->power_method(initial_vec, args.c, criterio_parada, res, reporte_power_method, false/*no imprimir info*/);
+            , CANT_ITERS_MEDICION, &promedio_tiempo);
+
+            // --------------------------- Corro power method una vez mas para imprimir convergencia ---------------------------
+
+            csr_ptr->power_method(initial_vec, args.c, criterio_parada, res, reporte_power_method, true /*imprimir info convergencia*/);
+
+            // --------------------------- Imprimo info y cierro streams ---------------------------
+
+            timing_power_method << args << std::endl;
+            timing_power_method<< "Cantidad iteraciones power_method: " << CANT_ITERS_MEDICION << std::endl;
+            timing_power_method<< "Promedio tiempo microsegundos power_method: " << promedio_tiempo << std::endl;
 
             reporte_power_method.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1) en el check cuando lo abro;
+            timing_power_method.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1) en el check cuando lo abro;
+            
             imprimir_en_linea(output_file, res);
         };
     };

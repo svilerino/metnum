@@ -2,6 +2,8 @@
 #define __TIMING_H__
 #include <chrono>
 
+using namespace std;
+
 /*
     Se le pasa por execute_target la porcion de codigo a medir
     y en cant_repeticiones la cantidad de veces para tomar el promedio
