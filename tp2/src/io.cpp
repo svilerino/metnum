@@ -24,7 +24,7 @@ problem_arguments::problem_arguments(char** argv, int argc)
 
 
     //  Parametros adicionales
-    std::string extracted_test_name = input_file_path.substr(0, input_file_path.find_last_of("\\."));
+    std::string extracted_test_name = output_filename.substr(0, output_filename.find_last_of("\\."));
 
     // Modo de corte power_method    
     if(argc > 3){
