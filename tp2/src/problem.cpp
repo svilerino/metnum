@@ -42,11 +42,10 @@ void Problem::resolver_instancia() {
         exit(-1);
 
     } else {
-        if(!args.is_pagerank)
-        {
-        //IN-DEG
-        std::sort(in_deg_ptr->begin(),in_deg_ptr->end(),std::greater<std::pair<uint,uint> >());
-        output_file << *in_deg_ptr << std::endl;
+        if(!args.is_pagerank) {
+            //IN-DEG
+            std::sort(in_deg_ptr->begin(),in_deg_ptr->end(),std::greater<std::pair<uint,uint> >());
+            output_file << *in_deg_ptr << std::endl;
 
         } else {
             //PAGERANK

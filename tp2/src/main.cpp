@@ -9,17 +9,16 @@
 typedef unsigned int uint;
 
 int main(int argc, char** argv) {
-    int result = 0;
-
     if(argc != 3)
     {
         std::cerr << "Los parámetros de entrada no son los correctos." << std::endl;
         std::cerr << "El primer parametro debe ser un archivo con una linea conteniendo los siguientes valores: " << std::endl;
-        std::cerr << "metodo prob_teletransportacion instancia archivo_entrada tolerancia" << std::endl;
-        std::cerr << "metodo: 0 para pagerank | 1 para alternativa." << std::endl;
-        std::cerr << "instancia: 0 para páginas web | 1 para deportes." << std::endl;
+        std::cerr << "\tmetodo prob_teletransportacion instancia archivo_entrada tolerancia" << std::endl;
+        std::cerr << "\tmetodo: 0 para pagerank | 1 para alternativa." << std::endl;
+        std::cerr << "\tinstancia: 0 para páginas web | 1 para deportes." << std::endl;
+        std::cerr << "El segundo parámetro debe ser un archivo de salida." << std::endl;
 
-        result = 1;
+        return -1;
 
     } else {
         problem_arguments args(argv[1],argv[2]);
@@ -27,7 +26,7 @@ int main(int argc, char** argv) {
         Problem problem(args);
         problem.resolver_instancia();
 
-        result = 0;
+        return 0;
     };
 //    string path_timings_out = (argc > 6) ? argv[6] : "timing_results.txt";
 //
@@ -60,5 +59,5 @@ int main(int argc, char** argv) {
 //        exit(-1);
 //    }
 //
-    return result;
+    return 0;
 }
