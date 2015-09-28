@@ -17,7 +17,9 @@ def generar_fixture_equipos(cant_equipos, cant_fechas):
 		generar_fecha(cant_equipos, fecha)
 
 
-
+if len(sys.argv) < 3:
+	print ("Uso:", sys.argv[0], "cantidad_de_equipos", "cantidad_de_fechas")
+	exit(-1)
 cant_equipos = int(sys.argv[1])
 cant_fechas = int(sys.argv[2])
 if cant_fechas >= cant_equipos:
