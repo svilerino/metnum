@@ -89,7 +89,7 @@ void Problem::resolver_instancia() {
             power_method_stop_criteria_t criterio_parada;
 
 
-            criterio_parada.intervalo_iters_reporte = 8; // Flushear info de convergencia cada x iters(si es potencia de 2 el compilador puede hacer magia performante)
+            criterio_parada.intervalo_iters_reporte = 1; // Flushear info de convergencia cada x iters(si es potencia de 2 el compilador puede hacer magia performante)
             criterio_parada.criterio = args.power_method_mode;
 
 
