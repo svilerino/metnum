@@ -38,8 +38,9 @@ clean_test_results:
 	reset
 	rm -rf $(TESTTIMINGOUTDIR)
 	mkdir -p $(TESTTIMINGOUTDIR)
-	rm -rf timing_results.txt
 	rm -rf $(TESTS)/*.out
+	rm -rf $(TESTS)/*.convergence
+	rm -rf $(TESTS)/*.timing
 
 tp2: $(TP2_OBJECTS)
 	mkdir -p $(BINDIR)

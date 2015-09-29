@@ -8,8 +8,10 @@
 #include <csr_matrix.tpp>
 #include <dok_matrix.tpp>
 
-problem_arguments::problem_arguments(const std::string& input_filename,const std::string& output_filename)
+problem_arguments::problem_arguments(char** argv, int argc)
 {
+    const std::string& input_filename = argv[1];
+    const std::string& output_filename = argv[2];
     std::ifstream is(input_filename,std::ifstream::in);
     if (!is.is_open())
     {
@@ -19,6 +21,30 @@ problem_arguments::problem_arguments(const std::string& input_filename,const std
 
     output_file_path = output_filename;
     is_pagerank = !is_pagerank;
+
+
+    //  Parametros adicionales
+    std::string extracted_test_name = output_filename.substr(0, output_filename.find_last_of("\\."));
+
+    // Modo de corte power_method    
+    if(argc > 3){
+        if(atoi(argv[3]) == 0){
+            power_method_mode = CRT_K_FIXED_ITERS_LIMIT;
+        }else if(atoi(argv[3]) == 1){
+            power_method_mode = CRT_K_ITERS_DELTA_DIFF; // fixed iters(interpreta el argumento de la tolerancia como cantidad de iters en int)
+        }
+    }else {
+        power_method_mode = CRT_K_ITERS_DELTA_DIFF; // fixed iters(interpreta el argumento de la tolerancia como cantidad de iters en int)        
+    }
+
+    // Vector inicial aleatorio para power method / false => equiprobable en R**n
+    random_initial_vector = (argc > 4) ? atoi(argv[4]) : false;
+
+    // Path archivo de reporte
+    pm_reporte_path = (argc > 5) ? argv[5] : (extracted_test_name + ".convergence");
+
+    // Path archivo de timing
+    timing_path = (argc > 6) ? argv[6] : (extracted_test_name + ".timing");
 };
 
 CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_arguments& args)
@@ -102,6 +128,11 @@ std::ostream& operator<<(std::ostream& os, const problem_arguments& args)
     os << "Probabilidad de Teletransportación: " << args.c << std::endl;
     os << "Tipo de instancia: "; if(args.is_deportes) os << "Deportes"; else os << "Páginas Web"; os << std::endl;
     os << "Archivo de Entrada: " << args.input_file_path << std::endl;
-    os << "Tolerancia Metodo de la Potencia: " << args.epsilon;
+    os << "Modo metodo de la Potencia: " << ((args.power_method_mode == 0) ? "Cantidad de iteraciones fijas" : "Iterar hasta diferencia menor a tolerancia") << std::endl;
+    os << "Tolerancia/Cant.iters fijas Metodo de la Potencia: " << args.epsilon << std::endl;
+    os << "Vector inicial random: " << (args.random_initial_vector ? "Si" : "No") << std::endl;
+    os << "Archivo de convergencia: " << args.pm_reporte_path << std::endl;
+    os << "Archivo de timing: " << args.timing_path;
+
     return os;
 };

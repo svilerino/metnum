@@ -13,7 +13,13 @@ typedef struct problem_arguments
     double c,epsilon;
     std::string input_file_path,output_file_path;
 
-    problem_arguments(const std::string&,const std::string&);
+    //Adicionales
+    criterio_terminacion_powermethod power_method_mode;//Default delta diff por catedra.
+    bool random_initial_vector;
+    std::string pm_reporte_path;
+    std::string timing_path;
+
+    problem_arguments(char** argv, int argc);
 } problem_arguments;
 
 typedef struct Results {
