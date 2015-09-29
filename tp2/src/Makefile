@@ -39,6 +39,7 @@ clean_test_results:
 	rm -rf $(TESTTIMINGOUTDIR)
 	mkdir -p $(TESTTIMINGOUTDIR)
 	rm -rf $(TESTS)/*.out
+	rm -rf $(TESTS)/*.png
 	rm -rf $(TESTS)/*.convergence
 	rm -rf $(TESTS)/*.timing
 
@@ -64,6 +65,9 @@ run_csr_tests: tp2 csr_tests
 
 run_dok_tests: tp2 dok_tests
 	valgrind $(BINDIR)/dok_tests
+
+run_performance_tests: tp2
+	scripts/run_performance_tests.sh
 
 %.o: %.cpp
 	$(CC) -c $(CFLAGS) -o "$@" "$<"
