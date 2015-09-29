@@ -26,7 +26,7 @@ problem_arguments::problem_arguments(char** argv, int argc)
     //  Parametros adicionales
     std::string extracted_test_name = output_filename.substr(0, output_filename.find_last_of("\\."));
 
-    // Modo de corte power_method    
+    // Modo de corte power_method
     if(argc > 3){
         if(atoi(argv[3]) == 0){
             power_method_mode = CRT_K_FIXED_ITERS_LIMIT;
@@ -34,7 +34,7 @@ problem_arguments::problem_arguments(char** argv, int argc)
             power_method_mode = CRT_K_ITERS_DELTA_DIFF; // fixed iters(interpreta el argumento de la tolerancia como cantidad de iters en int)
         }
     }else {
-        power_method_mode = CRT_K_ITERS_DELTA_DIFF; // fixed iters(interpreta el argumento de la tolerancia como cantidad de iters en int)        
+        power_method_mode = CRT_K_ITERS_DELTA_DIFF; // fixed iters(interpreta el argumento de la tolerancia como cantidad de iters en int)
     }
 
     // Vector inicial aleatorio para power method / false => equiprobable en R**n
@@ -50,7 +50,7 @@ problem_arguments::problem_arguments(char** argv, int argc)
 CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_arguments& args)
 {
     uint nodes,edges;
-    DoK<double> dok_transposed;
+    DoK<double>* dok_transposed_ptr;
     if(!args.is_deportes)
     {
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
@@ -62,20 +62,22 @@ CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_argum
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
+        dok_transposed_ptr = new DoK<double>(nodes);
         std::vector<double> degs(nodes,0);
         while(edges > 0)
         {
             uint row,col;
             is >> row >> col;
             ++degs[row-1];
-            dok_transposed[col-1][row-1] = 1; //de momento, guardo el link
+            (*dok_transposed_ptr)[col-1][row-1] = 1; //de momento, guardo el link
             --edges;
         };
         for(auto it=degs.begin();it!=degs.end();++it) *it = (double)1/(*it);
-        for(auto it=dok_transposed.begin();it!=dok_transposed.end();++it) *it->val = degs[it->col];
+        for(auto it=dok_transposed_ptr->begin();it!=dok_transposed_ptr->end();++it) *it->val = degs[it->col];
 
     } else {
         is >> nodes >> edges;
+        dok_transposed_ptr = new DoK<double>(nodes);
         std::vector<uint> diff_goles_partidos_perdidos(nodes,0);
         while(edges > 0)
         {
@@ -84,13 +86,14 @@ CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_argum
             --team_win;--team_loser;
             double goals_diff = goals_win-goals_loser;
             diff_goles_partidos_perdidos[team_loser]+=goals_diff;
-            dok_transposed[team_loser][team_win]+=goals_diff;
+            (*dok_transposed_ptr)[team_loser][team_win]+=goals_diff;
             --edges;
         };
-        for(auto it=dok_transposed.begin();it!=dok_transposed.end();++it) *it->val/=diff_goles_partidos_perdidos[it->row];
+        for(auto it=dok_transposed_ptr->begin();it!=dok_transposed_ptr->end();++it) *it->val/=diff_goles_partidos_perdidos[it->row];
     };
-
-    return new CSR<double>(dok_transposed);
+    CSR<double>* result = new CSR<double>(*dok_transposed_ptr);
+    delete dok_transposed_ptr;
+    return result;
 };
 
 std::vector<std::pair<uint,uint> >* read_args_from_stream_indeg(std::istream& is,const problem_arguments& args)
