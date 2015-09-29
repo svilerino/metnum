@@ -6,10 +6,11 @@ from os.path import isfile, join
 from subprocess import call
 from collections import defaultdict
 
-def print_partido(fecha, equipo1, equipo2, f_output=sys.stdout):
+
+def generar_partido(equipo1, equipo2):
     ganador = equipo1 if equipo1 < equipo2 else equipo2
     perdedor = equipo2 if equipo1 < equipo2 else equipo1
-    print(fecha, ganador, 1, perdedor, 0, file=f_output)
+    return ganador, 1, perdedor, 0
 
 
 def generar_fecha(cant_equipos, fecha, enfrentamientos_restantes):
@@ -27,6 +28,7 @@ def generar_fecha(cant_equipos, fecha, enfrentamientos_restantes):
                                     or enfrentamiento[1] in equipos_jugando_hoy)]
     return enfrentamientos_fecha
 
+
 def generar_fixture_equipos(cant_equipos, cant_fechas, f_output=sys.stdout):
     equipos = list(range(1, cant_equipos+1))
     enfrentamientos_restantes = [(i, j) for i in equipos for j in equipos[i:]]
@@ -37,10 +39,13 @@ def generar_fixture_equipos(cant_equipos, cant_fechas, f_output=sys.stdout):
         fechas.append(generar_fecha(cant_equipos, fecha, enfrentamientos_restantes))
     cant_partidos = sum([len(fecha) for fecha in fechas])
     print(cant_equipos, cant_partidos, file=f_output)
+    resultados = defaultdict(list)
     for fecha, enfrentamientos in enumerate(fechas):
         for enfrentamiento in enfrentamientos:
-            print_partido(fecha+1, enfrentamiento[0], enfrentamiento[1], f_output)
-    return len(enfrentamientos_restantes) == 0
+            ganador, goles_ganador, perdedor, goles_perdedor = resultado = generar_partido(enfrentamiento[0], enfrentamiento[1])
+            resultados[fecha].append(resultado)
+            print(fecha+1, ganador, goles_ganador, perdedor, goles_perdedor, file=f_output)
+    return len(enfrentamientos_restantes) == 0, resultados
 
 
 def generar_archivos_input(cant_equipos):
@@ -49,8 +54,8 @@ def generar_archivos_input(cant_equipos):
     while not fin:
         cant_fechas += 1
         with open("exp/exp4/fecha%s.txt" % cant_fechas, "w") as f_output:
-            fin = generar_fixture_equipos(cant_equipos, cant_fechas, f_output)
-    return cant_fechas
+            fin, resultados_por_fecha = generar_fixture_equipos(cant_equipos, cant_fechas, f_output)
+    return resultados_por_fecha
 
 
 def generar_archivos_test(cant_fechas_totales, c):
@@ -72,7 +77,21 @@ def parsear_salida_pagerank(cant_fechas_totales):
     res = {}
     for cant_fechas, resultado_cant_fechas in enumerate(resultado_por_cant_fechas):
         res[cant_fechas+1] = [float(line) for line in resultado_cant_fechas]
-    return res
+    return ordenar_por_puntaje(res)
+
+
+def puntaje_estandar(resultados_por_fecha, cant_equipos):
+    res = {}
+    res[1] = [0 for _ in range(cant_equipos)]
+    for fecha, resultados in resultados_por_fecha.items():
+        fecha += 1  # ajuste de índices
+        if fecha > 1:
+            res[fecha] = res[fecha-1][:]
+        for ganador, _, perdedor, _ in resultados:
+            ganador -= 1
+            perdedor -= 1
+            res[fecha][ganador] += 3
+    return ordenar_por_puntaje(res)
 
 
 def ordenar_por_puntaje(puntaje_por_cant_fechas):
@@ -91,21 +110,30 @@ def ordenar_por_puntaje(puntaje_por_cant_fechas):
     return res
 
 
-def diferencia_con_ideal(orden_por_cant_fechas):
+def diferencia_con_ideal(orden_por_fecha):
     res = defaultdict(int)
-    for cant_fechas, orden in orden_por_cant_fechas.items():
+    for cant_fechas, orden in orden_por_fecha.items():
         res[cant_fechas] = 0
-        # sumo uno por cada número que está fuera de su lugar
+        # sumo la distancia por cada jugador a su posición ideal 
         for posicion, jugador in enumerate(orden):
-            if jugador != posicion + 1:
-                res[cant_fechas] += 1
+            res[cant_fechas] += abs(jugador - (posicion + 1))
     return res
 
 
 def imprimir_salida(cant_equipos, c, diferencias):
-    with open("exp/exp4/resultados/%sequipos%.2fc.out" % (cant_equipos, c), "w") as f_output:
+    with open("exp/exp4/resultados/%sequipos%.2fc.res" % (cant_equipos, c), "w") as f_output:
         for cant_fechas, diferencia in diferencias.items():
             print(cant_fechas, diferencia, file=f_output)
+
+
+def plotear_salida(cant_equipos, c, diferencias_pagerank, diferencias_estandar):
+    import matplotlib.pyplot as plt
+    plt.plot(list(diferencias_pagerank.values()), label="Método GeM (c=%.2f)" % c)
+    plt.plot(list(diferencias_estandar.values()), label="Método estándar")
+    plt.ylabel("Diferencia con el ranking ideal")
+    plt.xlabel("Cantidad de fechas consideradas")
+    plt.legend()
+    plt.savefig("exp/exp4/resultados/%sequipos%.2fc.png" % (cant_equipos, c))
 
 
 def main():
@@ -117,14 +145,22 @@ def main():
         c = float(sys.argv[2])
     else:
         c = 0.85
-    random.seed(3)
-    cant_fechas_totales = generar_archivos_input(cant_equipos)
+    random.seed(5)
+    
+    resultados_por_fecha = generar_archivos_input(cant_equipos)
+    cant_fechas_totales = len(resultados_por_fecha)
     generar_archivos_test(cant_fechas_totales, c)
+    
     ejecutar_pagerank(cant_fechas_totales)
-    puntaje_por_cant_fechas = parsear_salida_pagerank(cant_fechas_totales)
-    orden_por_cant_fechas = ordenar_por_puntaje(puntaje_por_cant_fechas)
-    diferencias = diferencia_con_ideal(orden_por_cant_fechas)
-    imprimir_salida(cant_equipos, c, diferencias)
+    
+    orden_por_fecha_pagerank = parsear_salida_pagerank(cant_fechas_totales)
+    diferencias_pagerank = diferencia_con_ideal(orden_por_fecha_pagerank)
+    
+    orden_por_fecha_estandar = puntaje_estandar(resultados_por_fecha, cant_equipos)
+    diferencias_estandar = diferencia_con_ideal(orden_por_fecha_estandar)
+
+    imprimir_salida(cant_equipos, c, diferencias_pagerank)
+    plotear_salida(cant_equipos, c, diferencias_pagerank, diferencias_estandar)
 
 
 if __name__ == "__main__":
