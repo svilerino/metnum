@@ -49,3 +49,5 @@ bin/
 *.dropbox.attr
 
 *.pyc
+*.convergence
+*.timing
