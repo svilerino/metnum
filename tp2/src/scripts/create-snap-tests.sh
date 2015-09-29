@@ -1,0 +1,43 @@
+#echo "0 0.0 0 tests/snap/web-BerkStan.txt 0.00001" > ../tests/snap/test1.in
+#echo "0 0.1 0 tests/snap/web-BerkStan.txt 0.00001" > ../tests/snap/test2.in
+#echo "0 0.2 0 tests/snap/web-BerkStan.txt 0.00001" > ../tests/snap/test3.in
+#echo "0 0.3 0 tests/snap/web-BerkStan.txt 0.00001" > ../tests/snap/test4.in
+#echo "0 0.4 0 tests/snap/web-BerkStan.txt 0.00001" > ../tests/snap/test5.in
+#echo "0 0.5 0 tests/snap/web-BerkStan.txt 0.00001" > ../tests/snap/test6.in
+#echo "0 0.6 0 tests/snap/web-BerkStan.txt 0.00001" > ../tests/snap/test7.in
+#echo "0 0.7 0 tests/snap/web-BerkStan.txt 0.00001" > ../tests/snap/test8.in
+#echo "0 0.8 0 tests/snap/web-BerkStan.txt 0.00001" > ../tests/snap/test9.in
+#echo "0 0.9 0 tests/snap/web-BerkStan.txt 0.00001" > ../tests/snap/test10.in
+
+echo "0 0.0 0 tests/snap/web-Google.txt 0.00001" > ../tests/snap/test1.in
+echo "0 0.1 0 tests/snap/web-Google.txt 0.00001" > ../tests/snap/test2.in
+echo "0 0.2 0 tests/snap/web-Google.txt 0.00001" > ../tests/snap/test3.in
+echo "0 0.3 0 tests/snap/web-Google.txt 0.00001" > ../tests/snap/test4.in
+echo "0 0.4 0 tests/snap/web-Google.txt 0.00001" > ../tests/snap/test5.in
+echo "0 0.5 0 tests/snap/web-Google.txt 0.00001" > ../tests/snap/test6.in
+echo "0 0.6 0 tests/snap/web-Google.txt 0.00001" > ../tests/snap/test7.in
+echo "0 0.7 0 tests/snap/web-Google.txt 0.00001" > ../tests/snap/test8.in
+echo "0 0.8 0 tests/snap/web-Google.txt 0.00001" > ../tests/snap/test9.in
+echo "0 0.9 0 tests/snap/web-Google.txt 0.00001" > ../tests/snap/test10.in
+
+#echo "0 0.0 0 tests/snap/web-Stanford.txt 0.00001" > ../tests/snap/test1.in
+#echo "0 0.1 0 tests/snap/web-Stanford.txt 0.00001" > ../tests/snap/test2.in
+#echo "0 0.2 0 tests/snap/web-Stanford.txt 0.00001" > ../tests/snap/test3.in
+#echo "0 0.3 0 tests/snap/web-Stanford.txt 0.00001" > ../tests/snap/test4.in
+#echo "0 0.4 0 tests/snap/web-Stanford.txt 0.00001" > ../tests/snap/test5.in
+#echo "0 0.5 0 tests/snap/web-Stanford.txt 0.00001" > ../tests/snap/test6.in
+#echo "0 0.6 0 tests/snap/web-Stanford.txt 0.00001" > ../tests/snap/test7.in
+#echo "0 0.7 0 tests/snap/web-Stanford.txt 0.00001" > ../tests/snap/test8.in
+#echo "0 0.8 0 tests/snap/web-Stanford.txt 0.00001" > ../tests/snap/test9.in
+#echo "0 0.9 0 tests/snap/web-Stanford.txt 0.00001" > ../tests/snap/test10.in
+
+#echo "0 0.0 0 tests/snap/web-NotreDame.txt 0.00001" > ../tests/snap/test1.in
+#echo "0 0.1 0 tests/snap/web-NotreDame.txt 0.00001" > ../tests/snap/test2.in
+#echo "0 0.2 0 tests/snap/web-NotreDame.txt 0.00001" > ../tests/snap/test3.in
+#echo "0 0.3 0 tests/snap/web-NotreDame.txt 0.00001" > ../tests/snap/test4.in
+#echo "0 0.4 0 tests/snap/web-NotreDame.txt 0.00001" > ../tests/snap/test5.in
+#echo "0 0.5 0 tests/snap/web-NotreDame.txt 0.00001" > ../tests/snap/test6.in
+#echo "0 0.6 0 tests/snap/web-NotreDame.txt 0.00001" > ../tests/snap/test7.in
+#echo "0 0.7 0 tests/snap/web-NotreDame.txt 0.00001" > ../tests/snap/test8.in
+#echo "0 0.8 0 tests/snap/web-NotreDame.txt 0.00001" > ../tests/snap/test9.in
+#echo "0 0.9 0 tests/snap/web-NotreDame.txt 0.00001" > ../tests/snap/test10.in
