@@ -88,13 +88,15 @@ class DoK
         //bool operator== (const DoK&) const;
         //bool operator!= (const DoK&) const;
 
-        uint cols() const {
-            uint max_col = 0;
+        uint cols() {
+            uint max_col = _cols;
             for(auto it_rows=matrix.cbegin();it_rows!=matrix.cend();++it_rows)
                 max_col = std::max(max_col,it_rows->second.size());
-            return max_col;
+
+            _cols = max_col;
+            return _cols;
         };
-        uint rows() const {return matrix.size();};
+        uint rows() {_rows = std::max(_rows,matrix.size()); return _rows;};
 
         /************************ OUTPUT ************************/
         /**
@@ -105,10 +107,12 @@ class DoK
 
         /********************* CONSTRUCTORES ********************/
         DoK() : matrix() {};
-        DoK(uint rows) : matrix(rows) {};
+        DoK(uint r) : matrix(r),_rows(r) {};
+        DoK(uint r,uint c) : matrix(r),_rows(r),_cols(c) {};
 
     private:
         sparse_matrix matrix;
+        uint _rows,_cols;
 };
 
 template<class T>

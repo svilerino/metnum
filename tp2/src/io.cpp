@@ -62,7 +62,7 @@ CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_argum
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
-        dok_transposed_ptr = new DoK<double>(nodes);
+        dok_transposed_ptr = new DoK<double>(nodes,nodes);
         std::vector<double> degs(nodes,0);
         while(edges > 0)
         {
@@ -77,7 +77,7 @@ CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_argum
 
     } else {
         is >> nodes >> edges;
-        dok_transposed_ptr = new DoK<double>(nodes);
+        dok_transposed_ptr = new DoK<double>(nodes,nodes);
         std::vector<uint> diff_goles_partidos_perdidos(nodes,0);
         while(edges > 0)
         {
