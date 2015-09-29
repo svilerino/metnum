@@ -62,19 +62,25 @@ CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_argum
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
-#ifdef _INPUT_SNAP
-        std::cerr << "[_INPUT_SNAP mode: asume que los nodos comienzan en cero]" << std::endl;
+#ifdef _INPUT_FROM_ZERO
+        std::cerr << "[_INPUT_FROM_ZERO mode: asume que los nodos comienzan en uno]" << std::endl;
 #endif        
-        dok_ptr = new DoK<double>(nodes,nodes);
-        std::vector<double> degs(nodes,0);
+        dok_ptr = new DoK<double>(nodes, nodes);
+        assert(dok_ptr != nullptr);
+
+        std::vector<double> degs(nodes, 0);
         while(edges > 0)
         {
             uint row,col;
             is >> row >> std::skipws >> col;
-#ifdef _INPUT_SNAP
+#ifdef _INPUT_FROM_ZERO
+            assert(row < nodes);
+            assert(col < nodes);
             ++degs[row];
             (*dok_ptr)[col][row] = 1; //de momento, guardo el link
 #else
+            assert(row-1 < nodes);
+            assert(col-1 < nodes);
             ++degs[row-1];
             (*dok_ptr)[col-1][row-1] = 1; //de momento, guardo el link
 #endif
@@ -86,6 +92,7 @@ CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_argum
     } else {
         is >> nodes >> edges;
         dok_ptr = new DoK<double>(nodes,nodes);
+        assert(dok_ptr != nullptr);
         std::vector<uint> diff_goles_partidos_perdidos(nodes,0);
         while(edges > 0)
         {
@@ -120,6 +127,7 @@ std::vector<std::pair<uint,uint> >* read_args_from_stream_indeg(std::istream& is
     is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
     std::vector<std::pair<uint,uint> >* degs_ptr = new std::vector<std::pair<uint,uint> >(nodes);
+    assert(degs_ptr != nullptr);
     for(uint i=1;i<=nodes;++i) (*degs_ptr)[i-1].second = i;
     while(edges > 0)
     {

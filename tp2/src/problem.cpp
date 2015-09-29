@@ -9,7 +9,7 @@
 #include <problem.hpp>
 #include <csr_matrix.tpp>
 
-#define CANT_ITERS_MEDICION 10
+#define CANT_ITERS_MEDICION 0 // corre CANT_ITERS_MEDICION sin output y luego una mas con output
 
 typedef unsigned int uint;
 
@@ -62,7 +62,7 @@ void Problem::resolver_instancia() {
                 for (uint i = 0; i < csr_ptr->cols(); ++i)
                 {
                     double number = distribution(generator);
-                    std::cout << number << std::endl;
+                    //std::cout << number << std::endl;
                     initial_vec.push_back(number);
                 }
                 double norma = norma1(initial_vec, true);
