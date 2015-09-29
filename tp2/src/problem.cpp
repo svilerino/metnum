@@ -49,14 +49,14 @@ void Problem::resolver_instancia() {
         if(!args.is_pagerank) {
             //IN-DEG
             std::sort(in_deg_ptr->begin(),in_deg_ptr->end(),std::greater<std::pair<uint,uint> >());
-            imprimir_en_linea(output_file, *in_deg_ptr);            
+            imprimir_en_linea(output_file, *in_deg_ptr);
 
         } else {
             //PAGERANK
 
             // --------------------------- Armo el vector inicial ---------------------------
 
-            std::vector<double> initial_vec;            
+            std::vector<double> initial_vec;
 
             if(args.random_initial_vector){
                 // ---------- Random normalized initial vector -------------------
@@ -75,14 +75,13 @@ void Problem::resolver_instancia() {
                 initial_vec/=norma; // Normalizo
 
             }else{
-
                 double equiprob = 1/(double)csr_ptr->cols();
                 for (uint i = 0; i < csr_ptr->cols(); ++i)
                 {
                     initial_vec.push_back(equiprob);
-                }                
+                }
             }
-            
+
             // --------------------------- Inicializo los parametros de power method ---------------------------
 
             std::vector<double> res;
@@ -107,7 +106,7 @@ void Problem::resolver_instancia() {
                 assert(false && "Criterio de parada erroneo en power method.");
             }
 
-            
+
             // --------------------------- Abro los streams de info ---------------------------
 
             std::ofstream reporte_power_method(args.pm_reporte_path);
@@ -150,7 +149,7 @@ void Problem::resolver_instancia() {
 
             reporte_power_method.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1) en el check cuando lo abro;
             timing_power_method.close(); // Seguro esta abierto, sino hubiera ejecutado el exit(-1) en el check cuando lo abro;
-            
+
             imprimir_en_linea(output_file, res);
         };
     };

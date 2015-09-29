@@ -322,47 +322,52 @@ std::ostream& operator<< (std::ostream& os,CSR<T>& csr)
 
 // Impl. algoritmo 1 de golub Ax
 template<class T>
-void CSR<T>::prod_Ax(const std::vector<T>&x, std::vector<T>& y/*resultado*/, double parametro_c) const{
-
+void CSR<T>::prod_Ax(const std::vector<T>& x,
+                    std::vector<T>& y/*resultado*/,
+                    double parametro_c) const
+{
     assert(_numcolumnas == x.size());// Validacion dimensiones
     assert(_numfilas == y.size());// Validacion dimensiones
-    std::vector<T> cx = (x*parametro_c); // y = cx
-
-    // y = Pt * cx
-    // y_i = Producto interno <fila_i, cx> = <fila_i, y>
 
     // Itero sobre las filas de la matriz
-    std::vector<T> fila_actual_elementos;
-    std::vector<uint> fila_actual_columnas_llenas;
     for (uint idx_fila = 0; idx_fila < _numfilas; idx_fila++)
     {
-        fila_actual_elementos.clear();
-        fila_actual_columnas_llenas.clear();
+        std::vector<T> fila_actual_elementos;
+        std::vector<uint> fila_actual_columnas_llenas;
         get_row(idx_fila, fila_actual_elementos, fila_actual_columnas_llenas);
 
-        // Hago el producto interno <fila_i, y> = <fila_i, cx>
-        double y_i = 0;
-
-        uint idx_elemento = 0;
-        for (uint idx_col : fila_actual_columnas_llenas)
+        // Hago el producto interno <fila_i, y> = <fila_i, x>
+        y[idx_fila] = 0;
+        if(!fila_actual_elementos.empty())
         {
-            y_i += fila_actual_elementos[idx_elemento++] * cx[idx_col];
-        }
+            for(uint idx_elem = 0;idx_elem < fila_actual_elementos.size();++idx_elem)
+            {
+                y[idx_fila] += (fila_actual_elementos[idx_elem] * x[fila_actual_columnas_llenas[idx_elem]]);
+            };
 
-        y[idx_fila] = y_i;
-    }
+            y[idx_fila] *= parametro_c;
+        };
+    };
 
-    // Tenemos y = Pt *c*x
+    // Tenemos y = c* P^t * x
 
-    double w = norma1(x, true) - norma1(y, true);//Podemos asumir que x e y tienen todas componentes >=0 y nos ahorramos el abs en la norma !
+    double w = norma1(x, true) - norma1(y, true);//Podemos asumir que x e y
+                                                 //tienen todas componentes >=0
+                                                 //y nos ahorramos el abs en la
+                                                 //norma !
+    w/=(double)_numcolumnas;
 
-    std::vector<T> v(y.size(), (double)1/y.size());//personalization vector segun el paper de golub
-
-    y += v*w;
+    y+=w;
 };
 
 template<class T>
-void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametro_c, power_method_stop_criteria_t criterio_parada, std::vector<T>& _output_vector, std::ofstream& reporte_power_method, const bool print_info) const {  
+void CSR<T>::power_method(const std::vector<T>& _initial_vector,
+                            double parametro_c,
+                            power_method_stop_criteria_t criterio_parada,
+                            std::vector<T>& _output_vector,
+                            std::ofstream& reporte_power_method,
+                            const bool print_info) const
+{
     int iters = 0;
     std::vector<T> eigenvec_candidate(_initial_vector);
     std::vector<T> new_eigenvec_candidate(eigenvec_candidate.size());
@@ -371,7 +376,9 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
     //std::cout << "Initial eigenvector: "<< std::endl;
     //std::cout << eigenvec_candidate << std::endl;
 
-    // Mejor que branchear mucho adentro de las iteraciones del metodo, voy a reusar poco codigo pero hacerlo mas eficiente codeando cada version por separado
+    // Mejor que branchear mucho adentro de las iteraciones del metodo, voy a
+    // reusar poco codigo pero hacerlo mas eficiente codeando cada version por
+    // separado
 
     if(criterio_parada.criterio == CRT_K_ITERS_DELTA_DIFF) {
 
@@ -381,7 +388,7 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
             prod_Ax(eigenvec_candidate, new_eigenvec_candidate, parametro_c); //Ax
 
             std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
-            diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
+            diff = norma1(diff_vec, false); // diff = || x^k - x^{k-1} ||
 
             //double norma_autovec = norma1(new_eigenvec_candidate, true);
             //eigenvec_candidate = new_eigenvec_candidate/norma_autovec; // Reemplazo para proxima iteracion normalizado
@@ -393,7 +400,7 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector, double parametr
             }
 
             iters++;
-        }while(diff > epsilon_diff_corte);
+        }while(diff >= epsilon_diff_corte);
 
     } else if (criterio_parada.criterio ==  CRT_K_FIXED_ITERS_LIMIT) {
 

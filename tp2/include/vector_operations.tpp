@@ -15,6 +15,12 @@ void operator+=(std::vector<T>& a, const std::vector<T>& b)
 };
 
 template<typename T>
+void operator+=(std::vector<T>& a, const T& b)
+{
+    std::transform(a.cbegin(),a.cend(),a.begin(),[&b](T a_i){return a_i+b;});
+};
+
+template<typename T>
 std::vector<T> operator+(const std::vector<T> a, const std::vector<T>& b)
 {
     assert(a.size() == b.size());
@@ -79,14 +85,18 @@ std::vector<T> operator/(const std::vector<T>& a, T k)
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
 {
-    auto it=v.cbegin();
-    os << "[";
-    while(it!=v.cend()-1)
+    if(!v.empty())
     {
-        os << *it << ",";
+        auto it=v.cbegin();
+        os << "[" << *it;
         ++it;
-    };
-    os << *it << "]";
+        while(it!=v.cend())
+        {
+            os << "," << *it;
+            ++it;
+        };
+        os << "]";
+    }
 
     return os;
 }
@@ -94,13 +104,7 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
 template<typename T>
 std::ostream& imprimir_en_linea(std::ostream& os, const std::vector<T>& v)
 {
-    auto it=v.cbegin();
-    while(it!=v.cend()-1)
-    {
-        os << *it << std::endl;
-        ++it;
-    };
-    os << *it;
+    for(auto it=v.cbegin();it!=v.cend();++it) os << *it << std::endl;
 
     return os;
 }
