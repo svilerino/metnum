@@ -50,7 +50,7 @@ problem_arguments::problem_arguments(char** argv, int argc)
 CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_arguments& args)
 {
     uint nodes,edges;
-    DoK<double>* dok_transposed_ptr;
+    DoK<double>* dok_ptr;
     if(!args.is_deportes)
     {
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
@@ -62,22 +62,22 @@ CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_argum
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
-        dok_transposed_ptr = new DoK<double>(nodes,nodes);
+        dok_ptr = new DoK<double>(nodes,nodes);
         std::vector<double> degs(nodes,0);
         while(edges > 0)
         {
             uint row,col;
             is >> row >> col;
             ++degs[row-1];
-            (*dok_transposed_ptr)[col-1][row-1] = 1; //de momento, guardo el link
+            (*dok_ptr)[col-1][row-1] = 1; //de momento, guardo el link
             --edges;
         };
         for(auto it=degs.begin();it!=degs.end();++it) *it = (double)1/(*it);
-        for(auto it=dok_transposed_ptr->begin();it!=dok_transposed_ptr->end();++it) *it->val = degs[it->col];
+        for(auto it=dok_ptr->begin();it!=dok_ptr->end();++it) *it->val = degs[it->col];
 
     } else {
         is >> nodes >> edges;
-        dok_transposed_ptr = new DoK<double>(nodes,nodes);
+        dok_ptr = new DoK<double>(nodes,nodes);
         std::vector<uint> diff_goles_partidos_perdidos(nodes,0);
         while(edges > 0)
         {
@@ -86,20 +86,16 @@ CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_argum
             --team_win;--team_loser;
             double goals_diff = goals_win-goals_loser;
             diff_goles_partidos_perdidos[team_loser]+=goals_diff;
-            (*dok_transposed_ptr)[team_loser][team_win]+=goals_diff;
+            (*dok_ptr)[team_win][team_loser]+=goals_diff;
             --edges;
         };
-        for(auto it=dok_transposed_ptr->begin();it!=dok_transposed_ptr->end();++it) *it->val/=diff_goles_partidos_perdidos[it->row];
-        DoK<double>* dok_ptr = dok_transposed_ptr;
-        dok_transposed_ptr = new DoK<double>(nodes,nodes);
         for(auto it=dok_ptr->begin();it!=dok_ptr->end();++it)
-        {
-            (*dok_transposed_ptr)[it->col][it->row] = *it->val;
-        };
-        delete dok_ptr;
+            *it->val/=diff_goles_partidos_perdidos[it->col];
     };
-    CSR<double>* result = new CSR<double>(*dok_transposed_ptr);
-    delete dok_transposed_ptr;
+
+    CSR<double>* result = new CSR<double>(*dok_ptr);
+
+    delete dok_ptr;
     return result;
 };
 

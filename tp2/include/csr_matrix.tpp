@@ -332,7 +332,7 @@ template<class T>
 void CSR<T>::prod_Ax(const std::vector<T>& x,
                     std::vector<T>& y/*resultado*/,
                     double parametro_c) const
-{   
+{
     assert(_numcolumnas == x.size());// Validacion dimensiones
     assert(_numfilas == y.size());// Validacion dimensiones
 
@@ -343,7 +343,7 @@ void CSR<T>::prod_Ax(const std::vector<T>& x,
         std::vector<uint> fila_actual_columnas_llenas;
         get_row(idx_fila, fila_actual_elementos, fila_actual_columnas_llenas);
 
-        // Hago el producto interno <fila_i, y> = <fila_i, x>
+        // Hago el producto interno <fila_i, y> * x
         y[idx_fila] = 0;
         if(!fila_actual_elementos.empty())
         {
@@ -420,8 +420,9 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector,
 
             prod_Ax(eigenvec_candidate, new_eigenvec_candidate, parametro_c); //Ax  
 
-            std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
-            diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
+            //std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
+            //diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
+            diff = norma1(new_eigenvec_candidate-eigenvec_candidate,false);
 
             //double norma_autovec = norma1(new_eigenvec_candidate, true);
             //eigenvec_candidate = new_eigenvec_candidate/norma_autovec; // Reemplazo para proxima iteracion normalizado
