@@ -328,10 +328,11 @@ std::ostream& operator<< (std::ostream& os,CSR<T>& csr)
 
 // Impl. algoritmo 1 de golub Ax
 template<class T>
+
 void CSR<T>::prod_Ax(const std::vector<T>& x,
                     std::vector<T>& y/*resultado*/,
                     double parametro_c) const
-{
+{   
     assert(_numcolumnas == x.size());// Validacion dimensiones
     assert(_numfilas == y.size());// Validacion dimensiones
 
