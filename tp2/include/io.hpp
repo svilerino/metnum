@@ -28,7 +28,7 @@ typedef struct Results {
 
 std::ostream& operator<<(std::ostream& os, const problem_arguments& args);
 
-CSR<double>* read_args_from_stream_pagerank(std::istream& is, const problem_arguments& args);
+CSR<double>* read_args_from_stream_pagerank(std::istream& is, const problem_arguments& args, const bool from_snap);
 std::vector<std::pair<uint,uint> >* read_args_from_stream_indeg(std::istream& is, const problem_arguments& args);
 void write_results_to_stream(std::ostream &os, Results output_results);
 

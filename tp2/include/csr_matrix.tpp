@@ -406,7 +406,8 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector,
             eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
 
             if(print_info && (iters % criterio_parada.intervalo_iters_reporte == 0)){
-                reporte_power_method << iters << " " << diff << " " << eigenvec_candidate << std::endl;
+                //reporte_power_method << iters << " " << diff << " " << eigenvec_candidate << std::endl;
+                reporte_power_method << diff << std::endl;
                 reporte_power_method.flush();
             }
 
@@ -429,7 +430,8 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector,
             eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
 
             if(print_info && (iters % criterio_parada.intervalo_iters_reporte == 0)){
-                reporte_power_method << iters << " " << diff << " " << eigenvec_candidate << std::endl;
+                //reporte_power_method << iters << " " << diff << " " << eigenvec_candidate << std::endl;
+                reporte_power_method << diff << std::endl;
                 reporte_power_method.flush();
             }
         }

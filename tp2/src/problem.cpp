@@ -9,7 +9,8 @@
 #include <problem.hpp>
 #include <csr_matrix.tpp>
 
-#define CANT_ITERS_MEDICION 25
+#define CANT_ITERS_MEDICION 10
+#define PAGERANK_INPUT_FROM_SNAP true
 
 typedef unsigned int uint;
 
@@ -22,8 +23,8 @@ Problem::Problem(const problem_arguments& args) : csr_ptr(), in_deg_ptr(), args(
     } else if(!args.is_pagerank && args.is_deportes) {
         std::cerr << "El Metodo IN-DEG solo se puede utilizar con instancias de tipo \"Páginas Web\"" << std::endl;
         exit(-1);
-    } else if(args.is_pagerank){
-        csr_ptr = read_args_from_stream_pagerank(input_file,args);
+    } else if(args.is_pagerank){        
+        csr_ptr = read_args_from_stream_pagerank(input_file,args, PAGERANK_INPUT_FROM_SNAP);
         input_file.close();
         //std::cout << "CSR: " << std::endl << *csr_ptr << std::endl;
         //csr_ptr->print_sparse(std::cout);
