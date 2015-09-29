@@ -379,8 +379,11 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector,
     std::vector<T> new_eigenvec_candidate(eigenvec_candidate.size());
     double diff = 0.0;
 
-    //std::cout << "Initial eigenvector: "<< std::endl;
-    //std::cout << eigenvec_candidate << std::endl;
+    /*
+    std::cout << "Initial eigenvector: "<< std::endl;
+    std::cout << eigenvec_candidate << std::endl;
+    std::cout << std::endl << "Argumentos: " << parametro_c << std::endl;
+    */
 
     // Mejor que branchear mucho adentro de las iteraciones del metodo, voy a
     // reusar poco codigo pero hacerlo mas eficiente codeando cada version por
@@ -389,12 +392,13 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector,
     if(criterio_parada.criterio == CRT_K_ITERS_DELTA_DIFF) {
 
         double epsilon_diff_corte = criterio_parada.valor.delta_diff;
-        do{
+        do {
 
             prod_Ax(eigenvec_candidate, new_eigenvec_candidate, parametro_c); //Ax
 
-            std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
-            diff = norma1(diff_vec, false); // diff = || x^k - x^{k-1} ||
+            //std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
+            //diff = norma1(diff_vec, false); // diff = || x^k - x^{k-1} ||
+            diff = norma1(new_eigenvec_candidate-eigenvec_candidate,false);
 
             //double norma_autovec = norma1(new_eigenvec_candidate, true);
             //eigenvec_candidate = new_eigenvec_candidate/norma_autovec; // Reemplazo para proxima iteracion normalizado
@@ -406,7 +410,7 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector,
             }
 
             iters++;
-        }while(diff >= epsilon_diff_corte);
+        } while(diff >= epsilon_diff_corte);
 
     } else if (criterio_parada.criterio ==  CRT_K_FIXED_ITERS_LIMIT) {
 

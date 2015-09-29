@@ -27,8 +27,8 @@ Problem::Problem(const problem_arguments& args) : csr_ptr(), in_deg_ptr(), args(
     } else if(args.is_pagerank){
         csr_ptr = read_args_from_stream_pagerank(input_file,args);
         input_file.close();
-        //std::cout << "CSR: " << std::endl << *csr_ptr << std::endl;
-        //csr_ptr->print_sparse(std::cout);
+        std::cout << "CSR: " << std::endl << *csr_ptr << std::endl;
+        csr_ptr->print_sparse(std::cout);
 
     } else { //es in-deg
         in_deg_ptr = read_args_from_stream_indeg(input_file,args);

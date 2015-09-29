@@ -90,6 +90,13 @@ CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_argum
             --edges;
         };
         for(auto it=dok_transposed_ptr->begin();it!=dok_transposed_ptr->end();++it) *it->val/=diff_goles_partidos_perdidos[it->row];
+        DoK<double>* dok_ptr = dok_transposed_ptr;
+        dok_transposed_ptr = new DoK<double>(nodes,nodes);
+        for(auto it=dok_ptr->begin();it!=dok_ptr->end();++it)
+        {
+            (*dok_transposed_ptr)[it->col][it->row] = *it->val;
+        };
+        delete dok_ptr;
     };
     CSR<double>* result = new CSR<double>(*dok_transposed_ptr);
     delete dok_transposed_ptr;
