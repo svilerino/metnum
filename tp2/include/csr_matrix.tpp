@@ -142,20 +142,26 @@ class CSR
         * Operador ()
         * Permite acceder y asignar al elemento i, j de la matriz usando la notación A(i, j)
         */
-        T operator()(uint fila, uint columna); //debería devolver una referencia, pero dado que a veces hay que devolver 0...
+        T operator()(uint fila, uint columna) const; //debería devolver una referencia, pero dado que a veces hay que devolver 0...
 
         /************************ METODOS ***********************/
 
-        void prod_Ax(const std::vector<T>& x, std::vector<T>& y/*result*/, double parametro_c) const;
+        void prod_Ax(const std::vector<T>& x,
+                    std::vector<T>& y/*result*/,
+                    double parametro_c) const;
 
-        void power_method(const std::vector<T>&, double, power_method_stop_criteria_t, std::vector<T>& _output, std::ofstream & reporte, const bool print_info) const;
+        void power_method(const std::vector<T>&, double,
+                            power_method_stop_criteria_t,
+                            std::vector<T>& _output,
+                            std::ofstream &
+                            reporte, const bool print_info) const;
 
         /************************ OUTPUT ************************/
         /**
         * Salida
         * Imprime la matriz completa en un stream de salida.
         */
-        void print_sparse(std::ostream& os);
+        void print_sparse(std::ostream& os) const;
 
     /************************ ATRIBUTOS ************************/
     private:
@@ -244,7 +250,7 @@ void CSR<T>::get_row(uint fila, std::vector<T>& elementos, std::vector<uint>& co
 }
 
 template<class T>
-T CSR<T>::operator()(uint fila, uint columna) {
+T CSR<T>::operator()(uint fila, uint columna) const {
     if (fila >= _numfilas || columna >= _numcolumnas) {
         std::cerr << "Se intentó acceder a una posición inexistente de una matriz CSR" << std::endl;
         exit(-1);
@@ -276,7 +282,7 @@ T CSR<T>::operator()(uint fila, uint columna) {
 }
 
 template<class T>
-void CSR<T>::print_sparse(std::ostream& os)
+void CSR<T>::print_sparse(std::ostream& os) const
 {
     os.precision(5);
     os.setf(std::ios::fixed,std::ios::floatfield);
