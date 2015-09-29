@@ -19,17 +19,12 @@ Problem::Problem(const problem_arguments& args) : csr_ptr(), in_deg_ptr(), args(
     if (!input_file.is_open()) {
         std::cerr << "Path de archivo de entrada invalido: " << args.input_file_path << std::endl;
         exit(-1);
-
     } else if(!args.is_pagerank && args.is_deportes) {
         std::cerr << "El Metodo IN-DEG solo se puede utilizar con instancias de tipo \"Páginas Web\"" << std::endl;
         exit(-1);
-
     } else if(args.is_pagerank){
         csr_ptr = read_args_from_stream_pagerank(input_file,args);
         input_file.close();
-        std::cout << "CSR: " << std::endl << *csr_ptr << std::endl;
-        csr_ptr->print_sparse(std::cout);
-
     } else { //es in-deg
         in_deg_ptr = read_args_from_stream_indeg(input_file,args);
     };
@@ -44,16 +39,13 @@ void Problem::resolver_instancia() {
         std::cerr << "Error al tratar de abrir el archivo de salida para escritura. Verifique la ruta y permisos: "
             << args.output_file_path << std::endl;
         exit(-1);
-
     } else {
         if(!args.is_pagerank) {
             //IN-DEG
             std::sort(in_deg_ptr->begin(),in_deg_ptr->end(),std::greater<std::pair<uint,uint> >());
             imprimir_en_linea(output_file, *in_deg_ptr);
-
         } else {
             //PAGERANK
-
             // --------------------------- Armo el vector inicial ---------------------------
 
             std::vector<double> initial_vec;
@@ -73,8 +65,7 @@ void Problem::resolver_instancia() {
                 }
                 double norma = norma1(initial_vec, true);
                 initial_vec/=norma; // Normalizo
-
-            }else{
+            } else {
                 double equiprob = 1/(double)csr_ptr->cols();
                 for (uint i = 0; i < csr_ptr->cols(); ++i)
                 {
@@ -87,25 +78,18 @@ void Problem::resolver_instancia() {
             std::vector<double> res;
             power_method_stop_criteria_t criterio_parada;
 
-
             criterio_parada.intervalo_iters_reporte = 1; // Flushear info de convergencia cada x iters(si es potencia de 2 el compilador puede hacer magia performante)
             criterio_parada.criterio = args.power_method_mode;
 
-
             if(criterio_parada.criterio == CRT_K_FIXED_ITERS_LIMIT){
-
                 criterio_parada.valor.cant_iters = (uint)args.epsilon;
-
-            }else if(criterio_parada.criterio == CRT_K_ITERS_DELTA_DIFF){
-
+            } else if(criterio_parada.criterio == CRT_K_ITERS_DELTA_DIFF) {
                 criterio_parada.valor.delta_diff = args.epsilon;
-
-            }else if (criterio_parada.criterio == CRT_K_ITERS_NO_DIFF){
+            } else if (criterio_parada.criterio == CRT_K_ITERS_NO_DIFF) {
                 assert(false && "CRT_K_ITERS_NO_DIFF sin implementar.");
             } else {
                 assert(false && "Criterio de parada erroneo en power method.");
             }
-
 
             // --------------------------- Abro los streams de info ---------------------------
 
@@ -118,7 +102,6 @@ void Problem::resolver_instancia() {
 
             reporte_power_method.precision(15);
             reporte_power_method.setf(std::ios::fixed,std::ios::floatfield);
-
 
             std::ofstream timing_power_method(args.timing_path);
             if (!timing_power_method.is_open()) {
