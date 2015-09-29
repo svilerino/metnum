@@ -6,11 +6,11 @@ RM=rm
 #------- Flags ------- 
 LDFLAGS=
 
-#vectorize mode off
-CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/
+#input snap mode off
+CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ 
 
-#vectorize mode on
-#CFLAGS=-Wall -ggdb -O2 -ftree-vectorize -ftree-vectorizer-verbose=1 -mavx -std=c++11 -I../include/
+#input snap mode on
+#CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ -D_INPUT_SNAP
 
 #------- Objects per target ------- 
 

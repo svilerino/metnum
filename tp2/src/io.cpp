@@ -47,7 +47,7 @@ problem_arguments::problem_arguments(char** argv, int argc)
     timing_path = (argc > 6) ? argv[6] : (extracted_test_name + ".timing");
 };
 
-CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_arguments& args, const bool from_snap)
+CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_arguments& args)
 {
     uint nodes,edges;
     DoK<double>* dok_ptr;
@@ -62,15 +62,22 @@ CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_argum
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         is.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
-
+#ifdef _INPUT_SNAP
+        std::cerr << "[_INPUT_SNAP mode: asume que los nodos comienzan en cero]" << std::endl;
+#endif        
         dok_ptr = new DoK<double>(nodes,nodes);
         std::vector<double> degs(nodes,0);
         while(edges > 0)
         {
             uint row,col;
             is >> row >> std::skipws >> col;
-            ++degs[(from_snap) ? row : row-1];
-            (*dok_ptr)[(from_snap) ? col : col-1][(from_snap) ? row : row-1] = 1; //de momento, guardo el link
+#ifdef _INPUT_SNAP
+            ++degs[row];
+            (*dok_ptr)[col][row] = 1; //de momento, guardo el link
+#else
+            ++degs[row-1];
+            (*dok_ptr)[col-1][row-1] = 1; //de momento, guardo el link
+#endif
             --edges;
         };
         for(auto it=degs.begin();it!=degs.end();++it) *it = (double)1/(*it);
