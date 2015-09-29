@@ -10,14 +10,14 @@ echo ""
 echo -e "${purple}Corriendo tests de performance...(time is un microseconds)${NC}"
 echo -e "${red}Multiples tiempos por test indican tiempo por instancia de test${NC}"
 
-if ls tests/*.in &> /dev/null; then
+if ls tests/snap/*.in &> /dev/null; then
 	rm -rf "../$TESTFOLDER/${1}.tmpplot"
-	for file in tests/*.in; do
+	for file in tests/snap/*.in; do
 		
 		file="${file%.*}" #extraigo el nombre sin la extension
 
 		echo -e -n "Corriendo ${purple}${NC} archivo de input $file.in..."
-		"../bin/tp2" "$file.in" "$file.out"
+		"../bin/tp2" "$file.in" "$file.out" "1" "1"
 		process_exit_status=$?
 
 		#verificar que el proceso haya terminado con return 0
@@ -27,6 +27,9 @@ if ls tests/*.in &> /dev/null; then
 			#extraigo la salida del archivo de timings
 			timeconsumed=$(cat $file.timing | grep 'microsegundos power_method: ' | awk -F' ' '{print $5}' | tr '\n' ' ')
 			probabilidad_c=$(cat $file.timing | grep 'Probabilidad de Teletransportación: ' | awk -F' ' '{print $4}' | tr '\n' ' ')
+			data_file=$(cat $file.timing | grep 'Archivo de Entrada: ' | awk -F' ' '{print $4}' | tr '\n' ' ')
+
+			echo -e -n "Input: ${data_file} - "
 
 			echo -e "Teletransportación: ${probabilidad_c} ${green}[Returned EXIT_SUCCESS in ${timeconsumed}]${NC}"
 

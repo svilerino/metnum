@@ -6,11 +6,11 @@ RM=rm
 #------- Flags ------- 
 LDFLAGS=
 
-#input snap mode off
+#input from zero mode off
 CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ 
 
-#input snap mode on
-#CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ -D_INPUT_SNAP
+#input from zero mode on
+#CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ -D_INPUT_FROM_ZERO
 
 #------- Objects per target ------- 
 
@@ -21,7 +21,6 @@ TEST_POWMETHOD_OBJECTS= test_power_method.o
 #------- Dirs ------- 
 
 BINDIR=../bin
-TESTTIMINGOUTDIR=timings-out
 TESTS=tests
 
 .PHONY: all clean clean_test_results
@@ -36,8 +35,6 @@ clean:
 
 clean_test_results:
 	reset
-	rm -rf $(TESTTIMINGOUTDIR)
-	mkdir -p $(TESTTIMINGOUTDIR)
 	rm -rf $(TESTS)/*.out
 	rm -rf $(TESTS)/*.png
 	rm -rf $(TESTS)/*.convergence
@@ -45,7 +42,6 @@ clean_test_results:
 
 tp2: $(TP2_OBJECTS)
 	mkdir -p $(BINDIR)
-	mkdir -p $(TESTTIMINGOUTDIR)
 	$(LD) $(LDFLAGS) -o $(BINDIR)/tp2 $(TP2_OBJECTS)
 
 csr_tests: $(TEST_CSR_OBJECTS)
@@ -66,8 +62,8 @@ run_csr_tests: tp2 csr_tests
 run_dok_tests: tp2 dok_tests
 	valgrind $(BINDIR)/dok_tests
 
-run_performance_tests: tp2
-	scripts/run_performance_tests.sh
+run_pagerank_tests: tp2
+	scripts/run_pagerank_tests.sh
 
 %.o: %.cpp
 	$(CC) -c $(CFLAGS) -o "$@" "$<"

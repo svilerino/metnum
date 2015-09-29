@@ -13,48 +13,51 @@ outputFilePath = str(sys.argv[2])
 
 eje_x = []
 
-eje_y_diff_1 = []
-eje_y_diff_2 = []
-eje_y_diff_3 = []
-eje_y_diff_4 = []
+diff_1 = []
+diff_2 = []
+diff_3 = []
+diff_4 = []
+diff_5 = []
+diff_6 = []
+diff_7 = []
+diff_8 = []
+diff_9 = []
+diff_10 = []
 
 iteracion = 0
 
 for line in dataFile:	
 	iteracion = iteracion + 1
-	line_values = line.split()
-
-	diff_1 = float(line_values[0])
-	if(len(line_values) > 1):
-		diff_2 = float(line_values[1])
-	else:
-		diff_2 = 0
-
-	if(len(line_values) > 2):
-		diff_3 = float(line_values[2])
-	else:
-		diff_3 = 0
-
-	if(len(line_values) > 3):
-		diff_4 = float(line_values[3])
-	else:
-		diff_4 = 0
-
 	eje_x.append(iteracion)
-	eje_y_diff_1.append(diff_1)
-	eje_y_diff_2.append(diff_2)
-	eje_y_diff_3.append(diff_3)
-	eje_y_diff_4.append(diff_4)
 
-plt.gca().set_color_cycle(['blue', 'red', 'green'])
+	line_values = line.split()
+	diff_1.append(float(line_values[0]))
+	diff_2.append(float(line_values[1]))
+	diff_3.append(float(line_values[2]))
+	diff_4.append(float(line_values[3]))
+	diff_5.append(float(line_values[4]))
+	diff_6.append(float(line_values[5]))
+	diff_7.append(float(line_values[6]))
+	diff_8.append(float(line_values[7]))
+	diff_9.append(float(line_values[8]))
+	diff_10.append(float(line_values[9]))
 
-plt.plot(eje_x, eje_y_diff_1)
-plt.plot(eje_x, eje_y_diff_2)
-plt.plot(eje_x, eje_y_diff_3)
-plt.plot(eje_x, eje_y_diff_4)
-#plt.legend(['Test1', 'Test2', 'Test3', 'Test4'], loc='upper right')
+plt.gca().set_color_cycle(['blue', 'red', 'green', 'yellow', 'orange', 'gray', 'black', 'purple', 'pink', 'yellow'])
 
-plt.yscale('log')
+plt.plot(eje_x, diff_1)
+#plt.plot(eje_x, diff_2)
+#plt.plot(eje_x, diff_3)
+#plt.plot(eje_x, diff_4)
+plt.plot(eje_x, diff_5)
+#plt.plot(eje_x, diff_6)
+#plt.plot(eje_x, diff_7)
+#plt.plot(eje_x, diff_8)
+#plt.plot(eje_x, diff_9)
+plt.plot(eje_x, diff_10)
+
+plt.legend(['c = 0.0', 'c = 0.1', 'c = 0.2', 'c = 0.3', 'c = 0.4', 'c = 0.5', 'c = 0.6', 'c = 0.7', 'c = 0.8', 'c = 0.9'], loc='upper right')
+
+#plt.yscale('log')
 
 ax = plt.gca()
 ax.set_title("Convergencia del metodo de las potencias")    
