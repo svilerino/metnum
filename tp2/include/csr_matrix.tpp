@@ -333,11 +333,6 @@ void CSR<T>::prod_Ax(const std::vector<T>& x,
                     std::vector<T>& y/*resultado*/,
                     double parametro_c) const
 {   
-    print_sparse(std::cout);
-    for (uint i = 0; i < x.size(); i++){
-        std::cout << x[i] << std::endl;
-    }
-
     assert(_numcolumnas == x.size());// Validacion dimensiones
     assert(_numfilas == y.size());// Validacion dimensiones
 
