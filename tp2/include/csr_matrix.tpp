@@ -341,7 +341,7 @@ void CSR<T>::prod_Ax(const std::vector<T>& x,
     {
         std::vector<T> fila_actual_elementos;
         std::vector<uint> fila_actual_columnas_llenas;
-        get_row(idx_fila, fila_actual_elementos, fila_actual_columnas_llenas);
+        get_row(idx_fila, fila_actual_elementos, fila_actual_columnas_llenas);        
 
         // Hago el producto interno <fila_i, y> * x
         y[idx_fila] = 0;
@@ -397,15 +397,14 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector,
 
             prod_Ax(eigenvec_candidate, new_eigenvec_candidate, parametro_c); //Ax
 
-            //std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
-            //diff = norma1(diff_vec, false); // diff = || x^k - x^{k-1} ||
             diff = norma1(new_eigenvec_candidate-eigenvec_candidate,false);
 
-            //double norma_autovec = norma1(new_eigenvec_candidate, true);
-            //eigenvec_candidate = new_eigenvec_candidate/norma_autovec; // Reemplazo para proxima iteracion normalizado
-            eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
+            double norma_autovec = norma1(new_eigenvec_candidate, true);
+            eigenvec_candidate = new_eigenvec_candidate/norma_autovec; // Reemplazo para proxima iteracion normalizado
+            //eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
 
-            if(print_info && (iters % criterio_parada.intervalo_iters_reporte == 0)){
+            //if(print_info && (iters % criterio_parada.intervalo_iters_reporte == 0)){
+            if(print_info){
                 //reporte_power_method << iters << " " << diff << " " << eigenvec_candidate << std::endl;
                 reporte_power_method << diff << std::endl;
                 reporte_power_method.flush();
@@ -421,15 +420,14 @@ void CSR<T>::power_method(const std::vector<T>& _initial_vector,
 
             prod_Ax(eigenvec_candidate, new_eigenvec_candidate, parametro_c); //Ax  
 
-            //std::vector<T> diff_vec = new_eigenvec_candidate - eigenvec_candidate;
-            //diff = norma1(diff_vec, false); // diff = || x_k - x_{k-1} ||
             diff = norma1(new_eigenvec_candidate-eigenvec_candidate,false);
 
-            //double norma_autovec = norma1(new_eigenvec_candidate, true);
-            //eigenvec_candidate = new_eigenvec_candidate/norma_autovec; // Reemplazo para proxima iteracion normalizado
-            eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
+            double norma_autovec = norma1(new_eigenvec_candidate, true);
+            eigenvec_candidate = new_eigenvec_candidate/norma_autovec; // Reemplazo para proxima iteracion normalizado
+            //eigenvec_candidate = new_eigenvec_candidate; // Reemplazo para proxima iteracion
 
-            if(print_info && (iters % criterio_parada.intervalo_iters_reporte == 0)){
+            //if(print_info && (iters % criterio_parada.intervalo_iters_reporte == 0)){
+            if(print_info){
                 //reporte_power_method << iters << " " << diff << " " << eigenvec_candidate << std::endl;
                 reporte_power_method << diff << std::endl;
                 reporte_power_method.flush();
