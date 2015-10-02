@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 import sys
 import random
-from os import listdir
-from os.path import isfile, join
 from subprocess import call
 from collections import defaultdict
 
