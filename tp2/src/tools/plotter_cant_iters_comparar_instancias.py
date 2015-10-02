@@ -22,17 +22,17 @@ for line in dataFile:
 
 #plt.gca().set_color_cycle(['blue', 'red', 'green', 'yellow', 'orange', 'gray', 'black', 'purple', 'pink', 'yellow'])
 plt.plot(eje_x, eje_y, linestyle='-', marker='o', color='green')
-plt.plot(eje_x, eje_y2, linestyle='-', marker='o', color='red')
-plt.plot(eje_x, eje_y3, linestyle='-', marker='o', color='blue')
+plt.plot(eje_x, eje_y2, linestyle='-', marker='*', color='red')
+plt.plot(eje_x, eje_y3, linestyle='-', marker='d', color='blue')
 
 #iters notredame berkstan stanford
-plt.legend(['NotreDame', 'BerkStan', 'Stanford'], loc='upper right')
+plt.legend(['NotreDame', 'BerkStan', 'Stanford'], loc='upper left')
 
 #plt.yscale('log')
 ax = plt.gca()
 
 #ax.set_title("Cantidad de iteraciones")    
-ax.set_xlabel('Factor de navegacion')
+ax.set_xlabel('Factor de navegacion $ \\alpha $')
 ax.set_ylabel('Cantidad de iteraciones hasta converger')
 plt.savefig(outputFilePath)
 plt.close()
