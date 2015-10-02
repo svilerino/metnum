@@ -1,0 +1,8 @@
+# Stanford web graph from 2002
+# Nodes: 281903 Edges: 2312497
+
+# Berkely-Stanford web graph from 2002
+# Nodes: 685230 Edges: 7600595
+
+# University of Notre Dame web graph from 1999 by Albert, Jeong and Barabasi
+# Nodes: 325729 Edges: 1497134
