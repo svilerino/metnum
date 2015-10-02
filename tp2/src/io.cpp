@@ -64,7 +64,7 @@ CSR<double>* read_args_from_stream_pagerank(std::istream& is,const problem_argum
 
 #ifdef _INPUT_FROM_ZERO
         std::cerr << "[_INPUT_FROM_ZERO mode: asume que los nodos comienzan en uno]" << std::endl;
-#endif        
+#endif
         dok_ptr = new DoK<double>(nodes, nodes);
         assert(dok_ptr != nullptr);
 
