@@ -63,7 +63,7 @@ manteniendo el orden dado.
 
 
 %-------------------------------------------------------------------------------
-\subsection{El Modelo}
+\subsection{El Modelo}\label{subsec:intro_pagerank}
 \par El modelo propuesto por Brin y Page para \emph{ordenar} o crear un ranking
 fue llamado \emph{PageRank}. El concepto principal del mismo es el de asignar a
 todas las p\'aginas un puntaje basado en los hiperv\'inculos o \emph{links} de
@@ -81,7 +81,7 @@ relativo a la cantidad de votos, ya que no hay un l\'imite para la cantidad de
 links que una p\'agina puede tener (en algunos p\'arrafos desarrollaremos m\'as
 sobre esta idea)
 
-\begin{wrapfigure}[22]{l}{0.52\textwidth}
+\begin{wrapfigure}[22]{r}{0.52\textwidth}
     \includegraphics[width=0.5\textwidth]{example1_conn_graph.jpg}
     \caption{P\'aginas web y sus v\'inculos}
 \end{wrapfigure}
@@ -134,13 +134,13 @@ dirigido).}).
 
 \begin{wrapfigure}[12]{l}{0.32\textwidth}
     \includegraphics[width=0.3\textwidth]{example2_conn_graph.png}
-    \caption{Grafo de conexidad}
+    \caption{Grafo de Conectividad}
     \label{fig:graph_conn}
 \end{wrapfigure}
 \noindent
 
 \par Observemos en la figura \ref{fig:graph_conn} un ejemplo de un grafo de
-conexidad entre las p\'aginas $1, 2, 3$ y $4$:
+conectividad entre las p\'aginas $1, 2, 3$ y $4$:
 
 \par Aplicando la ecuaci\'on \ref{eq:calc_rank} en este ejemplo, obtenemos que
 el siguiente sistema de ecuaciones:
@@ -195,7 +195,7 @@ como el vector resultado):
 \end{equation}
 
 \par Esta matriz $A$ obtenida, si se observa bien, es lo que podr\'iamos llamar
-una matriz de conexidad pesada. Esto se nota al caracterizar el valor de cada
+una matriz de conectividad pesada. Esto se nota al caracterizar el valor de cada
 coordenada de la matriz:
 
 \begin{equation}
@@ -248,7 +248,7 @@ en caso de tener varios. As\'i pues, aqu\'i encontramos otro inconveniente a
 solucionar: la existencia de rankings m\'ultiples.
 
 
-\subsubsection{Dangling Nodes y Rankings M\'ultiples}
+\subsubsection{Dangling Nodes}
 
 \par Hasta ahora, hemos observado al modelo para puntuar a las p\'aginas basados
 \'unicamente en los links entre las mismas, sin tomar en cuenta el
@@ -268,7 +268,7 @@ grafo se lo denomina \emph{teletransportaci\'on}.
 
 \par Volviendo a nuestra matriz $A$, se utiliza el concepto de
 teletransportaci\'on de manera concistente con el modelo, de manera de convertir
-a $A$ en una matriz sin dangling nodes y que represente a un grafo
+a $A$ en una matriz sin dangling nodes y que represente a un grafo fuertemente
 conexo\footnote{Cosa que en la realidad no necesariamente pasa. Como ejemplo,
 alcanza conque exista una p\'agina web que no sea referenciada ni que referencie
 a otros sitios web. O alg\'un tipo de documento web, como un \emph{pdf}}, o
@@ -381,6 +381,8 @@ el nodo $3$ en un dangling node.
 \end{equation}
 \medskip
 
+
+\subsubsection{Rankings M\'ultiples}\label{subsubsec:mult_ranks}
 \par Ahora bien, como se ha mencionado es deseable tener un \'unico autovector
 $x$ asociado al autovalor 1. La teor\'ia nos indica que en caso de tener una
 matriz de Markov, que a su vez sea cuadrada e irreducible, entonces el vector
@@ -433,6 +435,14 @@ Markov de nuestra matriz $M$.
 \par Veamos entonces que esta matriz es una matriz de Markov irreducible y
 cuadrada:
 
+\begin{wrapfigure}[20]{r}{0.5\textwidth}
+    \centering
+    \includegraphics[width=0.48\textwidth]{example4_pagerank_graph.jpg}
+    \caption{Grafo de conectividad con tama\~no de nodos en funci\'on de
+        PageRank}
+\end{wrapfigure}
+\noindent
+
 \begin{itemize}
     \item $M$ es \textit{estoc\'astica por columnas}, pues es la combinaci\'on convexa de
         dos matrices estoc\'asticas por columnas ($S$ y $E$\footnote{Se puede
@@ -456,8 +466,8 @@ cuadrada:
     \item $M$ es \textit{irreducible}. El grafo resultante de interpretar a $M$
         como una matriz de conectividad (habr\'a un eje entre los nodos $i$ y
         $j$ si $p_{ij}\neq 0$) es completo pues $M$ es positiva.  Luego el grafo
-        asociado a $M$ es conexo. A su vez $M$ es una matriz cuadrada. Luego,
-        con estas 2 condiciones se puede asegurar que $M$ es
+        asociado a $M$ es fuertemente conexo. A su vez $M$ es una matriz
+        cuadrada. Luego, con estas 2 condiciones se puede asegurar que $M$ es
         irreducible~\cite[p.671]{Meyer2000}.
 \end{itemize}
 \smallskip
@@ -466,11 +476,181 @@ cuadrada:
 que el autovector asociado al autovalor $1$ existe y es
 \'unico~\cite[p.663-693]{Meyer2000}. Y dicho autovalor ser\'a la soluci\'on a
 nuestro sistema, tal que cada componente $x_j$ de $\overrightarrow{x}$ ser\'a el
-puntaje del nodo/p\'agina $j$.
+puntaje del nodo/p\'agina $j$. Una manera de calcular este autovector ser\'a
+parte de este trabajo, y la misma ser\'a explicada m\'as adelante.
 
 
 %-------------------------------------------------------------------------------
 \subsection{Adaptaci\'on a Eventos Deportivos}
+\par A la hora de los eventos deportivos, los rankings son claramente
+importantes. Uno puede observar a un torneo como un ranking que se va generando
+a lo largo del tiempo (a medida que progresa la competici\'on), y que al
+finalizar el torneo el ranking obtenido determina quien es el ganador.
 
+\par Se observa entonces que cada competici\'on, deporte, torneo y/o
+asociaci\'on tiene su propio sistema de rankings: el f\'utbol suele manejar un
+sistema de puntos 3-1-0 por partido Ganado-Empatado-Perdido, el basquet
+cotabiliza partidos ganados y perdidos (no hay empates), el tenis (a nivel
+ranking de jugadores, no de torneo) mantiene un sistema de puntos por nivel
+alcanzado en cada torneo anual.
+
+\par Ahora bien, este es uno de los aspectos de los deportes. El otro aspecto
+(m\'as all\'a del deporte en si mismo) radica en como se transita la
+competici\'on, que partidos se dan y que competidores se enfrentan. Por ejemplo,
+en el esquema cl\'asico del torneo de f\'utbol se confecciona un calendario de
+partidos o \emph{fixture} donde todos los equipos juegan contra todos los
+dem\'as 2 partidos a lo largo de la competici\'on. Sin embargo, en algunas ligas
+de basquet, el calendario de partidos propone dividir a los equipos en
+divisiones (agrupadas en 2 conferencias) seg\'un su ubicaci\'on geogr\'afica
+donde cada equipo juega m\'as partidos contra los equipos de su divisi\'on que
+contra equipos de su conferencia, con los cuales juegan m\'as veces que contra
+los equipos de la conferencia restante.
+
+\begin{wrapfigure}[22]{l}{0.52\textwidth}
+    \centering
+    \includegraphics[width=0.5\textwidth]{example5_college_football.png}
+    \caption{Grafo de Encuentros de la liga de f\'utbol americano universitaria}
+    \label{fig:coll_foot}
+\end{wrapfigure}
+
+\par En la figura \ref{fig:coll_foot} se puede observar un ej\'emplo gr\'afico
+de esta asimetr\'ia. Se observa un grafo donde cada nodo representa uno de los
+130 equipos de la liga universitaria de f\'utbol americano, los cuales juegan un
+total de 12 partidos cada uno por temporada. La gran mayor\'ia de esos partidos
+se dan contra equipos de su misma emph{power conference}, o divisi\'on, en las
+cuales se agrupan todos las universidades. Esto se ve reflejado en el grafo ya
+que se observan 6 de subgrafos muy densos (los cuales agrupan a los equipos de
+una misma divisi\'on), y luego se ven muchas menos aristas que unen a equipos de
+distintas divisiones.
+
+\par Estas diferencias se dan m\'as y m\'as mientras m\'as competiciones
+deportivas se estudien, sumado a que cada cual tiene su propio ranking el cual
+supone tener en cuenta todas estas caracter\'isticas de la competic\'on.
+Claramente, la pregunta a hacerse es si dichos rankings son realmente un reflejo
+de la realidad. M\'as a\'un, existen rankings confeccionados que establecen una
+relaci\'on de orden entre equipos del mismo deporte pero de distintas
+asociaciones. Por ejemplo, el ranking de clubes profesionales de f\'utbol. El
+mismo establece que el Barcelona de
+Espa\~na\footnote{\url{http://www.fcbarcelona.com/}} est\'a muy por encima que
+el club Platense de Argentina\footnote{\url{http://www.cap.org.ar/}}. ¿Y c\'omo
+se llega a esta conclusi\'on si ambos equipos jam\'as jugaron entre si? ¿Es
+dicha ranking correcto?
+
+\par Incluso se pueden tener rankings no basados necesariamente en los
+resultados de la competencia, sino en la opini\'on de los periodistas,
+entrenadores, seguidores o los mismos competidores. Es decir, dada una
+competencia, pueden existir m\'ultiples sistemas de ranking m\'as all\'a del
+asociado a la competic\'on (aunque este \'ultimo es el \'unico, en principio,
+con injerencia en la determinaci\'on del ganador).
+
+\par La elecci\'on de que ranking usar es problem\'atica debido a todos los
+intereses distintos que dependen del mismo (en el caso de los deportes
+profesionales). Y como se ha explicado, utilizar un ranking basado \'unicamente
+en partidos perdidos y ganados no alcanza ya que en muchas competiciones
+directamente hay equipos que no juegan contra otros (y en otros casos hay
+asimetr\'ias en cuanto a la cantidad de partidos jugados contra distintos
+partidos).
+
+\par En este contexto, Govan, Meyer y Albright propusieron utilizar una
+adaptaci\'on del algoritmo de PageRank para generar rankings basados en los
+resultados de la competici\'on~\cite{Govan2008}.
+
+\par Extrapolando la idea de PageRank, donde ser referenciado por una p\'agina
+incrementa el puntaje (o ranking) de la p\'agina referenciada de acuerdo al
+puntaje de quien nos referencia, los autores proponene que ganarle a un
+competidor bien ''rankeado'' vale mucho m\'as que ganarle a alguien no tan bien
+ubicado en el ranking. As\'i pues, ya vemos una primer diferencia. Ganar m\'as
+partidos no asegura estar por encima de alguien que gano menos, sino que la
+calidad de los rivales influye tambi\'en (esto contrasta con la mayor\'ia de los
+rankings deportivos tradicionales).
+
+\par La adaptaci\'on sugiere utilizar PageRank, pero en lugar de basarnos en una
+matriz de conectividad donde los pesos de los ejes dependen del puntaje y
+cantidad de ejes del nodo de partida, sugiere que los pesos se calculen en base
+al resultado final del deporte.
+
+\par As\'i pues, la aplicaci\'on del m\'etodo \emph{GeM} consiste en cambiar un
+poco los datos de las matrices del algoritmo de PageRank ya explicado en la
+secci\'on \ref{subsec:intro_pagerank} teniendo en cuenta los resultados. El
+primer problema que surge es que hacer con los empates, pues el grafo de
+PageRank y su correspondiente matriz de connectividad no modelan un v\'inculo no
+dirigido. Govan, Meyer y Albright realizaron su propuesta en base a deportes de
+los Estados Unidos, donde los empates directamente no pueden ocurrir, o la
+probabilidad de que ocurran es extremadamente baja. As\'i pues, utilizan el
+algoritmo del avestruz: ignoran el problema y no lo modelan. Entonces,
+utilizando la misma nomenclatura que en la secci\'on anterior, las matrices de
+GeM quedan definidas como:
+
+\begin{align}
+    A\in\real^{n\times n} /& a_{ij} = \begin{cases}
+        w_{ij}\quad&\text{Si $i$ gan\'o contra a $j$}\\
+        0\quad&\text{Caso contrario}
+    \end{cases}\quad\text{Donde $w_{ij}$ es la diferencia del marcador}\\
+%
+    H\in\real^{n\times n} /& h_{ij} = \begin{cases}
+        a_{ij}/\sum_{k=1}^n a_{kj}\quad&\text{Si $i$ gan\'o contra $j$}\\
+        0\quad&\text{Caso contrario}
+    \end{cases}\\
+%
+    S\in\real^{n\times n} /& S = H + ua^T \quad\quad\quad
+        \text{Donde: } a_i =
+        \begin{cases}
+            1 &\text{si $i$ no perdi\'o ning\'un partido}\\
+            0 &\text{caso contrario}
+        \end{cases}\\
+%
+    \alpha\in\real, M\in\real^{n\times n} /& M = \alpha S + (1-\alpha)ve^T
+\end{align}
+
+\par En caso de enfrentarse m\'as de 1 vez dos competidores $i$ y $j$ y que un
+mismo competidor haya ganado m\'as de 1 encuentro (sin p\'erdida de generalidad,
+diremos que $i$ le gan\'o a $j$ m\'as de una vez), entonces $w_{ij}$ ser\'a la
+diferencia del marcador acumulada entre todos los encuentros.
+
+\par Volviendo a las ecuaciones, observamos que son muy similares a las vistas
+en anteriormente. Las diferencias aparecen en la definici\'on de $H$, y en la
+aparici\'on de los vectores $u$ y $v$. Estos vectores son ambos vectores de
+distribuci\'on de probabilidad, donde $\forall i, v_i = \rfrac{1}{n}$ y $u$
+ser\'a un vector de ajuste para equipos invictos an\'alogo al vector utilizado
+en el caso de PageRank para el caso de los dangling nodes. Desarrollando un
+poco, cada $u_i$ ser\'ia la probabilidad de que un equipo invicto pierda contra
+el equipo $i$. En una primera aproximaci\'on (la cual es la desarrollada por
+este trabajo), asumimos que $u = \overrightarrow{\rfrac{1}{n}}$, con lo cual
+podemos establecer las siguientes igualdades respecto de las ecuaciones de
+PageRank: $u = v = \dfrac{1}{n}e$, quedando:
+
+\begin{align}
+    S =& H + \left(\dfrac{1}{n}\right)ea^T\\
+    M =& \alpha S + (1-\alpha)\left(\dfrac{1}{n}\right)e^T
+\end{align}
+
+\par Es decir, llegamos a exactamente la misma expresi\'on que en el caso de
+PageRank, con la \'unica diferencia de que $S$ depende de $H$ en lugar de la
+matriz de conectividad. Y $H$ no es otra cosa que la matriz de conectividad (o
+adjacencia) donde cada adjacencia est\'a pesada por la relaci\'on
+\textit{puntaje en contra de $i$ vs $j$ / puntaje en contra total de $i$},
+(siendo los puntajes $i$ y $j$ el resultado del encuentro entre ellos\footnote{No
+quisismos decir \emph{goles}, pues el t\'ermino ser\'a muy dependiende de la
+competencia.}) en lugar de $1/n_j$.
+
+\par Es trivial\footnote{Luego de haber ya explicado los conceptos en la
+secci\'on \ref{subsubsec:mult_ranks}.} ver que esta nueva matriz es cuadrada e
+irreducible (su grafo asociado es nuevamente un grafo completo, y por lo tanto
+fuertemente conexo~\cite[p.671]{Meyer2000}), que es positiva ($\alpha\in[0,1)$),
+y estoc\'astica por columnas (por los vectores de ajuste $u$ y $v$ de la
+definici\'on de $M$). Luego, dadas todas estas condiciones, podemos asegurar la
+existencia y unicidad del vector de Perron transpuesto $\pi$ de la cadena de
+irreducible de Markov de la matriz $M$ (el cual satisface
+$M\pi=\pi$~\cite[p.693]{Meyer2000}), siendo este el vector que nos da el ranking
+de equipos al igual que nos daba el ranking de sitios web en el caso de
+PageRank.
+
+\par As\'i pues, se observa que el modelo GeM mantiene la mismas propiedades que
+el modelo propuesto por PageRank, con lo cual aseguramos la existencia y
+unicidad de su soluci\'on y puede ser resuelto con los mismos m\'etodos con los
+cuales se resuelve el modelo PageRank (uno de los cuales ser\'a desarrollado
+m\'as adelante). Sin embargo, que el modelo sea consistente y resoluble no nos
+asegura que sus resultados sean \'utiles, y sobre este aspecto hablaremos en la
+secci\'on \ref{sec:experimentacion}.
 
 %-------------------------------------------------------------------------------
