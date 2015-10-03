@@ -10,14 +10,14 @@ echo ""
 echo -e "${purple}Corriendo tests de performance...(time is un microseconds)${NC}"
 echo -e "${red}Multiples tiempos por test indican tiempo por instancia de test${NC}"
 
-if ls tests/snap/*.in &> /dev/null; then
+if ls tests/snap/test_NotreDame*.in &> /dev/null; then
 	rm -rf "../$TESTFOLDER/${1}.tmpplot"
-	for file in tests/snap/*.in; do
+	for file in tests/snap/test_NotreDame*.in; do
 		
 		file="${file%.*}" #extraigo el nombre sin la extension
 
 		echo -e -n "Corriendo ${purple}${NC} archivo de input $file.in..."
-		"../bin/tp2" "$file.in" "$file.out" "1" "1"
+		"../bin/tp2" "$file.in" "$file.out"
 		process_exit_status=$?
 
 		#verificar que el proceso haya terminado con return 0
