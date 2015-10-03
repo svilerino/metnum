@@ -1,0 +1,10 @@
+1	www.derecho.uba.ar
+2	orga2.exp.dc.uba.ar
+3	www.agro.uba.ar
+4	www.ffyb.uba.ar
+5	www.uba.ar
+6	www.fvet.uba.ar
+7	videos.agro.uba.ar
+8	iigg.sociales.uba.ar
+9	www.agro.uba.ar/cursos
+10	www.agro.uba.ar/ced
