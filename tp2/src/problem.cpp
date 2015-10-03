@@ -9,7 +9,7 @@
 #include <problem.hpp>
 #include <csr_matrix.tpp>
 
-#define CANT_ITERS_MEDICION 0 // corre CANT_ITERS_MEDICION sin output y luego una mas con output
+#define CANT_ITERS_MEDICION 10 // corre CANT_ITERS_MEDICION sin output y luego una mas con output
 
 typedef unsigned int uint;
 

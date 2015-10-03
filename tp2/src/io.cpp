@@ -147,7 +147,7 @@ void write_results_to_stream(std::ostream &os, Results output_results) {
 std::ostream& operator<<(std::ostream& os, const problem_arguments& args)
 {
     os << "Método: "; if(args.is_pagerank) os << "PageRank"; else os << "Alternativo"; os << std::endl;
-    os << "Probabilidad de Teletransportación: " << args.c << std::endl;
+    os << "Factor de navegacion: " << args.c << std::endl;
     os << "Tipo de instancia: "; if(args.is_deportes) os << "Deportes"; else os << "Páginas Web"; os << std::endl;
     os << "Archivo de Entrada: " << args.input_file_path << std::endl;
     os << "Modo metodo de la Potencia: " << ((args.power_method_mode == 0) ? "Cantidad de iteraciones fijas" : "Iterar hasta diferencia menor a tolerancia") << std::endl;
