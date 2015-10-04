@@ -1,11 +1,226 @@
-\par A continuaci\'on se exponen todos los m\`etodos n\'umericos utilizados a
-lo largo de este trabajo, justific\'andolos con su fundamentaci\'on te\'orica y
-explicando como los mismos sirven para resolver los problemas planteados.
-Tambi\'en se a\~naden detalles sobre la implementaci\'on de los mismos y la
-experiencia obtenida a partir de las dificultades que surgieron.
+\par \IEEEPARstart{E}{N} la secci\'on anterior se presento una descripci\'on
+breve del problema a resolver, y se lleg\'o a un modelo matricial del mismo
+sobre el cual la resoluci\'on del problema se reduc\'ia a calcular el autovector
+$x$ asociado al autovalor $\lambda$ de valor 1. A su vez, se demostr\'o que como
+consecuencia del modelo y su matriz resultante, este $x$ y $\lambda$ existir\'an
+(y en el caso de $x$, que ser\'a \'unico).
+
+\par A continuaci\'on presentamos un m\'etodo num\'erico iterativo el cual fue
+utilizado para resolver este problema. Explicaremos brevemente el m\'etodo en si
+mismo, sus posibles desventajas y porque el mismo funcionar\'a en este contexto.
 
 %---------------------------------------------------------------
+\subsection{M\'etodo de la Potencia}
+\par El m\'etodo de la potencia es una t\'ecnica iterativa usada para calcular
+el autovalor dominante de una matriz (es decir, el autovalor de mayor valor
+absoluto). A su vez este m\'etodo nos permite calcular no s\'olo el autovalor
+dominante, sino que tambi\'en un autovalor asociado (que es de hecho, el uso que
+es relevante para este trabajo).
 
-\subsection{Subsection}
+\par Para utilizar este m\'etodo se asume que se tiene una matriz cuadrada de
+dimensi\'on $n$ que tiene $n$ autovectores \emph{li}\footnote{Linealmente
+independientes} Y, evidentemente por lo ya comentado en el p\'arrafo anterior,
+se asume que la matriz tiene un \'unico autovalor dominante:
+\begin{equation*}
+    |\lambda_1|>|\lambda_2|\geq|\lambda_3|\geq\dots\geq|\lambda_n|\geq 0
+\end{equation*}
 
+\par Estos requisitos son los necesarios para asegurar que el m\'etodo de la
+potencia ser\'a satisfactorio. En el caso de no tener $n$ autovectores li el
+m\'etodo a\'un podr\'ia terminar satisfactoriamente, pero no se podr\'ia
+garantizar este resultado~\cite[p.576]{Burden2010}.
+
+\par El m\'etodo en cuesti\'on, en su forma de pseudoc\'odigo, se encuentra en
+el algoritmo \ref{alg:power_method}:
+\begin{algorithm}
+    \KwIn{Dimensi\'on $n$; matriz $M$; vector $x$; tolerancia $\epsilon$;
+        m\'aximo n\'umero de iteraciones $N$}
+    \KwOut{Autovalor aproximado $\mu$; autovector aproximado $x$ (con
+    $||x||_\infty = 1$)}
+    $k\gets 1$\;
+    Sea $p$ el menor entero tal que $1\leq p\leq n$ y $\displaystyle |x_p| =
+        ||x||_\infty$\;
+    $x\gets x/x_p$\;
+    \While{$k\leq N$}{
+        $y\gets Mx$\;
+        Sea $p$ el menor entero tal que $1\leq p\leq n$ y $\displaystyle |y_p| =
+            ||y||_\infty$\;
+        $\mu\gets y_p$\;
+        \If{$y_p = 0$}{
+            \KwRet{$M$ tiene un autovalor $0$, seleccione un nuevo vector $x$ y
+                cominece de nuevo}\;
+                \tcc{El proceso finaliz\'o insatisfactoriamente}
+        }
+        $\delta\gets ||x-(y/y_p)||_\infty$\;
+        $x\gets y/y_p$\;
+        \If{$\delta < \epsilon$}{
+            \KwRet{$\mu,x$}\;
+            \tcc{El m\'etodo finaliz\'o satisfactoriamente}
+        }
+        $k\gets k+1$\;
+    }
+    \KwRet{Se alcanz\'o el m\'aximo n\'umero de iteraciones}\;
+    \tcc{El proceso finaliz\'o insatisfactoriamente}
+    \caption{M\'etodo de la potencia - Pseudoc\'odigo~\cite[p.578]{Burden2010}}
+    \label{alg:power_method}
+\end{algorithm}
+
+\par Ahora bien, el m\'etodo expuesto como se lo ve en el algoritmo
+\ref{alg:power_method} es gen\'erico, y no toma en cuenta las caracter\'isticas
+propias de nuestra matriz $M$ de entrada.
+
+\par En primer lugar, para que este m\'etodo sea \'util a nuestro problema,
+deber\'iamos poder asegurar que nuestro autovalor $\lambda = 1$ es el
+\textbf{\'unico} autovalor dominante de la matriz $M$. Esto efectivamente
+ocurre, como demostramos a continuaci\'on:
+
+\smallskip
+\begin{itemize}
+    \item $M$ es est\'ocastica por columnas, positiva y cuadrada
+        (secci\'on~\ref{itm:m_pos}) $\implies M^T$ es est\'ocastica por filas,
+        positiva y cuadrada (trivial).\\
+
+    \item $det(M) = det(M^T) \implies det(M-\lambda I) = det(M^T-\lambda I)
+        \implies$ $M$ y $M^T$ tienen los mismos autovalores.\\
+
+    \item $\nexists\lambda\in L(M^T) / \left|\lambda\right| > 1$ Para $L(M^T)$
+        el conjunto de autovalores de $M^T$. Demostraci\'on:
+        \begin{align}
+            \intertext{Sea $\lambda$ autovalor de $M^T$ y $v$ su autovector
+            asociado, tal que $|\lambda| > 1$.}
+            &\iff M^Tv = \lambda v \implies |M^Tv| = |\lambda v|
+            \overarrow[\implies][\downarrow]{$M^T > 0$} M^T |v| = |\lambda||v|\\
+            %
+            \intertext{Sea $m = M^T|v|$). Luego, podemos asegurar que cada
+            componente del vector $m$ ser\'a menor a $v_{max}$, para $v_{max}
+            = max |v_i|, \forall i$}
+            &m_i = \sum_{j=1}^n M^T_{ij} |v_j|
+            \overarrow[\leq][\downarrow]{$v_{max}\geq |v_i|$} \sum_{j=1}^n
+            M^T_{ij} v_{max} = v_{max}\sum_{j=1}^n M^T_{ij}
+            \overarrow[=][\downarrow]{Est\'ocastica} v_{max}\\
+            %
+            &\implies \forall i,\quad m_i \leq v_{max}\label{eq:abs1}\\
+            %
+            \intertext{Sin p\'erdida de generalidad, digamos que $j$ es el
+            \'indice tal que $|v_j| = v_{max}$. Luego:}
+            &m_j = |\lambda||v_j| = |\lambda|v_{max}
+            \overarrow[>][\downarrow]{$|\lambda| > 1$} v_{max}\\
+            %
+            &\implies m_j > v_{max}\label{eq:abs2}\\
+            %
+            \intertext{Pero entonces llegamos a un absurdo: }
+            &\left.\begin{aligned}
+                \text{De \ref{eq:abs1}: } \forall i,\quad m_i \leq v_{max}
+                    \implies m_j \leq v_{max}\\
+                \text{De \ref{eq:abs2}: } m_j > v_{max}\label{eq:dom}
+            \end{aligned}\right\} \implies\text{Absurdo}.
+        \end{align}
+        As\'i pues, llegamos a un absurdo por haber asumido que $|\lambda|>1$,
+        ergo esta suposici\'on ha de ser falsa y tenemos que $|\lambda|\leq
+        1$.\\
+
+    \item Reci\'en vimos que $\forall\lambda\in L(M^T), |\lambda|\leq 1$. Como
+        $M$ y $M^T$ tienen los mismos autovalores, entonces $\forall\lambda\in
+        L(M), \lambda\leq\left|1\right|$\\
+
+    \item Como $1$ es autovalor de $M$ (secci\'on \ref{subsubsec:dang_nodes}) y
+        sabemos que ning\'un autovalor de $M$ puede tener magnitud mayor a 1
+        (ecuaci\'on \ref{eq:dom})$\implies$ $1$ es un autovalor dominante de
+        $M$.  Como corolario, tendr\'iamos que $\rho(M) = 1$.\\
+
+    \item Por \'ultimo, para demostrar la unicidad de este autovalor dominante
+        $1$, alcanza con remarcar que la unicidad de dicho autovalor ya se ha
+        mostrado que es $1$ (secci\'on \ref{subsubsec:dang_nodes}). Pero sino,
+        tambi\'en podemos enunciar que $M$ es positiva y cuadrada $\implies
+        \rho(M)$ es el \'unico autovalor de $M$ en el radio
+        espectral~\cite[p.664]{Meyer2000}, con lo cual $1$ es entonces
+        \textbf{el \'unico autovalor dominante} de $M$.\\
+\end{itemize}
+\medskip
+
+\par As\'i pues ya sabemos cual es el valor del autovalor dominante $M$: $1$.
+Por lo tanto, el c\'alculo de este valor no nos hace falta.  M\'as a\'un, como
+sabemos que $M$ es estoc\'astica y nuestro vector inicial $x$ (u $x^{(0)}$)
+ser\'a un vector de probabilidad (es decir, estoc\'astico), entonces podemos
+asegurar que $Mx^{(0)}$ ser\'a estoc\'astico\footnote{Trivial de demostrar.}.
+As\'i pues, muchos de los pasos del m\'etodo expuesto en el algoritmo
+\ref{alg:power_method} que tienen como objetivo normalizar vectores, son
+innecesarios, pues $Mx^{(k)}$ ser\'a siempre estoc\'astico (al menos en la
+teor\'ia, ya que despu\'es por cuestiones de los c\'alculos n\'umericos con
+aritm\'etica finita en la computadora puede llegar a obligarnos a tener que
+normalizar los vectores luego de cada c\'alculo).
+
+\par Justamente esta es una de las conclusiones de Bryan y Leise al decirnos
+como computar el autovector de PageRank (aunque en ning\'un momento mencionan
+cadenas de Markov, o m\'etodo de la potencia), y adem\'as concluyen que el
+m\'etodo convergir\'a para cualquier sea $x^{(0)}$ que sea un vector de
+probabilidad~\cite[p.580]{Bryan2006}. En su teorema n\'umero 5, nos indican que
+nuestro autovector $x$ puede ser calculado como:
+
+\begin{align*}
+    x^{(k)} &= \alpha Sx^{(k-1)} + (1-\alpha)\frac{1}{n}ee^T = Mx^{(k-1)}\\
+    x &= \lim_{x\rightarrow\infty} x^{(k)}
+\end{align*}
+
+\par Claramente aqu\'i cuando se toma un \emph{l\'imite} para calcular $x$, no
+es algo realmente computable. Justamente es por eso que el algoritmo
+\ref{alg:power_method} implementa un criterio de parada basado en la distancia
+del vector entre iteraciones, y a su vez tiene un n\'umero m\'aximo de
+iteraciones para llegar a un resultado lo suficientemente aproximado.
+
+\par Esta f\'ormula no es otra cosa que el m\'etodo de la potencia, y justamente
+lo m\'as interesante a extraer del art\'iculo de Bryan y Leise (en lo que
+respecta al m\'etodo de la potencia aplicado a nuestro problema) es que alcanza
+conque el vector inicial $x^{(0)}$ sea un vector de probabilidad. Luego, el
+m\'etodo convergir\'a al $x$ que buscamos (pues ya hemos demostrado que nuestra
+matriz $M$ tiene un \'unico autovector dominante).
+
+\par De esta manera llegamos a un pseudoc\'odigo del m\'etodo de la potencia
+m\'as orientado a nuestro problema, e incluso m\'as claro quiz\'as. El mismo se
+puede observar en el algoritmo \ref{alg:power_method2}.
+
+\begin{algorithm}
+    \KwIn{Matriz $M$; vector inicial $x^{(0)}$; n\'umero m\'aximo de iteraciones
+        $N$; tolerancia $\epsilon$}
+    \KwOut{Autovector aproximado $x$}
+    $v\gets x^{(0)}$\;
+    $k\gets 1$\;
+    \Repeat{$\delta < \epsilon \land k\leq N$}{
+        $x^{(k)} = Mx^{(k-1)}$\;
+        $\delta\gets ||x^{(k)} - x^{(k-1)}||_1$\;
+        $k\gets k+1$\;
+    }
+    \If{$k>N$}{
+        \KwRet{Cantidad m\'axima de iteraciones alcanzada}
+        \tcc{Finalizaci\'on insatisfactoria}
+    }
+    \KwRet{$x^{(k)}$}
+    \tcc{Finalizaci\'on satisfactoria}
+
+    \caption{M\'etodo de la Potencia en el contexto de PageRank y su matriz $M$
+    - Pseudoc\'odigo~\cite[p.263]{Kamvar2003}}
+    \label{alg:power_method2}
+\end{algorithm}
+
+\par Como comentario, se puede notar en el algoritmo \ref{alg:power_method2} se
+utiliza para el criterio de corte la norma 1 (o distancia \emph{Manhattan}).
+Esto es as\'i pues Kamvar, Haveliwala et al. presentaron resultados emp\'iricos
+que les permitieron demostrar que dicha medida era
+adecuada~\cite[p.268]{Kamvar2003}.
+
+\par As\'i pues hemos llegado a un simple m\'etodo n\'umerico, el cual calcula
+un vector aproximado al autovector asociado al autovalor dominante de la matriz
+$M$ del modelo explicado en la secci\'on \ref{subsec:intro_pagerank}. A su vez
+se demostr\'o que dicho autovalor dominante no es otro que $1$, con lo cual el
+autovector $\tilde{x}$ calculado cumplir\'a con $M\tilde{x}\approx\tilde{x}$. Se
+prob\'o que dicho m\'etodo servir\'a (es decir, en la teor\'ia su resultado
+convergir\'a \textbf{exactamente} al autovector buscado), pero al tratarse de un
+m\'etodo iterativo no queda otra que conformarnos con una implementaci\'on que
+aproxime al resultado buscado, pues el no podemos iterar hasta el
+infinito\footnote{Es razonable esperar un resultado en tiempo finito.}. A\'un
+as\'i, como lo que nos interesa en el contexto de este trabajo es obtener el
+orden que nos da el autovector, m\'as que los valores de cada componente del
+mismo en cuesti\'on, obtener una versi\'on aproximada deber\'ia ser suficiente
+\footnote{Por otro lado, obtener la versi\'on exacta es imposible, ya que la
+computadora trabaja con aritm\'etica finita.}.
 %---------------------------------------------------------------

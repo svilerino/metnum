@@ -83,7 +83,7 @@ sobre esta idea)
 
 \begin{wrapfigure}[22]{r}{0.52\textwidth}
     \includegraphics[width=0.5\textwidth]{example1_conn_graph.jpg}
-    \caption{P\'aginas web y sus v\'inculos}
+    \caption{P\'aginas web y sus v\'inculos~\cite{uchicago_research}}
 \end{wrapfigure}
 \noindent
 
@@ -134,7 +134,7 @@ dirigido).}).
 
 \begin{wrapfigure}[12]{l}{0.32\textwidth}
     \includegraphics[width=0.3\textwidth]{example2_conn_graph.png}
-    \caption{Grafo de Conectividad}
+    \caption{Grafo de Conectividad~\cite{Bryan2006}}
     \label{fig:graph_conn}
 \end{wrapfigure}
 \noindent
@@ -163,7 +163,7 @@ el siguiente sistema de ecuaciones:
 
 \par Y como ya se ha visto a lo largo de la materia, este sistema de ecuaciones
 es expresable como un sistema $Ax = x$ para $A\in\real^{4\times4}$ y
-$x\in\real^4 $ (pues $\overrightarrow{x}$ es tanto el vector de coeficientes
+$x\in\real^4 $ (pues $\vec{x}$ es tanto el vector de coeficientes
 como el vector resultado):
 
 \begin{equation}
@@ -248,7 +248,7 @@ en caso de tener varios. As\'i pues, aqu\'i encontramos otro inconveniente a
 solucionar: la existencia de rankings m\'ultiples.
 
 
-\subsubsection{Dangling Nodes}
+\subsubsection{Dangling Nodes}\label{subsubsec:dang_nodes}
 
 \par Hasta ahora, hemos observado al modelo para puntuar a las p\'aginas basados
 \'unicamente en los links entre las mismas, sin tomar en cuenta el
@@ -278,7 +278,7 @@ la teor\'ia de cadenas de Markov nos asegurar\'a, entre otras cosas, la
 existencia del autovalor 1 (pues una matriz de Markov es estoc\'astica por
 columnas por definici\'on, y ya hemos comentado hace algunos p\'arrafos que en
 tal caso existe el autovalor 1) y la unicidad del autovector asociado (nuestro
-$\overrightarrow{x}$).
+$\vec{x}$).
 
 \par La idea intutiva planteada por Brian y Page fue la del \textbf{navegante
 aleatorio}. B\'asicamente plantean que existe un usuario (o navegante) que va
@@ -294,8 +294,8 @@ navegante no puede continuar. Aqu\'i se utiliz\'o la teletransportaci\'on para
 solucionar este inconveniente.
 
 \par Se realiza entonces un \textbf{ajuste estoc\'astico} sobre $A$, donde todas
-las columnas $\overrightarrow{0}$ son reemplazadas por columnas
-$(\rfrac{1}{n})e$, para $e = \overrightarrow{1}$ y $n$ la cantidad de
+las columnas $\vec{0}$ son reemplazadas por columnas
+$(\rfrac{1}{n})e$, para $e = \vec{1}$ y $n$ la cantidad de
 nodos/p\'aginas. De esta manera la matriz $A$ se vuelve estoc\'astica por
 columnas, ya que las columnas correspondientes a los dangling
 nodes ahora tienen $n$ valores de $1/n$, y su sumatoria es $1$ trivialmente.
@@ -439,7 +439,7 @@ cuadrada:
     \centering
     \includegraphics[width=0.48\textwidth]{example4_pagerank_graph.jpg}
     \caption{Grafo de conectividad con tama\~no de nodos en funci\'on de
-        PageRank}
+        PageRank~\cite{wiki_pagerank}}
 \end{wrapfigure}
 \noindent
 
@@ -452,7 +452,7 @@ cuadrada:
         0\quad\forall i,j$, luego como $\alpha < 1$ podemos asegurar que $E$
         ser\'a positiva. A su vez $S$ es no negativa, por lo cual la suma $S+E$
         seguro que ser\'a una matriz positiva (es decir, $m_{ij} > 0
-        \quad\forall i,j$).
+        \quad\forall i,j$).\label{itm:m_pos}
 
     \item $M$ entonces es una matriz de \textbf{Markov}, ya que su definici\'on
         es pedir los dos items anteriores.
@@ -475,7 +475,7 @@ cuadrada:
 \par Es decir, se han dado todas las condiciones que nos permiten asegurar que
 que el autovector asociado al autovalor $1$ existe y es
 \'unico~\cite[p.663-693]{Meyer2000}. Y dicho autovalor ser\'a la soluci\'on a
-nuestro sistema, tal que cada componente $x_j$ de $\overrightarrow{x}$ ser\'a el
+nuestro sistema, tal que cada componente $x_j$ de $\vec{x}$ ser\'a el
 puntaje del nodo/p\'agina $j$. Una manera de calcular este autovector ser\'a
 parte de este trabajo, y la misma ser\'a explicada m\'as adelante.
 
@@ -509,7 +509,8 @@ los equipos de la conferencia restante.
 \begin{wrapfigure}[22]{l}{0.52\textwidth}
     \centering
     \includegraphics[width=0.5\textwidth]{example5_college_football.png}
-    \caption{Grafo de Encuentros de la liga de f\'utbol americano universitaria}
+    \caption{Grafo de Encuentros de la liga de f\'utbol americano
+        universitaria~\cite{college_football_graph}}
     \label{fig:coll_foot}
 \end{wrapfigure}
 
@@ -615,7 +616,7 @@ ser\'a un vector de ajuste para equipos invictos an\'alogo al vector utilizado
 en el caso de PageRank para el caso de los dangling nodes. Desarrollando un
 poco, cada $u_i$ ser\'ia la probabilidad de que un equipo invicto pierda contra
 el equipo $i$. En una primera aproximaci\'on (la cual es la desarrollada por
-este trabajo), asumimos que $u = \overrightarrow{\rfrac{1}{n}}$, con lo cual
+este trabajo), asumimos que $u = \vec{\rfrac{1}{n}}$, con lo cual
 podemos establecer las siguientes igualdades respecto de las ecuaciones de
 PageRank: $u = v = \dfrac{1}{n}e$, quedando:
 
