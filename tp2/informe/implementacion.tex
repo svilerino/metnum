@@ -113,9 +113,9 @@ $\mathcal{O}(nnz(A))$, para $nnz(A)$ la cantidad de valores no nulos de $A$.
 Valores estad\'isticos muestran que la cantidad promedio de links de una
 p\'agina web es alrededor de 10, lo que se\~nalar\'ia que $nnz(A)=10n$ en
 lugar de los $n^2$ de la matriz $M$~\cite[p.34]{Langville2006}. Entonces pasamos
-de tener una complejidad $\mathcal{O}(n^2)$ a $\mathcal{O}(n)$ (por cada fila se
-realizan -promedio- 10 multiplicaciones y 9 sumas, obteniendo un costo
-$\mathcal{O}(1)$ por fila, para $n$ filas).
+de tener una complejidad $\mathcal{O}(n^2)$ a $\mathcal{O}(n)$ (por supuesto,
+la implementaci\'on deber\'a permitir acceder y conocer la posici\'on de los
+elementos no nulos de manera eficiente).
 
 \par Claramente, entonces, tendr\'iamos los dos problemas planteados resueltos
 en caso de ser equivalentes el c\'omputo de $x^{(k)}\gets Mx^{(k-1)}$ y el
@@ -195,13 +195,11 @@ estructura(s) de matrices esparsas utilizar.
     \intertext{Por \'ultimo, si tomamos las igualdades obtenidas en las
     ecuaciones \ref{eq:reemp1} y \ref{eq:reemp2} y las utilizamos en la
     ecuaci\'on \ref{eq:Mx}, llegamos a que:}
-    &\begin{aligned}
-        M\vec{x} &=
-            \alpha A\vec{x} + \vec{v}(||\vec{x}||_1 - \alpha||A\vec{x}||_1)\\
-        \overarrow[\implies][\downarrow]{$\alpha\geq 0$}
-        M\vec{x} &=
-            \alpha A\vec{x} + (||\vec{x}||_1 - ||\alpha A\vec{x}||_1)\vec{v}
-    \end{aligned}
+    &M\vec{x} =
+        \alpha A\vec{x} + \vec{v}(||\vec{x}||_1 - \alpha||A\vec{x}||_1)
+    \overarrow[\implies][\downarrow]{$\alpha\geq 0$}
+    M\vec{x} =
+        \alpha A\vec{x} + (||\vec{x}||_1 - ||\alpha A\vec{x}||_1)\vec{v}
 \end{align}
 
 \par Que es, justamente, lo que quer\'iamos demostrar (ecuaci\'on \ref{eq:qvq_dem}).
@@ -210,7 +208,142 @@ estructura(s) de matrices esparsas utilizar.
 \subsection{Estructuras de Datos para Matrices
 Esparsas\protect\footnote{T\'ermino coloquial utilizada para referirnos a
 matrices poco densas, es decir matrices con muchos valores nulos.}}
+\par Como se ha mencionado, la princpal ''optimizaci\'on'' de la
+implementaci\'on\footnote{y m\'as que optimizaci\'on, necesidad, ya que para
+instancias grandes no nos da alcanzar\'ia con 16GB de memoria RAM para
+instanciar la matriz.} es la utilizaci\'on de estructuras especiales para
+representar matrices esparsas. Esta elecci\'on, sin embargo, debe ser
+inteligente para permitir que el algoritmo \ref{alg:power_method3} funcione con
+las complejidades ya enunciadas.
 
+\par El enunciado de este trabajo menciona 3 posibles implementaciones de
+matrices esparsas (secci\'on \ref{apx:sparse_matrix}, p\'agina
+\pageref{apx:sparse_matrix}), las cuales enunciamos a continuaci\'on junto con
+sus caracter\'isticas pertintentes a nuestro contexto:
+
+\smallskip
+\begin{LaTeXdescription}
+    \item[Dictionary of Keys (DoK)] Es una estructura buena para consturir la
+        matriz incrementalmente con datos de entrada desordenados, pero no es
+        eficiente para iterar los valores no nulos en orden, lo cual no hace a
+        esta estructura no permite realizar operaciones algebr\'aicas (como
+        multiplcaci\'on matriz-vector) de manera eficiente. Suele usarse para
+        consturir la matriz, la que luego es transformada a un formato m\'as
+        eficiente para el procesamiento de los datos\cite{wiki_dok}. Es
+        tambi\'en llamada en otros \'ambitos como \textbf{Hash Table
+        Storage}\cite{alglib_sparse}.
+
+    \item[Compressed Row Storage (CRS)] Es una estructura d\'ificil de
+        inicializar, pues a pesar de ser eficiente en cuanto al uso de memoria,
+        los datos no pueden ser insertados en orden arbitrario\footnote{No es
+        que no se pueda, pero se vuelve realmente ineficiente.}. Esto nos obliga a
+        pasarle los datos en un orden espec\'ifico para poder construir dicha
+        estructura. Como ventaja tiene que permite realizar operaciones
+        algebr\'aicas de manera eficiente, a pesar de requerir un direccionamiento
+        indirecto a los elementos para acceder a los elementos una vez dada la
+        posici\'on del mismo\cite{wiki_dok}\cite{alglib_sparse}.
+
+    \item[Compressed Column Storage (CCS)] Es una estructura id\'entica a CRS
+        respecto a sus caracter\'isticas. La diferencia radica en que en lugar
+        de almacenar referencias a las filas, lo hace a las columnas. En otras
+        palabras, podemos decir que dada una matriz $A$, CCS es el formato CRS de
+        $A^T$\cite{netlib_ccs}. Al entrar m\'as en detalles en los siguientes
+        p\'arrafos sobre la estructura de CRS, esto quedar\'a m\'as claro.
+\end{LaTeXdescription}
+\medskip
+
+\par Observando estas caracter\'isticas, claramente afrontamos un problema.
+Necesitamos una estructura para matrices esparsas que sea apta para operaciones
+algebr\'aicas (como lo son CRS y CCS), pero en principio no podemos asegurar que
+la informaci\'on de las instancias de entrada vengan manteniendo alg\'un orden
+espec\'ifico, con lo cual la construcci\'on de dicha estructura no es viable.
+Podr\'iamos usar DoK para construir sin problemas dicha instancia, pero esta
+estructura no es apta para las operaciones que luego necesitaremos realizar con
+ella.
+
+\par La decisi\'on entonces fue entonces la mencionada en casi todas las
+referencias: utilizamos un DoK para la instanciaci\'on de los datos, para luego
+transformar dicha estructura en un formato m\'as adecuado para las operaciones
+algebr\'aicas. Nuestra elecci\'on en este caso fue CRS, ya que interpretamos que
+la implementaci\'on de la operaci\'on multiplicaci\'on matriz-vector era m\'as
+f\'acil con \'esta que con CCS (como explicaremos dentro de unas secciones).
+
+\par A continuaci\'on, pasamos a explicar los detalles de las estructuras
+elegidas y nuestra implementaci\'on de ellas.
+
+%---------------------------------------------------------------
 \subsubsection{Dictionary of Keys (DoK)}
+\par Los art\'iculos investigados al respecto describen al DoK como una tabla de
+\emph{hash}, la cual almacena los datos de entrada en tiempo constante (si
+asumimos que generar el hash es de tiempo constante, lo que suele ocurrir) pero
+de manera desordenada. Es decir, la estructura termina siendo un diccionario
+implementado sobre una tabla de hash, lo que nos da tiempo de inserci\'on,
+acceso y modificaci\'on a los datos en tiempo constante.
 
+\par En contrapartida, recorrer los elementos almacenados en orden (tanto por
+clave como por valor) no es una opci\'on soportada. Ni tampoco saber, por
+ejemplo, para una fila dada que elementos no nulos se tienen almacenados de la
+misma (ni en que columna). Esto \'ultimo es lo que dificulta enormemente las
+operaciones algebr\'aicas sobre esta estructura (consultar si hay un valor no
+nulo almacenado en una posici\'on tiene costo constante, pero al multiplcar se
+requiere consultar columna por columna para una fila dada, obteniendo un costo
+final $\mathcal{O}(n)$ que no es mejor que lo que provee una matriz almacenada
+como vector de vectores\footnote{Aunque se obtuvo una mejora en cuanto a la
+complejidad espacial.}).
+
+\par La utilidad de esta estructura, al elegirla, es la de poder realizar la
+inserci\'on de datos de manera desordenada (u inserci\'on en posiciones
+arbitrarias), para luego poder recorrer estos datos en forma ordenada, que es lo
+que necesitamos para poder pasar a una representaci\'on CRS. Pero esto \'ultimo
+no parece ser una opci\'on de una implementaci\'on cl\'asica de DoK. Llegados a
+este punto, contemplamos las siguientes opciones:
+
+\begin{itemize}
+    \item Una soluci\'on ser\'ia recorrer los elementos desordenados, utilizar
+        un vector temporal para ordenarlos (donde cada elemento es una terna
+        $<fila,columna,valor>$) y luego utilizar los datos ordenados para
+        construir un CRS.
+
+    \item Una alternativa ser\'ia realizar diccionario basado en un
+        \emph{AVL}\cite{wiki_avl} en lugar de una tabla de hash. Esto har\'ia que
+        los datos est\'en ordenados internamente (por el par $<fila,columna>$),
+        aunque pagar\'iamos el costo de insertar los datos de manera ordenada
+        (costo que en la soluci\'on previa, pagar\'iamos al ordenar el vector
+        temporal).
+\end{itemize}
+\smallskip
+
+\par La segunda opci\'on planteada no es, estrictamente hablando, un DoK; ya que
+si bien tenemos un diccionario que nos asocia una llave o \emph{key} con un
+valor, el mismo no tiene un costo constante para inserci\'on y acceso a los
+datos. Ser\'ia un DoK si solo observamos la abstracci\'on de los datos, y el
+hecho de que la inserci\'on de datos desordenados (como su acceso) puede ser
+realizado sin mayores problemas\footnote{Ya que la abstracci\'on de un
+diccionario implementado sobre AVL ya est\'a realizada\cite{stl_map}.}.
+
+\par Dado el uso que le daremos a esta estructura, observamos que el costo de la
+primer soluci\'on es $\mathcal{O}(nnz$ $log(nnz))$ para $nnz$ la cantidad total de
+valores no nulos\footnote{$\mathcal{O}(nnz)$ inserciones, $\mathcal{O}(nnz$
+$log(nnz))$ para ordenar el vector y $\mathcal{O}(nnz)$ para recorrerlo.}. En la
+alternativa, tendremos un costo de $\mathcal{O}(nnz$ $log(nnz))$\footnote{Crear la
+matriz tend\'a costo $\sum_{i=1}^{nnz} \mathcal{O}(log(i)) = \mathcal{O}(nnz$
+$log(nnz))$, y luego recorrerla en orden ser\'a $\mathcal{O}(nnz)$.}, es decir,
+el costo asint\'otico en cuanto accesos/escrituras a memoria es el mismo.
+
+\par As\'i pues decidimos ir por la segunda alternativa, por el simple hecho de
+que cualquiera de las dos implementaciones se basar\'ian en la \emph{standard
+library} de \emph{C++} (\emph{unordered\_map}\cite{stl_unordered_map} y
+\emph{map}\cite{stl_map}), pero usando \emph{map} nos evitamos tener que crear
+un vector y ordenarlo para luego construir la matriz CRS.
+
+\par Resumiendo, nuestra implementaci\'on de (pseudo)DoK no es otra cosa que un
+$diccionario< enteros,diccionario<enteros,valor>>$, donde ambos diccionarios
+est\'an implementados utilizando el contenedor \emph{Map} de la \emph{stl} de
+\emph{C++}, el cual utiliza como estructura interna un \'arbol AVL y nos
+garantiza las complejidades enunciadas\cite{stl_map}. Los detalles m\'as
+espec\'ificos sobre esta implementaci\'on se pueden encontrar en el ap\'endice
+\ref{sec:codigo_relevante}.
+
+%---------------------------------------------------------------
 \subsubsection{Compressed Row Storage (CRS)}
+\par
