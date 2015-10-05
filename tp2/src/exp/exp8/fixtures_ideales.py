@@ -58,6 +58,7 @@ def plotear_salida(res):
     plt.xlabel("Valor de c")
     plt.savefig("exp8.png")
 
+
 def main():
     if len(sys.argv) < 2:
         print("Uso:", sys.argv[0], "cantidad_de_equipos")
