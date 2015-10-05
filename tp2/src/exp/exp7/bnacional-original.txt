@@ -1,0 +1,461 @@
+03-Aug-13 - Matchday 1		Tall. Cba	2-2 	Sarmiento		Echenique
+03-Aug-13		Ferro	2-2 	B. Unidos		Penel
+03-Aug-13		Indepte	1-2 	Brown		Maglio
+04-Aug-13		Union	1-0 	S. Carlos		Suarez
+04-Aug-13		Def y Jus	1-0 	Patronato		González, M
+04-Aug-13		D.Haig	1-0 	Instituto		Montero
+04-Aug-13		S.M. SJ	3-0 	Aldosivi		Baliño
+04-Aug-13		Sp.Belgr	1-0 	Indp Rvia		Merlos
+04-Aug-13		Gsia.Jujuy	0-1 	Atl. Tuc		Paletta
+05-Aug-13		AlteBrown	1-1 	Banfield		Loustau, P
+05-Aug-13		Crucero	1-0 	Huracan		Trucco
+09-Aug-13 - Matchday 2 		Sarmiento	1-0 	Union		Rapallini
+12-Aug-13		Brown	1-3 	Def y Jus		Castro, A
+13-Aug-13		S. Carlos	1-2 	AlteBrown		Tello
+13-Aug-13		Huracan	1-0 	Sp.Belgr		Argañaraz
+13-Aug-13		Aldosivi	0-1 	Ferro		Possi
+13-Aug-13		Banfield	2-0 	Crucero		Suarez
+13-Aug-13		Indp Rvia	0-0 	Gsia.Jujuy	González, M
+13-Aug-13		Patronato	0-0 	Instituto	Giannini
+13-Aug-13		Atl. Tuc	1-0 	S.M. SJ		Echenique
+14-Aug-13		Tall. Cba	1-1 	D.Haig		Baliño
+14-Aug-13		B. Unidos	0-0 	Indepte		Díaz, P
+17-Aug-13 - Matchday 3		Union	1-1 	Tall. Cba		González, M
+17-Aug-13		Indepte	2-2 	Aldosivi		Giannini
+17-Aug-13		Gsia.Jujuy	1-0 	Huracan		Castro, A
+18-Aug-13		Sp.Belgr	3-1 	Banfield		Paletta
+18-Aug-13		Def y Jus	2-0 	B. Unidos		López Aldazábal
+18-Aug-13		Ferro	2-0 	Atl. Tuc		Baliño
+18-Aug-13		AlteBrown	2-4 	Sarmiento		Herrera
+18-Aug-13		D.Haig	0-2 	Patronato		Penel
+18-Aug-13		Crucero	1-1 	S. Carlos		Sabino
+19-Aug-13		S.M. SJ	4-3 	Indp Rvia		Ceballos, D
+19-Aug-13		Instituto	2-1 	Brown		Tello
+24-Aug-13 - Matchday 4		Sarmiento	0-0 	Crucero		Lamolina, N
+24-Aug-13		S. Carlos	0-2 	Sp.Belgr		Merlos
+24-Aug-13		Aldosivi	1-2 	Def y Jus		Montero
+24-Aug-13		Banfield	2-0 	Gsia.Jujuy		Maglio
+24-Aug-13		Atl. Tuc	2-1 	Indepte		Vigliano, M
+25-Aug-13		Huracan	2-0 	S.M. SJ		Alvarez, L
+25-Aug-13		Brown	1-0 	Patronato		Córdoba
+25-Aug-13		Union	1-1 	D.Haig		Laverni
+25-Aug-13		Indp Rvia	0-0 	Ferro		Tello
+25-Aug-13		B. Unidos	1-1 	Instituto		Possi
+26-Aug-13		Tall. Cba	0-1 	AlteBrown		López, R
+30-Aug-13 - Matchday 5		Instituto	1-1 	Aldosivi		González, M
+30-Aug-13		Ferro	1-2 	Huracan		Argañaraz
+30-Aug-13		Def y Jus	1-0 	Atl. Tuc		Suarez
+31-Aug-13		AlteBrown	0-1 	Union		Rapallini
+31-Aug-13		S.M. SJ	0-3 	Banfield		Díaz, P
+01-Sep-13		Sp.Belgr	0-2 	Sarmiento		Castro, A
+01-Sep-13		Gsia.Jujuy	0-0 	S. Carlos		López Aldazábal
+01-Sep-13		D.Haig	1-0 	Brown		Paletta
+01-Sep-13		Patronato	1-0 	B. Unidos		Sabino
+01-Sep-13		Crucero	1-0 	Tall. Cba		Penel
+01-Sep-13		Indepte	0-0 	Indp Rvia		Pompei
+06-Sep-13 - Matchday 6		AlteBrown	0-0 	D.Haig		Sabino
+07-Sep-13		Sarmiento	0-1 	Gsia.Jujuy		Alvarez, L
+08-Sep-13		Tall. Cba	1-0 	Sp.Belgr		Lamolina, N
+08-Sep-13		S. Carlos	1-1 	S.M. SJ		Argañaraz
+08-Sep-13		Union	1-0 	Crucero		López, R
+08-Sep-13		Atl. Tuc	2-2 	Instituto		Tello
+08-Sep-13		B. Unidos	2-0 	Brown		Penel
+08-Sep-13		Banfield	3-0 	Ferro		Castro, A
+09-Sep-13		Indp Rvia	1-1 	Def y Jus		Baliño
+09-Sep-13		Aldosivi	0-0 	Patronato		López Aldazábal
+09-Sep-13		Huracan	0-1 	Indepte		Pezzotta
+13-Sep-13 - Matchday 7		Brown	1-1 	Aldosivi		Sabino
+13-Sep-13		Gsia.Jujuy	1-2 	Tall. Cba		Delfino
+14-Sep-13		D.Haig	0-0 	B. Unidos		Rapallini
+14-Sep-13		Ferro	0-0 	S. Carlos		Tello
+14-Sep-13		S.M. SJ	2-0 	Sarmiento		Paletta
+14-Sep-13		Sp.Belgr	1-1 	Union		Possi
+14-Sep-13		Indepte	1-1 	Banfield		Laverni
+14-Sep-13		Def y Jus	1-0 	Huracan		Abal
+14-Sep-13		Patronato	0-1 	Atl. Tuc	González, M
+14-Sep-13		Instituto	2-2 	Indp Rvia	Suarez
+14-Sep-13		Crucero	2-0 	AlteBrown		Merlos
+17-Sep-13 - Matchday 8		Union	1-3 	Gsia.Jujuy		Castro, A
+17-Sep-13		Banfield	3-0 	Def y Jus		Lamolina, N
+18-Sep-13		AlteBrown	0-1 	Sp.Belgr		Argañaraz
+18-Sep-13		S. Carlos	0-1 	Indepte		Pompei
+18-Sep-13		Huracan	1-3 	Instituto		Díaz, P
+18-Sep-13		Aldosivi	2-2 	B. Unidos		López, R
+18-Sep-13		Sarmiento	4-1 	Ferro		Maglio
+18-Sep-13		Crucero	2-0 	D.Haig		López Aldazábal
+18-Sep-13		Atl. Tuc	0-0 	Brown		Baliño
+18-Sep-13		Indp Rvia	1-1 	Patronato		Herrera
+19-Sep-13		Tall. Cba	1-0 	S.M. SJ		Tello
+21-Sep-13 - Matchday 9		Gsia.Jujuy	3-0 	AlteBrown		Díaz, P
+21-Sep-13		Def y Jus	2-1 	S. Carlos		González, M
+21-Sep-13		Instituto	1-2 	Banfield		Abal
+22-Sep-13		Sp.Belgr	0-0 	Crucero		Delfino
+22-Sep-13		Patronato	2-0 	Huracan		Argañaraz
+22-Sep-13		B. Unidos	1-1 	Atl. Tuc		Maglio
+23-Sep-13		Brown	0-1 	Indp Rvia		Giannini
+23-Sep-13		Ferro	1-1 	Tall. Cba		Rapallini
+23-Sep-13		Indepte	2-1 	Sarmiento		Castro, A
+23-Sep-13		D.Haig	1-1 	Aldosivi		Suarez
+23-Sep-13		S.M. SJ	1-1 	Union		Merlos
+28-Sep-13 - Matchday 10		Banfield	2-0 	Patronato		Vigliano, P
+28-Sep-13		Tall. Cba	2-2 	Indepte		Pezzotta
+29-Sep-13		AlteBrown	0-0 	S.M. SJ		Lamolina, N
+29-Sep-13		Union	3-2 	Ferro		Herrera
+29-Sep-13		S. Carlos	1-3 	Instituto		López, R
+29-Sep-13		Sp.Belgr	2-0 	D.Haig		Giannini
+29-Sep-13		Crucero	2-0 	Gsia.Jujuy		Tello
+29-Sep-13		Atl. Tuc	2-0 	Aldosivi		Córdoba
+29-Sep-13		Indp Rvia	0-0 	B. Unidos		Merlos
+30-Sep-13		Huracan	0-1 	Brown		Penel
+30-Sep-13		Sarmiento	2-4 	Def y Jus		Baliño
+05-Oct-13 - Matchday 11		Brown	0-1 	Banfield		González, M
+05-Oct-13		Aldosivi	0-1 	Indp Rvia		Lamolina, N
+05-Oct-13		Ferro	0-1 	AlteBrown		Giannini
+06-Oct-13		D.Haig	0-0 	Atl. Tuc		Díaz, P
+06-Oct-13		Patronato	2-2 	S. Carlos		Castro, A
+06-Oct-13		Gsia.Jujuy	2-1 	Sp.Belgr		Paletta
+06-Oct-13		B. Unidos	0-0 	Huracan		Trucco
+06-Oct-13		S.M. SJ	1-1 	Crucero		Espinoza, F
+07-Oct-13		Instituto	2-1 	Sarmiento		Suarez
+07-Oct-13		Def y Jus	1-3 	Tall. Cba		Vigliano, P
+12-Oct-13 - Matchday 12		Huracan	4-1 	Aldosivi		Suarez
+12-Oct-13		AlteBrown	1-0 	Indepte		Trucco
+13-Oct-13		Sarmiento	0-2 	Patronato		Lamolina, N
+13-Oct-13		Banfield	3-0 	B. Unidos		Díaz, P
+13-Oct-13		Gsia.Jujuy	0-0 	D.Haig		Espinoza, F
+13-Oct-13		Sp.Belgr	0-0 	S.M. SJ		Tello
+13-Oct-13		Crucero	2-0 	Ferro		Penel
+13-Oct-13		Indp Rvia	2-0 	Atl. Tuc		López, R
+14-Oct-13		Union	3-1 	Def y Jus		Argañaraz
+14-Oct-13		Tall. Cba	1-2 	Instituto		Castro, A
+15-Oct-13		S. Carlos	1-2 	Brown		Sabino
+19-Oct-13 - Matchday 13		Indepte	2-1 	Crucero		Baliño
+19-Oct-13		Aldosivi	0-3 	Banfield		Castro, A
+19-Oct-13		Instituto	1-3 	Union		Giannini
+20-Oct-13		B. Unidos	3-0 	S. Carlos		Paletta
+20-Oct-13		S.M. SJ	2-1 	Gsia.Jujuy		Alvarez, L
+20-Oct-13		Atl. Tuc	2-0 	Huracan		Pompei
+20-Oct-13		Patronato	1-0 	Tall. Cba		Pezzotta
+21-Oct-13		Brown	1-0 	Sarmiento		Penel
+21-Oct-13		Ferro	1-0 	Sp.Belgr		Sabino
+21-Oct-13		Def y Jus	1-0 	AlteBrown		Rapallini
+21-Oct-13		D.Haig	1-1 	Indp Rvia		Suarez
+24-Oct-13 - Matchday 11		Indepte	1-1 	Union		Ceballos, D
+29-Oct-13 - Matchday 14 		S. Carlos	0-1 	Aldosivi		Córdoba
+29-Oct-13		Crucero	2-2 	Def y Jus		Castro, A
+29-Oct-13		Union	1-1 	Patronato		Maglio
+29-Oct-13		AlteBrown	1-1 	Instituto		Ceballos, D
+29-Oct-13		Sarmiento	0-1 	B. Unidos		Tello
+29-Oct-13		Sp.Belgr	0-1 	Indepte		Pompei
+29-Oct-13		Tall. Cba	1-4 	Brown		Lamolina, N
+29-Oct-13		S.M. SJ	2-1 	D.Haig		Giannini
+29-Oct-13		Gsia.Jujuy	0-0 	Ferro		López, R
+30-Oct-13		Huracan	2-2 	Indp Rvia		Díaz, P
+30-Oct-13		Banfield	0-0 	Atl. Tuc		Laverni
+02-Nov-13 - Matchday 15		Brown	3-3 	Union		Tello
+03-Nov-13		Instituto	4-1 	Crucero		Suarez
+03-Nov-13		Aldosivi	0-0 	Sarmiento		Alvarez, L
+03-Nov-13		B. Unidos	1-1 	Tall. Cba		Castro, A
+03-Nov-13		Patronato	0-0 	AlteBrown		González, M
+03-Nov-13		Atl. Tuc	2-2 	S. Carlos		Penel
+04-Nov-13		Indp Rvia	3-0 	Banfield		Trucco
+04-Nov-13		D.Haig	1-0 	Huracan		Paletta
+04-Nov-13		Def y Jus	4-0 	Sp.Belgr		Laverni
+04-Nov-13		Ferro	1-0 	S.M. SJ		Espinoza, F
+04-Nov-13		Indepte	1-0 	Gsia.Jujuy		Vigliano, M
+08-Nov-13 - Matchday 16		Union	4-4 	B. Unidos		Lamolina, N
+08-Nov-13		S. Carlos	0-1 	Indp Rvia		Vigliano, P
+08-Nov-13		AlteBrown	0-2 	Brown		Castro, A
+08-Nov-13		Gsia.Jujuy	1-1 	Def y Jus		Tello
+08-Nov-13		Crucero	1-0 	Patronato		Córdoba
+09-Nov-13		Sarmiento	0-0 	Atl. Tuc		López, R
+09-Nov-13		Ferro	0-0 	D.Haig		Argañaraz
+09-Nov-13		S.M. SJ	0-0 	Indepte		Rapallini
+09-Nov-13		Banfield	0-2 	Huracan		Echenique
+09-Nov-13		Sp.Belgr	0-0 	Instituto		Giannini
+09-Nov-13		Tall. Cba	2-0 	Aldosivi		Merlos
+12-Nov-13 - Matchday 17		Brown	1-2 	Crucero		Paletta
+12-Nov-13		B. Unidos	0-0 	AlteBrown		Espinoza, F
+13-Nov-13		D.Haig	0-0 	Banfield		Maglio
+13-Nov-13		Aldosivi	1-0 	Union		Laverni
+13-Nov-13		Huracan	1-0 	S. Carlos		Tello
+13-Nov-13		Patronato	0-2 	Sp.Belgr		Argañaraz
+13-Nov-13		Indepte	3-0 	Ferro		Suarez
+13-Nov-13		Indp Rvia	3-1 	Sarmiento		Castro, A
+13-Nov-13		Instituto	2-1 	Gsia.Jujuy		Penel
+13-Nov-13		Atl. Tuc	1-0 	Tall. Cba		Pompei
+14-Nov-13		Def y Jus	3-0 	S.M. SJ		Merlos
+16-Nov-13 - Matchday 18		Crucero	6-0 	B. Unidos		Possi
+17-Nov-13		Gsia.Jujuy	0-0 	Patronato		Pompei
+17-Nov-13		AlteBrown	1-1 	Aldosivi		Vigliano, P
+17-Nov-13		Tall. Cba	3-1 	Indp Rvia		Lamolina, N
+17-Nov-13		Sp.Belgr	3-0 	Brown		Laverni
+18-Nov-13		Ferro	1-0 	Def y Jus		Beligoy
+18-Nov-13		Indepte	2-0 	D.Haig		Lunati
+18-Nov-13		S.M. SJ	2-1 	Instituto		Córdoba
+19-Nov-13		S. Carlos	0-3 	Banfield		Giannini
+19-Nov-13		Union	1-1 	Atl. Tuc		Suarez
+19-Nov-13		Sarmiento	1-0 	Huracan		Merlos
+22-Nov-13 - Matchday 19		Aldosivi	0-1 	Crucero		Herrera
+22-Nov-13		B. Unidos	1-2 	Sp.Belgr		Penel
+23-Nov-13		Brown	2-0 	Gsia.Jujuy		Argañaraz
+23-Nov-13		Def y Jus	0-0 	Indepte		Castro, A
+23-Nov-13		Instituto	0-0 	Ferro		Merlos
+24-Nov-13		D.Haig	1-1 	S. Carlos		Espinoza, F
+24-Nov-13		Patronato	1-0 	S.M. SJ		Alvarez, L
+24-Nov-13		Indp Rvia	2-0 	Union		Beligoy
+25-Nov-13		Banfield	3-0 	Sarmiento		Pompei
+25-Nov-13		Atl. Tuc	0-1 	AlteBrown		Tello
+25-Nov-13		Huracan	2-0 	Tall. Cba		Pezzotta
+29-Nov-13 - Matchday 20		Gsia.Jujuy	1-0 	B. Unidos		González, M
+30-Nov-13		Ferro	0-0 	Patronato		Argañaraz
+30-Nov-13		Tall. Cba	2-2 	Banfield	Vigliano, M
+01-Dec-13		Crucero	1-1 	Atl. Tuc		Castro, A
+01-Dec-13		S.M. SJ	3-1 	Brown		Dóvalo
+01-Dec-13		Sp.Belgr	0-0 	Aldosivi		Giannini
+01-Dec-13		Sarmiento	1-0 	S. Carlos		Córdoba
+02-Dec-13		Indepte	2-0 	Instituto		Suarez
+02-Dec-13		Def y Jus	4-0 	D.Haig		Maglio
+02-Dec-13		Union	0-0 	Huracan		Baliño
+03-Dec-13		AlteBrown	1-1 	Indp Rvia		Laverni
+06-Dec-13 - Matchday 21		Aldosivi	1-0 	Gsia.Jujuy		Beligoy
+06-Dec-13		B. Unidos	1-1 	S.M. SJ		Echenique
+07-Dec-13		Brown	2-3 	Ferro		Tello
+07-Dec-13		S. Carlos	3-2 	Tall. Cba		Pompei
+07-Dec-13		Banfield	4-2 	Union		Ceballos, D
+07-Dec-13		Patronato	0-1 	Indepte		Loustau, P
+08-Dec-13		Huracan	1-1 	AlteBrown		Suarez
+08-Dec-13		Indp Rvia	0-0 	Crucero		Baliño
+08-Dec-13		Atl. Tuc	3-2 	Sp.Belgr		González, M
+08-Dec-13		Instituto	1-1 	Def y Jus		Rapallini
+07-Feb-14 - Matchday 22		Instituto	2-0 	D.Haig		Echenique
+07-Feb-14		Sarmiento	3-0 	Tall. Cba		Beligoy
+07-Feb-14		Indp Rvia	2-1 	Sp.Belgr		Suarez
+07-Feb-14		Atl. Tuc	2-1 	Gsia.Jujuy		Baliño
+08-Feb-14		Banfield	2-1 	AlteBrown		Giannini
+08-Feb-14		Huracan	2-1 	Crucero		Laverni
+08-Feb-14		Aldosivi	4-1 	S.M. SJ		Castro, A
+09-Feb-14		Brown	1-2 	Indepte		Díaz, P
+09-Feb-14		B. Unidos	0-0 	Ferro		López, R
+10-Feb-14		S. Carlos	0-3 	Union		Argañaraz
+10-Feb-14		Patronato	1-1 	Def y Jus		Pezzotta
+11-Feb-14 - Matchday 21		D.Haig	1-1 	Sarmiento		Merlos
+14-Feb-14 - Matchday 23		Gsia.Jujuy	1-1 	Indp Rvia		Giannini
+14-Feb-14		Indepte	1-1 	B. Unidos		Echenique
+15-Feb-14		Ferro	2-1 	Aldosivi		Laverni
+15-Feb-14		Instituto	2-1 	Patronato		Penel
+16-Feb-14		Def y Jus	2-1 	Brown		Alvarez, L
+16-Feb-14		D.Haig	1-0 	Tall. Cba		Díaz, P
+16-Feb-14		S.M. SJ	1-0 	Atl. Tuc		Lamolina, N
+17-Feb-14		Union	0-1 	Sarmiento		Paletta
+17-Feb-14		AlteBrown	2-1 	S. Carlos		Tello
+17-Feb-14		Sp.Belgr	0-1 	Huracan		Argañaraz
+17-Feb-14		Crucero	0-1 	Banfield		Castro, A
+21-Feb-14 - Matchday 24		S. Carlos	1-1 	Crucero		Paletta
+21-Feb-14		Brown	2-0 	Instituto		Suarez
+21-Feb-14		Sarmiento	2-1 	AlteBrown		Espinoza, F
+21-Feb-14		B. Unidos	2-1 	Def y Jus		Maglio
+21-Feb-14		Tall. Cba	1-1 	Union		González, M
+21-Feb-14		Patronato	2-0 	D.Haig		Córdoba
+21-Feb-14		Indp Rvia	3-4 	S.M. SJ		Pezzotta
+21-Feb-14		Aldosivi	0-0 	Indepte		Delfino
+21-Feb-14		Atl. Tuc	2-2 	Ferro		Castro, A
+22-Feb-14		Huracan	0-1 	Gsia.Jujuy		Tello
+23-Feb-14		Banfield	0-2 	Sp.Belgr		Merlos
+25-Feb-14 - Matchday 25		D.Haig	2-0 	Union		Penel
+25-Feb-14		AlteBrown	1-1 	Tall. Cba		Argañaraz
+26-Feb-14		Ferro	3-0 	Indp Rvia		Baliño
+26-Feb-14		Gsia.Jujuy	1-0 	Banfield		Maglio
+26-Feb-14		Indepte	1-3 	Atl. Tuc		Díaz, P
+26-Feb-14		Def y Jus	3-0 	Aldosivi		Trucco
+26-Feb-14		Crucero	0-1 	Sarmiento		López, R
+26-Feb-14		Instituto	1-1 	B. Unidos		Alvarez, L
+26-Feb-14		Patronato	1-1 	Brown		Lamolina, N
+26-Feb-14		Sp.Belgr	1-1 	S. Carlos		Pompei
+26-Feb-14		S.M. SJ	3-0 	Huracan		Rapallini
+02-Mar-14 - Matchday 26		B. Unidos	2-1 	Patronato		Paletta
+02-Mar-14		Union	2-1 	AlteBrown		Tello
+02-Mar-14		Aldosivi	1-0 	Instituto		Castro, A
+03-Mar-14		Brown	2-2 	D.Haig		Argañaraz
+03-Mar-14		S. Carlos	2-1 	Gsia.Jujuy		Díaz, P
+03-Mar-14		Huracan	0-0 	Ferro		Giannini
+03-Mar-14		Sarmiento	4-0 	Sp.Belgr		Lamolina, N
+03-Mar-14		Tall. Cba	2-2 	Crucero		Echenique
+03-Mar-14		Indp Rvia	2-1 	Indepte		Laverni
+03-Mar-14		Atl. Tuc	1-1 	Def y Jus		Herrera
+03-Mar-14		Banfield	2-1 	S.M. SJ		Beligoy
+08-Mar-14 - Matchday 27		Brown	1-1 	B. Unidos		Giannini
+08-Mar-14		Ferro	1-1 	Banfield		Abal
+08-Mar-14		S.M. SJ	1-1 	S. Carlos		Baliño
+08-Mar-14		Instituto	2-2 	Atl. Tuc		Laverni
+08-Mar-14		Indepte	0-1 	Huracan		Pezzotta
+09-Mar-14		Gsia.Jujuy	0-0 	Sarmiento		Córdoba
+09-Mar-14		Def y Jus	2-2 	Indp Rvia		Ceballos, D
+09-Mar-14		Crucero	0-0 	Union		Alvarez, L
+09-Mar-14		Patronato	1-1 	Aldosivi		Beligoy
+09-Mar-14		Sp.Belgr	0-0 	Tall. Cba		Loustau, P
+10-Mar-14		D.Haig	3-0 	AlteBrown		Pompei
+14-Mar-14 - Matchday 28		Huracan	1-1 	Def y Jus		Vigliano, M
+14-Mar-14		Aldosivi	0-0 	Brown		Ceballos, D
+14-Mar-14		B. Unidos	1-1 	D.Haig		Córdoba
+14-Mar-14		Sarmiento	2-2 	S.M. SJ		Penel
+14-Mar-14		Atl. Tuc	1-2 	Patronato		Baliño
+15-Mar-14		S. Carlos	1-0 	Ferro		Beligoy
+15-Mar-14		Indp Rvia	1-2 	Instituto		Giannini
+15-Mar-14		Union	2-2 	Sp.Belgr		Merlos
+15-Mar-14		Banfield	3-3 	Indepte		Delfino
+16-Mar-14		Tall. Cba	0-1 	Gsia.Jujuy		Suarez
+18-Mar-14 - Matchday 29		Brown	1-0 	Atl. Tuc		Alvarez, L
+19-Mar-14		B. Unidos	1-3 	Aldosivi		Laverni
+19-Mar-14		Sp.Belgr	3-1 	AlteBrown		Paletta
+19-Mar-14		Indepte	0-0 	S. Carlos		Loustau, P
+19-Mar-14		Ferro	3-0 	Sarmiento		Pompei
+19-Mar-14		D.Haig	1-0 	Crucero		Díaz, P
+19-Mar-14		Instituto	1-0 	Huracan		Espinoza, F
+19-Mar-14		Patronato	1-0 	Indp Rvia		Tello
+19-Mar-14		Def y Jus	5-3 	Banfield		Echenique
+20-Mar-14		S.M. SJ	2-0 	Tall. Cba		Lamolina, N
+20-Mar-14		Gsia.Jujuy	1-0 	Union		Castro, A
+23-Mar-14 - Matchday 30		Huracan	3-0 	Patronato		Maglio
+23-Mar-14		Crucero	2-1 	Sp.Belgr		Suarez
+23-Mar-14		Atl. Tuc	0-1 	B. Unidos		Pompei
+23-Mar-14		Aldosivi	4-0 	D.Haig		Echenique
+24-Mar-14		Indp Rvia	0-0 	Brown		Argañaraz
+24-Mar-14		S. Carlos	1-2 	Def y Jus		Giannini
+24-Mar-14		AlteBrown	1-3 	Gsia.Jujuy		Díaz, P
+24-Mar-14		Tall. Cba	3-1 	Ferro		Tello
+24-Mar-14		Banfield	0-0 	Instituto		Castro, A
+24-Mar-14		Union	3-1 	S.M. SJ		Baliño
+24-Mar-14		Sarmiento	2-0 	Indepte		Lunati
+29-Mar-14 - Matchday 31		Brown	0-0 	Huracan		Beligoy
+29-Mar-14		Indepte	3-0 	Tall. Cba		Castro, A
+29-Mar-14		Instituto	3-2 	S. Carlos		Penel
+29-Mar-14		Aldosivi	1-1 	Atl. Tuc		Merlos
+29-Mar-14		Gsia.Jujuy	3-1 	Crucero		Tello
+29-Mar-14		B. Unidos	3-0 	Indp Rvia		Córdoba
+30-Mar-14		S.M. SJ	1-1 	AlteBrown		Argañaraz
+31-Mar-14		Ferro	0-1 	Union		Lamolina, N
+31-Mar-14		Patronato	0-2 	Banfield		Loustau, P
+31-Mar-14		D.Haig	1-0 	Sp.Belgr		López, R
+31-Mar-14		Def y Jus	2-0 	Sarmiento		Laverni
+04-Apr-14 - Matchday 32		Huracan	2-0 	B. Unidos		Herrera
+05-Apr-14		AlteBrown	1-1 	Ferro		Paletta
+05-Apr-14		Atl. Tuc	3-0 	D.Haig		Giannini
+05-Apr-14		Union	0-0 	Indepte		Laverni
+05-Apr-14		Tall. Cba	0-0 	Def y Jus		Trucco
+06-Apr-14		Sarmiento	1-3 	Instituto		Vigliano, M
+06-Apr-14		S. Carlos	1-0 	Patronato		Córdoba
+06-Apr-14		Indp Rvia	2-2 	Aldosivi		Castro, A
+06-Apr-14		Banfield	2-1 	Brown		Pompei
+06-Apr-14		Crucero	1-0 	S.M. SJ		Alvarez, L
+06-Apr-14		Sp.Belgr	0-0 	Gsia.Jujuy		González, M
+09-Apr-14 - Matchday 28		AlteBrown	0-1 	Crucero	 -Apr-14 - Matchday 33		Def y Jus	0-0 	Union		Pompei
+12-Apr-14		Brown	2-1 	S. Carlos		Espinoza, F
+12-Apr-14		S.M. SJ	1-0 	Sp.Belgr		Penel
+12-Apr-14		Instituto	1-1 	Tall. Cba		Giannini
+12-Apr-14		Aldosivi	1-1 	Huracan		Alvarez, L
+12-Apr-14		Patronato	1-1 	Sarmiento		Guaymas
+13-Apr-14		B. Unidos	2-1 	Banfield		Laverni
+13-Apr-14		Atl. Tuc	1-1 	Indp Rvia		Lamolina, N
+13-Apr-14		D.Haig	2-0 	Gsia.Jujuy		Suarez
+14-Apr-14		Ferro	2-0 	Crucero		Argañaraz
+14-Apr-14		Indepte	1-1 	AlteBrown		Ceballos, D
+18-Apr-14 - Matchday 34		S. Carlos	0-2 	B. Unidos		1 live comments] 	López, R
+18-Apr-14		Union	2-0 	Instituto		Herrera
+18-Apr-14		Huracan	2-0 	Atl. Tuc		González, M
+19-Apr-14		AlteBrown	0-0 	Def y Jus		Penel
+19-Apr-14		Indp Rvia	1-1 	D.Haig		Pompei
+19-Apr-14		Banfield	3-0 	Aldosivi		Lunati
+19-Apr-14		Gsia.Jujuy	1-1 	S.M. SJ		Ceballos, D
+20-Apr-14		Tall. Cba	3-1 	Patronato		Castro, A
+20-Apr-14		Sarmiento	1-0 	Brown		Testa, S
+20-Apr-14		Sp.Belgr	1-0 	Ferro		Dóvalo
+21-Apr-14		Crucero	3-1 	Indepte		Rapallini
+26-Apr-14 - Matchday 35		Def y Jus	3-1 	Crucero		Giannini
+26-Apr-14		D.Haig	2-2 	S.M. SJ		Laverni
+26-Apr-14		Aldosivi	3-0 	S. Carlos		Delfino
+26-Apr-14		Brown	2-2 	Tall. Cba		Paletta
+26-Apr-14		Patronato	0-1 	Union		Argañaraz
+27-Apr-14		B. Unidos	1-0 	Sarmiento		Suarez
+27-Apr-14		Indp Rvia	1-2 	Huracan		Baliño
+27-Apr-14		Instituto	2-1 	AlteBrown		Tello
+28-Apr-14		Atl. Tuc	0-0 	Banfield		Trucco
+28-Apr-14		Ferro	0-2 	Gsia.Jujuy		Bocca
+28-Apr-14		Indepte	3-2 	Sp.Belgr		Maglio
+03-May-14 - Matchday 36		S. Carlos	0-2 	Atl. Tuc		Echenique
+03-May-14		Sarmiento	0-1 	Aldosivi		Laverni
+03-May-14		Crucero	1-0 	Instituto		Alvarez, L
+03-May-14		Banfield	4-0 	Indp Rvia		Ceballos, D
+03-May-14		Tall. Cba	2-1 	B. Unidos		Penel
+04-May-14		Union	0-2 	Brown		Giannini
+04-May-14		AlteBrown	0-0 	Patronato		González, M
+04-May-14		Gsia.Jujuy	1-0 	Indepte		Lunati
+04-May-14		S.M. SJ	2-0 	Ferro		Díaz, P
+04-May-14		Sp.Belgr	4-2 	Def y Jus		Castro, A
+09-May-14 - Matchday 37		Brown	0-2 	AlteBrown		Castro, A
+09-May-14		Indp Rvia	2-0 	S. Carlos		Guaymas
+09-May-14		Indepte	2-0 	S.M. SJ		Pompei
+09-May-14		Def y Jus	3-1 	Gsia.Jujuy		Abal
+09-May-14		Instituto	1-0 	Sp.Belgr		Díaz, P
+09-May-14		B. Unidos	3-0 	Union		Tello
+09-May-14		Atl. Tuc	1-0 	Sarmiento		Espinoza, F
+10-May-14		D.Haig	0-0 	Ferro		Dóvalo
+10-May-14		Huracan	3-0 	Banfield		Loustau, P
+10-May-14		Aldosivi	1-0 	Tall. Cba		Lamolina, N
+10-May-14		Patronato	2-0 	Crucero		Paletta
+14-May-14 - Matchday 38		AlteBrown	1-0 	B. Unidos		Argañaraz
+14-May-14		S. Carlos	0-0 	Huracan		Córdoba
+14-May-14		Ferro	1-1 	Indepte		Delfino
+14-May-14		Tall. Cba	1-2 	Atl. Tuc		Merlos
+14-May-14		Union	1-1 	Aldosivi		González, M
+14-May-14		Sp.Belgr	1-0 	Patronato		Suarez
+14-May-14		Sarmiento	1-1 	Indp Rvia		Alvarez, L
+14-May-14		Crucero	1-3 	Brown		Bocca
+14-May-14		S.M. SJ	0-1 	Def y Jus		Beligoy
+14-May-14		Gsia.Jujuy	1-1 	Instituto		Pitana
+15-May-14		Banfield	1-1 	D.Haig		Maglio
+18-May-14 - Matchday 39		Huracan	3-1 	Sarmiento		Lamolina, N
+18-May-14		Atl. Tuc	1-1 	Union		Baliño
+18-May-14		Patronato	1-1 	Gsia.Jujuy		Tello
+19-May-14		Indp Rvia	3-2 	Tall. Cba		Giannini
+19-May-14		Brown	0-0 	Sp.Belgr		Ejarque
+19-May-14		D.Haig	1-2 	Indepte		Alvarez, L
+19-May-14		Aldosivi	3-0 	AlteBrown		Abal
+19-May-14		Def y Jus	0-1 	Ferro		Echenique
+19-May-14		Instituto	3-0 	S.M. SJ		Penel
+19-May-14		B. Unidos	1-0 	Crucero		Díaz, P
+20-May-14		Banfield	4-2 	S. Carlos		Delfino
+22-May-14 - Matchday 36		Huracan	2-1 	D.Haig	 Argañaraz
+24-May-14 - Matchday 40		AlteBrown	2-0 	Atl. Tuc		Paletta
+24-May-14		Ferro	1-0 	Instituto		Giannini
+24-May-14		Indepte	2-1 	Def y Jus		Trucco
+24-May-14		Sarmiento	0-0 	Banfield		Castro, A
+25-May-14		Crucero	1-1 	Aldosivi		Espinoza, F
+25-May-14		Gsia.Jujuy	2-0 	Brown		Díaz, P
+25-May-14		S.M. SJ	0-2 	Patronato		Baliño
+25-May-14		Union	1-1 	Indp Rvia		Beligoy
+25-May-14		Sp.Belgr	1-0 	B. Unidos		González, M
+26-May-14		S. Carlos	0-2 	D.Haig		Merlos
+26-May-14		Tall. Cba	0-0 	Huracan		Ceballos, D
+31-May-14 - Matchday 41		D.Haig	4-1 	Def y Jus		Beligoy
+31-May-14		Brown	1-2 	S.M. SJ		Echenique
+31-May-14		B. Unidos	1-1 	Gsia.Jujuy		Castro, A
+31-May-14		Aldosivi	0-0 	Sp.Belgr		Merlos
+31-May-14		Indp Rvia	1-0 	AlteBrown		Penel
+31-May-14		S. Carlos	1-3 	Sarmiento		Bocca
+31-May-14		Banfield	2-1 	Tall. Cba		Baliño
+01-Jun-14		Huracan	1-0 	Union		Delfino
+01-Jun-14		Instituto	1-2 	Indepte		Loustau, P
+01-Jun-14		Patronato	0-0 	Ferro		Ejarque
+01-Jun-14		Atl. Tuc	1-0 	Crucero		Guaymas
+06-Jun-14 - Matchday 42		Tall. Cba	3-2 	S. Carlos		López, R
+06-Jun-14		Union	1-1 	Banfield		Lamolina, N
+06-Jun-14		Sarmiento	1-0 	D.Haig		Argañaraz
+06-Jun-14		Def y Jus	1-0 	Instituto		Baliño
+06-Jun-14		S.M. SJ	2-0 	B. Unidos		Lobo Medina
+06-Jun-14		Crucero	2-1 	Indp Rvia		Giannini
+08-Jun-14		Ferro	1-0 	Brown		Ceballos, D
+08-Jun-14		Indepte	0-0 	Patronato		Vigliano, M
+08-Jun-14		Gsia.Jujuy	3-1 	Aldosivi		Herrera
+08-Jun-14		AlteBrown	0-1 	Huracan		Alvarez, L
+08-Jun-14		Sp.Belgr	0-1 	Atl. Tuc		Espinoza, F
