@@ -169,8 +169,9 @@ estructura(s) de matrices esparsas utilizar.
                 \sum_{i=1}^{n} \sum_{j=1}^n |a_{ij}| |x_j|
             =
                 \sum_{j=1}^{n}|x_j| \underbrace{\left(\sum_{i=1}^n|a_{ij}|\right)}_{
-                    \underarrow[=][\uparrow]{Estoc\'astica\\[-15pt]\tiny por
-                    columnas}
+                    \underarrow[=][\uparrow]{Columna $j$ de $A$ es\\[-15pt]\tiny
+                    estoc\'astica si $n_j\neq 0$\\[-15pt]\tiny
+                    Ecuaci\'on \ref{eq:A2}}
                     \begin{cases}
                         0 &\text{Si $n_j = 0$}\\
                         1 &\text{Si $n_j\neq 0$}
