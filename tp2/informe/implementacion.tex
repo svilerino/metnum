@@ -346,4 +346,154 @@ espec\'ificos sobre esta implementaci\'on se pueden encontrar en el ap\'endice
 
 %---------------------------------------------------------------
 \subsubsection{Compressed Row Storage (CRS)}
-\par
+\par Como ya hemos expresado, la implementaci\'on CRS tiene como
+caracter\'isticas almacenar la informaci\'on de la matriz esparsa de forma
+eficiente (sino no tendr\'ia mucho sentido) y permite implementar funciones
+aritm\'eticas de manera igualmente eficiente.
+
+\par La estructura de datos en si misma consta de 3 vectores: uno para los
+valores no nulos de la matriz (llamaremos a este vector $val$) en orden de
+aparici\'on de los mismos al recorrer la matriz de izquierda a derecha y de
+arriba hacia abajo, otro vector ($col\_ind$) que almacena los \'indices de las
+columnas de los elementos de $val$ (es decir, si $val[k] = m_{ij}$, entonces
+$col\_ind[k] = j$) y por \'ultimo $row\_ptr$ que almacena los \'indices sobre
+$val$ que representan el primer valor no nulo de una fila (es decir, si $val[k]
+= m_{ij}$, entonces $row\_ptr[i]\leq k < row\_ptr[i+1]$). Por convenci\'on, se
+define a $row\_ptr[n+1] = nnz+1$\cite{netlib_crs}.
+
+\par Como se puede observar, finalmente se almacenan $2nnz+n+1$ valores entre
+los 3 vectores, en lugar de almacenar $n^2$ si se hubiera usado la estructura
+intuitiva de vector de vectores.
+
+\par Presentamos un ejemplo a continuaci\'on, para ilustrar la idea.
+Consideremos la siguiente matriz $A\in\real^{6\times 6}$\cite{netlib_crs}:
+
+\begin{equation*}
+    A = \begin{bmatrix*}[r]
+        10 &0 &0 &0 &-2 &0\\[-0.65em]
+         3 &9 &0 &0 &0  &3\\[-0.65em]
+         0 &7 &8 &7 &0  &0\\[-0.65em]
+         3 &0 &8 &7 &5  &0\\[-0.65em]
+         0 &8 &0 &9 &9  &13\\[-0.65em]
+         0 &4 &0 &0 &2  &-1
+    \end{bmatrix*}
+\end{equation*}
+
+\par Y los vectores de la implementaci\'on CRS de esta matriz ser\'ian:
+
+\begin{table}[!h]
+    \begin{tabular}{|r|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        \textbf{val}&10&-2&3&9&3&7&8&7&3\dots 9&13&4&2&-1\\
+        \hline
+        \textbf{col\_ind}&1&5&1&2&6&2&3&4&1\dots 5&6&2&5&6\\
+        \hline
+    \end{tabular}
+    \begin{tabular}{|r|c|c|c|c|c|c|c|}
+        \hline
+        \textbf{row\_ptr}&1&3&6&9&13&17&20\\
+        \hline
+    \end{tabular}
+\end{table}
+\medskip
+
+\par Observando esto, queda claro el porque es complicado hacer una inserci\'on
+arbitrar\'ia de elementos. Supongamos en el ejemplo que deseamos agregar un
+nuevo dato no nulo $x$ en $a_{2,3}$. En primer lugar deber\'iamos incrementar el
+tama\~no de $val$ en uno, para luego insertar $x$ en $val[5]$. Antes de hacer
+esto, debemos mover todos los valores a partir de $val[5]$ una posici\'on dentro
+de $val$, es decir $val[i]\gets val[i-1]$ para $i=5..nnz$\footnote{Asumimos que
+$nnz$ incluye al nuevo valor $x$.}. Lo mismo habr\'a que hacer en $col\_ind$
+para poder insertar la columna de $x$ (3) en $col\_ind[5]$. Ahora todos
+\'indices de $row\_ptr$ se encuentran desactualizados, con lo cual debemos
+incrementar en uno todos los \'indices a partir de la posici\'on 3, pues las
+posiciones a las que hac\'ian referencia en $val$ fueron ''corridas'' una
+posici\'on por el agregado de $x$.  Por \'ultimo, debemos actualizar el \'ultimo
+valor almacenado en $row\_ptr$, ya que $nnz$ ha sido incrementado por la
+inserci\'on de $x$.
+
+\par En este ejemplo, con esto bastar\'ia, pero si el nuevo elemento insertado
+se hubiera convertido en el nuevo primer elemento de la fila $2$, deber\'iamos a
+su vez actualizar el \'indice de $val$ que nos indica el primer valor no nulo de
+la fila $2$: $row\_ptr[2] \gets 5$. Todo este proceso tiene un costo total de
+$\mathcal{O}(2nnz+n)$, es decir, lineal en $max(nnz,n)$. Si comparamos este
+costo contra el costo de inserci\'on de un simple vector de vectores
+($\mathcal{O}(1)$), o contra nuestro DoK ($\mathcal{O}(log(nnz))$), o incluso el
+DoK cl\'asico ($\mathcal{O}(1)$), veremos que claramente no es eficiente esta
+estructura para insertar nuevos valores. A\'un as\'i, es trivial ver que si los
+valores vienen ordenados (siguiendo el orden de izquierda a derecha y de arriba
+hacia abajo), la generaci\'on de estos vectores costar\'a simplemente
+$\mathcal{O}(nnz)$, pues a medida que vamos iterando los valores ordenados,
+debemos simplemente ir agregando elementos al final de cada uno de los vectores
+(en el caso de $row\_ptr$, deberemos agregar un nuevo \'indice cuando un nuevo
+valor pertenece a una fila distinta que su valor anterior).
+
+\par Cabe aclarar que este ejemplo no contempla la posibilidad de que haya una
+fila sin valores no nulos. Dado este caso, en nuestra implementaci\'on,
+decidimos colocar en la posici\'on correspondiente de $row\_ptr$ un valor
+interpretable como $\infty$. En nuestro caso, ese valor es el valor m\'aximo del
+tipo de datos del vector (\emph{unsigned int})\cite{stl_limits}.
+
+\par El \'ultimo aspecto que nos queda por analizar es por qu\'e esta
+representaci\'on de una matriz esparsa nos sirve para realizar operaciones
+aritm\'eticas (por lo menos la multiplicaci\'on matriz-vector) de manera
+eficiente. Como ya hemos mencionado, si no usasemos una estructura que pueda
+saber en todo momento donde est\'an los valores no nulos, al realizar la
+multiplicac\'on de cada fila por el vector nos veremos obligados a realizar
+$2n-1$ operaciones matem\'aticas (las $n$ multiplicaciones y las $n-1$
+adiciones), de las cuales muchas ser\'an multiplicar por $0$\footnote{Cosa que
+incluso nos podr\'ia llevar a tener errores num\'ericos.} y siendo estas
+operaciones innecesarias\footnote{Se podr\'ia verificar que el valor de la
+matriz sea no nulo antes de efectuar la operaci\'on, pero dicha verificaci\'on
+no es m\'as eficiente que realizar la multiplicaci\'on.}. Ahora bien, al
+utilizar la estructura de CRS, podemos iterar por los valores no nulos de una
+fila dada, y en cada caso saber exactamente cual es el \'indice del vector con
+el cual deben multiplicarse: el \'indice de la columna del elemento no nulo.
+As\'i pues, en cada multiplicaci\'on de vectores (fila de la matriz por vector),
+estaremos realizando la cantidad justa y necesaria de operaciones matem\'aticas,
+lo cual claramente hace m\'as eficente a nuestro algoritmo del m\'etodo de la
+potencia, el cual depende de realizar la operaci\'on $Mx^{(k-1)}$ en cada $k$
+iteraci\'on (algoritmo \ref{alg:power_method3}, p\'agina
+\pageref{alg:power_method3}).
+
+\par As\'i hemos introducido como es la estructura CRS y porque la misma sirve a
+los prop\'ositos del actual trabajo: sus ventaja espaciales para almacenar
+matrices esparsas y para las operaciones aritm\'eticas, sumados a su bajo costo
+de inicializaci\'on si los valores no nulos de la matriz puede ser recibidos en
+orden, cosa que conseguimos mediante el uso de una representaci\'on auxiliar de
+la matriz: DoK.
+
+%---------------------------------------------------------------
+\subsubsection{Compressed Row Storage (CCS)}
+\par Aprovechando, mencionamos que la implementaci\'on de CCS sigue exactamente
+la misma idea que CRS, salvo que invierte la idea de tener \'indices a columnas
+y conocer las posiciones de $val$ inician una fila por tener \'indices a filas y
+conocer las posiciones de $val$ que inician una columna. En la matriz $A$ del
+ejemplo anterior tendr\'iamos los siguientes vectores\cite{netlib_ccs}:
+
+\begin{table}[!h]
+    \begin{tabular}{|r|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        \textbf{val}&10&-2&3&9&3&7&8&7&3\dots 9&13&4&2&-1\\
+        \hline
+        \textbf{row\_ind}&1&2&4&2&3&5&6&3&4\dots 5&6&2&5&6\\
+        \hline
+    \end{tabular}
+    \begin{tabular}{|r|c|c|c|c|c|c|c|}
+        \hline
+        \textbf{col\_ptr}&1&4&8&10&13&17&20\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\par En el contexto de este trabajo optamos por utilizar la representaci\'on CRS
+en lugar de \'esta, ya que a la hora de realizar la operaci\'on aritm\'etica de
+mayor peso para el m\'etodo de la potencia era m\'as importante poder iterar los
+valores no nulos de una fila m\'as que los de una columna (ya que debemos hacer
+el producto interno de cada fila con un vector). Claramente esto no es un
+obst\'aculo insalvable dentro de esta estr\'uctura (basta con transponer la
+matriz y hacer los productos internos columna a columna), pero realizar esto nos
+pareci\'o innecesario y poco intuitivo, m\'as a\'un teniendo que implementar
+cualquier representaci\'on desde cero y pudiendo elegir CRS.
+
+%---------------------------------------------------------------
