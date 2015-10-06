@@ -35,6 +35,7 @@
     \centering
     \caption{\'Ordenes comparativos entre los Resultados Google, PageRank e
         In-Deg}
+        \label{tbl:google_pagerank_vs_indeg_siteubaar} 
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{|l|l|l|}
         \hline\hline
@@ -54,12 +55,12 @@
     \end{tabular}
 \end{table}
 
-\par Dado que los resultados obtenidos dieron resultados similares en cuanto a
+\par Dado que los resultados obtenidos en \ref{tbl:google_pagerank_vs_indeg_siteubaar} dieron resultados similares en cuanto a
 In-Deg vs PageRank, e intuyendo que esto no tiene que ser siempre as\'i,
 realizamos un nuevo experimento. Esta vez buscamos en wikipedia\cite{wikipedia}
 distintos t\'erminos relacionados con los temas vistos en la materia. Sobre
 estas p\'aginas, calculamos los \'ordenes de PageRank e In-Deg, para luego
-compararlos.
+compararlos en el cuadro \ref{tbl:pagerank_vs_indeg_wikipedia} . Nuevamente, In-Deg y PageRank dieron resultados muy similares. Sin embargo, podemos observar que quedan primeros en el ranking terminos mas \texttt{generales o abarcativos} y a medida que avanza el ranking se encuentran términos mas particulares. Para evidenciar la diferencia entre los algoritmos de In-Deg y PageRank decidimos alterar explicitamente el grafo de conectividad, agregando aristas desde los últimos 5 resultados hacia el último en el ranking. Esto deberia aumentar drásticamente el rankeo del ultimo elemento en In-Deg, no asi en Pagerank, los resultados de este último experimento pueden verse en el cuadro \ref{tbl:pagerank_vs_indeg_wikipedia_modificado}. Lamentablemente no vemos los resultados tan drásticos que esperabamos entre In-Deg y PageRank, puede deberse a que las instancias de prueba son muy chicas, o a que el experimento de agregar 5 aristas, incremento el rankeo de pagerank mas de lo que esperabamos. Por último, vemos que en el último experimento se acentúa el orden \texttt{abarcativo} de los resultados respecto al dominio de los elementos.
 
 \begin{figure}
     \centering
@@ -72,6 +73,7 @@ compararlos.
 \begin{table}
     \centering
     \caption{\'Ordenes comparativos entre PageRank e In-Deg para Wikipedia}
+    \label{tbl:pagerank_vs_indeg_wikipedia} 
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{|l|l|}
         \hline\hline
@@ -86,6 +88,28 @@ compararlos.
         Cholesky\_decomposition& Cholesky\_decomposition\\
         Eigendecomposition\_of\_a\_matrix& Matrix\_splitting\\
         Matrix\_splitting& Eigendecomposition\_of\_a\_matrix\\
+        \hline\hline
+    \end{tabular}
+\end{table}
+
+\begin{table}
+    \centering
+    \caption{\'Ordenes comparativos entre PageRank e In-Deg para Wikipedia con grafo modificado explícitamente}
+    \label{tbl:pagerank_vs_indeg_wikipedia_modificado}
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{|l|l|}
+        \hline\hline
+        Pagerank & Indeg\\
+        \hline
+        Matrix\_decomposition & Matrix\_decomposition\\
+        Numerical\_linear\_algebra & Numerical\_linear\_algebra\\
+        Numerical\_analysis & Eigendecomposition\_of\_a\_matrix  \\
+        Eigendecomposition\_of\_a\_matrix & QR\_decomposition\\
+        QR\_decomposition & Singular\_value\_decomposition\\
+        Singular\_value\_decomposition & Numerical\_analysis  \\
+        LU\_decomposition & LU\_decomposition\\
+        Cholesky\_decomposition & Cholesky\_decomposition  \\
+        Matrix\_splitting & Matrix\_splitting\\
         \hline\hline
     \end{tabular}
 \end{table}
