@@ -45,6 +45,7 @@
     \centering
     \caption{\'Ordenes obtenidos y sus porcentajes para los resultados obtenidos
         de la b\'usqueda ''site:uba.ar'' en \emph{Google}}
+    \label{tbl:orden_segun_c}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{|l||r||l||r|r|r|r|r|r|r|r|r|}
         \hline\hline
@@ -100,3 +101,5 @@
         \hline\hline
     \end{tabular}
 \end{table}
+
+En los resultados del cuadro \ref{tbl:orden_segun_c} se puede apreciar que para diferentes valores del factor de navegación  $0 < \alpha < 1$, el orden obtenido no cambia, pero si lo hacen las probabilidades asociadas a cada item. Para el caso particular $\alpha = 0$, tenemos que al tener un vector de probabilidades equiprobable, cualquier permutación del orden tambien es válido, en particular, el algoritmo devolvió el mismo orden obtenido en la búsqueda en google.
