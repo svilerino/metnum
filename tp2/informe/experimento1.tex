@@ -213,14 +213,23 @@ Claramente puede ocurrir, para valores de $\alpha$ \textbf{muy peque\~nos}, que
 el orden sea distinto (tendiendo a equiprobable), pero a medida que este
 par\'ametro aumente, cada vez ser\'a menor la injerencia de la
 teletransportaci\'on y mayor ser\'a la de la conectividad del grafo/instancia
-inicial. No olvidemos que el concepto de teletransportaci\'on fue introducido
-artificialmente para salvar el escollo de la convergencia del c\'alculo del
-autovector, pero es esperable que a medida que estos ejes artificiales toman
-menor injerencia (recordar la definici\'on de $M$), m\'as se ''acent\'ue'' el
+inicial. En este argumento hay un factor clave que no se est\'a teniendo en
+cuenta: el tama\~no de la instancia. La injerencia de la teletransportaci\'on
+ser\'a cada vez mayor a medida que tengamos instancias m\'as grandes, pues
+tendremos cada vez m\'as subgrafos disconexos que ser\'an convertidos a
+fuertemente conexos mediante el agregado de los ejes artificiales. No olvidemos
+que el concepto de teletransportaci\'on fue introducido artificialmente para
+salvar el escollo de la convergencia del c\'alculo del autovector. Es esperable
+entonces que a medida que estos ejes artificiales toman menor injerencia
+(recordar la definici\'on de $M$) ya sea por un $\alpha$ muy grande y/o un
+tama\~no de instancia chico\footnote{Recordemos que las instancias de este tipo
+suele crecer en nodos mucho m\'as que en aristas.} m\'as se ''acent\'ue'' el
 orden basado en la premisa de PageRank: mayor puntaje a aquellos que tienen la
 mejor relaci\'on \emph{cantidad de votos - calidad de votos} (observar que para
 $\alpha=0.9$ la diferencia entre los primeros y los segundos aument\'o, respecto
-de la diferencia para $\alpha=0.1$, y lo mismo ocurre con los \'ultimos).
+de la diferencia para $\alpha=0.1$, y lo mismo ocurre con los \'ultimos). Aunque
+esto ocurre en ambas direcciones, a mayor tama\~no de instancia, seguramente
+obtendremos distintos ordenes con $\alpha$ cada vez mayores.
 
 \par Otra observaci\'on que podemos hacer pasa por la evoluci\'on de los
 porcentajes para los distintos $\alpha$ en el intervalo $0.1\dots 0.9$.  Vemos
