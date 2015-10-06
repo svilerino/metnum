@@ -101,6 +101,8 @@ distancia es la que consideramos que se ajusta a lo que queremos observar del
 dominio del problema: cu\'antos equipos est\'an ubicados distinto y cuan lejos.
 
 \begin{figure}[H]
+    \caption{Distancia al orden total ideal/correcto ($c = \alpha$)}
+    \label{fig:exp5_1}
     \centering
     \subfloat[][Torneo de 10 equipos]{
         \label{subfig:exp5_10equipos}
@@ -110,13 +112,11 @@ dominio del problema: cu\'antos equipos est\'an ubicados distinto y cuan lejos.
         \includegraphics[width=.5\textwidth]{exp5_50_equipos.png}
         \label{subfig:exp5_50equipos}
     }
-    \caption{Distancia al orden total ideal/correcto ($c = \alpha$)}
-    \label{fig:exp5}
 \end{figure}
 
 \par La hip\'otesis fue confirmada. GeM converge al Orden Real para todos los
 valores no nulos de $\alpha$ y no precisa todas las fechas para hacerlo, como se
-puede observar en la figura \ref{fig:exp5}. Sin embargo, necesita una cantidad
+puede observar en la figura \ref{fig:exp5_1}. Sin embargo, necesita una cantidad
 significativa: para todos los valores no nulos de $\alpha$ fueron necesarias 10
 de 11 fechas para el caso de 10 equipos y 50 de 53 fechas para el caso de 50
 equipos.
@@ -146,7 +146,7 @@ enfrentamientos encontramos casos en donde un valor mayor de $\alpha$ empeoraba
 la convergencia en alg\'un punto (ver figura \ref{subfig:exp5_c_malo}), por lo
 que no podemos generalizar esta conclusi\'on.
 
-\par As\'i pues, debido a estos resultados, realizamos la siguiente
+\par As\'i pues, motivados por estos resultados, realizamos la siguiente
 experimentaci\'on.
 
 %---------------------------------------------------------------
@@ -181,6 +181,8 @@ experimentaci\'on.
 \end{LaTeXdescription}
 
 \begin{figure}[H]
+    \caption{Casos Patol\'ogicos (10 equipos, $c = \alpha$)}
+    \label{fig:exp5_2}
     \centering
     \subfloat[][Caso particular malo para $\alpha$ grande]{
         \label{subfig:exp5_c_malo}
@@ -190,8 +192,6 @@ experimentaci\'on.
         \includegraphics[width=.5\textwidth]{exp5_ejemplo_gem_malo.png}
         \label{subfig:exp5_gem_malo}
     }
-    \caption{Casos Patol\'ogicos (10 equipos, $c = \alpha$)}
-    \label{fig:exp5}
 \end{figure}
 
 \par Comparamos GeM con el orden oficial, establecido por asignación de puntos
@@ -209,3 +209,24 @@ los genere en el caso de muchos (50), podr\'iamos argumentar que GeM se comporta
 ''mejor'' cuando la cantidad de equipos es grande. Queda fuera de los alcances
 de este trabajo confirmar m\'as sistem\'aticamente esa hip\'otesis, pero es un
 buen trabajo futuro.
+
+%---------------------------------------------------------------
+\medskip
+\par En este experimento se trabaj\'o principalmente con instancias artificiales
+''de juguete''. Las mismas lejos est\'an de representar la realidad, pero nos
+sirvieron para poder asegurar que el modelo GeM ''descubrir\'ia'' el ranking
+justo (o real, como dir\'ia Platon) si este existiese. A\'un as\'i, observamos
+que para llegar a este ranking el modelo requerir\'a de mucha informaci\'on de
+entrada, lo cual le quita quiz\'as utilidad como predictor de resultados de
+torneos\footnote{Sin \'animo de menospreciar a GeM, si uno tiene los datos de 50
+sobre 53 fechas, predecir con buena probabilidad de acierto el orden final no es
+necesariamente una tarea extremadamente dif\'icil.}. Tambi\'en observamos que en
+la progesi\'on fecha a fecha, el par\'ametro $\alpha$ pareciera tener de muy
+poca a nula influencia sobre los rankings obtenidos. Por \'ultimo, decidimos
+comprar la ''velocidad de aproximaci\'on al ranking ideal'' con casos reales (es
+decir, con el resultado final de la competencia), y aqu\'i pudimos ver que si
+bien considerabamos no tan bueno a GeM para aproximarse con poca informaci\'on
+al resultado final, se comporta notoriamente mejor que el ranking oficial (para
+los casos de f\'utbol que fueron considerados), con lo cual este modelo quiz\'as
+podr\'ia ser un primer paso hacia un predictor de resultados de torneos de
+f\'utbol profesional\footnote{Y la dominaci\'on mundial.}.
