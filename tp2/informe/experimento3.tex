@@ -55,15 +55,16 @@ iteraciones en funci\'on de $\alpha$.
 \end{figure}
 
 \par Como se explic\'o en la secci\'on \ref{sec:introduccion}, el factor
-$\alpha$ nos hacen variar la proporci\'on entre $S$ y la matriz equiprobable a
-la hora de definir a $M$. Es decir, en el rango de posibles valores de $\alpha$,
-la \'unica manera en la que se afecta a $M$ en en los valores de cada uno de sus
+$\alpha$ hace variar la proporci\'on entre $S$ y la matriz equiprobable a la
+hora de definir a $M$. Es decir, en el rango de posibles valores de $\alpha$, la
+\'unica manera en la que se afecta a $M$ es en los valores de cada uno de sus
 elementos. Pero para ning\'un $\alpha$ se puede pasar a tener un elemento nulo
 en $M$ (justamente se quer\'ia tener la representaci\'on de un digrafo
-completo).
+completo). As\'i pues, la pregunta pasa a ser: ¿Por qu\'e a mayor $\alpha$ se
+necesitan m\'as iteraciones para converger?
 
-\par Se nos ocurre conjeturar que en el contexto de una cadena de Markov y el
-navegante aleatorio, un $\alpha$ pequeño nos genera una matriz de transici\'on
+\par Se nos ocurre que, volviendo al contexto de una cadena de Markov y el
+navegante aleatorio, un $\alpha$ peque\~no nos genera una matriz de transici\'on
 ''m\'as'' equiprobable (recordar la definici\'on de $M$ en la ecuaci\'on
 \ref{eq:M_def}, p\'agina \pageref{eq:M_def}) y dado que el método de la potencia
 comienza inicialmente con el vector equiprobable, le toma pocas iteraciones
@@ -81,10 +82,52 @@ de convergencia más débil}.
 \par Respecto a la velocidad de convergencia, exponemos los resultados de una
 sola instancia ya que para las 3 instancias los resultados son similares. Como
 puede observarse en el gráfico \ref{subfig:exp3_diff}, a medida que el factor de
-navegacion $\alpha$ crece, la velocidad de convergencia disminuye. Es decir, la
-distancia \emph{Manhattan} entre el autovector calculado entre dos iteraciones
-consecutivas disminuye cada vez m\'as, acerc\'andose cada vez \textbf{m\'as
-rápido} al umbral de corte del algoritmo (basado en $\epsilon$ o una cantidad
-fija m\'axima de iteraciones\footnote{Esto se implementa, ya que si bien la
-teor\'ia nos indica que el m\'etodo convergir\'a, los errores n\'umericos de la
-aritm\'etica finita puede hacer que esto no ocurra.}).
+navegacion $\alpha$ crece, la velocidad de convergencia disminuye,
+obteni\'endose curvas cada vez m\'as pronunciadas.
+
+\par La ''velocidad de convergencia'' la definimos como la distancia
+\emph{Manhattan} entre los autovectores $\vec{x^{(k)}}$ y $\vec{x^{(k-1)}}$
+calculados en dos iteraciones consecutivas. Mientras mayor sea la distancia,
+m\'as r\'apido decimos que se converge\footnote{Asumiendo que $\vec{x^{(k)}} <
+\vec{x^{(k-1)}}$, caso contrario nos estar\'iamos alejando del criterio de corte
+del m\'etodo, es decir, de converger.}, pues se est\'a acerc\'andose cada vez
+\textbf{m\'as rápido} al umbral de corte del algoritmo (basado en $\epsilon$ o
+una cantidad fija m\'axima de iteraciones\footnote{Esto se implementa, ya que si
+bien la teor\'ia nos indica que el m\'etodo convergir\'a, los errores
+n\'umericos de la aritm\'etica finita puede hacer que esto no ocurra.}).
+
+\par Nuestra explicaci\'on para este comportamiento es exactamente la misma que
+se expuso para el caso de las iteraciones hasta converger en funci\'on de
+$\alpha$. Sin ir m\'as lejos, estamos hablando del mismo fen\'omeno, salvo que
+en el caso de la figura \ref{subfig:exp3_diff} hacemos hincapi\'e en
+\textbf{como} se acerca el m\'etodo al vector soluci\'on, mientras que en la figura
+\ref{subfig:exp3_comp} observamos m\'as en detalle la \textbf{cantidad de
+iteraciones} que se necesitan. Sin embargo, ambos gr\'aficos nos muestran lo
+mismo: \textit{a que velocidad}, o \textit{cuanto tiempo/iteraciones} se
+requieren para converger en funci\'on de $\alpha$.
+
+\par Ahora bien, hemos visto como $\alpha$ afecta a la convergencia. S\'i esto
+fuera lo \'unico, claramente siempre elegir\'iamos el valor que nos permita
+converger m\'as r\'apido. Ocurre que, como vimos en el experimento
+\ref{subsec:exp1}, el $\alpha$ afecta al orden obtenido tambi\'en, es decir, a
+la calidad del resultado. As\'i pues, la elecci\'on de este par\'ametro ser\'a
+la b\'usqueda del equilibrio \emph{efectividad} y \emph{eficiencia}, u entre
+calidad del resultado y ti\'empo de c\'omputo (intuitivamente, m\'as iteraciones
+implican mayor tiempo de c\'omputo). La bibliograf\'ia consultada nos indica que
+en su momento, Google fij\'o inicialmente este par\'ametro en $0.85$,
+considerando a este un \emph{trade-off} lo suficientemente
+bueno\cite{Bryan2006}\cite{Langville2006}.
+
+\par As\'i pues conclu\'imos nuestra experimentaci\'on sobre la convergencia del
+m\'etodo de la potencia para PageRank. Llegamos a un resultado inmediato que nos
+dice que a mayor $\alpha$ tendremos una velocidad de convergencia menor y, ergo,
+una cantidad de iteraciones necesaria mayor para obtener un resultado lo
+suficientemente apr\'oximado. Tambi\'en evaluamos brevemente la contracara de
+tener un tiempo de convergencia chico: el resultado obtenido no necesariamente
+es el mismo ya que predomina m\'as la equiprobabilidad de los ejes de
+teletransportaci\'on artificalmente a\~nadidos a la matr\'iz $M$. Tambi\'en
+obtuvimos como resultado que este comportamiento es, presumiblemente (har\'ia un
+falta un an\'alisis m\'as minucioso para poder afirmarlo), el mismo para
+cualquier instancia de entrada, m\'as all\'a de que la cantidad de iteraciones
+absoluta entre dos instancias pueda variar para el mismo $\alpha$, el
+comportamiento en funci\'on de $\alpha$ parecer\'ia ser el mismo.

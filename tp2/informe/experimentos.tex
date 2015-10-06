@@ -27,3 +27,29 @@ motivaciones.
 \newpage
 \input{experimento8}
 %---------------------------------------------------------------
+
+\newpage
+\subsection{Experimentos a Futuro}
+\par Como experimentos futuros relacionados con estos temas, que por cuestiones
+de tiempo y alcance de este trabajo no fueron realizados, estar\'ia evaluar la
+\emph{sensibilidad} de PageRank y su convergencia al orden m\'as que al
+(auto)vector de distribuci\'on estacionario.
+
+\par En primer caso, la sensibilidad para PageRank, trata de exponer si cambios
+peque\~nos en un grafo dado (algunos ejes menos, algunos ejes m\'as) modifican
+radicalmente el orden obtenido. Y tambi\'en experimentar sobre como $\alpha$
+afecta a esta sensibilidad.
+
+\par En cuanto al caso de la convergencia al \'orden m\'as que al vector
+resultante, lo que queremos explicar es que en realidad lo que se busca obtener
+con PageRank es un ranking, m\'as all\'a de los puntajes de cada p\'agina web.
+Por ah\'i se podr\'ia observar si para toda instancia y $\alpha$ fijo, se puede
+estimar estadist\'icamente que luego de $k$ iteraciones (que esperamos que sea
+un n\'umero, o incluso una funci\'on que tome ciertos parametros y devuelva un
+n\'umero, mucho menor que la cantidad de interaciones necesarias por el
+m\'etodo para converger) ya se lleg\'o al mismo orden al que se llegar\'a al
+converger (aunque con distintos puntajes). Si esto se pudiera realizar,
+podr\'iamos tener una primera heur\'istica para mejorar el tiempo de
+convergencia, aunque claramente estar\'iamos trabajando ya con orden \'aun m\'as
+aproximado que el que devuelve el m\'etodo de la potencia implementado sobre
+aritm\'etica finita.
