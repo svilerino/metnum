@@ -59,7 +59,7 @@ definiciones de las matrices reci\'en expuestas). Entonces tenemos que:
 \par Kamvar et al. plantean que las aristas \emph{artificiales} introducidas en
 la matriz $A$ (que representa el grafo de conectividad pesado seg\'un el grado
 de salida de cada nodo) mediante $\vec{v}a^T$ y $E$ no necesitan ser
-materializados en la matriz para realizar los c\'aclculos (ya que de antemano
+materializados en la matriz para realizar los c\'alculos (ya que de antemano
 sabemos como afectan a la matriz final $M$ para cualquier operaci\'on que
 hagamos con ella)~\cite[p.262]{Kamvar2003}. Por lo tanto, sugieren que el
 c\'omputo de $x^{(k)} \gets Mx^{(k-1)}$ sea realizado con el siguiente
@@ -210,7 +210,7 @@ Esparsas\protect\footnote{T\'ermino coloquial utilizada para referirnos a
 matrices poco densas, es decir matrices con muchos valores nulos.}}
 \par Como se ha mencionado, la princpal ''optimizaci\'on'' de la
 implementaci\'on\footnote{y m\'as que optimizaci\'on, necesidad, ya que para
-instancias grandes no nos da alcanzar\'ia con 16GB de memoria RAM para
+instancias grandes no nos alcanzar\'ia con 16GB de memoria RAM para
 instanciar la matriz.} es la utilizaci\'on de estructuras especiales para
 representar matrices esparsas. Esta elecci\'on, sin embargo, debe ser
 inteligente para permitir que el algoritmo \ref{alg:power_method3} funcione con
@@ -223,12 +223,12 @@ sus caracter\'isticas pertintentes a nuestro contexto:
 
 \smallskip
 \begin{LaTeXdescription}
-    \item[Dictionary of Keys (DoK)] Es una estructura buena para consturir la
+    \item[Dictionary of Keys (DoK)] Es una estructura buena para construir la
         matriz incrementalmente con datos de entrada desordenados, pero no es
         eficiente para iterar los valores no nulos en orden, lo cual no hace a
         esta estructura no permite realizar operaciones algebr\'aicas (como
         multiplcaci\'on matriz-vector) de manera eficiente. Suele usarse para
-        consturir la matriz, la que luego es transformada a un formato m\'as
+        construir la matriz, la que luego es transformada a un formato m\'as
         eficiente para el procesamiento de los datos\cite{wiki_dok}. Es
         tambi\'en llamada en otros \'ambitos como \textbf{Hash Table
         Storage}\cite{alglib_sparse}.
@@ -437,9 +437,9 @@ tipo de datos del vector (\emph{unsigned int})\cite{stl_limits}.
 \par El \'ultimo aspecto que nos queda por analizar es por qu\'e esta
 representaci\'on de una matriz esparsa nos sirve para realizar operaciones
 aritm\'eticas (por lo menos la multiplicaci\'on matriz-vector) de manera
-eficiente. Como ya hemos mencionado, si no usasemos una estructura que pueda
+eficiente. Como ya hemos mencionado, si no usaramos una estructura que pueda
 saber en todo momento donde est\'an los valores no nulos, al realizar la
-multiplicac\'on de cada fila por el vector nos veremos obligados a realizar
+multiplicaci\'on de cada fila por el vector nos veremos obligados a realizar
 $2n-1$ operaciones matem\'aticas (las $n$ multiplicaciones y las $n-1$
 adiciones), de las cuales muchas ser\'an multiplicar por $0$\footnote{Cosa que
 incluso nos podr\'ia llevar a tener errores num\'ericos.} y siendo estas
