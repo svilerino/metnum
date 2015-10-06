@@ -1,8 +1,8 @@
-\subsection{Convergencia}
+\subsection{Convergencia de PageRank}
 \label{subsec:exp3}
 \begin{LaTeXdescription}
     \item[Objetivo] Estudiar como se comporta la convergencia en funci\'on de
-        el factor de navegaci\'on $\alpha$.
+        el factor de navegaci\'on $\alpha$.\\
 
     \item[Proposici\'on] PageRank propone una soluci\'on donde se observa a un
         conjunto de p\'aginas web como un grafo dirigido. Luego pasa este modelo
@@ -20,34 +20,71 @@
         cual es dificil saber cual ser\'a su injerencia en la convergencia (en
         principio). El objetivo, entonces, es ver como $\alpha$ afecta al
         m\'etodo matem\'atico iterativo de la potencia en cuanto a su
-        convergencia.
+        convergencia.\\
 
     \item[M\'etodo de Experimentaci\'on] Tomaremos 3 instancias de grafos de
         conectividad de p\'aginas web de tama\~no mediano-grande, obtenidas en
         \url{http://snap.stanford.edu/data/\#web}. Luego, correremos el
-        algoritmo de PageRank para $\alpha=0.0$; $0.1$; $0.2$; $\dots$; $0.9$ y $\epsilon$
-        fijo en $0.00001$
+        algoritmo de PageRank para $\alpha=0.0$; $0.1$; $0.2$; $\dots$; $0.9$ y
+        $\epsilon$ fijo en $0.00001$.\\
 
     \item[Resultados, an\'alisis y discusi\'on]
-    En el gráfico \ref{subfig:exp3_comp} se exponen la cantidad de iteraciones necesarias hasta converger a medida que el parámetro $\alpha$ crece, para las 3 instancias, el comportamiento observado es el mismo, puede observarse que aunque con valores numéricos diferentes, las curvas pertenecen a la misma familia de funciones.\\
-
-    Respecto a la velocidad de convergencia, exponemos los resultados de una sola instancia ya que para las 3 instancias los resultados son similares: Como puede observarse en el gráfico \ref{subfig:exp3_diff}, a medida que el factor de navegacion $ \alpha $ crece, la velocidad de convergencia disminuye, es decir, la distancia manhattan entre iteraciones se acerca \texttt{mas rápido} al umbral de corte del algoritmo en términos de cantidad de iteraciones.\\
-
-    Se nos ocurre conjeturar que en un contexto de una cadena de markov y el navegante aleatorio, un $\alpha$ pequeño nos genera una cadena de markov mas equiprobable y dado que el método de la potencia comienza inicialmente con el vector equiprobable, le toma pocas iteraciones converger. A medida que $\alpha$ aumenta, el grafo generado denota más la navegación estricta por los links entre los sitios con menor probabilidad de teletransportación. Es decir, a mayor $\alpha$, el grafo se parece mas al grafo de conectividad original no adulterado. Este grafo original no necesariamente representa un grafo fuertemente conexo, una de las condiciones necesarias para asegurar convergencia del método de la potencia en el contexto de este problema, con lo cual el método de la potencia inicia sus iteraciones con una \texttt{seguridad de convergencia más débil}.
 \end{LaTeXdescription}
+
+\par En el gráfico \ref{subfig:exp3_comp} se exponen la cantidad de iteraciones
+necesarias hasta converger a medida que el parámetro $\alpha$ crece. Para las 3
+instancias el comportamiento observado es el mismo: a medida que el par\'ametro
+$\alpha$ aumenta, la cantidad de iteraciones necesarias para converger crece
+exponencialmente. Puede observarse que aunque con valores numéricos diferentes,
+las curvas pertenecen a la misma familia de funciones, y por lo tanto tienen un
+comportamiento id\'entico (emp\'iricamente hablando) en cuanto a la cantitdad de
+iteraciones en funci\'on de $\alpha$.
 
 \begin{figure}[H]
     \centering
+    \caption{An\'alisis de Convergencia en funci\'on de $\alpha$}
     \subfloat[][Iteraciones hasta Converger en funci\'on de $\alpha$]{
         \label{subfig:exp3_comp}
         \includegraphics[width=.5\textwidth]{exp3_iteraciones_funcion_alpha.png}
     }
-    \subfloat[][Velocidad de convergencia en funci\'on de $\alpha$]{
+    \subfloat[][Velocidad de convergencia en funci\'on de $\alpha$\\Escala
+    logar\'itmica]{
         \includegraphics[width=.5\textwidth]{exp3_diff_funcion_iteraciones_standford.png}
         \label{subfig:exp3_diff}
     }
-    \caption{An\'alisis de Convergencia en funci\'on de $\alpha$}
 \end{figure}
 
+\par Como se explic\'o en la secci\'on \ref{sec:introduccion}, el factor
+$\alpha$ nos hacen variar la proporci\'on entre $S$ y la matriz equiprobable a
+la hora de definir a $M$. Es decir, en el rango de posibles valores de $\alpha$,
+la \'unica manera en la que se afecta a $M$ en en los valores de cada uno de sus
+elementos. Pero para ning\'un $\alpha$ se puede pasar a tener un elemento nulo
+en $M$ (justamente se quer\'ia tener la representaci\'on de un digrafo
+completo).
 
-%\label{[fig,subfig,itm,alg,tbl,eq]:nombre_a_eleccion}de ahí los prefijos que no se entienden por ahí son: itm (itemize), alg(algoritmo), tbl(tabla/cuadro), eq (ecuacion)
+\par Se nos ocurre conjeturar que en el contexto de una cadena de Markov y el
+navegante aleatorio, un $\alpha$ pequeño nos genera una matriz de transici\'on
+''m\'as'' equiprobable (recordar la definici\'on de $M$ en la ecuaci\'on
+\ref{eq:M_def}, p\'agina \pageref{eq:M_def}) y dado que el método de la potencia
+comienza inicialmente con el vector equiprobable, le toma pocas iteraciones
+converger. A medida que $\alpha$ aumenta, el grafo generado denota más la
+navegación estricta por los links entre los sitios, reduciendo la probabilidad
+de teletransportación. Es decir, a mayor $\alpha$, el grafo se ''parece m\'as''
+al grafo de conectividad original no adulterado (con los dangling nodes ya
+resueltos), en el sentido de que $S$ predomina mucho m\'as en $M$ que
+$(\rfrac{1}{n})ee^T$. Esta matriz $S$ no necesariamente representa un grafo
+fuertemente conexo, una de las condiciones necesarias para asegurar convergencia
+del método de la potencia en el contexto de este problema, con lo cual el método
+de la potencia inicia sus iteraciones con una, si se quiere, \textbf{seguridad
+de convergencia más débil}.
+
+\par Respecto a la velocidad de convergencia, exponemos los resultados de una
+sola instancia ya que para las 3 instancias los resultados son similares. Como
+puede observarse en el gráfico \ref{subfig:exp3_diff}, a medida que el factor de
+navegacion $\alpha$ crece, la velocidad de convergencia disminuye. Es decir, la
+distancia \emph{Manhattan} entre el autovector calculado entre dos iteraciones
+consecutivas disminuye cada vez m\'as, acerc\'andose cada vez \textbf{m\'as
+rápido} al umbral de corte del algoritmo (basado en $\epsilon$ o una cantidad
+fija m\'axima de iteraciones\footnote{Esto se implementa, ya que si bien la
+teor\'ia nos indica que el m\'etodo convergir\'a, los errores n\'umericos de la
+aritm\'etica finita puede hacer que esto no ocurra.}).
