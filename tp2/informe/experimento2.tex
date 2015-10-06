@@ -5,7 +5,7 @@
         disponibles. ¿Es igual? ¿Hay coincidencias? ¿Cu\'antas? ¿Tienen sentido?
 
     \item[Proposici\'on] Cualitativamente hablando, ¿c\'omo es el orden obtenido
-        por PageRank? ¿Bueno? ¿Malo?. Obviamente que estas categorizacones son
+        por PageRank? ¿Bueno? ¿Malo?. Obviamente que estas categorizaciones son
         intr\'insecas a la realidad: s\'olo nosotros podemos decir que al
         realizar una b\'usqueda web, los resultados vinieron en un orden
         correcto o deseable (es decir, lo que se buscaba en las primeras
@@ -41,42 +41,87 @@
         \hline\hline
         Google & PageRank & In-Deg\\
         \hline
-        www.derecho.uba.ar & videos.agro.uba.ar& videos.agro.uba.ar\\
-        orga2.exp.dc.uba.ar & www.uba.ar& www.uba.ar\\
-        www.agro.uba.ar & www.agro.uba.ar& www.agro.uba.ar\\
-        www.ffyb.uba.ar & www.agro.uba.ar/cursos& www.agro.uba.ar/ced\\
-        www.uba.ar & www.agro.uba.ar/ced& www.agro.uba.ar/cursos \\
-        www.fvet.uba.ar & www.fvet.uba.ar& www.fvet.uba.ar\\
-        videos.agro.uba.ar & www.ffyb.uba.ar& www.ffyb.uba.ar\\
-        iigg.sociales.uba.ar& www.derecho.uba.ar& www.derecho.com.ar\\
-        www.agro.uba.ar/cursos & iigg.sociales.uba.ar& iigg.sociales.uba.ar\\
-        www.agro.uba.ar/ced & orga2.exp.dc.uba.ar& orga2.exp.dc.uba.ar\\
+        www.derecho.uba.ar & www.agro.uba.ar & www.agro.uba.ar\\
+        orga2.exp.dc.uba.ar & www.uba.ar & www.uba.ar\\
+        www.agro.uba.ar & videos.agro.uba.ar & videos.agro.uba.ar\\
+        www.ffyb.uba.ar & www.agro.uba.ar/cursos & www.agro.uba.ar/cursos\\
+        www.uba.ar & www.agro.uba.ar/ced & www.agro.uba.ar/ced\\
+        www.fvet.uba.ar & www.derecho.uba.ar & www.derecho.com.ar\\
+        videos.agro.uba.ar & www.ffyb.uba.ar & www.ffyb.uba.ar\\
+        iigg.sociales.uba.ar & www.fvet.uba.ar & www.fvet.uba.ar\\
+        www.agro.uba.ar/cursos & orga2.exp.dc.uba.ar & orga2.exp.dc.uba.ar\\
+        www.agro.uba.ar/ced & iigg.sociales.uba.ar & iigg.sociales.uba.ar\\
         \hline\hline
     \end{tabular}
 \end{table}
 
-\par Dado que los resultados obtenidos en
-\ref{tbl:google_pagerank_vs_indeg_siteubaar} dieron resultados similares en
-cuanto a In-Deg vs PageRank, e intuyendo que esto no tiene que ser siempre
+\par Los resultados obtenidos en
+\ref{tbl:google_pagerank_vs_indeg_siteubaar} dieron resultados idénticos en
+cuanto a In-Deg vs PageRank, no así la búsqueda en google, que debe utilizar otras heurísticas que no consideramos en este trabajo, asimismo, el orden de las búsquedas en google para un mismo término van cambiando a lo largo del tiempo\footnote{True Story.}\\
+
+Respecto a In-Deg vs PageRank, dieron idénticos, e intuyendo que esto no tiene que ser siempre
 as\'i, realizamos un nuevo experimento. Esta vez buscamos en
 wikipedia\cite{wikipedia} distintos t\'erminos relacionados con los temas vistos
-en la materia. Sobre estas p\'aginas, calculamos los \'ordenes de PageRank e
+en la materia y armamos el grafo de conectividad presentado en \ref{wiki_graph} . Sobre estas p\'aginas, calculamos los \'ordenes de PageRank e
 In-Deg, para luego compararlos en el cuadro
 \ref{tbl:pagerank_vs_indeg_wikipedia} . Nuevamente, In-Deg y PageRank dieron
-resultados muy similares. Sin embargo, podemos observar que quedan primeros en
+resultados muy similares, pero no idénticos, mas aún, en In-Deg quedaron varios términos con empate, teniendo la misma cantidad de nodos de entrada pero en PageRank quedó definido un órden total. Semánticamente, podemos observar que \texttt{en general} \footnote{QR queda por encima de Numerical Analysis, creemos que esto se debe a la morfología del grafo de referencias entre artículos en Wikipedia.} quedan primeros en
 el ranking terminos mas \texttt{generales o abarcativos} y a medida que avanza
-el ranking se encuentran términos mas particulares. Para evidenciar la
+el ranking se encuentran términos mas particulares. Para evidenciar aún mas la
 diferencia entre los algoritmos de In-Deg y PageRank decidimos alterar
 explicitamente el grafo de conectividad, agregando aristas desde los últimos 5
-resultados hacia el último en el ranking. Esto deberia aumentar drásticamente el
-rankeo del ultimo elemento en In-Deg, no asi en Pagerank, los resultados de este
+resultados hacia uno de los últimos en el ranking In-Deg. Esto deberia aumentar drásticamente el
+rankeo del ultimo elemento en In-Deg, no tanto asi en Pagerank, los resultados de este
 último experimento pueden verse en el cuadro
-\ref{tbl:pagerank_vs_indeg_wikipedia_modificado}. Lamentablemente no vemos los
-resultados tan drásticos que esperabamos entre In-Deg y PageRank, puede deberse
-a que las instancias de prueba son muy chicas, o a que el experimento de agregar
-5 aristas, incremento el rankeo de pagerank mas de lo que esperabamos. Por
-último, vemos que en el último experimento se acentúa el orden
-\texttt{abarcativo} de los resultados respecto al dominio de los elementos.
+\ref{tbl:pagerank_vs_indeg_wikipedia_modificado}. 
+
+Puede observarse que respecto a In-Deg el último elemento paso a ser el tercero por su nuevo grado de entrada aumentado. En Pagerank, el elemento subió de ranking pero quedó por debajo de Numerical\_analysis, lo cual en principio es raro, ya que este item quedó con puntaje 4 en In-Deg. Si miramos el grafo, veremos que, efectivamente, el hecho de que Numerical\_analysis sea apuntado por Matrix\_decomposition y Numerical\_linear\_algebra, que son los términos mas importantes, le da mas potencia al elemento en cuestión, que al elemento Eigendecomposition\_of\_a\_matrix, apuntado por los últimos 5 de la lista.
+
+Por último, vemos que en el último experimento se acentúa el orden \texttt{abarcativo} de los resultados respecto al dominio de los elementos.
+
+\begin{table}[h]
+    \centering
+    \caption{\'Ordenes comparativos entre PageRank e In-Deg para Wikipedia}
+    \label{tbl:pagerank_vs_indeg_wikipedia} 
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{|l|l|l|l|}
+        \hline\hline
+        Puntaje PageRank & Término & Puntaje In-Deg & Término\\
+        \hline
+        0.196 & Matrix\_decomposition & 8 & Matrix\_decomposition\\
+        0.165 & Numerical\_linear\_algebra & 7 & Numerical\_linear\_algebra\\
+        0.125 & QR\_decomposition & 5 & QR\_decomposition\\
+        0.106 & Numerical\_analysis & 4 & Numerical\_analysis\\
+        0.105 & Singular\_value\_decomposition & 4 & LU\_decomposition\\
+        0.098 & LU\_decomposition & 4 & Cholesky\_decomposition\\
+        0.093 & Cholesky\_decomposition & 4 & Singular\_value\_decomposition\\
+        0.057 & Eigendecomposition\_of\_a\_matrix & 2 & Eigendecomposition\_of\_a\_matrix\\
+        0.050 & Matrix\_splitting & 2 & Matrix\_splitting\\
+        \hline\hline        
+    \end{tabular}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \caption{\'Ordenes comparativos entre PageRank e In-Deg para Wikipedia con grafo alterado explícitamente}
+    \label{tbl:pagerank_vs_indeg_wikipedia_modificado}
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{|l|l|l|l|}
+        \hline\hline
+        Puntaje PageRank & Término & Puntaje In-Deg & Término\\
+        \hline
+        0.189 & Matrix\_decomposition & 8 & Matrix\_decomposition\\
+        0.137 & Numerical\_linear\_algebra & 7 & Numerical\_linear\_algebra\\
+        0.123 & Numerical\_analysis & 7 & Eigendecomposition\_of\_a\_matrix\\
+        0.114 & Eigendecomposition\_of\_a\_matrix & 5 & QR\_decomposition\\
+        0.108 & QR\_decomposition & 4 & Numerical\_analysis\\
+        0.097 & Singular\_value\_decomposition & 4 & LU\_decomposition\\
+        0.089 & LU\_decomposition & 4 & Cholesky\_decomposition\\
+        0.087 & Cholesky\_decomposition & 4 & Singular\_value\_decomposition\\
+        0.051 & Matrix\_splitting & 2 & Matrix\_splitting\\
+        \hline\hline
+    \end{tabular}
+\end{table}
 
 \begin{figure}[H]
     \centering
@@ -85,47 +130,3 @@ a que las instancias de prueba son muy chicas, o a que el experimento de agregar
         m\'etodos num\'ericos}
     \label{wiki_graph}
 \end{figure}
-
-\begin{table}[h]
-    \centering
-    \caption{\'Ordenes comparativos entre PageRank e In-Deg para Wikipedia}
-    \label{tbl:pagerank_vs_indeg_wikipedia} 
-    \setlength{\tabcolsep}{3pt}
-    \begin{tabular}{|l|l|}
-        \hline\hline
-        PageRank & In-Deg\\
-        \hline
-        Matrix\_decomposition& Matrix\_decomposition\\
-        Numerical\_linear\_algebra& Numerical\_linear\_algebra\\
-        QR\_decomposition& QR\_decomposition\\
-        Numerical\_analysis& Singular\_value\_decomposition\\
-        Singular\_value\_decomposition& Numerical\_analysis\\
-        LU\_decomposition& LU\_decomposition\\
-        Cholesky\_decomposition& Cholesky\_decomposition\\
-        Eigendecomposition\_of\_a\_matrix& Matrix\_splitting\\
-        Matrix\_splitting& Eigendecomposition\_of\_a\_matrix\\
-        \hline\hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[h]
-    \centering
-    \caption{\'Ordenes comparativos entre PageRank e In-Deg para Wikipedia con grafo modificado explícitamente}
-    \label{tbl:pagerank_vs_indeg_wikipedia_modificado}
-    \setlength{\tabcolsep}{3pt}
-    \begin{tabular}{|l|l|}
-        \hline\hline
-        Pagerank & Indeg\\
-        \hline
-        Matrix\_decomposition & Matrix\_decomposition\\
-        Numerical\_linear\_algebra & Numerical\_linear\_algebra\\
-        Numerical\_analysis & Eigendecomposition\_of\_a\_matrix  \\
-        Eigendecomposition\_of\_a\_matrix & QR\_decomposition\\
-        QR\_decomposition & Singular\_value\_decomposition\\
-        Singular\_value\_decomposition & Numerical\_analysis  \\
-        LU\_decomposition & LU\_decomposition\\
-        Cholesky\_decomposition & Cholesky\_decomposition  \\
-        Matrix\_splitting & Matrix\_splitting\\
-        \hline\hline
-    \end{tabular}
-\end{table}
