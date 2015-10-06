@@ -40,6 +40,7 @@ def parsear_y_limpiar():
     with open("arg-original.txt") as f_input:
         with open("arg.txt", "w") as f_output:
             resultados = []
+            empates = []
             for numlinea, linea in enumerate(f_input):
                 if numlinea == 0:
                     cant_equipos, _ = linea.split(" ")
@@ -49,10 +50,12 @@ def parsear_y_limpiar():
                         ganador, goles_ganador = (jugador1, goles1) if goles1 > goles2 else (jugador2, goles2)
                         perdedor, goles_perdedor = (jugador1, goles1) if goles1 < goles2 else (jugador2, goles2)
                         resultados.append((fecha, ganador, goles_ganador, perdedor, goles_perdedor))
+                    else:
+                        empates.append((fecha, jugador1, goles1, jugador2, goles2))
             print(cant_equipos, len(resultados), file=f_output)
             for resultado in resultados:
                 print(*resultado, file=f_output)
-    return resultados
+    return resultados+empates
 
 
 def ejecutar_pagerank():
@@ -84,8 +87,12 @@ def diferencia_entre_rankings(orden1, orden2):
 def puntaje_estandar(cant_equipos, resultados):
     puntajes = [0 for _ in range(cant_equipos)]
     for resultado in resultados:
-        _, ganador, _, _, _ = resultado
-        puntajes[ganador-1] += 3
+        _, jugador1, goles1, jugador2, goles2 = resultado
+        if goles1 > goles2:
+            puntajes[jugador1-1] += 3
+        else:
+            puntajes[jugador1-1] += 1
+            puntajes[jugador2-1] += 1
     ordenados = [(puntaje, equipo+1) for equipo, puntaje in enumerate(puntajes)]
     ordenados.sort(key=lambda tupla: tupla[0])
     ordenados.reverse()
@@ -114,6 +121,8 @@ def plotear_salida(res):
     c = [t[0] for t in res]
     posiciones = [t[1] for t in res]
     plt.plot(c, posiciones, 'o-')
+    x1, x2, y1, y2 = plt.axis()
+    plt.axis((0, x2, 0, y2))
     plt.ylabel("Diferencia entre GeM y oficial")
     plt.xlabel("Valor de c")
     plt.savefig("arg.png")

@@ -1,0 +1,672 @@
+Vélez Sarsfield 0.0333333
+Unión 0.0333333
+Tigre 0.0333333
+Temperley 0.0333333
+Sarmiento 0.0333333
+San Martín (SJ) 0.0333333
+San Lorenzo 0.0333333
+Rosario Central 0.0333333
+River Plate 0.0333333
+Racing Club 0.0333333
+Quilmes 0.0333333
+Olimpo 0.0333333
+Nueva Chicago 0.0333333
+Newell's Old Boys 0.0333333
+Lanús 0.0333333
+Independiente 0.0333333
+Huracán 0.0333333
+Godoy Cruz 0.0333333
+Gimnasia y Esgrima (LP) 0.0333333
+Estudiantes (LP) 0.0333333
+Defensa y Justicia 0.0333333
+Crucero del Norte 0.0333333
+Colón 0.0333333
+Boca Juniors 0.0333333
+Belgrano 0.0333333
+Banfield 0.0333333
+Atlético de Rafaela 0.0333333
+Arsenal 0.0333333
+Argentinos Juniors 0.0333333
+Aldosivi 0.0333333
+San Lorenzo 50
+Boca Juniors 49
+Racing Club 46
+Rosario Central 45
+River Plate 44
+Independiente 38
+Estudiantes (LP) 38
+Belgrano 38
+Tigre 37
+Banfield 37
+Lanús 36
+Gimnasia y Esgrima (LP) 35
+San Martín (SJ) 32
+Quilmes 32
+Unión 31
+Temperley 28
+Newell's Old Boys 26
+Argentinos Juniors 26
+Vélez Sarsfield 25
+Sarmiento 24
+Defensa y Justicia 24
+Olimpo 23
+Colón 23
+Aldosivi 23
+Godoy Cruz 22
+Huracán 21
+Atlético de Rafaela 20
+Arsenal 17
+Nueva Chicago 14
+Crucero del Norte 14
+254
+River Plate 0.0383429
+Boca Juniors 0.038337
+San Lorenzo 0.0372973
+Racing Club 0.0363868
+San Martín (SJ) 0.0352285
+Rosario Central 0.0347587
+Quilmes 0.0345022
+Belgrano 0.0341827
+Aldosivi 0.0339107
+Newell's Old Boys 0.0338965
+Gimnasia y Esgrima (LP) 0.0337119
+Lanús 0.0335349
+Banfield 0.0332072
+Estudiantes (LP) 0.0331214
+Independiente 0.0331001
+Tigre 0.0327985
+Vélez Sarsfield 0.0326775
+Unión 0.0323116
+Sarmiento 0.0320596
+Defensa y Justicia 0.0320148
+Argentinos Juniors 0.0318691
+Temperley 0.0318642
+Crucero del Norte 0.0318126
+Arsenal 0.0318104
+Olimpo 0.0316438
+Huracán 0.0315532
+Godoy Cruz 0.0315278
+Atlético de Rafaela 0.0309498
+Colón 0.0308694
+Nueva Chicago 0.0307189
+San Lorenzo 50
+Boca Juniors 49
+Racing Club 46
+Rosario Central 45
+River Plate 44
+Independiente 38
+Estudiantes (LP) 38
+Belgrano 38
+Tigre 37
+Banfield 37
+Lanús 36
+Gimnasia y Esgrima (LP) 35
+San Martín (SJ) 32
+Quilmes 32
+Unión 31
+Temperley 28
+Newell's Old Boys 26
+Argentinos Juniors 26
+Vélez Sarsfield 25
+Sarmiento 24
+Defensa y Justicia 24
+Olimpo 23
+Colón 23
+Aldosivi 23
+Godoy Cruz 22
+Huracán 21
+Atlético de Rafaela 20
+Arsenal 17
+Nueva Chicago 14
+Crucero del Norte 14
+114
+Boca Juniors 0.0436303
+River Plate 0.0435086
+San Lorenzo 0.0410815
+Racing Club 0.039244
+San Martín (SJ) 0.0375947
+Rosario Central 0.0362139
+Quilmes 0.0357514
+Aldosivi 0.0349743
+Belgrano 0.0348622
+Newell's Old Boys 0.034686
+Gimnasia y Esgrima (LP) 0.0339506
+Lanús 0.0334603
+Estudiantes (LP) 0.0330306
+Banfield 0.0330133
+Independiente 0.0326243
+Vélez Sarsfield 0.0322899
+Tigre 0.0320419
+Unión 0.0313702
+Sarmiento 0.0307628
+Defensa y Justicia 0.0307196
+Crucero del Norte 0.0303275
+Argentinos Juniors 0.0302913
+Temperley 0.0302867
+Arsenal 0.0302448
+Olimpo 0.0299347
+Huracán 0.0296448
+Godoy Cruz 0.0296098
+Atlético de Rafaela 0.028485
+Colón 0.028344
+Nueva Chicago 0.028021
+San Lorenzo 50
+Boca Juniors 49
+Racing Club 46
+Rosario Central 45
+River Plate 44
+Independiente 38
+Estudiantes (LP) 38
+Belgrano 38
+Tigre 37
+Banfield 37
+Lanús 36
+Gimnasia y Esgrima (LP) 35
+San Martín (SJ) 32
+Quilmes 32
+Unión 31
+Temperley 28
+Newell's Old Boys 26
+Argentinos Juniors 26
+Vélez Sarsfield 25
+Sarmiento 24
+Defensa y Justicia 24
+Olimpo 23
+Colón 23
+Aldosivi 23
+Godoy Cruz 22
+Huracán 21
+Atlético de Rafaela 20
+Arsenal 17
+Nueva Chicago 14
+Crucero del Norte 14
+122
+Boca Juniors 0.0492107
+River Plate 0.0487712
+San Lorenzo 0.044639
+Racing Club 0.041897
+San Martín (SJ) 0.0403972
+Rosario Central 0.037697
+Quilmes 0.0370664
+Aldosivi 0.0365783
+Newell's Old Boys 0.0356763
+Belgrano 0.0353474
+Gimnasia y Esgrima (LP) 0.0340737
+Lanús 0.0330915
+Estudiantes (LP) 0.0330624
+Banfield 0.0327827
+Vélez Sarsfield 0.0322091
+Independiente 0.0318948
+Tigre 0.031073
+Unión 0.0305271
+Defensa y Justicia 0.0294677
+Sarmiento 0.0294505
+Crucero del Norte 0.0289089
+Arsenal 0.0286305
+Argentinos Juniors 0.0286039
+Temperley 0.0285966
+Olimpo 0.0282379
+Huracán 0.0276014
+Godoy Cruz 0.0275691
+Atlético de Rafaela 0.0259446
+Colón 0.0257613
+Nueva Chicago 0.0252328
+San Lorenzo 50
+Boca Juniors 49
+Racing Club 46
+Rosario Central 45
+River Plate 44
+Independiente 38
+Estudiantes (LP) 38
+Belgrano 38
+Tigre 37
+Banfield 37
+Lanús 36
+Gimnasia y Esgrima (LP) 35
+San Martín (SJ) 32
+Quilmes 32
+Unión 31
+Temperley 28
+Newell's Old Boys 26
+Argentinos Juniors 26
+Vélez Sarsfield 25
+Sarmiento 24
+Defensa y Justicia 24
+Olimpo 23
+Colón 23
+Aldosivi 23
+Godoy Cruz 22
+Huracán 21
+Atlético de Rafaela 20
+Arsenal 17
+Nueva Chicago 14
+Crucero del Norte 14
+130
+Boca Juniors 0.055061
+River Plate 0.0540675
+San Lorenzo 0.0479222
+Racing Club 0.0443377
+San Martín (SJ) 0.0435913
+Rosario Central 0.0392056
+Aldosivi 0.0387678
+Quilmes 0.0384361
+Newell's Old Boys 0.0368435
+Belgrano 0.0356153
+Gimnasia y Esgrima (LP) 0.0341108
+Estudiantes (LP) 0.0332156
+Banfield 0.0325472
+Vélez Sarsfield 0.0324782
+Lanús 0.0324163
+Independiente 0.0309029
+Tigre 0.0299037
+Unión 0.0298009
+Defensa y Justicia 0.0282841
+Sarmiento 0.0281301
+Crucero del Norte 0.0275843
+Arsenal 0.0269611
+Argentinos Juniors 0.0268143
+Temperley 0.0267917
+Olimpo 0.0265885
+Huracán 0.0254166
+Godoy Cruz 0.0253953
+Atlético de Rafaela 0.0233363
+Colón 0.0231265
+Nueva Chicago 0.0223476
+San Lorenzo 50
+Boca Juniors 49
+Racing Club 46
+Rosario Central 45
+River Plate 44
+Independiente 38
+Estudiantes (LP) 38
+Belgrano 38
+Tigre 37
+Banfield 37
+Lanús 36
+Gimnasia y Esgrima (LP) 35
+San Martín (SJ) 32
+Quilmes 32
+Unión 31
+Temperley 28
+Newell's Old Boys 26
+Argentinos Juniors 26
+Vélez Sarsfield 25
+Sarmiento 24
+Defensa y Justicia 24
+Olimpo 23
+Colón 23
+Aldosivi 23
+Godoy Cruz 22
+Huracán 21
+Atlético de Rafaela 20
+Arsenal 17
+Nueva Chicago 14
+Crucero del Norte 14
+132
+Boca Juniors 0.0611509
+River Plate 0.0593317
+San Lorenzo 0.0508844
+San Martín (SJ) 0.0471231
+Racing Club 0.0465586
+Aldosivi 0.0415751
+Rosario Central 0.0407363
+Quilmes 0.0398529
+Newell's Old Boys 0.0381645
+Belgrano 0.035645
+Gimnasia y Esgrima (LP) 0.0340962
+Estudiantes (LP) 0.0334866
+Vélez Sarsfield 0.0331408
+Banfield 0.0323381
+Lanús 0.0314291
+Independiente 0.0296437
+Unión 0.0292105
+Tigre 0.0285484
+Defensa y Justicia 0.0271976
+Sarmiento 0.0268095
+Crucero del Norte 0.026378
+Arsenal 0.0252312
+Olimpo 0.0250238
+Argentinos Juniors 0.0249331
+Temperley 0.0248727
+Huracán 0.0230857
+Godoy Cruz 0.0230779
+Atlético de Rafaela 0.0206691
+Colón 0.0204471
+Nueva Chicago 0.0193585
+San Lorenzo 50
+Boca Juniors 49
+Racing Club 46
+Rosario Central 45
+River Plate 44
+Independiente 38
+Estudiantes (LP) 38
+Belgrano 38
+Tigre 37
+Banfield 37
+Lanús 36
+Gimnasia y Esgrima (LP) 35
+San Martín (SJ) 32
+Quilmes 32
+Unión 31
+Temperley 28
+Newell's Old Boys 26
+Argentinos Juniors 26
+Vélez Sarsfield 25
+Sarmiento 24
+Defensa y Justicia 24
+Olimpo 23
+Colón 23
+Aldosivi 23
+Godoy Cruz 22
+Huracán 21
+Atlético de Rafaela 20
+Arsenal 17
+Nueva Chicago 14
+Crucero del Norte 14
+138
+Boca Juniors 0.0674387
+River Plate 0.0644957
+San Lorenzo 0.0534827
+San Martín (SJ) 0.0509296
+Racing Club 0.0485541
+Aldosivi 0.0450164
+Rosario Central 0.0422846
+Quilmes 0.0413131
+Newell's Old Boys 0.0396169
+Belgrano 0.035419
+Vélez Sarsfield 0.0342397
+Gimnasia y Esgrima (LP) 0.0340676
+Estudiantes (LP) 0.03387
+Banfield 0.032185
+Lanús 0.0301315
+Unión 0.0287741
+Independiente 0.0281169
+Tigre 0.0270232
+Defensa y Justicia 0.02624
+Sarmiento 0.0254976
+Crucero del Norte 0.0253102
+Olimpo 0.023583
+Arsenal 0.0234358
+Argentinos Juniors 0.0229748
+Temperley 0.0228434
+Godoy Cruz 0.0206066
+Huracán 0.0206052
+Atlético de Rafaela 0.0179533
+Colón 0.0177324
+Nueva Chicago 0.0162589
+San Lorenzo 50
+Boca Juniors 49
+Racing Club 46
+Rosario Central 45
+River Plate 44
+Independiente 38
+Estudiantes (LP) 38
+Belgrano 38
+Tigre 37
+Banfield 37
+Lanús 36
+Gimnasia y Esgrima (LP) 35
+San Martín (SJ) 32
+Quilmes 32
+Unión 31
+Temperley 28
+Newell's Old Boys 26
+Argentinos Juniors 26
+Vélez Sarsfield 25
+Sarmiento 24
+Defensa y Justicia 24
+Olimpo 23
+Colón 23
+Aldosivi 23
+Godoy Cruz 22
+Huracán 21
+Atlético de Rafaela 20
+Arsenal 17
+Nueva Chicago 14
+Crucero del Norte 14
+138
+Boca Juniors 0.0738715
+River Plate 0.0694924
+San Lorenzo 0.0556802
+San Martín (SJ) 0.0549418
+Racing Club 0.0503206
+Aldosivi 0.0490902
+Rosario Central 0.0438444
+Quilmes 0.0428171
+Newell's Old Boys 0.04118
+Vélez Sarsfield 0.0358141
+Belgrano 0.0349246
+Estudiantes (LP) 0.034357
+Gimnasia y Esgrima (LP) 0.0340662
+Banfield 0.0321142
+Lanús 0.0285322
+Unión 0.0285091
+Independiente 0.0263274
+Defensa y Justicia 0.0254446
+Tigre 0.0253455
+Crucero del Norte 0.0243957
+Sarmiento 0.0242051
+Olimpo 0.0223055
+Arsenal 0.0215712
+Argentinos Juniors 0.0209573
+Temperley 0.0207105
+Huracán 0.0179743
+Godoy Cruz 0.0179713
+Atlético de Rafaela 0.0152003
+Colón 0.0149936
+Nueva Chicago 0.0130422
+San Lorenzo 50
+Boca Juniors 49
+Racing Club 46
+Rosario Central 45
+River Plate 44
+Independiente 38
+Estudiantes (LP) 38
+Belgrano 38
+Tigre 37
+Banfield 37
+Lanús 36
+Gimnasia y Esgrima (LP) 35
+San Martín (SJ) 32
+Quilmes 32
+Unión 31
+Temperley 28
+Newell's Old Boys 26
+Argentinos Juniors 26
+Vélez Sarsfield 25
+Sarmiento 24
+Defensa y Justicia 24
+Olimpo 23
+Colón 23
+Aldosivi 23
+Godoy Cruz 22
+Huracán 21
+Atlético de Rafaela 20
+Arsenal 17
+Nueva Chicago 14
+Crucero del Norte 14
+144
+Boca Juniors 0.0803906
+River Plate 0.074257
+San Martín (SJ) 0.0590884
+San Lorenzo 0.0574463
+Aldosivi 0.0537749
+Racing Club 0.0518587
+Rosario Central 0.0454086
+Quilmes 0.0443675
+Newell's Old Boys 0.0428337
+Vélez Sarsfield 0.037895
+Estudiantes (LP) 0.0349379
+Belgrano 0.0341543
+Gimnasia y Esgrima (LP) 0.0341341
+Banfield 0.0321474
+Unión 0.0284303
+Lanús 0.0266469
+Defensa y Justicia 0.024844
+Independiente 0.0242857
+Crucero del Norte 0.0236452
+Tigre 0.0235335
+Sarmiento 0.0229447
+Olimpo 0.0212306
+Arsenal 0.0196352
+Argentinos Juniors 0.0189014
+Temperley 0.0184835
+Huracán 0.0151941
+Godoy Cruz 0.0151621
+Atlético de Rafaela 0.0124219
+Colón 0.0122444
+Nueva Chicago 0.00970242
+San Lorenzo 50
+Boca Juniors 49
+Racing Club 46
+Rosario Central 45
+River Plate 44
+Independiente 38
+Estudiantes (LP) 38
+Belgrano 38
+Tigre 37
+Banfield 37
+Lanús 36
+Gimnasia y Esgrima (LP) 35
+San Martín (SJ) 32
+Quilmes 32
+Unión 31
+Temperley 28
+Newell's Old Boys 26
+Argentinos Juniors 26
+Vélez Sarsfield 25
+Sarmiento 24
+Defensa y Justicia 24
+Olimpo 23
+Colón 23
+Aldosivi 23
+Godoy Cruz 22
+Huracán 21
+Atlético de Rafaela 20
+Arsenal 17
+Nueva Chicago 14
+Crucero del Norte 14
+152
+Boca Juniors 0.0869309
+River Plate 0.0787277
+San Martín (SJ) 0.0632928
+Aldosivi 0.0590321
+San Lorenzo 0.0587607
+Racing Club 0.0531723
+Rosario Central 0.0469687
+Quilmes 0.0459717
+Newell's Old Boys 0.0445613
+Vélez Sarsfield 0.0405072
+Estudiantes (LP) 0.0355999
+Gimnasia y Esgrima (LP) 0.0343128
+Belgrano 0.0331063
+Banfield 0.0323012
+Unión 0.0285513
+Lanús 0.0244973
+Defensa y Justicia 0.024469
+Crucero del Norte 0.0230643
+Independiente 0.0220079
+Sarmiento 0.0217309
+Tigre 0.0216055
+Olimpo 0.020395
+Arsenal 0.0176264
+Argentinos Juniors 0.0168308
+Temperley 0.0161742
+Huracán 0.0122685
+Godoy Cruz 0.0121702
+Atlético de Rafaela 0.00962974
+Colón 0.00949969
+Nueva Chicago 0.00623398
+San Lorenzo 50
+Boca Juniors 49
+Racing Club 46
+Rosario Central 45
+River Plate 44
+Independiente 38
+Estudiantes (LP) 38
+Belgrano 38
+Tigre 37
+Banfield 37
+Lanús 36
+Gimnasia y Esgrima (LP) 35
+San Martín (SJ) 32
+Quilmes 32
+Unión 31
+Temperley 28
+Newell's Old Boys 26
+Argentinos Juniors 26
+Vélez Sarsfield 25
+Sarmiento 24
+Defensa y Justicia 24
+Olimpo 23
+Colón 23
+Aldosivi 23
+Godoy Cruz 22
+Huracán 21
+Atlético de Rafaela 20
+Arsenal 17
+Nueva Chicago 14
+Crucero del Norte 14
+156
+Boca Juniors 0.0934262
+River Plate 0.0828491
+San Martín (SJ) 0.0674819
+Aldosivi 0.0648027
+San Lorenzo 0.0596129
+Racing Club 0.0542698
+Rosario Central 0.0485149
+Quilmes 0.0476383
+Newell's Old Boys 0.0463467
+Vélez Sarsfield 0.0436628
+Estudiantes (LP) 0.0363286
+Gimnasia y Esgrima (LP) 0.0346433
+Banfield 0.0325851
+Belgrano 0.0317856
+Unión 0.0288822
+Defensa y Justicia 0.0243465
+Crucero del Norte 0.022653
+Lanús 0.0221111
+Sarmiento 0.0205816
+Olimpo 0.019833
+Tigre 0.0195791
+Independiente 0.0195164
+Arsenal 0.0155461
+Argentinos Juniors 0.0147708
+Temperley 0.0137967
+Huracán 0.00920406
+Godoy Cruz 0.00898753
+Atlético de Rafaela 0.00683549
+Colón 0.00677673
+Nueva Chicago 0.00263185
+San Lorenzo 50
+Boca Juniors 49
+Racing Club 46
+Rosario Central 45
+River Plate 44
+Independiente 38
+Estudiantes (LP) 38
+Belgrano 38
+Tigre 37
+Banfield 37
+Lanús 36
+Gimnasia y Esgrima (LP) 35
+San Martín (SJ) 32
+Quilmes 32
+Unión 31
+Temperley 28
+Newell's Old Boys 26
+Argentinos Juniors 26
+Vélez Sarsfield 25
+Sarmiento 24
+Defensa y Justicia 24
+Olimpo 23
+Colón 23
+Aldosivi 23
+Godoy Cruz 22
+Huracán 21
+Atlético de Rafaela 20
+Arsenal 17
+Nueva Chicago 14
+Crucero del Norte 14
+166
+[(0.0, 254), (0.1, 114), (0.2, 122), (0.30000000000000004, 130), (0.4, 132), (0.5, 138), (0.6000000000000001, 138), (0.7000000000000001, 144), (0.8, 152), (0.9, 156), (1.0, 166)]

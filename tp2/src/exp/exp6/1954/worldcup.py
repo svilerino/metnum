@@ -60,11 +60,13 @@ def traducir(f_input, f_output):
 
 def parsear_e_imprimir():
     with open("worldcup-original.txt") as f_input:
-        with open("worldcupz.txt", "w") as f_output:
+        with open("worldcup.txt", "w") as f_output:
             return traducir(f_input, f_output)
 
 
-def ejecutar_pagerank():
+def ejecutar_pagerank(c):
+    with open("worldcup.in", "w") as f_output:
+        print("0 %.2f 1 worldcup.txt 0.00001" % c, file=f_output)
     call(["../../../../bin/tp2", "worldcup.in", "worldcup.out"])
 
 
@@ -90,6 +92,23 @@ def diferencia_con_ideal(orden):
     return error
 
 
+def plotear_salida(res):
+    import matplotlib.pyplot as plt
+    c = [t[0] for t in res]
+    posiciones = [t[1] for t in res]
+    plt.plot(c, posiciones, 'o-')
+    x1, x2, y1, y2 = plt.axis()
+    plt.axis((0, x2, 0, y2))
+    plt.ylabel("Diferencia entre GeM y oficial")
+    plt.xlabel("Valor de c")
+    plt.savefig("1954.png")
+
 equipos = parsear_e_imprimir()
-ejecutar_pagerank()
-print(parsear_salida(equipos))
+diferencias = []
+for c in [i*0.1 for i in range(10)]:
+    print(c)
+    ejecutar_pagerank(c)
+    diferencia = parsear_salida(equipos)
+    diferencias.append((c, diferencia))
+    print(diferencia)
+plotear_salida(diferencias)

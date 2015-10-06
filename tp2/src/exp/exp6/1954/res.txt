@@ -1,0 +1,180 @@
+0.0
+Italy 0.0625
+Switzerland 0.0625
+Belgium 0.0625
+England 0.0625
+Scotland 0.0625
+Austria 0.0625
+Czechoslovakia 0.0625
+Uruguay 0.0625
+South_Korea 0.0625
+Hungary 0.0625
+Turkey 0.0625
+West_Germany 0.0625
+France 0.0625
+Yugoslavia 0.0625
+Mexico 0.0625
+Brazil 0.0625
+98
+0.1
+West_Germany 0.0827931
+Hungary 0.0772229
+Uruguay 0.0687162
+Austria 0.0675287
+Switzerland 0.0624375
+Yugoslavia 0.0619688
+Italy 0.061875
+Brazil 0.0609375
+England 0.0593719
+Turkey 0.0587109
+France 0.0571875
+Belgium 0.05625
+Scotland 0.05625
+Czechoslovakia 0.05625
+South_Korea 0.05625
+Mexico 0.05625
+20
+0.2
+West_Germany 0.106492
+Hungary 0.095875
+Uruguay 0.0728471
+Austria 0.0718776
+Switzerland 0.062
+Yugoslavia 0.0603333
+Italy 0.06
+Brazil 0.0583333
+England 0.0562
+Turkey 0.054375
+France 0.0516667
+Belgium 0.05
+Scotland 0.05
+Czechoslovakia 0.05
+South_Korea 0.05
+Mexico 0.05
+20
+0.30000000000000004
+West_Germany 0.13409
+Hungary 0.118992
+Austria 0.0751144
+Uruguay 0.0748459
+Switzerland 0.0608125
+Yugoslavia 0.0575312
+Italy 0.056875
+Brazil 0.0546875
+England 0.0528719
+Turkey 0.0494922
+France 0.0459375
+Belgium 0.04375
+Scotland 0.04375
+Czechoslovakia 0.04375
+South_Korea 0.04375
+Mexico 0.04375
+18
+0.4
+West_Germany 0.166131
+Hungary 0.147309
+Austria 0.0767074
+Uruguay 0.0745907
+Switzerland 0.0585
+Yugoslavia 0.0535
+Italy 0.0525
+Brazil 0.05
+England 0.0492
+Turkey 0.0440625
+France 0.04
+Belgium 0.0375
+Scotland 0.0375
+Czechoslovakia 0.0375
+South_Korea 0.0375
+Mexico 0.0375
+18
+0.5
+West_Germany 0.203263
+Hungary 0.18177
+Austria 0.0759975
+Uruguay 0.0718471
+Switzerland 0.0546875
+Yugoslavia 0.0481771
+Italy 0.046875
+England 0.0449219
+Brazil 0.0442708
+Turkey 0.0380859
+France 0.0338542
+Belgium 0.03125
+Scotland 0.03125
+Czechoslovakia 0.03125
+South_Korea 0.03125
+Mexico 0.03125
+18
+0.6000000000000001
+West_Germany 0.246277
+Hungary 0.223571
+Austria 0.0721585
+Uruguay 0.0662307
+Switzerland 0.049
+Yugoslavia 0.0415
+Italy 0.04
+England 0.0397
+Brazil 0.0375
+Turkey 0.0315625
+France 0.0275
+Belgium 0.025
+Scotland 0.025
+Czechoslovakia 0.025
+South_Korea 0.025
+Mexico 0.025
+18
+0.7000000000000001
+West_Germany 0.296132
+Hungary 0.274219
+Austria 0.0641469
+Uruguay 0.0571697
+Switzerland 0.0410625
+Yugoslavia 0.0334063
+England 0.0331219
+Italy 0.031875
+Brazil 0.0296875
+Turkey 0.0244922
+France 0.0209375
+Belgium 0.01875
+Scotland 0.01875
+Czechoslovakia 0.01875
+South_Korea 0.01875
+Mexico 0.01875
+16
+0.8
+West_Germany 0.354024
+Hungary 0.335561
+Austria 0.0506397
+Uruguay 0.0438671
+Switzerland 0.0305
+England 0.0247
+Yugoslavia 0.0238333
+Italy 0.0225
+Brazil 0.0208333
+Turkey 0.016875
+France 0.0141667
+Belgium 0.0125
+Scotland 0.0125
+Czechoslovakia 0.0125
+South_Korea 0.0125
+Mexico 0.0125
+16
+0.9
+West_Germany 0.421402
+Hungary 0.409884
+Austria 0.0299615
+Uruguay 0.0252637
+Switzerland 0.0169375
+England 0.0138719
+Yugoslavia 0.0127187
+Italy 0.011875
+Brazil 0.0109375
+Turkey 0.00871094
+France 0.0071875
+Belgium 0.00625
+Scotland 0.00625
+Czechoslovakia 0.00625
+South_Korea 0.00625
+Mexico 0.00625
+16
