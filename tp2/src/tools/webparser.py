@@ -119,8 +119,8 @@ def writegraph(graph,graph_file):
 def drawgraph(graph, graph_image, weblist):
     _graph = pgv.AGraph(bgcolor='white', directed=True)
     # ----- Atributos de grafo -----
-    _graph.graph_attr['label'] = 'Grafo de conectividad'        
-    _graph.graph_attr['ratio'] = 0.4
+    #_graph.graph_attr['label'] = 'Grafo de conectividad'        
+    _graph.graph_attr['ratio'] = 0.9
 
     # ----- Atributos de aristas -----
     _graph.edge_attr['style']='setlinewidth(1)'
