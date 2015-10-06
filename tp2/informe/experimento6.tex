@@ -53,7 +53,7 @@
 \end{LaTeXdescription}
 
 %%*************************************************************************
-\begin{enumerate}
+\begin{enumerate}[parsep=1ex]
     \item Lo primero que notamos es que para valores grandes de $\alpha$ la
         diferencia con el ranking oficial aumenta, alcanzando un mínimo en
         $\alpha=0.1$. Consideramos que esto tiene que ver por darle demasiada
@@ -61,25 +61,31 @@
         general no funciona de esa manera. Por ejemplo, para $\alpha=1$ los
         primeros cinco puestos son:
 
-        \begin{table}[H]
+        \begin{figure}[H]
             \centering
-            \caption{GeM vs Primera Divisi\'on F\'utbol Argentino: Primeros puestos para $\alpha=1$}
-            \setlength{\tabcolsep}{3pt}
-            \begin{tabular}{|l|r||l|r|}
-                \hline\hline
-                \multicolumn{2}{|c||}{GeM}&\multicolumn{2}{c|}{Oficial: 3-1-0}\\
-                \hline
-                Equipo & Puntaje & Equipo & Puntaje\\
-                \hline\hline
-                Boca Juniors &0.0934262& San Lorenzo &50 \\
-                River Plate &0.0828491& Boca Juniors &49 \\
-                San Martín (SJ) &0.0674819& Racing Club &46 \\
-                Aldosivi &0.0648027& Rosario Central &45 \\
-                San Lorenzo &0.0596129& River Plate &44 \\
-                \hline\hline
-            \end{tabular}
-        \end{table}
-        \medskip
+            \caption{GeM vs Primera Divisi\'on F\'utbol Argentino para $\alpha=1$}
+            \label{fig:exp6_arg_1}
+            \subfloat[][Primeros Puestos\label{subfig:exp6_arg}]{
+                \footnotesize
+                \setlength{\tabcolsep}{3pt}
+                \begin{tabular}[b]{|l|r||l|r|}
+                    \hline
+                    \multicolumn{2}{|c||}{GeM}&\multicolumn{2}{c|}{Oficial: 3-1-0}\\
+                    \hline
+                    Equipo & Puntaje & Equipo & Puntaje\\
+                    \hline\hline
+                    Boca Juniors &0.0934262& San Lorenzo &50 \\
+                    River Plate &0.0828491& Boca Juniors &49 \\
+                    San Martín (SJ) &0.0674819& Racing Club &46 \\
+                    Aldosivi &0.0648027& Rosario Central &45 \\
+                    San Lorenzo &0.0596129& River Plate &44 \\
+                    \hline
+                \end{tabular}
+            }\hspace{10pt}
+            \subfloat[][Diferencia en funci\'on de $\alpha$\label{subfig:exp6_arg_diff}]{
+                \raisebox{-0.2\height}{\includegraphics[width=.5\textwidth]{exp6_arg.png}}
+            }
+        \end{figure}
 
         \par La posición de San Martín de San Juan (13º según el puntaje
         oficial) en el ranking GeM se debe, en parte, a que le ganó a San
@@ -90,27 +96,50 @@
 
         \par De todos modos podemos observar que, para el valor de $\alpha=0.1$,
         el ranking devuelto por GeM se parece un poco más al oficial, d\'andonos
-        los siguientes 6 primeros puestos:
+        los 6 primeros puestos que se pueden observar en el cuadro
+        \ref{subfig:exp6_arg_prim}.
 
-        \begin{table}[H]
+        \begin{figure}[H]
             \centering
-            \caption{GeM vs Primera Divisi\'on F\'utbol Argentino: Primeros puestos para $\alpha=0.1$}
-            \setlength{\tabcolsep}{3pt}
-            \begin{tabular}{|l|r||l|r|}
-                \hline\hline
-                \multicolumn{2}{|c||}{GeM}&\multicolumn{2}{c|}{Oficial: 3-1-0}\\
-                \hline
-                Equipo & Puntaje & Equipo & Puntaje\\
-                \hline\hline
-                River Plate &0.0383429& San Lorenzo &50 \\
-                Boca Juniors& 0.038337& Boca Juniors &49 \\
-                San Lorenzo &0.0372973& Racing Club &46 \\
-                Racing Club &0.0363868& Rosario Central &45 \\
-                San Martín (SJ) &0.0352285& River Plate &44 \\
-                Rosario Central &0.0347587&&\\
-                \hline\hline
-            \end{tabular}
-        \end{table}
+            \caption{GeM vs Primera Divisi\'on F\'utbol Argentino para $\alpha=0.1$}
+            \label{fig:exp6_arg_2}
+            \subfloat[][Primeros Puestos\label{subfig:exp6_arg_prim}]{
+                \footnotesize
+                \setlength{\tabcolsep}{3pt}
+                \begin{tabular}{|l|r||l|r|}
+                    \hline
+                    \multicolumn{2}{|c||}{GeM}&\multicolumn{2}{c|}{Oficial: 3-1-0}\\
+                    \hline
+                    Equipo & Puntaje & Equipo & Puntaje\\
+                    \hline\hline
+                    River Plate &0.0383429& San Lorenzo &50 \\
+                    Boca Juniors& 0.038337& Boca Juniors &49 \\
+                    San Lorenzo &0.0372973& Racing Club &46 \\
+                    Racing Club &0.0363868& Rosario Central &45 \\
+                    San Martín (SJ) &0.0352285& River Plate &44 \\
+                    Rosario Central &0.0347587&&\\
+                    \hline
+                \end{tabular}
+            }\hspace{2pt}
+            \subfloat[][\'Ultimos Puestos\label{subfig:exp6_arg_ult}]{
+                \footnotesize
+                \setlength{\tabcolsep}{3pt}
+                \begin{tabular}{|l|r||l|r|}
+                    \hline
+                    \multicolumn{2}{|c||}{GeM}&\multicolumn{2}{c|}{Oficial: 3-1-0}\\
+                    \hline
+                    Equipo & Puntaje & Equipo & Puntaje\\
+                    \hline\hline
+                    Olimpo &0.0316438&Godoy Cruz &22\\
+                    Huracán &0.0315532&Huracán &21\\
+                    Godoy Cruz &0.0315278&Atlético de Rafaela &20\\
+                    Atlético de Rafaela &0.0309498&Arsenal &17\\
+                    Colón &0.0308694&Nueva Chicago &14\\
+                    Nueva Chicago &0.0307189&Crucero del Norte &14\\
+                    \hline
+                \end{tabular}
+            }
+        \end{figure}
         \medskip
 
         \par De estos 6 primeros puestos de GeM, 5 efectivamente corresponden a
@@ -118,32 +147,10 @@
         que GeM ubica 15º) y uno de ellos está en la misma posición en ambos
         rankings.
 
-        \par Otra coincidencia notable son los últimos puestos:
-
-        \begin{table}[H]
-            \centering
-            \caption{GeM vs Primera Divis\'on F\'utbol Argentino: \'Ultimos
-                puestos para $\alpha=0.1$}
-            \setlength{\tabcolsep}{3pt}
-            \begin{tabular}{|l|r||l|r|}
-                \hline\hline
-                \multicolumn{2}{|c||}{GeM}&\multicolumn{2}{c|}{Oficial: 3-1-0}\\
-                \hline
-                Equipo & Puntaje & Equipo & Puntaje\\
-                \hline\hline
-                Olimpo &0.0316438&Godoy Cruz &22\\
-                Huracán &0.0315532&Huracán &21\\
-                Godoy Cruz &0.0315278&Atlético de Rafaela &20\\
-                Atlético de Rafaela &0.0309498&Arsenal &17\\
-                Colón &0.0308694&Nueva Chicago &14\\
-                Nueva Chicago &0.0307189&Crucero del Norte &14\\
-                \hline\hline
-            \end{tabular}
-        \end{table}
-        \medskip
-
-        \par Esta tabla tiene 3 coincidencias débiles (mismos equipos en
-        distinta posición) y una coincidencia exacta.\\
+        \par Otra coincidencia notable son los últimos puestos, los cuales se
+        pueden observar en el cuadro \ref{subfig:exp6_arg_ult}. Esta tabla tiene
+        3 coincidencias débiles (mismos equipos en distinta posición) y una
+        coincidencia exacta.\\
 
 %%*************************************************************************
     \item En este caso, la diferencia para valores no nulos de $\alpha$ no nulos
@@ -169,26 +176,32 @@
         siguiente tabla, que coinciden exactamente con el ranking provisto por
         la FIFA:
 
-        \begin{table}[H]
+        \begin{figure}[H]
             \centering
-            \caption{GeM vs Copa del Mundo 2014: Primeros Puestos $\alpha=0.4$}
-            \setlength{\tabcolsep}{3pt}
-            \begin{tabular}{|l|r|}
-                \hline\hline
-                Equipo & Puntaje\\
-                \hline
-                Germany &0.0986858\\
-                Argentina &0.0764719\\
-                Netherlands &0.0650904\\
-                Brazil &0.0480157\\
-                Colombia& 0.0419815\\
-                Belgium &0.0405001\\
-                France &0.0396461\\
-                Costa Rica &0.0344357\\
-                \hline\hline
-            \end{tabular}
-        \end{table}\footnote{Al consultarle su opinión al respecto de si fue o
-        no penal, GeM guardó un respetuoso silencio.}\\
+            \caption{GeM vs Copa del Mundo 2014}
+            \subfloat[][Primeros puestos $\alpha=0.4$]{
+                \footnotesize
+                \setlength{\tabcolsep}{3pt}
+                \begin{tabular}[b]{|l|r|}
+                    \hline
+                    Equipo & Puntaje\\
+                    \hline\hline
+                    Germany\footnotemark &0.0986858\\
+                    Argentina &0.0764719\\
+                    Netherlands &0.0650904\\
+                    Brazil &0.0480157\\
+                    Colombia& 0.0419815\\
+                    Belgium &0.0405001\\
+                    France &0.0396461\\
+                    Costa Rica &0.0344357\\
+                    \hline
+                \end{tabular}
+            }\hspace{10pt}
+            \subfloat[][Diferencia en Funci\'on de $\alpha$]{
+                \raisebox{-.13\height}{\includegraphics[width=0.5\textwidth]{exp6_2014.png}}
+            }
+        \end{figure}\footnotetext{Al consultarle su opinión al respecto de si fue o
+        no penal, GeM guardó un respetuoso silencio.}
 
 %%*************************************************************************
     \item Nuevamente observamos una buena aproximación entre GeM y el ranking
@@ -219,20 +232,59 @@
 
         \par En estos dos casos, GeM acertó en los 5 primeros puestos de la
         competición, siendo estos:
-        \begin{table}[H]
+
+        \begin{figure}[H]
             \centering
-            \caption{GeM vs Copa del Mundo 1954: Primeros Puestos $\alpha=0.4$}
-            \setlength{\tabcolsep}{3pt}
-            \begin{tabular}{|l|r|}
-                \hline\hline
-                Equipo & Puntaje\\
-                \hline
-                West Germany &0.421402\\
-                Hungary &0.409884\\
-                Austria &0.0299615\\
-                Uruguay &0.0252637\\
-                Switzerland &0.0169375\\
-                \hline\hline
-            \end{tabular}
-        \end{table}
+            \caption{GeM vs Copa del Mundo 1954}
+            \subfloat[][Primeros Puestos $\alpha=0.4$]{
+                \footnotesize
+                \setlength{\tabcolsep}{3pt}
+                \begin{tabular}{|l|r|}
+                    \hline
+                    Equipo & Puntaje\\
+                    \hline\hline
+                    West Germany &0.421402\\
+                    Hungary &0.409884\\
+                    Austria &0.0299615\\
+                    Uruguay &0.0252637\\
+                    Switzerland &0.0169375\\
+                    \hline
+                \end{tabular}
+            }\hspace{10pt}
+            \subfloat[][Diferencia en Funci\'on de $\alpha$]{
+                \raisebox{-.5\height}{\includegraphics[width=0.5\textwidth]{exp6_1954.png}}
+            }
+        \end{figure}
 \end{enumerate}
+\medskip
+
+%%*************************************************************************
+\par Lo m\'as jugoso de toda esta experimentaci\'on radica en que comparamos el
+modelo GeM de rankings contra todos rankings oficiales que est\'an vigentes. El
+primer resultado interesante es observar que GeM est\'a mucho m\'as cerca para
+del ranking utilizado en las copas del mundo que del torneo actual del f\'utbol
+argentino, y esto se ve para cualquier $\alpha\neq 0$ (el caso con $\alpha = 0$,
+como ya se comentado en experimentos previos, concibe un modelo donde todos los
+equipos le pueden ganar a todos con la misma probabilidad, sin importar los
+resultados previos, haciendo a este par\'ametro poco interesante para analizar
+por su obvia ignorancia de la realidad\footnote{¿O acaso las chances de que
+Racing le gane a Crucero del norte son las mismas de que pierda?}). A\'un as\'i,
+a pesar de esta distancia, vemos que en el caso del torneo de f\'utbol
+argentino, su ranking en los extremos de la ''tabla'' (particularmente en el
+extremo inferior) suele ubicar a los mismos equipos que el ranking oficial. Esto
+nos indica que a pesar de tener rankings muy distintos, en t\'erminos generales
+ambos rankings diferencian de forma similar a los equipos ''buenos'' y
+''malos''.
+
+\par Concluyendo, vemos que GeM puede o no parecerse a otros rankings oficiales,
+pero la determinaci\'on de si es mejor o peor depender\'a de que opinen quienes
+lo utilicen. Lo que si podemos afirmar es que que GeM tiende a aproximarse m\'as
+a los rankings oficiales (al menos los vistos) en los extremos del mismo. Es
+decir, a pesar de estar a una distancia no despreciable del ranking oficial, los
+equipos se\~nalados como los m\'as fuertes o mejores por ambos rankings (o los
+peores) tienen varias coincidencias. Decimos entonces que, desde el punto de
+vista de clasificar a un equipo como ''de los buenos'' o ''de los malos'' de la
+competencia, cualquiera de los rankings dar\'ia resultados similares, pero estos
+se diferencian al entrar en el detalle de que equipo es mejor que otro.
+B\'asicamente, podemos decir que los rankings son similares, y que la elecci\'on
+de uno u otro pasar\'a por otros criterios ajenos a los rankings en si mismos.
