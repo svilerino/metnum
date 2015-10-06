@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import sys
 import random
+import matplotlib.pyplot as plt
 from subprocess import call
 from collections import defaultdict
 
@@ -57,27 +58,27 @@ def generar_archivos_input(cant_equipos):
     fin = False
     while not fin:
         cant_fechas += 1
-        random.seed(1)
-        with open("exp/exp5/fecha%s.txt" % cant_fechas, "w") as f_output:
+        random.seed(2)
+        with open("fecha%s.txt" % cant_fechas, "w") as f_output:
             fin, resultados_por_fecha = generar_fixture_equipos(cant_equipos, cant_fechas, f_output)
     return resultados_por_fecha
 
 
 def generar_archivos_test(cant_fechas_totales, c):
     for cant_fechas in range(1, cant_fechas_totales+1):
-        with open("exp/exp5/test%s.in" % cant_fechas, "w") as f_output:
-            print("0 %.2f 1 exp/exp5/fecha%s.txt 0.00001" % (c, cant_fechas), file=f_output)
+        with open("test%s.in" % cant_fechas, "w") as f_output:
+            print("0 %.2f 1 fecha%s.txt 0.00001" % (c, cant_fechas), file=f_output)
 
 
 def ejecutar_pagerank(cant_fechas_totales):
     for cant_fechas in range(1, cant_fechas_totales+1):
-        call(["../bin/tp2", "exp/exp5/test%s.in" % cant_fechas, "exp/exp5/test%s.out" % cant_fechas])
+        call(["../../../bin/tp2", "test%s.in" % cant_fechas, "test%s.out" % cant_fechas])
 
 
 def parsear_salida_pagerank(cant_fechas_totales):
     resultado_por_cant_fechas = []
     for cant_fechas in range(1, cant_fechas_totales+1):
-        with open("exp/exp5/test%s.out" % cant_fechas) as f_resultado:
+        with open("test%s.out" % cant_fechas) as f_resultado:
             resultado_por_cant_fechas.append(f_resultado.readlines())
     res = {}
     for cant_fechas, resultado_cant_fechas in enumerate(resultado_por_cant_fechas):
@@ -116,55 +117,50 @@ def ordenar_por_puntaje(puntaje_por_cant_fechas):
 
 
 def diferencia_con_ideal(orden_por_fecha):
-    res = defaultdict(int)
+    res = []
     for cant_fechas, orden in orden_por_fecha.items():
-        res[cant_fechas] = 0
+        dif = 0
         # sumo la distancia por cada jugador a su posición ideal 
         for posicion, jugador in enumerate(orden):
-            res[cant_fechas] += abs(jugador - (posicion + 1))
+            dif += abs(jugador - (posicion + 1))
+        res.append((cant_fechas, dif))
     return res
 
 
 def imprimir_salida(cant_equipos, c, diferencias):
-    with open("exp/exp5/resultados/%sequipos%.2fc.res" % (cant_equipos, c), "w") as f_output:
+    with open("resultados/%sequipos%.2fc.res" % (cant_equipos, c), "w") as f_output:
         for cant_fechas, diferencia in diferencias.items():
             print(cant_fechas, diferencia, file=f_output)
 
 
-def plotear_salida(cant_equipos, c, diferencias_pagerank, diferencias_estandar):
-    import matplotlib.pyplot as plt
-    plt.plot(list(diferencias_pagerank.values()), label="Método GeM (c=%.2f)" % c)
-    plt.plot(list(diferencias_estandar.values()), label="Método estándar")
+def plotear_salida(diferencias, label):
+    plt.plot([diferencia for fechas, diferencia in diferencias], label=label)
     plt.ylabel("Diferencia con el ranking ideal")
     plt.xlabel("Cantidad de fechas consideradas")
     plt.legend()
-    plt.savefig("exp/exp5/resultados/%sequipos%.2fc.png" % (cant_equipos, c))
 
 
 def main():
     if len(sys.argv) < 2:
-        print("Uso:", sys.argv[0], "cantidad_de_equipos", "[c=0.85]")
+        print("Uso:", sys.argv[0], "cantidad_de_equipos")
         exit(-1)
     cant_equipos = int(sys.argv[1])
-    if len(sys.argv) > 2:
-        c = float(sys.argv[2])
-    else:
-        c = 0.85
     
     resultados_por_fecha = generar_archivos_input(cant_equipos)
     cant_fechas_totales = len(resultados_por_fecha)
-    generar_archivos_test(cant_fechas_totales, c)
-    
-    ejecutar_pagerank(cant_fechas_totales)
-    
-    orden_por_fecha_pagerank = parsear_salida_pagerank(cant_fechas_totales)
-    diferencias_pagerank = diferencia_con_ideal(orden_por_fecha_pagerank)
-    
+    for c in [i*0.2 for i in range(1, 6)]:
+        generar_archivos_test(cant_fechas_totales, c)
+        
+        ejecutar_pagerank(cant_fechas_totales)
+        
+        orden_por_fecha_pagerank = parsear_salida_pagerank(cant_fechas_totales)
+        diferencias_pagerank = diferencia_con_ideal(orden_por_fecha_pagerank)
+        plotear_salida(diferencias_pagerank, "Método GeM (c=%.2f)" % c)
+        
     orden_por_fecha_estandar = puntaje_estandar(resultados_por_fecha, cant_equipos)
     diferencias_estandar = diferencia_con_ideal(orden_por_fecha_estandar)
-
-    imprimir_salida(cant_equipos, c, diferencias_pagerank)
-    plotear_salida(cant_equipos, c, diferencias_pagerank, diferencias_estandar)
+    plotear_salida(diferencias_estandar, "Método oficial")
+    plt.savefig("%s_equipos.png" % cant_equipos)
 
 
 if __name__ == "__main__":
