@@ -11,9 +11,9 @@
         competición. Pero la confección de este ranking puede tener que variar
         de acuerdo a la forma de la competición: no en todos los eventos todos
         los equipos juegan contra todos, no siempre todos juegan la misma
-        cantidad de partidos ni la misma cantidad de veces entre si. Así pues,
+        cantidad de partidos ni la misma cantidad de veces entre sí. Así pues,
         dar un ranking se vuelve más complicado. Nuestra idea es tomar casos del
-        mundo real y observar los resultados de GeM y ver como se comporta
+        mundo real y observar los resultados de GeM y ver cómo se comporta
         respecto de estas asimetrías inherentes al tipo de competición; mientras
         que lo comparamos contra el ranking oficial utilizado en cada caso.\\
 
@@ -117,7 +117,7 @@
                     San Lorenzo &0.0372973& Racing Club &46 \\
                     Racing Club &0.0363868& Rosario Central &45 \\
                     San Martín (SJ) &0.0352285& River Plate &44 \\
-                    Rosario Central &0.0347587&&\\
+                    Rosario Central &0.0347587& Independiente &38\\
                     \hline
                 \end{tabular}
             }\hspace{2pt}
@@ -153,20 +153,22 @@
         coincidencia exacta.\\
 
 %%*************************************************************************
-    \item En este caso, la diferencia para valores no nulos de $\alpha$ no nulos
+    \item En este caso, la diferencia para valores no nulos de $\alpha$ 
         es escasa, y la diferencia con el oficial en general es mucho mejor que
         para el caso del campeonato argentino. Consideramos esto relacionado al
         hecho de que hay pocos partidos en total, y a que la organización del
         torneo también se basa fuertemente en la transitividad de victorias (al
-        menos en la fase final): si A le ganó a B y B a C, se asume que A es
-        mejor que C.  Para todos los valores no nulos de $\alpha$ GeM ubicó
+        menos en la fase final): en un Mundial, si A le ganó a B y B a C, se asume que A es
+        mejor que C. 
+        
+        \par Para todos los valores no nulos de $\alpha$ GeM ubicó
         correctamente como ganador a Alemania. Para $\alpha=0.1$ considero que
         el subcampeón fue Países Bajos, lo cual sorprende dado que Argentina le
         ganó ''4 a 2'' (el resultado de los penales). Evidentemente un valor tan
         bajo de $\alpha$ le da baja importancia a esto y pondera más las
         diferencias de goles de Países Bajos contra sus rivales (4 vs España, 2
         vs Chile), mucho mejores que las de Argentina (que ganó todos sus
-        partidos por un gol de diferencia). Para todos los demás valores de
+        otros partidos por un gol de diferencia). Para todos los demás valores de
         $\alpha$, GeM identificó correctamente a Argentina como subcampeón.
 
         \par Las menores diferencias generales se obtuvieron para $\alpha=0.2$,
@@ -186,13 +188,13 @@
                     \hline
                     Equipo & Puntaje\\
                     \hline\hline
-                    Germany\footnotemark &0.0986858\\
+                    Alemania &0.0986858\\
                     Argentina &0.0764719\\
-                    Netherlands &0.0650904\\
-                    Brazil &0.0480157\\
+                    Países Bajos &0.0650904\\
+                    Brasil &0.0480157\\
                     Colombia& 0.0419815\\
-                    Belgium &0.0405001\\
-                    France &0.0396461\\
+                    Bélgica &0.0405001\\
+                    Francia &0.0396461\\
                     Costa Rica &0.0344357\\
                     \hline
                 \end{tabular}
@@ -200,8 +202,10 @@
             \subfloat[][Diferencia en Funci\'on de $\alpha$]{
                 \raisebox{-.13\height}{\includegraphics[width=0.5\textwidth]{exp6_2014.png}}
             }
-        \end{figure}\footnotetext{Al consultarle su opinión al respecto de si fue o
-        no penal, GeM guardó un respetuoso silencio.}
+        \end{figure}
+        
+        Al consultarle su opinión al respecto de si fue o
+        no penal, GeM guardó un respetuoso silencio.
 
 %%*************************************************************************
     \item Nuevamente observamos una buena aproximación entre GeM y el ranking
@@ -225,10 +229,10 @@
         \par La menor diferencia con el ranking oficial se obtiene con
         $\alpha=0.8$ y $\alpha=0.9$. Es preciso notar que no pudimos evaluar el
         caso $\alpha=1$ por no converger para esta instancia, a diferencia de
-        las dos competiciones anteriores (desde ya, sabemos por la secci\'on
-        \ref{sec:introduccion} que $0\leq\alpha <1$, as\'i pues venimos
-        ensayando con $\alpha=1$, sabemos que dicho valor no tiene porque hacer
-        converger al m\'etodo de la potencia para nuestro $M$).
+        las dos competiciones anteriores\footnote{Sabemos por la secci\'on
+        \ref{sec:introduccion} que la convergencia está asegurada solo para $0\leq\alpha <1$, pero de todos modos venimos
+        ``ensayando'' con $\alpha=1$ sabiendo que dicho valor no tiene por qué hacer
+        converger al m\'etodo de la potencia para nuestro $M$}.
 
         \par En estos dos casos, GeM acertó en los 5 primeros puestos de la
         competición, siendo estos:
@@ -243,11 +247,11 @@
                     \hline
                     Equipo & Puntaje\\
                     \hline\hline
-                    West Germany &0.421402\\
-                    Hungary &0.409884\\
+                    Alemania Federal &0.421402\\
+                    Hungría &0.409884\\
                     Austria &0.0299615\\
                     Uruguay &0.0252637\\
-                    Switzerland &0.0169375\\
+                    Suiza &0.0169375\\
                     \hline
                 \end{tabular}
             }\hspace{10pt}
@@ -268,7 +272,7 @@ como ya se comentado en experimentos previos, concibe un modelo donde todos los
 equipos le pueden ganar a todos con la misma probabilidad, sin importar los
 resultados previos, haciendo a este par\'ametro poco interesante para analizar
 por su obvia ignorancia de la realidad\footnote{¿O acaso las chances de que
-Racing le gane a Crucero del norte son las mismas de que pierda?}). A\'un as\'i,
+Racing le gane a Crucero del Norte son las mismas de que pierda?}). A\'un as\'i,
 a pesar de esta distancia, vemos que en el caso del torneo de f\'utbol
 argentino, su ranking en los extremos de la ''tabla'' (particularmente en el
 extremo inferior) suele ubicar a los mismos equipos que el ranking oficial. Esto
@@ -277,14 +281,12 @@ ambos rankings diferencian de forma similar a los equipos ''buenos'' y
 ''malos''.
 
 \par Concluyendo, vemos que GeM puede o no parecerse a otros rankings oficiales,
-pero la determinaci\'on de si es mejor o peor depender\'a de que opinen quienes
-lo utilicen. Lo que si podemos afirmar es que que GeM tiende a aproximarse m\'as
+pero la determinaci\'on de si es mejor o peor depender\'a de qué opinen quienes
+lo utilicen. Lo que si podemos afirmar es que GeM tiende a aproximarse m\'as
 a los rankings oficiales (al menos los vistos) en los extremos del mismo. Es
 decir, a pesar de estar a una distancia no despreciable del ranking oficial, los
 equipos se\~nalados como los m\'as fuertes o mejores por ambos rankings (o los
 peores) tienen varias coincidencias. Decimos entonces que, desde el punto de
 vista de clasificar a un equipo como ''de los buenos'' o ''de los malos'' de la
 competencia, cualquiera de los rankings dar\'ia resultados similares, pero estos
-se diferencian al entrar en el detalle de que equipo es mejor que otro.
-B\'asicamente, podemos decir que los rankings son similares, y que la elecci\'on
-de uno u otro pasar\'a por otros criterios ajenos a los rankings en si mismos.
+se diferencian al entrar en el detalle de qué equipo es mejor que otro.
