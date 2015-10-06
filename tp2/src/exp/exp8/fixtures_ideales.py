@@ -54,6 +54,8 @@ def plotear_salida(res):
     c = [t[0] for t in res]
     posiciones = [t[1] for t in res]
     plt.plot(c, posiciones, 'o-')
+    x1, x2, y1, y2 = plt.axis()
+    plt.axis((0, x2, 0, y2))
     plt.ylabel("Posición de B")
     plt.xlabel("Valor de c")
     plt.savefig("exp8.png")

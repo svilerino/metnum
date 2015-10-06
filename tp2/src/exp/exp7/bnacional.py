@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import os
 import random
+import matplotlib.pyplot as plt
 from subprocess import call
 
 ORDEN_OFICIAL = [
@@ -107,8 +108,7 @@ def diferencia_entre_rankings(orden1, orden2):
     return diferencia
 
 
-def plotear_salida(diferencia_con_gem, diferencia_con_oficial):
-    import matplotlib.pyplot as plt
+def plotear_diferencias(diferencia_con_gem, diferencia_con_oficial):
     plt.plot(diferencia_con_oficial, label="vs ránking oficial")
     plt.plot(diferencia_con_gem, label="vs GeM sin partido simulado")
     plt.legend(loc=4)
@@ -117,16 +117,28 @@ def plotear_salida(diferencia_con_gem, diferencia_con_oficial):
     plt.savefig("diferencia.png")
 
 
+def plotear_posiciones(posiciones):
+    plt.clf()
+    plt.plot(posiciones)
+    plt.ylabel("Posición de Villa San Carlos")
+    plt.xlabel("Diferencia de goles simulada entre Villa San Carlos y Banfield")
+    plt.savefig("posicion.png")
+
+
 equipos = parsear_e_imprimir()
 ejecutar_pagerank("bnacional")
 orden1 = parsear_salida(equipos, "bnacional")
-diferencia_con_gem, diferencia_con_oficial = [], []
+diferencia_con_gem, diferencia_con_oficial, posiciones_vsc = [], [], []
 for goles in range(70):
     print("Goles:", goles)
     generar_fake("bnacional", "bnacional-fake", goles)
     ejecutar_pagerank("bnacional-fake")
     orden2 = parsear_salida(equipos, "bnacional-fake")
+    posicion_vsc = orden2.index("S_Carlos") + 1
+    print("Posición Villa San Carlos:", posicion_vsc)
+    posiciones_vsc.append(posicion_vsc)
     diferencia_con_gem.append(diferencia_entre_rankings(orden1, orden2))
     print("Diferencia:", diferencia_entre_rankings(orden1, orden2))
     diferencia_con_oficial.append(diferencia_con_ideal(orden2))
-plotear_salida(diferencia_con_gem, diferencia_con_oficial)
+plotear_diferencias(diferencia_con_gem, diferencia_con_oficial)
+plotear_posiciones(posiciones_vsc)

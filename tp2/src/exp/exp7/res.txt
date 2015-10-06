@@ -1,3 +1,25 @@
+Banfield 0.0801501
+DefyJus 0.0710097
+Huracan 0.0694202
+Sp_Belgr 0.0520506
+Crucero 0.0513203
+S_M_SJ 0.0499098
+Indepte 0.0490764
+Gsia_Jujuy 0.0480827
+Sarmiento 0.0477266
+Atl_Tuc 0.0472771
+Instituto 0.0456578
+Ferro 0.0446718
+IndpRvia 0.04221
+Brown 0.0416006
+D_Haig 0.0410167
+B_Unidos 0.039052
+Patronato 0.0373007
+Union 0.036556
+Tall_Cba 0.0339548
+Aldosivi 0.0320266
+AlteBrown 0.0265255
+S_Carlos 0.0134039
 Goles: 0
 Banfield 0.0801501
 DefyJus 0.0710097
@@ -21,6 +43,7 @@ Tall_Cba 0.0339548
 Aldosivi 0.0320266
 AlteBrown 0.0265255
 S_Carlos 0.0134039
+Posición Villa San Carlos: 22
 Diferencia: 0
 Goles: 1
 Banfield 0.0803164
@@ -45,6 +68,7 @@ Tall_Cba 0.0338653
 Aldosivi 0.0323213
 AlteBrown 0.0266521
 S_Carlos 0.0173853
+Posición Villa San Carlos: 22
 Diferencia: 2
 Goles: 2
 Banfield 0.0804648
@@ -69,6 +93,7 @@ Tall_Cba 0.0337855
 Aldosivi 0.0325843
 AlteBrown 0.026765
 S_Carlos 0.0209381
+Posición Villa San Carlos: 22
 Diferencia: 8
 Goles: 3
 Banfield 0.080598
@@ -93,6 +118,7 @@ Tall_Cba 0.0337138
 Aldosivi 0.0328205
 AlteBrown 0.0268664
 S_Carlos 0.0241282
+Posición Villa San Carlos: 22
 Diferencia: 10
 Goles: 4
 Banfield 0.0807183
@@ -117,6 +143,7 @@ Tall_Cba 0.0336491
 Aldosivi 0.0330337
 S_Carlos 0.0270082
 AlteBrown 0.0269579
+Posición Villa San Carlos: 21
 Diferencia: 16
 Goles: 5
 Banfield 0.0808274
@@ -141,6 +168,7 @@ Tall_Cba 0.0335904
 Aldosivi 0.0332271
 S_Carlos 0.0296214
 AlteBrown 0.027041
+Posición Villa San Carlos: 21
 Diferencia: 18
 Goles: 6
 Banfield 0.0809269
@@ -165,6 +193,7 @@ Tall_Cba 0.0335368
 Aldosivi 0.0334035
 S_Carlos 0.0320031
 AlteBrown 0.0271166
+Posición Villa San Carlos: 21
 Diferencia: 18
 Goles: 7
 Banfield 0.0810182
@@ -189,6 +218,7 @@ S_Carlos 0.0341829
 Aldosivi 0.0335648
 Tall_Cba 0.0334881
 AlteBrown 0.0271858
+Posición Villa San Carlos: 19
 Diferencia: 24
 Goles: 8
 Banfield 0.0811018
@@ -213,6 +243,7 @@ S_Carlos 0.0361854
 Aldosivi 0.033713
 Tall_Cba 0.0334431
 AlteBrown 0.0272495
+Posición Villa San Carlos: 19
 Diferencia: 26
 Goles: 9
 Banfield 0.081179
@@ -237,6 +268,7 @@ Patronato 0.0361102
 Aldosivi 0.0338497
 Tall_Cba 0.0334016
 AlteBrown 0.0273081
+Posición Villa San Carlos: 17
 Diferencia: 30
 Goles: 10
 Banfield 0.0812503
@@ -261,6 +293,7 @@ Patronato 0.0360277
 Aldosivi 0.0339761
 Tall_Cba 0.0333633
 AlteBrown 0.0273623
+Posición Villa San Carlos: 15
 Diferencia: 32
 Goles: 11
 Banfield 0.0813164
@@ -285,6 +318,7 @@ Patronato 0.0359512
 Aldosivi 0.0340933
 Tall_Cba 0.0333277
 AlteBrown 0.0274126
+Posición Villa San Carlos: 14
 Diferencia: 32
 Goles: 12
 Banfield 0.0813779
@@ -309,6 +343,7 @@ Patronato 0.03588
 Aldosivi 0.0342023
 Tall_Cba 0.0332946
 AlteBrown 0.0274594
+Posición Villa San Carlos: 13
 Diferencia: 32
 Goles: 13
 Banfield 0.0814353
@@ -333,6 +368,7 @@ Patronato 0.0358136
 Aldosivi 0.0343039
 Tall_Cba 0.0332638
 AlteBrown 0.027503
+Posición Villa San Carlos: 12
 Diferencia: 36
 Goles: 14
 Banfield 0.0814889
@@ -357,6 +393,7 @@ Patronato 0.0357516
 Aldosivi 0.0343989
 Tall_Cba 0.033235
 AlteBrown 0.0275438
+Posición Villa San Carlos: 9
 Diferencia: 42
 Goles: 15
 Banfield 0.0815391
@@ -381,6 +418,7 @@ Patronato 0.0356935
 Aldosivi 0.0344879
 Tall_Cba 0.033208
 AlteBrown 0.027582
+Posición Villa San Carlos: 8
 Diferencia: 44
 Goles: 16
 Banfield 0.0815862
@@ -405,6 +443,7 @@ Patronato 0.0356389
 Aldosivi 0.0345714
 Tall_Cba 0.0331826
 AlteBrown 0.0276178
+Posición Villa San Carlos: 5
 Diferencia: 46
 Goles: 17
 Banfield 0.0816305
@@ -429,6 +468,7 @@ Patronato 0.0355877
 Aldosivi 0.0346499
 Tall_Cba 0.0331588
 AlteBrown 0.0276516
+Posición Villa San Carlos: 5
 Diferencia: 46
 Goles: 18
 Banfield 0.0816723
@@ -453,6 +493,7 @@ Patronato 0.0355393
 Aldosivi 0.0347239
 Tall_Cba 0.0331363
 AlteBrown 0.0276833
+Posición Villa San Carlos: 4
 Diferencia: 46
 Goles: 19
 Banfield 0.0817117
@@ -477,6 +518,7 @@ Patronato 0.0354937
 Aldosivi 0.0347937
 Tall_Cba 0.0331151
 AlteBrown 0.0277133
+Posición Villa San Carlos: 4
 Diferencia: 46
 Goles: 20
 Banfield 0.081749
@@ -501,6 +543,7 @@ Patronato 0.0354506
 Aldosivi 0.0348597
 Tall_Cba 0.0330951
 AlteBrown 0.0277416
+Posición Villa San Carlos: 4
 Diferencia: 48
 Goles: 21
 Banfield 0.0817842
@@ -525,6 +568,7 @@ Patronato 0.0354098
 Aldosivi 0.0349223
 Tall_Cba 0.0330761
 AlteBrown 0.0277684
+Posición Villa San Carlos: 4
 Diferencia: 48
 Goles: 22
 Banfield 0.0818177
@@ -549,6 +593,7 @@ Patronato 0.0353711
 Aldosivi 0.0349815
 Tall_Cba 0.0330581
 AlteBrown 0.0277939
+Posición Villa San Carlos: 4
 Diferencia: 48
 Goles: 23
 Banfield 0.0818494
@@ -573,6 +618,7 @@ Patronato 0.0353344
 Aldosivi 0.0350378
 Tall_Cba 0.0330411
 AlteBrown 0.027818
+Posición Villa San Carlos: 4
 Diferencia: 48
 Goles: 24
 Banfield 0.0818796
@@ -597,6 +643,7 @@ Patronato 0.0352994
 Aldosivi 0.0350913
 Tall_Cba 0.0330248
 AlteBrown 0.027841
+Posición Villa San Carlos: 4
 Diferencia: 48
 Goles: 25
 Banfield 0.0819084
@@ -621,6 +668,7 @@ Patronato 0.0352662
 Aldosivi 0.0351422
 Tall_Cba 0.0330094
 AlteBrown 0.0278629
+Posición Villa San Carlos: 4
 Diferencia: 48
 Goles: 26
 Banfield 0.0819358
@@ -645,6 +693,7 @@ Patronato 0.0352345
 Aldosivi 0.0351907
 Tall_Cba 0.0329947
 AlteBrown 0.0278837
+Posición Villa San Carlos: 3
 Diferencia: 50
 Goles: 27
 Banfield 0.0819619
@@ -669,6 +718,7 @@ Aldosivi 0.0352371
 Patronato 0.0352043
 Tall_Cba 0.0329806
 AlteBrown 0.0279036
+Posición Villa San Carlos: 3
 Diferencia: 52
 Goles: 28
 Banfield 0.0819869
@@ -693,6 +743,7 @@ Aldosivi 0.0352813
 Patronato 0.0351754
 Tall_Cba 0.0329672
 AlteBrown 0.0279225
+Posición Villa San Carlos: 3
 Diferencia: 52
 Goles: 29
 Banfield 0.0820107
@@ -717,6 +768,7 @@ Aldosivi 0.0353236
 Patronato 0.0351478
 Tall_Cba 0.0329543
 AlteBrown 0.0279407
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 30
 Banfield 0.0820336
@@ -741,6 +793,7 @@ Aldosivi 0.035364
 Patronato 0.0351213
 Tall_Cba 0.0329421
 AlteBrown 0.0279581
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 31
 Banfield 0.0820554
@@ -765,6 +818,7 @@ Aldosivi 0.0354028
 Patronato 0.035096
 Tall_Cba 0.0329303
 AlteBrown 0.0279747
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 32
 Banfield 0.0820764
@@ -789,6 +843,7 @@ Aldosivi 0.03544
 Patronato 0.0350717
 Tall_Cba 0.032919
 AlteBrown 0.0279907
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 33
 Banfield 0.0820966
@@ -813,6 +868,7 @@ Aldosivi 0.0354757
 Patronato 0.0350484
 Tall_Cba 0.0329082
 AlteBrown 0.028006
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 34
 Banfield 0.0821159
@@ -837,6 +893,7 @@ Aldosivi 0.0355099
 Patronato 0.0350261
 Tall_Cba 0.0328978
 AlteBrown 0.0280207
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 35
 Banfield 0.0821345
@@ -861,6 +918,7 @@ Aldosivi 0.0355429
 Patronato 0.0350046
 Tall_Cba 0.0328878
 AlteBrown 0.0280348
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 36
 Banfield 0.0821524
@@ -885,6 +943,7 @@ Aldosivi 0.0355745
 Patronato 0.0349839
 Tall_Cba 0.0328782
 AlteBrown 0.0280484
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 37
 Banfield 0.0821696
@@ -909,6 +968,7 @@ Aldosivi 0.035605
 Patronato 0.034964
 Tall_Cba 0.0328689
 AlteBrown 0.0280615
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 38
 Banfield 0.0821862
@@ -933,6 +993,7 @@ Aldosivi 0.0356344
 Patronato 0.0349448
 Tall_Cba 0.03286
 AlteBrown 0.0280741
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 39
 Banfield 0.0822021
@@ -957,6 +1018,7 @@ Aldosivi 0.0356628
 Patronato 0.0349263
 Tall_Cba 0.0328514
 AlteBrown 0.0280863
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 40
 Banfield 0.0822176
@@ -981,6 +1043,7 @@ Aldosivi 0.0356901
 Patronato 0.0349084
 Tall_Cba 0.0328431
 AlteBrown 0.028098
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 41
 Banfield 0.0822324
@@ -1005,6 +1068,7 @@ Aldosivi 0.0357165
 Patronato 0.0348912
 Tall_Cba 0.0328351
 AlteBrown 0.0281093
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 42
 Banfield 0.0822468
@@ -1029,6 +1093,7 @@ Aldosivi 0.0357419
 Patronato 0.0348746
 Tall_Cba 0.0328274
 AlteBrown 0.0281203
+Posición Villa San Carlos: 3
 Diferencia: 54
 Goles: 43
 Banfield 0.0822607
@@ -1053,6 +1118,7 @@ IndpRvia 0.0357219
 Patronato 0.0348585
 Tall_Cba 0.0328199
 AlteBrown 0.0281308
+Posición Villa San Carlos: 2
 Diferencia: 58
 Goles: 44
 Banfield 0.0822742
@@ -1077,6 +1143,7 @@ IndpRvia 0.0356806
 Patronato 0.0348429
 Tall_Cba 0.0328127
 AlteBrown 0.028141
+Posición Villa San Carlos: 2
 Diferencia: 60
 Goles: 45
 Banfield 0.0822872
@@ -1101,6 +1168,7 @@ IndpRvia 0.0356406
 Patronato 0.0348279
 Tall_Cba 0.0328057
 AlteBrown 0.0281509
+Posición Villa San Carlos: 2
 Diferencia: 60
 Goles: 46
 Banfield 0.0822997
@@ -1125,6 +1193,7 @@ IndpRvia 0.0356019
 Patronato 0.0348133
 Tall_Cba 0.0327989
 AlteBrown 0.0281605
+Posición Villa San Carlos: 2
 Diferencia: 60
 Goles: 47
 Banfield 0.0823119
@@ -1149,6 +1218,7 @@ IndpRvia 0.0355645
 Patronato 0.0347992
 Tall_Cba 0.0327924
 AlteBrown 0.0281698
+Posición Villa San Carlos: 2
 Diferencia: 60
 Goles: 48
 Banfield 0.0823237
@@ -1173,6 +1243,7 @@ IndpRvia 0.0355282
 Patronato 0.0347856
 Tall_Cba 0.032786
 AlteBrown 0.0281788
+Posición Villa San Carlos: 2
 Diferencia: 60
 Goles: 49
 Banfield 0.0823352
@@ -1197,6 +1268,7 @@ IndpRvia 0.035493
 Patronato 0.0347723
 Tall_Cba 0.0327799
 AlteBrown 0.0281875
+Posición Villa San Carlos: 2
 Diferencia: 60
 Goles: 50
 Banfield 0.0823463
@@ -1221,6 +1293,7 @@ IndpRvia 0.0354588
 Patronato 0.0347595
 Tall_Cba 0.0327739
 AlteBrown 0.0281959
+Posición Villa San Carlos: 2
 Diferencia: 60
 Goles: 51
 Banfield 0.0823571
@@ -1245,6 +1318,7 @@ IndpRvia 0.0354257
 Patronato 0.034747
 Tall_Cba 0.0327681
 AlteBrown 0.0282041
+Posición Villa San Carlos: 2
 Diferencia: 60
 Goles: 52
 Banfield 0.0823675
@@ -1269,6 +1343,7 @@ IndpRvia 0.0353935
 Patronato 0.0347349
 Tall_Cba 0.0327625
 AlteBrown 0.0282121
+Posición Villa San Carlos: 2
 Diferencia: 60
 Goles: 53
 Banfield 0.0823777
@@ -1293,6 +1368,7 @@ IndpRvia 0.0353623
 Patronato 0.0347231
 Tall_Cba 0.032757
 AlteBrown 0.0282198
+Posición Villa San Carlos: 2
 Diferencia: 62
 Goles: 54
 Banfield 0.0823876
@@ -1317,6 +1393,7 @@ IndpRvia 0.0353319
 Patronato 0.0347117
 Tall_Cba 0.0327517
 AlteBrown 0.0282273
+Posición Villa San Carlos: 2
 Diferencia: 62
 Goles: 55
 Banfield 0.0823972
@@ -1341,6 +1418,7 @@ IndpRvia 0.0353024
 Patronato 0.0347006
 Tall_Cba 0.0327465
 AlteBrown 0.0282346
+Posición Villa San Carlos: 2
 Diferencia: 62
 Goles: 56
 Banfield 0.0824065
@@ -1365,6 +1443,7 @@ IndpRvia 0.0352737
 Patronato 0.0346898
 Tall_Cba 0.0327415
 AlteBrown 0.0282417
+Posición Villa San Carlos: 2
 Diferencia: 62
 Goles: 57
 Banfield 0.0824156
@@ -1389,6 +1468,7 @@ IndpRvia 0.0352458
 Patronato 0.0346793
 Tall_Cba 0.0327366
 AlteBrown 0.0282486
+Posición Villa San Carlos: 2
 Diferencia: 62
 Goles: 58
 Banfield 0.0824244
@@ -1413,6 +1493,7 @@ IndpRvia 0.0352186
 Patronato 0.0346691
 Tall_Cba 0.0327319
 AlteBrown 0.0282553
+Posición Villa San Carlos: 2
 Diferencia: 62
 Goles: 59
 Banfield 0.082433
@@ -1437,6 +1518,7 @@ IndpRvia 0.0351922
 Patronato 0.0346591
 Tall_Cba 0.0327273
 AlteBrown 0.0282619
+Posición Villa San Carlos: 2
 Diferencia: 62
 Goles: 60
 Banfield 0.0824414
@@ -1461,6 +1543,7 @@ IndpRvia 0.0351664
 Patronato 0.0346494
 Tall_Cba 0.0327228
 AlteBrown 0.0282682
+Posición Villa San Carlos: 2
 Diferencia: 62
 Goles: 61
 Banfield 0.0824496
@@ -1485,6 +1568,7 @@ IndpRvia 0.0351413
 Patronato 0.03464
 Tall_Cba 0.0327184
 AlteBrown 0.0282745
+Posición Villa San Carlos: 2
 Diferencia: 62
 Goles: 62
 Banfield 0.0824575
@@ -1509,6 +1593,7 @@ IndpRvia 0.0351169
 Patronato 0.0346308
 Tall_Cba 0.0327141
 AlteBrown 0.0282805
+Posición Villa San Carlos: 2
 Diferencia: 62
 Goles: 63
 Banfield 0.0824653
@@ -1533,6 +1618,7 @@ IndpRvia 0.035093
 Patronato 0.0346218
 Tall_Cba 0.0327099
 AlteBrown 0.0282864
+Posición Villa San Carlos: 2
 Diferencia: 64
 Goles: 64
 Banfield 0.0824728
@@ -1557,6 +1643,7 @@ IndpRvia 0.0350698
 Patronato 0.034613
 Tall_Cba 0.0327059
 AlteBrown 0.0282921
+Posición Villa San Carlos: 2
 Diferencia: 64
 Goles: 65
 Banfield 0.0824802
@@ -1581,6 +1668,7 @@ IndpRvia 0.0350471
 Patronato 0.0346045
 Tall_Cba 0.0327019
 AlteBrown 0.0282978
+Posición Villa San Carlos: 2
 Diferencia: 64
 Goles: 66
 Banfield 0.0824874
@@ -1605,6 +1693,7 @@ IndpRvia 0.035025
 Patronato 0.0345962
 Tall_Cba 0.032698
 AlteBrown 0.0283032
+Posición Villa San Carlos: 2
 Diferencia: 66
 Goles: 67
 Banfield 0.0824944
@@ -1629,6 +1718,7 @@ IndpRvia 0.0350034
 Patronato 0.0345881
 Tall_Cba 0.0326942
 AlteBrown 0.0283086
+Posición Villa San Carlos: 2
 Diferencia: 66
 Goles: 68
 Banfield 0.0825013
@@ -1653,6 +1743,7 @@ IndpRvia 0.0349823
 Patronato 0.0345801
 Tall_Cba 0.0326905
 AlteBrown 0.0283138
+Posición Villa San Carlos: 2
 Diferencia: 66
 Goles: 69
 Banfield 0.082508
@@ -1677,4 +1768,5 @@ IndpRvia 0.0349617
 Patronato 0.0345724
 Tall_Cba 0.0326869
 AlteBrown 0.0283189
+Posición Villa San Carlos: 2
 Diferencia: 66
