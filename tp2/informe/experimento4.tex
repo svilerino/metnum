@@ -9,7 +9,7 @@
         para $\epsilon$ fijo ser\'a el mismo para \textbf{toda instancia} (sin
         importar tama\~no, cantidad de ejes, etc).\\
 
-    \item[Proposici\'on] De los experimentos previo hemos llegado a la
+    \item[Proposici\'on] De los experimentos previos hemos llegado a la
         conclusi\'on de que a mayor $\alpha$, mayor cantidad de iteraciones
         ser\'an necesarias para converger, lo cual implica inmediatamente un
         mayor tiempo de c\'omputo requerido. La pregunta ideal a responder
@@ -20,7 +20,7 @@
         cantidad de iteraciones (que ni siquiera sabemos si existe). En cambio,
         lo que s\'i podemos analizar es si el tiempo de c\'omputo \textbf{por
         iteraci\'on} es el mismo para toda instancia, sin importar el
-        $\epsilon$\footnote{M\'as all\'a de para nuestros experimentos lo
+        $\epsilon$\footnote{M\'as all\'a de que para nuestros experimentos lo
         estemos dejando fijo.} o $\alpha$. Analizamos entonces si el tiempo por
         iteraci\'on var\'ia seg\'un la densidad de la instancia inicial, y a su
         vez si varía para distintos valores de $\alpha$.\\
@@ -113,7 +113,7 @@ tiempo ejecut\'andose m\'as probabilidades hay de que el Sistema Operativo
 decida darle el CPU a otro proceso de mayor prioridad que surja (o que al estar
 tanto tiempo ejecut\'andose, su prioridad vaya bajando).
 
-\par Finalmente conclu\'imos que que el tiempo por iteraci\'on es constante, ya
+\par Finalmente concluimos que que el tiempo por iteraci\'on es constante, ya
 que en las m\'etricas nos confirman, al observar los valores muy peque\~nos del
 desv\'io est\'andard y diferencia porcentual, que estas diferencias para
 distintos $\alpha$ sean muy probablemente errores de medici\'on (recordemos que
@@ -147,10 +147,10 @@ el valor promedio del tiempo para todos los factores de navegación.} contra una
 medida de densidad del grafo\footnote{Se toma como métrica un cociente entre la
 cantidad de aristas del gráfo y la cantidad de aristas de una \emph{clique} de
 su misma cantidad de nodos; multiplicado por una constante para igualar las
-magnitudes con los valores de los tiempos de c\'omputo.}, y se v\'e, para las 3
+magnitudes con los valores de los tiempos de c\'omputo.}, y se ve, para las 3
 instancias evaluadas, que el crecimiento del tiempo de c\'omputo parecer\'ia ser
-l\'ineal en funci\'onde la densidad del grafo. Dado que s\'olo experimentamos
-con estas 3 instancias, ser\'ia muy abrupto hacer dicha afirmaci\'on, pero si
+l\'ineal en funci\'on de la densidad del grafo. Dado que s\'olo experimentamos
+con estas 3 instancias, ser\'ia muy apresurado hacer dicha afirmaci\'on, pero sí
 podemos decir que tenemos sospechas de que eso ocurra, dejando este aspecto para
 un futuro posible experimento\footnote{Vale la pena aclarar, en este caso, que
 podr\'iamos considerar a nuestras 3 instancias como poco densas, m\'as alla de
@@ -165,8 +165,8 @@ nulos en la matriz), y por lo tanto el producto $A\vec{x}$ de la
 implementaci\'on del m\'etodo efectuar\'a m\'as $flops$.
 
 \medskip
-\par Finalizando, concluimos que 1 de nuestras hip\'otesis era correcta, y la
-otra no. Peculiar es, que las justificaciones que le encontramos a ambos
+\par Finalizando, concluimos que una de nuestras hip\'otesis era correcta, y la
+otra no. Peculiar es que las justificaciones que le encontramos a ambos
 comportamientos (la relaci\'on tiempo de c\'omputo por iteraci\'on en funci\'on
 de $\alpha$ y de la densidad de la instancia) es la misma: mientras que $\alpha$
 no afecta a la densidad de la matriz de conectividad pesada $A$, cosa que si lo

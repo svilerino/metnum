@@ -1,18 +1,18 @@
-\subsection{PageRank vs Orden Total Conocido}
+\subsection{PageRank/GeM vs Orden Total Conocido}
 \label{subsec:exp5}
 \begin{LaTeXdescription}
     \item[Objetivo] Analizar la convergencia del modelo GeM asumiendo que
         existe ranking ideal y correcto al cual converger.\\
 
     \item[Hip\'otesis] PageRank, utilizando el modelo GeM, converge finalmente a
-        un ''Orden Real'' o ''Correcto'' de los competidores, si este existe.
+        un ''Orden Real'' o ''Correcto'' de los competidores deportivos, si este existe.
         Adem\'as, no necesitar\'a de un grafo completo (los resultados de todos
         contra todos) para converger al mismo.\\
 
     \item[Proposici\'on] Como se coment\'o previamente en la experimentaci\'on
-        sobre p\'aginas web, establecer cual es el ''mejor orden'' u ''orden
+        sobre p\'aginas web, establecer cuál es el ''mejor orden'' u ''orden
         correcto'' es completamente arbitrario. No hay una vara sobre la cual
-        medir. En los deportes esto es a\'un más evidente, ya que se depende de
+        medir. En los deportes esto es a\'un más evidente, ya que depende de
         los resultados deportivos, ¿y qui\'en es capaz de afirmar que la
         probabilidad de que Platense -el mejor equipo del mundo e insipirador
         del t\'itulo del enunciado de este trabajo- le gane al Barcelona es $0$?
@@ -49,7 +49,9 @@
         de 50 equipos \underline{consta de 53 fechas}}.
 
         \par El resultado de todos los partidos es siempre 1 a 0. No hace falta
-        considerar empates dado que siempre hay un ganador. Luego, ejecutamos
+        considerar empates dado que siempre hay un ganador.
+        
+        \par Ejecutamos
         GeM tantas veces como fechas haya, pas\'andole en cada instancia una
         fecha m\'as. Es decir, en la ejecuci\'on 1 le pasamos los resultados de
         la fecha 1, en la 2 los resultados de la fecha 1 y 2, y as\'i
@@ -66,7 +68,7 @@
         relativo coincidir\'ia con el ideal, aunque por casualidad y no por
         virtud del algoritmo. Resolvimos entonces ''romper'' el caso y que el
         desempate se realice de manera descendente, asegur\'andonos as\'i de no
-        tomar como correctos resultados en donde hay muchos empates.
+        evaluar como correctos resultados en donde hay muchos empates.
 
         \par Repetimos el experimento variando los valores de $\alpha$ en
         factores de $0.2$, para estudiar la convergencia en cada caso.  De
@@ -78,27 +80,29 @@
     \item[Resultados, an\'alisis y discusi\'on]
 \end{LaTeXdescription}
 
-\par En primer lugar, como hemos adelantado, debemos decidir como determinar la
+\par En primer lugar, como hemos adelantado, debemos decidir cómo determinar la
 ''distancia'' entre dos rankings. Es decir, determinar alguna manera de comparar
 dos rankings dados, y poder tener una magnitud de cuan parecidos son. Para ello
-consideramos algunas opciones para dados dos rankings A y B, de entre las cuales
+consideramos algunas opciones dados dos rankings A y B, de entre las cuales
 mencionamos:
 
 \begin{enumerate}
         \item La sumatoria de la distancia, para cada competidor, entre su
             posici\'on en el ranking A y la posici\'on en el ranking
             B.\label{itm:distancia_rankings}
+        \item La cantidad de competidores que aparecen, en A, en una posición distinta a la que aparecen en B.
+        \item La sumatoria, para cada competidor, de la cantidad de equipos que tiene por encima en A y que tiene por debajo en B.
 \end{enumerate}
 
 \par Luego de evaluar estas opciones (y algunas m\'as no tan concisas),
 decidimos trabajar de aqu\'i en m\'as con la distancia basada en la suma de las
 distancias de todos los competidores (definici\'on de distancia n\'umero
 \ref{itm:distancia_rankings}). Consideramos que dicha forma de tomar la
-distancia entre dos rankings, de alguna manera nos est\'a se\~nalando cuantas
+distancia entre dos rankings, de alguna manera nos est\'a se\~nalando cuántas
 permutaciones de elementos/equipos contiguos hay entre un ranking y el otro,
 cosa que no queda tan claro con las dem\'as opciones. Y esa forma de medir la
 distancia es la que consideramos que se ajusta a lo que queremos observar del
-dominio del problema: cu\'antos equipos est\'an ubicados distinto y cuan lejos.
+dominio del problema: cu\'antos equipos est\'an ubicados distinto y cuán lejos.
 
 \begin{figure}[H]
     \caption{Distancia al orden total ideal/correcto ($c = \alpha$)}
@@ -133,9 +137,7 @@ corresponde al siguiente experimento): estan todas superpuestas. En el caso de
 Observamos que a mayor $\alpha$ el algoritmo en general converge ''mejor'' al
 Orden Real (es decir, dada la misma cantidad de fechas, se acerca m\'as), aunque
 siempre precisa 50 fechas para converger al orden real (figura
-\ref{subfig:exp5_50equipos}).
-
-\par La diferencia de todos modos es peque\~na y probablemente se deba a que, en
+\ref{subfig:exp5_50equipos}). La diferencia de todos modos es peque\~na y probablemente se deba a que, en
 nuestro modelo ideal, las victorias son totalmente transitivas: la probabilidad
 de que $C$ le gane a $A$ dado que $A$ le gan\'o a $B$ y $B$ le ganó a $C$ es
 siempre $0$.  Como valores peque\~nos de $\alpha$ tienden a agregar una
@@ -222,11 +224,11 @@ torneos\footnote{Sin \'animo de menospreciar a GeM, si uno tiene los datos de 50
 sobre 53 fechas, predecir con buena probabilidad de acierto el orden final no es
 necesariamente una tarea extremadamente dif\'icil.}. Tambi\'en observamos que en
 la progesi\'on fecha a fecha, el par\'ametro $\alpha$ pareciera tener de muy
-poca a nula influencia sobre los rankings obtenidos. Por \'ultimo, decidimos
-comprar la ''velocidad de aproximaci\'on al ranking ideal'' con casos reales (es
-decir, con el resultado final de la competencia), y aqu\'i pudimos ver que si
+poca a nula influencia sobre los rankings obtenidos.
+
+\par Por \'ultimo, al comparar la ''velocidad de aproximaci\'on al ranking ideal'' con el sistema de puntaje real, pudimos ver que si
 bien considerabamos no tan bueno a GeM para aproximarse con poca informaci\'on
-al resultado final, se comporta notoriamente mejor que el ranking oficial (para
-los casos de f\'utbol que fueron considerados), con lo cual este modelo quiz\'as
+al resultado final, se comporta mejor que el ranking oficial (para
+los casos ideales que fueron considerados), con lo cual este modelo quiz\'as
 podr\'ia ser un primer paso hacia un predictor de resultados de torneos de
 f\'utbol profesional\footnote{Y la dominaci\'on mundial.}.

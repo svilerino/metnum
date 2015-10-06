@@ -1,5 +1,5 @@
 \par \IEEEPARstart{E}{N} el siguiente trabajo se aborda una problem\'atica tan
-com\'un a muchos \'ambitos distintos: La generaci\'on de \textit{Rankings} u
+com\'un a muchos \'ambitos distintos: la generaci\'on de \textit{Rankings} u
 \'ordenes. El objeto de estudio en nuestro caso ser\'a la elaboraci\'on de estos
 rankings para en el \'ambito de las p\'aginas web, para luego tratar de
 extrapolar los m\'etodos encontrados y aplicarlos a los participantes de
@@ -31,23 +31,23 @@ internet sea masivo) para realizar \emph{queries} complejas en alg\'un lenguaje
 de b\'usqueda\footnote{Como por ejemplo \emph{ANSI SQL}.}. E incluso para
 usuarios con dicho conocimento, ser\'ia mucho m\'as practico poder realizar la
 b\'usqueda y obtener los resultados correctos sin tener que recurrir a dicha
-sint\'axis.
+sintaxis.
 
 \par Junto con el crecimiento de la informaci\'on, que a su vez se da desde
 distintas partes del mundo (generando una problem\'atica geogr\'afica de acceso
 a la informaci\'on), el problema de las b\'usquedas de contenido espec\'ifico se
 ve a\'un m\'as dif\'icil: ahora buscar la informaci\'on correcta en un universo
-cada vez m\'as grande y diverso requiere de m\'etods m\'as elaborados.
+cada vez m\'as grande y diverso requiere de m\'etodos m\'as elaborados.
 
 \par En este contexto, entonces, dise\~nar un motor de b\'usqueda que pueda
 escalar junto con internet requiere enfrentar distintos desaf\'ios: hay que ir
 descubriendo r\'apidamente los nuevos contenidos que aparecen y desaparecen de
-la red\footnote{a.k.a. Crawling.}, uso eficiente del espacio para almacenar
-\'indeces (y opcionalmente documentos enteros), un sistema de indexado que pueda
-procesar todo este vol\'umen gigantesco de informaci\'on tambi\'en de manera
-eficiente; y obviamente, un sistema de consultas que pueda resolver las mismas
-de manera r\'apida y eficiente con un ratio de entrada de hasta miles de
-consultas por segundo que a su vez devuelva resultados relevantes.
+la red\footnote{a.k.a. Crawling.}, usar eficientemente el espacio para almacenar
+\'indices (y opcionalmente documentos enteros), usar sistemas de indexado que puedan
+procesar todo este volumen gigantesco de informaci\'on tambi\'en de manera
+eficiente; y, obviamente, un sistema de consultas que pueda resolver las mismas
+de manera r\'apida con un ratio de entrada de hasta miles de consultas por
+segundo que devuelva resultados relevantes.
 
 \par En res\'umen, se observa que muchos de los problemas que fueron (y todav\'ia
 siguen) surgiendo son consecuencia de la velocidad con la que esta escalando
@@ -55,31 +55,27 @@ internet. El objetivo de este trabajo es estudiar un aspecto del \'ultimo de los
 items mencionados en el p\'arrafo anterior: el orden de los resultados de una
 consulta. No estudiaremos como indexar los resultados, ni nos consentraremos en
 realizar las consultas eficientemente respecto de la complejidad (espacial o
-temporal), sino que nos focalizaremos en el orden de los resultados. De manera
-abstracta, y a modo de ejmplo, si uno consigue de alguna manera ordenar todas
-las p\'aginas web de manera relevante (para alguna definici\'on de relevancia),
+temporal) sino que nos focalizaremos en el orden de los resultados. De manera
+abstracta y, a modo de ejemplo, si uno consigue de alguna manera ordenar todas
+las p\'aginas web por orden de relevancia (para alguna definici\'on de relevancia),
 luego resolver una consulta implicar\'ia \'unicamente filtrar los resultados
 manteniendo el orden dado.
-
 
 %-------------------------------------------------------------------------------
 \subsection{El Modelo}\label{subsec:intro_pagerank}
 \par El modelo propuesto por Brin y Page para \emph{ordenar} o crear un ranking
 fue llamado \emph{PageRank}. El concepto principal del mismo es el de asignar a
 todas las p\'aginas un puntaje basado en los hiperv\'inculos o \emph{links} de
-otras p\'aginas web que referencian a la p\'agina siendo puntuada. Estos links
+otras p\'aginas web que referencian a la p\'agina que está siendo evaluada. Estos links
 son denomminados \emph{backlinks} de cada p\'agina.
 
 \par Una forma gr\'afica de entender esto es observar a la web como un grafo
-dirigido de conectividad. Cada p\'agina web estar\'ia representado por un nodo
-distinto, y cada link ser\'ia un eje dirigido, yendo desde el nodo que
+dirigido de conectividad. Cada p\'agina web estar\'ia representada por un nodo
+distinto y cada link ser\'ia un eje dirigido, yendo desde el nodo que
 representa a la p\'agina con el link hasta el nodo hom\'onimo de la p\'agina
 referenciada por el mismo. El modelo de PageRank propone observar a estos ejes
-como un sistema de ''votos'', donde cada p\'agina votan mediante sus links a las
-p\'aginas que consideran importantes. El peso de cada voto, en este caso, ser\'a
-relativo a la cantidad de votos, ya que no hay un l\'imite para la cantidad de
-links que una p\'agina puede tener (en algunos p\'arrafos desarrollaremos m\'as
-sobre esta idea)
+como un sistema de ''votos'', donde cada p\'agina ``vota'' mediante sus links a las
+p\'aginas que consideran importantes.
 
 \begin{wrapfigure}[22]{r}{0.52\textwidth}
     \includegraphics[width=0.5\textwidth]{example1_conn_graph.jpg}
@@ -87,9 +83,9 @@ sobre esta idea)
 \end{wrapfigure}
 \noindent
 
-\par Un orden muy simple ser\'ia, por ejemplo, tomar el grado de entrada de cada
+\par Un orden muy simple ser\'ia, entonces, tomar el grado de entrada de cada
 nodo\footnote{Es decir, la cantidad de ejes entrantes al nodo.}, u en palabras
-de lo que representa el grafo, la cantidad de backlinks de una p\'agina y
+de lo que representa el grafo, la cantidad de backlinks de una p\'agina, y
 ordenar en orden descendente por dicho valor. Pero esta soluci\'on presenta
 un problema inmediato: todos los ''votos'' o ejes salientes tienen el mismo
 peso, sin importar de qui\'en vienen. Si una p\'agina web tiene millones de
@@ -98,11 +94,11 @@ su vez, los votos de una p\'agina que no es votada por nadie valen lo mismo que
 los de una p\'agina que es votada por todos los dem\'as.
 
 \par Para solucionar, o al menos mitigar, este comportamiento, PageRank propone
-cuantificar los ''votos'' seg\'un de quien vienen, y de su puntaje. Esto
+cuantificar los ''votos'' seg\'un de quién vienen, y de su puntaje. Esto
 inicialmente parecer\'ia un razonamiento circular ya que el puntaje de cada
 p\'agina depender\'a del puntaje de las dem\'as, que a su vez dependen del
 puntaje de esta p\'agina. Pero utilizando esta idea, con alguna modificaci\'on,
-justamente se llegar\'a a un sistema de ecuaciones lineales, el cual permite
+se llegar\'a a un sistema de ecuaciones lineales, el cual permite
 resolver justamente este tipo de c\'alculos donde hay muchas ecuaciones a ser
 satisfechas que utilizan las mismas variables (en este caso, los puntajes de las
 p\'aginas).
@@ -240,7 +236,7 @@ encontramos una primera cosa que modelo debe solucionar para asegurar la
 existencia del autovalor 1.
 
 \par Otro problema que surge es la posibilidad de que el autovalor 1 de esta
-matriz (suponiendo que se aseguro la no existencia de los dangling nodes) tenga
+matriz (suponiendo que se aseguró la ausencia de dangling nodes) tenga
 multiplicidad mayor a 1. Es decir, que tengamos m\'ultiples soluciones para
 nuestro modelo (m\'ultiples posibles rankings). Claramente esto es algo no
 deseado, ya que no tenemos un patr\'on para decidir que ranking es el correcto
@@ -267,10 +263,10 @@ Page en 1998).  A este proceso de ''saltar'' a cualquier otra p\'agina/nodo del
 grafo se lo denomina \emph{teletransportaci\'on}.
 
 \par Volviendo a nuestra matriz $A$, se utiliza el concepto de
-teletransportaci\'on de manera consistente con el modelo, de manera de convertir
+teletransportaci\'on de manera consistente con el modelo, de modo de convertir
 a $A$ en una matriz sin dangling nodes y que represente a un grafo fuertemente
 conexo\footnote{Cosa que en la realidad no necesariamente pasa. Como ejemplo,
-alcanza conque exista una p\'agina web que no sea referenciada ni que referencie
+alcanza con que exista una p\'agina web que no sea referenciada ni que referencie
 a otros sitios web. O alg\'un tipo de documento web, como un \emph{pdf}}, o
 equivalentemente, convertirla a una matriz de Markov\footnote{Una matriz de
 Markov es una matriz positiva y estoc\'astica por columnas.} irreducible. Luego
@@ -454,12 +450,12 @@ cuadrada:
         \quad\forall i,j$).\label{itm:m_pos}
 
     \item $M$ entonces es una matriz de \textbf{Markov}, ya que su definici\'on
-        es pedir los dos items anteriores.
+        es la combinación de los dos items anteriores.
 
     \item $M$ es \textit{cuadrada}. Adem\'as de $M$ haber sido constru\'ida a
         partir de $A$ (que es cuadrada), $M$ representa los posibles ''saltos''
         entre 2 p\'aginas web (o nodos de un grafo). Es decir, el conjunto de
-        nodos de partida (filas) y de llegada (columnas) de un salto, debe ser
+        nodos de partida (filas) y de llegada (columnas) de un salto debe ser
         el mismo (en este modelo), por lo tanto $M\in\real^{n\times n}$.
 
     \item $M$ es \textit{irreducible}. El grafo resultante de interpretar a $M$
@@ -473,18 +469,18 @@ cuadrada:
 
 \par Es decir, se han dado todas las condiciones que nos permiten asegurar que
 que el autovector asociado al autovalor $1$ existe y es
-\'unico~\cite[p.663-693]{Meyer2000}. Y dicho autovalor ser\'a la soluci\'on a
+\'unico~\cite[p.663-693]{Meyer2000}. Y dicho autovector ser\'a la soluci\'on a
 nuestro sistema, tal que cada componente $x_j$ de $\vec{x}$ ser\'a el
-puntaje del nodo/p\'agina $j$. Una manera de calcular este autovector ser\'a
-parte de este trabajo, y la misma ser\'a explicada m\'as adelante.
+puntaje del nodo/p\'agina $j$. La forma de calcular este autovector ser\'a
+parte de este trabajo y ser\'a explicada m\'as adelante.
 
 
 %-------------------------------------------------------------------------------
 \subsection{Adaptaci\'on a Eventos Deportivos}
-\par A la hora de los eventos deportivos, los rankings son claramente
+\par En los eventos deportivos los rankings son claramente
 importantes. Uno puede observar a un torneo como un ranking que se va generando
-a lo largo del tiempo (a medida que progresa la competici\'on), y que al
-finalizar el torneo el ranking obtenido determina quien es el ganador.
+a lo largo del tiempo (a medida que progresa la competici\'on) y que al
+finalizar el torneo determina quién es el ganador.
 
 \par Se observa entonces que cada competici\'on, deporte, torneo y/o
 asociaci\'on tiene su propio sistema de rankings: el f\'utbol suele manejar un
@@ -494,8 +490,8 @@ ranking de jugadores, no de torneo) mantiene un sistema de puntos por nivel
 alcanzado en cada torneo anual.
 
 \par Ahora bien, este es uno de los aspectos de los deportes. El otro aspecto
-(m\'as all\'a del deporte en si mismo) radica en como se transita la
-competici\'on, que partidos se dan y que competidores se enfrentan. Por ejemplo,
+(m\'as all\'a del deporte en sí mismo) radica en cómo se transita la
+competici\'on, qué partidos se dan y qué competidores se enfrentan. Por ejemplo,
 en el esquema cl\'asico del torneo de f\'utbol se confecciona un calendario de
 partidos o \emph{fixture} donde todos los equipos juegan contra todos los
 dem\'as 2 partidos a lo largo de la competici\'on. Sin embargo, en algunas ligas
@@ -519,7 +515,7 @@ de esta asimetr\'ia. Se observa un grafo donde cada nodo representa uno de los
 total de 12 partidos cada uno por temporada. La gran mayor\'ia de esos partidos
 se dan contra equipos de su misma emph{power conference}, o divisi\'on, en las
 cuales se agrupan todos las universidades. Esto se ve reflejado en el grafo ya
-que se observan 6 de subgrafos muy densos (los cuales agrupan a los equipos de
+que se observan 6 subgrafos muy densos (los cuales agrupan a los equipos de
 una misma divisi\'on), y luego se ven muchas menos aristas que unen a equipos de
 distintas divisiones.
 
@@ -533,23 +529,25 @@ asociaciones. Por ejemplo, el ranking de clubes profesionales de f\'utbol. El
 mismo establece que el Barcelona de
 Espa\~na\footnote{\url{http://www.fcbarcelona.com/}} est\'a muy por encima que
 el club Platense de Argentina\footnote{\url{http://www.cap.org.ar/}}. ¿Y c\'omo
-se llega a esta conclusi\'on si ambos equipos jam\'as jugaron entre si? ¿Es
-dicha ranking correcto?
+se llega a esta conclusi\'on si ambos equipos jam\'as jugaron entre sí? ¿Es
+dicho ranking correcto?
 
 \par Incluso se pueden tener rankings no basados necesariamente en los
 resultados de la competencia, sino en la opini\'on de los periodistas,
 entrenadores, seguidores o los mismos competidores. Es decir, dada una
 competencia, pueden existir m\'ultiples sistemas de ranking m\'as all\'a del
-asociado a la competici\'on (aunque este \'ultimo es el \'unico, en principio,
+asociado a la competici\'on (aunque este es el \'unico, en principio,
 con injerencia en la determinaci\'on del ganador).
 
-\par La elecci\'on de que ranking usar es problem\'atica debido a todos los
+\par La elecci\'on de qué ranking usar es problem\'atica debido a todos los
 intereses distintos que dependen del mismo (en el caso de los deportes
 profesionales). Y como se ha explicado, utilizar un ranking basado \'unicamente
 en partidos perdidos y ganados no alcanza ya que en muchas competiciones
 directamente hay equipos que no juegan contra otros (y en otros casos hay
 asimetr\'ias en cuanto a la cantidad de partidos jugados contra distintos
-partidos).
+partidos). Además, se debe tener en cuenta que en ningún deporte las victorias
+son ``transitivas'': que $A$ le haya ganado a $B$ y $B$ a $C$ no implica
+necesariamente que $A$ vaya a ganarle a $C$. % Esto lo pongo acá porque lo uso más adelante
 
 \par En este contexto, Govan, Meyer y Albright propusieron utilizar una
 adaptaci\'on del algoritmo de PageRank para generar rankings basados en los
@@ -572,12 +570,12 @@ al resultado final del deporte.
 \par As\'i pues, la aplicaci\'on del m\'etodo \emph{GeM} consiste en cambiar un
 poco los datos de las matrices del algoritmo de PageRank ya explicado en la
 secci\'on \ref{subsec:intro_pagerank} teniendo en cuenta los resultados. El
-primer problema que surge es que hacer con los empates, pues el grafo de
+primer problema que surge es qué hacer con los empates, pues el grafo de
 PageRank y su correspondiente matriz de connectividad no modelan un v\'inculo no
 dirigido. Govan, Meyer y Albright realizaron su propuesta en base a deportes de
 los Estados Unidos, donde los empates directamente no pueden ocurrir, o la
 probabilidad de que ocurran es extremadamente baja. As\'i pues, utilizan el
-algoritmo del avestruz: ignoran el problema y no lo modelan. Entonces,
+\emph{algoritmo del avestruz}: ignoran el problema y no lo modelan. Entonces,
 utilizando la misma nomenclatura que en la secci\'on anterior, las matrices de
 GeM quedan definidas como:
 
@@ -585,7 +583,7 @@ GeM quedan definidas como:
     A\in\real^{n\times n} /& a_{ij} = \begin{cases}
         w_{ij}\quad&\text{Si $i$ gan\'o contra a $j$}\\
         0\quad&\text{Caso contrario}
-    \end{cases}\quad\text{Donde $w_{ij}$ es la diferencia del marcador}\\
+    \end{cases}\quad\text{donde $w_{ij}$ es la diferencia del marcador}\\
 %
     H\in\real^{n\times n} /& h_{ij} = \begin{cases}
         a_{ij}/\sum_{k=1}^n a_{kj}\quad&\text{Si $i$ gan\'o contra $j$}\\
