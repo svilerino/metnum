@@ -1,19 +1,19 @@
 \par \IEEEPARstart{A}{} continuaci\'on nos explayaremos sobre los detalles de la
 implementaci\'on del m\'etodo propuesto. En las secciones previas hemos dado una
-introducci\'on al problema, su modelo y justificaci\'on de porque el mismo sirve
+introducci\'on al problema, su modelo y justificaci\'on de por qué el mismo sirve
 y a su vez hemos expuesto un m\'etodo que nos permite hayar la soluci\'on.
 
 \par En esta secci\'on primero hablaremos sobre una implementaci\'on del
 algoritmo \ref{alg:power_method2} (p\'agina \pageref{alg:power_method2}), su
 justificaci\'on y correctitud. Luego pasaremos a resolver el problema de las
 estructuras de datos utilizadas para las matrices del problema (las cuales, por
-representar grafos completos, presentar\'an el incoveniente al querer trabajar
+representar grafos completos, presentar\'an incovenientes al querer trabajar
 con \emph{datasets} cada vez m\'as grandes).
 
 %---------------------------------------------------------------
 \subsection{Implementaci\'on del M\'etodo de la Potencia}
-\par En la secci\'on previa ya se a presentado dos pseudoc\'odigos (algoritmo
-\ref{alg:power_method} y \ref{alg:power_method2}) correspondiente al m\'etodo
+\par En la secci\'on previa ya se han presentado dos pseudoc\'odigos (algoritmo
+\ref{alg:power_method} y \ref{alg:power_method2}) correspondientes al m\'etodo
 que utilizamos durante este trabajo. El principal problema es que ambas opciones
 (una siendo una versi\'on simplificada de la otra, para nuestro contexto) es que
 computan $x^{(k)} \gets Mx^{(k-1)}$. Recordemos la definici\'on de nuestra
@@ -77,7 +77,7 @@ algoritmo:
     \label{alg:power_method3}
 \end{algorithm}
 
-\par En un momento demostraremos que dicho algoritmo es correcto y efectivamente
+\par Más adelante demostraremos que dicho algoritmo es correcto y efectivamente
 est\'a computando $Mx^{(k-1)}$. Pero supongamos que asumimos esto como cierto,
 ¿qu\'e es lo que se gana al implementar de esta manera $Mx^{(k-1)}$?
 
@@ -119,7 +119,7 @@ elementos no nulos de manera eficiente).
 
 \par Claramente, entonces, tendr\'iamos los dos problemas planteados resueltos
 en caso de ser equivalentes el c\'omputo de $x^{(k)}\gets Mx^{(k-1)}$ y el
-algoritmo \ref{alg:power_method3} propuesto  Luego s\'olo quedar\'ia decidir que
+algoritmo \ref{alg:power_method3} propuesto. Luego s\'olo quedar\'ia decidir qué
 estructura(s) de matrices esparsas utilizar.
 
 %---------------------------------------------------------------
@@ -209,7 +209,7 @@ estructura(s) de matrices esparsas utilizar.
 Esparsas\protect\footnote{T\'ermino coloquial utilizada para referirnos a
 matrices poco densas, es decir matrices con muchos valores nulos.}}
 \par Como se ha mencionado, la princpal ''optimizaci\'on'' de la
-implementaci\'on\footnote{y m\'as que optimizaci\'on, necesidad, ya que para
+implementaci\'on\footnote{Y m\'as que optimizaci\'on, necesidad, ya que para
 instancias grandes no nos alcanzar\'ia con 16GB de memoria RAM para
 instanciar la matriz.} es la utilizaci\'on de estructuras especiales para
 representar matrices esparsas. Esta elecci\'on, sin embargo, debe ser
@@ -225,9 +225,9 @@ sus caracter\'isticas pertintentes a nuestro contexto:
 \begin{LaTeXdescription}
     \item[Dictionary of Keys (DoK)] Es una estructura buena para construir la
         matriz incrementalmente con datos de entrada desordenados, pero no es
-        eficiente para iterar los valores no nulos en orden, lo cual no hace a
-        esta estructura no permite realizar operaciones algebr\'aicas (como
-        multiplcaci\'on matriz-vector) de manera eficiente. Suele usarse para
+        eficiente para iterar los valores no nulos en orden, lo cual hace a
+        esta estructura ineficiente para realizar operaciones algebraicas (como
+        multiplcaci\'on matriz-vector). Suele usarse para
         construir la matriz, la que luego es transformada a un formato m\'as
         eficiente para el procesamiento de los datos\cite{wiki_dok}. Es
         tambi\'en llamada en otros \'ambitos como \textbf{Hash Table
@@ -236,10 +236,10 @@ sus caracter\'isticas pertintentes a nuestro contexto:
     \item[Compressed Row Storage (CRS)] Es una estructura d\'ificil de
         inicializar, pues a pesar de ser eficiente en cuanto al uso de memoria,
         los datos no pueden ser insertados en orden arbitrario\footnote{No es
-        que no se pueda, pero se vuelve realmente ineficiente.}. Esto nos obliga a
+        que no se pueda, pero se vuelve realmente difícil e ineficiente.}. Esto nos obliga a
         pasarle los datos en un orden espec\'ifico para poder construir dicha
-        estructura. Como ventaja tiene que permite realizar operaciones
-        algebr\'aicas de manera eficiente, a pesar de requerir un direccionamiento
+        estructura. Como ventaja, permite realizar operaciones
+        algebraicas de manera eficiente, a pesar de requerir un direccionamiento
         indirecto a los elementos para acceder a los elementos una vez dada la
         posici\'on del mismo\cite{wiki_dok}\cite{alglib_sparse}.
 
@@ -254,7 +254,7 @@ sus caracter\'isticas pertintentes a nuestro contexto:
 
 \par Observando estas caracter\'isticas, claramente afrontamos un problema.
 Necesitamos una estructura para matrices esparsas que sea apta para operaciones
-algebr\'aicas (como lo son CRS y CCS), pero en principio no podemos asegurar que
+algebraicas (como lo son CRS y CCS), pero en principio no podemos asegurar que
 la informaci\'on de las instancias de entrada vengan manteniendo alg\'un orden
 espec\'ifico, con lo cual la construcci\'on de dicha estructura no es viable.
 Podr\'iamos usar DoK para construir sin problemas dicha instancia, pero esta
@@ -264,7 +264,7 @@ ella.
 \par La decisi\'on entonces fue entonces la mencionada en casi todas las
 referencias: utilizamos un DoK para la instanciaci\'on de los datos, para luego
 transformar dicha estructura en un formato m\'as adecuado para las operaciones
-algebr\'aicas. Nuestra elecci\'on en este caso fue CRS, ya que interpretamos que
+algebraicas. Nuestra elecci\'on en este caso fue CRS, ya que interpretamos que
 la implementaci\'on de la operaci\'on multiplicaci\'on matriz-vector era m\'as
 f\'acil con \'esta que con CCS (como explicaremos dentro de unas secciones).
 
@@ -283,12 +283,12 @@ acceso y modificaci\'on a los datos en tiempo constante.
 \par En contrapartida, recorrer los elementos almacenados en orden (tanto por
 clave como por valor) no es una opci\'on soportada. Ni tampoco saber, por
 ejemplo, para una fila dada que elementos no nulos se tienen almacenados de la
-misma (ni en que columna). Esto \'ultimo es lo que dificulta enormemente las
-operaciones algebr\'aicas sobre esta estructura (consultar si hay un valor no
+misma (ni en qué columna). Esto \'ultimo es lo que dificulta enormemente las
+operaciones algebraicas sobre esta estructura (consultar si hay un valor no
 nulo almacenado en una posici\'on tiene costo constante, pero al multiplcar se
 requiere consultar columna por columna para una fila dada, obteniendo un costo
 final $\mathcal{O}(n)$ que no es mejor que lo que provee una matriz almacenada
-como vector de vectores\footnote{Aunque se obtuvo una mejora en cuanto a la
+como vector de vectores\footnote{Aunque se obtiene una mejora en cuanto a la
 complejidad espacial.}).
 
 \par La utilidad de esta estructura, al elegirla, es la de poder realizar la
@@ -397,7 +397,7 @@ Consideremos la siguiente matriz $A\in\real^{6\times 6}$\cite{netlib_crs}:
 \end{table}
 \medskip
 
-\par Observando esto, queda claro el porque es complicado hacer una inserci\'on
+\par Observando esto, queda claro por qué es complicado hacer una inserci\'on
 arbitrar\'ia de elementos. Supongamos en el ejemplo que deseamos agregar un
 nuevo dato no nulo $x$ en $a_{2,3}$. En primer lugar deber\'iamos incrementar el
 tama\~no de $val$ en uno, para luego insertar $x$ en $val[5]$. Antes de hacer
@@ -491,7 +491,7 @@ en lugar de \'esta, ya que a la hora de realizar la operaci\'on aritm\'etica de
 mayor peso para el m\'etodo de la potencia era m\'as importante poder iterar los
 valores no nulos de una fila m\'as que los de una columna (ya que debemos hacer
 el producto interno de cada fila con un vector). Claramente esto no es un
-obst\'aculo insalvable dentro de esta estr\'uctura (basta con transponer la
+obst\'aculo insalvable dentro de esta estructura (basta con transponer la
 matriz y hacer los productos internos columna a columna), pero realizar esto nos
 pareci\'o innecesario y poco intuitivo, m\'as a\'un teniendo que implementar
 cualquier representaci\'on desde cero y pudiendo elegir CRS.
