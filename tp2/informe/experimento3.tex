@@ -1,0 +1,45 @@
+\subsection{Convergencia}
+\label{subsec:exp3}
+\begin{LaTeXdescription}
+    \item[Objetivo] Estudiar como se comporta la convergencia en funci\'on de
+        el factor de navegaci\'on $\alpha$.
+
+    \item[Proposici\'on] PageRank propone una soluci\'on donde se observa a un
+        conjunto de p\'aginas web como un grafo dirigido. Luego pasa este modelo
+        a uno  matem\'atico, utilizando una matriz para computar una soluci\'on.
+        Esta matriz, por construcci\'on, termina representando a un grafo
+        completo (el grafo original no necesariamente lo era), y los valores del
+        mismo dependen principalmente de 2 variables: $\epsilon$ y $\alpha$
+        (algoritmo \ref{alg:power_method2}, p\'agina \pageref{alg:power_method2}
+        y ecuaci\'on \ref{eq:M_def}, p\'agina \pageref{eq:M_def}). Si se observa
+        el algoritmo, se ver\'a que claramente modificar el $\epsilon$ tendr\'a
+        como resultado hacer que cadda corrida converga en m\'as o menos
+        iteraciones, ya que el criterio de parada depende de \'el. As\'i pues,
+        no vemos como algo rico experimentar con este valor. En cambio, $\alpha$
+        es una variable que modifica en gran medida a nuestra matriz $M$, con lo
+        cual es dificil saber cual ser\'a su injerencia en la convergencia (en
+        principio). El objetivo, entonces, es ver como $\alpha$ afecta al
+        m\'etodo matem\'atico iterativo de la potencia en cuanto a su
+        convergencia.
+
+    \item[M\'etodo de Experimentaci\'on] Tomaremos 3 instancias de grafos de
+        conectividad de p\'aginas web de tama\~no mediano-grande, obtenidas en
+        \url{http://snap.stanford.edu/data/\#web}. Luego, correremos el
+        algoritmo de PageRank para $\alpha=0 0.1 0.2 \dots 0.9$ y $\epsilon$
+        fijo en $0.00001$
+
+    \item[Resultados, an\'alisis y discusi\'on]
+\end{LaTeXdescription}
+
+\begin{figure}[!h]
+    \centering
+    \subfloat[][Iteraciones hasta Converger en funci\'on de $\alpha$]{
+        \label{subfig:exp3_comp}
+        \includegraphics[width=.5\textwidth]{exp3_iteraciones_funcion_alpha.png}
+    }
+    \subfloat[][Velocidad de convergencia en funci\'on de $\alpha$]{
+        \includegraphics[width=.5\textwidth]{exp3_diff_funcion_iteraciones_standford.png}
+        \label{subfig:exp3_diff}
+    }
+    \caption{An\'alisis de Convergencia en funci\'on de $\alpha$}
+\end{figure}

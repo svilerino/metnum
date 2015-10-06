@@ -312,7 +312,7 @@ existencia del autovalor 1.
         \begin{cases}
             1 &\text{si el nodo $i$ es un dangling node}\\
             0 &\text{caso contrario}
-        \end{cases}
+        \end{cases}\label{eq:S}
 \end{equation}
 \medskip
 
@@ -321,7 +321,6 @@ dangling nodes de un grafo. En la figura \ref{fig:dang_node} tenemos el mismo
 ejemplo anterior, pero habiendo eliminado el link de $3$ a $1$, convirti\'endo
 el nodo $3$ en un dangling node.
 
-\newpage
 \begin{wrapfigure}[8]{l}{0.32\textwidth}
     \includegraphics[width=0.3\textwidth]{example3_dangling_node.png}
     \caption{Dangling Nodes}
@@ -414,8 +413,8 @@ otra p\'agina.
 $M$ a partir de $S$ de la siguiente manera:
 
 \begin{equation}
-    M = \alpha S + (1-\alpha) \frac{1}{n}ee^T
-    \quad\quad\quad \alpha\in\real \land \alpha\in\left[0,1\right)
+    M = \alpha S + (1-\alpha) \frac{1}{n}ee^T \quad\quad\quad \alpha\in\real
+    \land \alpha\in\left[0,1\right) \label{eq:M_def}
 \end{equation}
 
 \par En este modelo, $\alpha$ es un par\'ametro que controla la proporci\'on del
