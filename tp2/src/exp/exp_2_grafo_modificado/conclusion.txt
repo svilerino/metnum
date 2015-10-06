@@ -1,0 +1,2 @@
+Se puede ver que en indeg aumento la posicion el item eigen_decomposition_of_a_matrix impulsado por el agregado de aristas hacia dicho item.
+Asimismo en pagerank, se vio incrementada su posicion, pero permanecen al principio los items "mas relevantes" o "importantes" dentro de los terminos elegidos.
