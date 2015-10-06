@@ -446,7 +446,25 @@
 \usepackage[inline]{enumitem}
 
 \usepackage[spanish,onelanguage,ruled,linesnumbered]{algorithm2e}
+%configuro el paquete listings para C++
 \usepackage{listings}
+\lstdefinestyle{c++}{%
+    belowcaptionskip=1\baselineskip,
+    breaklines=true,
+    frame=L,
+    numbers=left,
+    %numbersep=5pt,
+    %xleftmargin=\parindent,
+    xleftmargin=3em,
+    language=C++,
+    showstringspaces=false,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\bfseries\color{green!40!black},
+    commentstyle=\itshape\color{purple!40!black},
+    identifierstyle=\color{blue},
+    stringstyle=\color{orange},
+}
+\lstset{style=c++}
 
 % The space between the text and the left/right border of its containing cell
 % is set to 18pt with this command. Again, you may use other units if needed.
