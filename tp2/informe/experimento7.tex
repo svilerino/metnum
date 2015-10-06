@@ -30,14 +30,19 @@
         Nacional 2013/14, en el cual Banfield (1º) termin\'o con 78 puntos
         mientras que Villa San Carlos (22º y \'ultimo) termin\'o con 24.
         Generamos una fecha artificial extra en la que Villa San Carlos le Gana
-        a Banfield 5 a 0. El ranking oficial no cambiar\'ia, dado que con 27
+        a Banfield. El ranking oficial no cambiar\'ia, dado que con 27
         puntos Villa San Carlos seguir\'ia \'ultimo. De confirmarse nuestra
         hip\'otesis, esperar\'iamos ver un cambio en la posición que GeM le
         asigna a Villa San Carlos. En este caso, variando la cantidad de goles,
         estudiamos cu\'anto se alterar\'ia el resultado si la victoria fuese
-        a\'un m\'as abultada.\\
+        m\'as abultada. El valor de $\alpha$ usado fue de 0.85.\\
 
     \item[Resultados, an\'alisis y discusi\'on]
+        Se confirmó la hipótesis. Efectivamente GeM altera el ránking por una simple victoria por 1 a 0, aunque Villa San Carlos sigue último. Esto se debe a que el puntaje de Banfield cae y el de VSC sube, alterando a los demás equipos que ganaron o perdieron contra alguno de ellos.
+        
+        Alcanza con una victoria de 4 a 0 para que Villa San Carlos deje el último lugar. Y con una victoria de 43 a 0, pasa a estar en 2do lugar. Si esto parece irreal, considerar el récord del fútbol profesional de goles en un mismo partido: AS Adema 149 - 0 SO l'Emyrne, el 31 de octubre de 2002 por la THB Champions League de Madagascar\footnote{En honor a la verdad, este resultado fue alcanzado por goles en contra por protesta contra el arbitraje. El resultado ``honesto'' más abultado fue Arbroath FC 36 - 0 Bon Accord FC, el 12 de septiembre de 1885 por la Copa Escocesa 1885-86 y, más recientemente, el conocido Australia 31 - 0 Samoa Americana, el 11 de abril de 2001, por la clasificación al Mundial de Fúbol Corea-Japón 2002}.
+        
+        En la figura \ref{fig:exp7_dist_ranks} se puede observar la diferencia producida por el partido simulado en función de la cantidad de goles del partido. Se observa claramente la ``inestabilidad'' de la que hablábamos: por los resultados de un simple partido GeM puede alterar el orden en un factor grande. Consideramos que esta no es una propiedad deseable del sistema, al menos no para el fútbol: hay muchos factores que influyen en un resultado independientes de la calidad de los competidores (azar, arbitraje, clima, estado del campo, etc.). Un equipo ``malo'' no debería dejar de serlo solo por haber haber tenido suerte (o incluso por haber hecho un único buen partido) contra un equipo ``bueno'', o porque su rival haya hecho un partido malo.
 \end{LaTeXdescription}
 
 \begin{wrapfigure}{r}{0.5\textwidth}
@@ -47,4 +52,3 @@
 \end{wrapfigure}
 \noindent
 
-\par Ssaradara 
