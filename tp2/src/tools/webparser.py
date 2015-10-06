@@ -26,8 +26,10 @@ class MyHTMLParser(HTMLParser):
                         continue
                     if value[0] == '/':
                         #self.linkslist.append(self.basepage + value)
-                        value = self.basepage + value
-                    self.linkslist.append(value)
+                        #value = self.basepage + value
+                        value = "en.wikipedia.org" + value
+                    #print value
+                    self.linkslist.append(value)            
 
 # Removes everything in the url after the first appearence of # or ?.
 def cuturl(s):
@@ -81,6 +83,10 @@ def generategraph(weblist):
         parser.feed(html)
         # Remove duplicates from the list
         parser.linkslist = list(set(parser.linkslist))
+
+        for x in range(len(parser.linkslist)):
+            parser.linkslist[x] = parser.linkslist[x]
+
         # Remove self-references.
         try:
             parser.linkslist.remove(actualpage)
@@ -88,6 +94,7 @@ def generategraph(weblist):
             pass
 
         neighb = getpageneighbours(weblist,parser.linkslist)
+        #print weblist[i], neighb
         ret.append(neighb)
         #print neighb
     return ret
@@ -126,9 +133,12 @@ def drawgraph(graph, graph_image, weblist):
     _graph.node_attr['fontcolor']='#000000'
 
     for i in range(len(graph)):
-        for j in range(len(graph[i])):
-            _graph.add_edge(weblist[i], weblist[graph[i][j]])
-        
+        for j in range(len(graph[i])):            
+            #print weblist[i].rsplit('/', 1)[1].replace("_", " ")
+            _graph.add_edge(
+                weblist[i].rsplit('/', 1)[1].replace("_", " "),
+                weblist[graph[i][j]].rsplit('/', 1)[1].replace("_", " "))
+            
     _graph.layout(prog='dot')
     _graph.draw(graph_image)
 
