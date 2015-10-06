@@ -46,7 +46,7 @@ tanto, no los hemos graficado.}: \emph{orga2.exp.dc.uba.ar} y
 aparec\'ian en los primeros 10 resultados de Google al momento de realizar este
 experimento, ya no lo hacen m\'as.}.
 
-\begin{figure}[!h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{exp1_conn_graph.png}
     \caption{Grafo de conectividad de la instancia generada con los links
@@ -54,7 +54,62 @@ experimento, ya no lo hacen m\'as.}.
     \label{fig:uba.ar_graph}
 \end{figure}
 
-\par Observemos el cuadro \ref{tbl:orden_segun_c} para analizar el orden obtenido.
+\par As\'i pues, ya podemos comenzar a analizar un poco que es lo que esperamos
+encontrar del orden que nos dar\'a PageRank. En primer lugar, los dangling nodes
+que est\'an disconexos del grafo consideramos que deber\'ian tener el puntaje
+m\'as bajo del grafo, ya que los mismos no tienen backlinks y por lo tanto se
+puede pensar que no reciben ning\'un ''voto''. De los restantes dangling nodes,
+3 tienen una arista entrante proveniente del mismo nodo, con lo cual esperamos
+que estos tengan el mismo puntaje (ya que al recibir una arista cada uno del
+mismo nodo, reciben el mismo puntaje de este, pues cada nodo divide por igual su
+''poder de voto'' entre todas sus ejes salientes): \emph{fvet.uba.ar,
+ffyb.uba.ar, derecho.uba.ar}.
+
+\par De los restantes nodos, podemos observar que tenemos 3 nodos con grado de
+entrada 3 (\emph{agro.uba.ar, videos.agro.uba.ar, uba.ar}), y otros 2 nodos con
+grado de entrada 2 (\emph{agro.uba.ar/ced, agro.uba.ar/cursos}). Y si observamos
+el grado de salida de los nodos (descartando los dangling nodes), tenemos que es
+igual a 4. Es decir, todos los nodos dividen su ''poder de voto'' por 4, pero 3
+de ellos reciben 3 ''votos'', y los restantes 2 reciben 2 ''votos''. As\'i pues,
+para seguir analizando ya debemos observar de donde salen las aristas, ya que de
+provenir de un nodo con grado de entrada 3, tendran m\'as peso que de salir de
+un nodo de grado de entrada 2.
+
+\smallskip
+\begin{description}
+    \item[agro.uba.ar] Recibe los votos de: \emph{uba.ar} (grado de entrada
+        3), \emph{agro.uba.ar/ced} (grado de entrada 2),
+        \emph{agro.uba.ar/cursos} (grado de entrada 2).\smallskip
+
+    \item[videos.agro.uba.ar] Recibe los votos de: \emph{agro.uba.ar} (grado de
+        entrada 3), \emph{agro.uba.ar/cursos} y \emph{agro.uba.ar/ced} (ambos
+        con grado de entrada 2).\smallskip
+
+    \item[uba.ar] Recibe los votos de: \emph{agro.uba.ar} (grado de entrada 3),
+        \emph{agro.uba.ar/cursos} y \emph{agro.uba.ar/ced} (ambos con grado de
+        entrada 2).\smallskip
+
+    \item[agro.uba.ar/cursos] Recibe los votos de: \emph{agro.uba.ar} (grado de
+        entrada 3), \emph{agro.uba.ar/ced} (grado de entrada 2).\smallskip
+
+    \item[agro.uba.ar/ced] Recibe los votos de: \emph{agro.uba.ar/cursos}(grado
+        entrada 2), \emph{agro.uba.ar} (grado de entrada 3).
+\end{description}
+\medskip
+
+\par Observamos de este res\'umen que las primeras 3 p\'aginas reciben 3 votos
+(uno de grado 3 y dos de grado 2). Las restantes 2 p\'aginas reciben 2 votos
+(uno de grado 3 y el restante de grado 2). Con lo cual esperamos encontrar que
+estos primeros 3 sitios aparezcan primero en el orden ya que reciben un voto
+m\'as, pero ninguno de los 3 deber\'a tener m\'as puntaje que el otro. Seguido
+de estos, debemos tener las 2 p\'aginas con 2 votos, nuevamente se repite que
+ninguno de estos dos sitios deber\'a tener m\'as votos que el otro.
+
+\par As\'i pues \textit{a priori}, tendr\'iamos un orden obtenido m\'as basado
+en los grados de entrada de los nodos, ya que en ning\'un momento observamos que
+el ''peso'' de los votos altere el orden que nos dar\'ia \emph{In-Deg}. Sobre
+esto desarrollaremos m\'as en el siguiente experimento. Por lo pronto,
+observemos el cuadro \ref{tbl:orden_segun_c} para analizar el orden obtenido.
 
 \begin{table}[hb]
     \centering
@@ -149,38 +204,84 @@ Si todos los nodos tienen la misma probabilidad, el vector nunca es ordenado
 seg\'un las probabilidades y lo que estamos observando es seguramente el orden
 en el cual fueron ingresados los nodos.
 
+\par Para el resto de los casos, donde el orden obtenido no cambia, debemos
+decir que es un resultado con sentido. La elecci\'on del par\'ametro $\alpha$
+afecta a los valores de la matriz $M$ (ecuaci\'on \ref{eq:M_def}, p\'agina
+\pageref{eq:M_def}), pero no afecta a la conectividad representada por la
+matriz. Y esto \'ultimo es lo que mayor peso tiene en el modelo PageRank.
+Claramente puede ocurrir, para valores de $\alpha$ \textbf{muy peque\~nos}, que
+el orden sea distinto (tendiendo a equiprobable), pero a medida que este
+par\'ametro aumente, cada vez ser\'a menor la injerencia de la
+teletransportaci\'on y mayor ser\'a la de la conectividad del grafo/instancia
+inicial. No olvidemos que el concepto de teletransportaci\'on fue introducido
+artificalmente para salvar el escollo de la convergencia del c\'alculo del
+autovector, pero es esperable que a medida que estos ejes artificiales toman
+menor injerencia (recordar la definici\'on de $M$), m\'as se ''acent\'ue'' el
+orden basado en la premisa de PageRank: mayor puntaje a aquellos que tienen la
+mejor relaci\'on \emph{cantidad de votos - calidad de votos} (observar que para
+$\alpha=0.9$ la diferencia entre los primeros y los segundos aument\'o, respecto
+de la diferencia para $\alpha=0.1$, y lo mismo ocurre con los \'ultimos).
+
 \par Otra observaci\'on que podemos hacer pasa por la evoluci\'on de los
-porcentajes para los distintos $\alpha$ en el intervalo $0.1\dots 0.9$.
-Vemos que a medida que aumenta $\alpha$, las probabilidades de los sitios/nodos
-que originalmente no eran dangling nodes (y la de aquellos que lo eran, pero
-pod\'ian ser alcanzados desde alg\'un nodo) disminuyen, mientras que las de los
-dangling nodes completamente inalcanzables en el grafo original
-(\emph{orga2.exp.dc.uba.ar} y \emph{iigg.sociales.uba.ar}) aumenta. Lo que
-est\'a ocurriendo aqu\'i se debe a la manera en la cual se resolvi\'o el
-problema de los dangling nodes. Recordemos que al enfrentar este
-escollo\footnote{Gran palabra.} se decidi\'o otorgar la posibilidad de
-teletransportaci\'on a cualquier nodo con probabilidad equiprobable a los
-dangling nodes. As\'i pues, dado un dangling node $j$, sabemos que $s_{ij} =
-\rfrac{1}{n}$ sin importar el $i$. Luego podemos deducir a partir de la
-ecuaci\'on \ref{eq:M_def}:
+porcentajes para los distintos $\alpha$ en el intervalo $0.1\dots 0.9$.  Vemos
+que a medida que aumenta $\alpha$, la mitad del ranking superior comienza
+a incrementar su probabilidad en contraparte con la mitad inferior, que se
+decrementa.
 
-\begin{align*}
-    m_{ij} &= \alpha s_{ij} + \dfrac{1-\alpha}{n}\\
-           &= \dfrac{\alpha}{n} + \dfrac{1-\alpha}{n}
-            \underarrow[=][\uparrow]{$0\leq\alpha<1$} \dfrac{1}{n}\\
-    \implies& m_{ij} = \frac{1}{n}\quad\forall j / \text{$j$ dangling node
-        inalcanzable}
-\end{align*}
+\par Si bien observamos que todos los nodos que tiene menos probabilidad a mayor
+$\alpha$ son dangling nodes, tambi\'en podemos se\~nalar que hay un dangling
+node entre los nodos que aumentan su probabilidad: \emph{videos.agro.uba.ar}.
+Entonces, no podemos generalizar y decir que este comportamiento ocurre
+dependiendo de si un nodo tiene grado de salida 0 o no.
 
-\par Es decir, para todo $\alpha$ mayor a 0, vemos que la probabilidad en la
-matriz $M$ de los dangling nodes se mantiene inalterada. Esto no ocurre con el
-resto de los nodos, que a mayor $\alpha$ ven su valor original de $S$
-disminu\'ido y el valor artificial de teletransportaci\'on aumentado. As\'i
-pues, pudimos entender porque en el caso de los dangling nodes completamente
-aislados del grafo original su probabilidad aumenta conforme aumenta $\alpha$,
-mientras que en el caso de los nodos con grado de salida distinto de 0 su
-probabilidad disminuye.a mayor $\alpha$. Pero nos queda un caso por analizar: el
-de los dangling nodes alcanzables desde el grafo de conectividad.
+\par Analicemos entonces que significa aumentar $\alpha$. Recordemos la
+ecuaci\'on de $M$ presentada en la secci\'on \ref{sec:introduccion}:
 
-\par Observemos los valores de 2 dangling nodes alcanzables: \emph{fvet.uba.ar}
-y 
+\begin{equation*}
+    M = \alpha S + (1-\alpha) \frac{1}{n}ee^T \quad\quad\quad \alpha\in\real
+    \land \alpha\in\left[0,1\right) \label{eq:M_def}
+\end{equation*}
+
+\par Recordemos tambi\'en que $S$ no es otra cosa que la matriz de conectividad
+del grafo, habi\'endo ya resuelto el inconveniente de los dangling nodes. As\'i
+pues, vemos que el factor $\alpha$ maneja la proporci\'on en la que $S$ y la
+matriz de distribuci\'on uniforme ($(1/n)ee^T$) componen a $M$, siendo una
+inversamente proporcional a la otra. Ergo, al aumentar $\alpha$ aumenta el peso
+que tiene $S$ (la cual podemos llamar \emph{la matriz de navegaci\'on}, ya que
+se basa en el grafo de conectividad m\'as los dangling nodes con capacidad de
+teletransportaci\'on) en $M$. Intuitivamente hablando, esto deber\'ia darle
+mayor importancia/probabilidad a aquellos nodos que ya se encontraban en la
+matriz de conectividad, ya que en esta los ''pesos'' de los ejes salientes
+tienen un peso proporcional a $\alpha$ respecto de la capacidad de
+teletransportaci\'on que le agrega a $M$ la matriz de distribuci\'on uniforme.
+
+\par Es razonable, entonces, pensar que a mayor $\alpha$ cobre m\'as peso en el
+ranking aquellos nodos que dependen de $S$, y en esta matriz tenemos bien
+marcado el esquema de ''votos'' de PageRank: los nodos reciben su puntaje de
+acuerdo a la cantidad y ''calidad'' de los nodos que los apuntan. En este
+contexto, tiene sentido que la mitad superior del ranking aumente su
+probabilidad conforme aumenta $\alpha$, ya que son los nodos a los que
+inicialmente $S$ les otorga un mayor puntaje (recordar la definici\'on de $S$ en
+la p\'agina \pageref{eq:S}).
+
+\par Para finalizar, debemos hacer notar al lector (sino lo ha hecho ya) que la
+suma total de las probabilidades para casi todos los casos difiere de $1$. Esto
+no es otra cosa que un nuevo ejemplo de los errores n\'umericos de la
+aritm\'etica finita, de los cuales ninguna computadora puede escapar (a lo sumo
+puede mitigar sus efectos). Claramente, al correr el m\'etodo de la potencia
+para obtener el ranking PageRank, el error n\'umerio podr\'ia incluso afectar a
+la convergencia real (pues te\'oricamente ya sabemos que deber\'ia converger).
+Una de las medidas para mitigar esto es la de trabajar siempre con vectores
+normalizados desde el c\'odigo en cada iteraci\'on del m\'etodo, a pesar de
+saber que desde la teot\'ia estos ya deber\'ian estarlo\footnote{Medida que no
+tomamos, ya que nos dimos cuenta luego de haber corrido los experimentos.}.
+
+\par A lo largo de este experimento analizamos un ejemplo peque\~no para
+ilustrar el comportamiento del PageRank. El ejemplo en si mismo por ah\'i no fue
+el \'optimo, ya que llegamos a la conclusi\'on de que para la instancia de
+prueba PageRank no se comportar\'ia diferente que In-Deg (aunque esto no es tan
+grave ya que en el siguiente experimento ahondaremos en esto). Sin embargo, fue
+un ejemplo bueno que nos permiti\'o exponer como funciona PageRank, cuando se
+comporta como \emph{In-Deg} y, quiz\'as lo m\'as importante de este experimento,
+unos primeros an\'alisis de como el factor de navegaci\'on $\alpha$ afecta al
+orden y las probabilidades del autovector resultante.
