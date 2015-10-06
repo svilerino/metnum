@@ -6,7 +6,7 @@ consecuencia del modelo y su matriz resultante, este $x$ y $\lambda$ existir\'an
 (y en el caso de $x$, que ser\'a \'unico).
 
 \par A continuaci\'on presentamos un m\'etodo num\'erico iterativo el cual fue
-utilizado para resolver este problema. Explicaremos brevemente el m\'etodo en si
+utilizado para resolver este problema. Explicaremos brevemente el m\'etodo en sí
 mismo, sus posibles desventajas y porque el mismo funcionar\'a en este contexto.
 
 %---------------------------------------------------------------
@@ -202,7 +202,7 @@ puede observar en el algoritmo \ref{alg:power_method2}.
     \label{alg:power_method2}
 \end{algorithm}
 
-\par Como comentario, se puede notar en el algoritmo \ref{alg:power_method2} se
+\par Como comentario, se puede notar que en el algoritmo \ref{alg:power_method2} se
 utiliza para el criterio de corte la norma 1 (o distancia \emph{Manhattan}).
 Esto es as\'i pues Kamvar, Haveliwala et al. presentaron resultados emp\'iricos
 que les permitieron demostrar que dicha medida era
@@ -221,6 +221,6 @@ infinito\footnote{Es razonable esperar un resultado en tiempo finito.}. A\'un
 as\'i, como lo que nos interesa en el contexto de este trabajo es obtener el
 orden que nos da el autovector, m\'as que los valores de cada componente del
 mismo en cuesti\'on, obtener una versi\'on aproximada deber\'ia ser suficiente
-\footnote{Por otro lado, obtener la versi\'on exacta es imposible, ya que la
+\footnote{De hecho obtener la versi\'on exacta es imposible, ya que la
 computadora trabaja con aritm\'etica finita.}.
 %---------------------------------------------------------------
