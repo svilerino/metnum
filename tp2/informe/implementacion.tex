@@ -124,6 +124,7 @@ estructura(s) de matrices esparsas utilizar.
 
 %---------------------------------------------------------------
 \subsection{Correctitud de C\'omputo de $\mathbf{x^{(k)}\gets Mx^{(k-1)}}$}
+\vspace{-20pt}
 \begin{align}
     \intertext{Del algoritmo \ref{alg:power_method3}, reemplazando sus 3 pasos
         principales el uno en el otro, llegamos a que el $x^{(k)}$ devuelto
@@ -381,7 +382,7 @@ Consideremos la siguiente matriz $A\in\real^{6\times 6}$\cite{netlib_crs}:
 
 \par Y los vectores de la implementaci\'on CRS de esta matriz ser\'ian:
 
-\begin{table}[!h]
+\begin{table}[h]
     \begin{tabular}{|r|c|c|c|c|c|c|c|c|c|c|c|c|c|}
         \hline
         \textbf{val}&10&-2&3&9&3&7&8&7&3\dots 9&13&4&2&-1\\
@@ -389,13 +390,15 @@ Consideremos la siguiente matriz $A\in\real^{6\times 6}$\cite{netlib_crs}:
         \textbf{col\_ind}&1&5&1&2&6&2&3&4&1\dots 5&6&2&5&6\\
         \hline
     \end{tabular}
+    \newline
+    \vspace*{1ex}
+    \newline
     \begin{tabular}{|r|c|c|c|c|c|c|c|}
         \hline
         \textbf{row\_ptr}&1&3&6&9&13&17&20\\
         \hline
     \end{tabular}
 \end{table}
-\medskip
 
 \par Observando esto, queda claro por qué es complicado hacer una inserci\'on
 arbitrar\'ia de elementos. Supongamos en el ejemplo que deseamos agregar un
@@ -471,7 +474,7 @@ y conocer las posiciones de $val$ inician una fila por tener \'indices a filas y
 conocer las posiciones de $val$ que inician una columna. En la matriz $A$ del
 ejemplo anterior tendr\'iamos los siguientes vectores\cite{netlib_ccs}:
 
-\begin{table}[!h]
+\begin{table}[h]
     \begin{tabular}{|r|c|c|c|c|c|c|c|c|c|c|c|c|c|}
         \hline
         \textbf{val}&10&-2&3&9&3&7&8&7&3\dots 9&13&4&2&-1\\
@@ -479,6 +482,9 @@ ejemplo anterior tendr\'iamos los siguientes vectores\cite{netlib_ccs}:
         \textbf{row\_ind}&1&2&4&2&3&5&6&3&4\dots 5&6&2&5&6\\
         \hline
     \end{tabular}
+    \newline
+    \vspace*{1ex}
+    \newline
     \begin{tabular}{|r|c|c|c|c|c|c|c|}
         \hline
         \textbf{col\_ptr}&1&4&8&10&13&17&20\\

@@ -49,6 +49,12 @@ eficiente; y, obviamente, un sistema de consultas que pueda resolver las mismas
 de manera r\'apida con un ratio de entrada de hasta miles de consultas por
 segundo que devuelva resultados relevantes.
 
+\begin{wrapfigure}[22]{r}{0.5\textwidth}
+    \includegraphics[width=0.5\textwidth]{example1_conn_graph.jpg}
+    \caption{P\'aginas web y sus v\'inculos~\cite{uchicago_research}}
+\end{wrapfigure}
+\noindent
+
 \par En res\'umen, se observa que muchos de los problemas que fueron (y todav\'ia
 siguen) surgiendo son consecuencia de la velocidad con la que esta escalando
 internet. El objetivo de este trabajo es estudiar un aspecto del \'ultimo de los
@@ -76,12 +82,6 @@ representa a la p\'agina con el link hasta el nodo hom\'onimo de la p\'agina
 referenciada por el mismo. El modelo de PageRank propone observar a estos ejes
 como un sistema de ''votos'', donde cada p\'agina ``vota'' mediante sus links a las
 p\'aginas que consideran importantes.
-
-\begin{wrapfigure}[22]{r}{0.52\textwidth}
-    \includegraphics[width=0.5\textwidth]{example1_conn_graph.jpg}
-    \caption{P\'aginas web y sus v\'inculos~\cite{uchicago_research}}
-\end{wrapfigure}
-\noindent
 
 \par Un orden muy simple ser\'ia, entonces, tomar el grado de entrada de cada
 nodo\footnote{Es decir, la cantidad de ejes entrantes al nodo.}, u en palabras
@@ -123,17 +123,17 @@ correspondiente a $j$).
 \par En este modelo, se decide ignorar los links autoreferenciales (uno no puede
 subir su ranking vot\'andose a si mismo), as\'i como tambi\'en considerar s\'olo
 la conexidad entre dos nodos en lugar de considerar a todos los distintos links
-que conectan en el mismo sentido el mismo par de p\'aginas (es decir, no
-tenemos un multigrafo\footnote{Un grafo que permite tener varias aristas
-conectando los mismos nodos (en el mismo sentido, en el caso de un grafo
-dirigido).}).
-
-\begin{wrapfigure}[12]{l}{0.32\textwidth}
+\begin{wrapfigure}[11]{l}{0.3\textwidth}
     \includegraphics[width=0.3\textwidth]{example2_conn_graph.png}
     \caption{Grafo de Conectividad~\cite{Bryan2006}}
     \label{fig:graph_conn}
 \end{wrapfigure}
 \noindent
+
+que conectan en el mismo sentido el mismo par de p\'aginas (es decir, no
+tenemos un multigrafo\footnote{Un grafo que permite tener varias aristas
+conectando los mismos nodos (en el mismo sentido, en el caso de un grafo
+dirigido).}).
 
 \par Observemos en la figura \ref{fig:graph_conn} un ejemplo de un grafo de
 conectividad entre las p\'aginas $1, 2, 3$ y $4$:
@@ -317,15 +317,15 @@ dangling nodes de un grafo. En la figura \ref{fig:dang_node} tenemos el mismo
 ejemplo anterior, pero habiendo eliminado el link de $3$ a $1$, convirti\'endo
 el nodo $3$ en un dangling node.
 
-\begin{wrapfigure}[8]{l}{0.32\textwidth}
+\begin{wrapfigure}[5]{r}{0.3\textwidth}
     \includegraphics[width=0.3\textwidth]{example3_dangling_node.png}
     \caption{Dangling Nodes}
     \label{fig:dang_node}
 \end{wrapfigure}
-\noindent
+\leavevmode
 
 \begin{align*}
-    S =
+    S &=
         \overbrace{
             \begin{bmatrix}
                     0& 0& 0& \frac{1}{2}\\[-0.65em]
@@ -361,11 +361,8 @@ el nodo $3$ en un dangling node.
             0&0&\frac{1}{4}&0\\[-0.65em]
             0&0&\frac{1}{4}&0\\[-0.65em]
             0&0&\frac{1}{4}&0
-        \end{bmatrix}
-\end{align*}
-\medskip\medskip\medskip
-\begin{equation}
-    =
+        \end{bmatrix}\\
+    &=
         \begin{bmatrix}
             0& 0& \frac{1}{4}& \frac{1}{2}\\[-0.65em]
             \frac{1}{3}& 0& \frac{1}{4}& 0\\[-0.65em]
@@ -373,9 +370,7 @@ el nodo $3$ en un dangling node.
             \frac{1}{3}& \frac{1}{2}& \frac{1}{4}& 0
         \end{bmatrix}
     \quad\quad\quad\implies\text{$S$ es matriz de Markov}
-\end{equation}
-\medskip
-
+\end{align*}
 
 \subsubsection*{Rankings M\'ultiples}\label{subsubsec:mult_ranks}
 \par Ahora bien, como se ha mencionado es deseable tener un \'unico autovector
@@ -430,13 +425,14 @@ Markov de nuestra matriz $M$.
 \par Veamos entonces que esta matriz es una matriz de Markov irreducible y
 cuadrada:
 
-\begin{wrapfigure}[20]{r}{0.5\textwidth}
+\begin{wrapfigure}[23]{l}{0.5\textwidth}
+    \vspace{10pt}
     \centering
-    \includegraphics[width=0.48\textwidth]{example4_pagerank_graph.jpg}
+    \includegraphics[width=0.5\textwidth]{example4_pagerank_graph.jpg}
     \caption{Grafo de conectividad con tama\~no de nodos en funci\'on de
         PageRank~\cite{wiki_pagerank}}
 \end{wrapfigure}
-\noindent
+\leavevmode
 
 \begin{itemize}
     \item $M$ es \textit{estoc\'astica por columnas}, pues es la combinaci\'on convexa de
@@ -501,13 +497,14 @@ donde cada equipo juega m\'as partidos contra los equipos de su divisi\'on que
 contra equipos de su conferencia, con los cuales juegan m\'as veces que contra
 los equipos de la conferencia restante.
 
-\begin{wrapfigure}[22]{l}{0.52\textwidth}
+\begin{wrapfigure}[24]{r}{0.5\textwidth}
     \centering
     \includegraphics[width=0.5\textwidth]{example5_college_football.png}
     \caption{Grafo de Encuentros de la liga de f\'utbol americano
         universitaria~\cite{college_football_graph}}
     \label{fig:coll_foot}
 \end{wrapfigure}
+\leavevmode
 
 \par En la figura \ref{fig:coll_foot} se puede observar un ej\'emplo gr\'afico
 de esta asimetr\'ia. Se observa un grafo donde cada nodo representa uno de los
