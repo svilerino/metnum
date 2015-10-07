@@ -16,7 +16,7 @@
         B estar\'ia en la \'ultima posici\'on y A estar\'ia en la primera
         (eventualmente compartiendo dichas posiciones con alg\'un otro equipo).
         Entendemos entonces que este caso particular el ranking 3-1-0 es
-        ''justo'' en este aspecto. Pero intu\'imos que esto no ser\'a lo que
+        ''justo'' en este aspecto. Pero intuimos que esto no ser\'a lo que
         ocurra con GeM, ya que en el grafo de la instancia, A tiene un \'unico
         eje saliente (hacia B) y 18 entrantes, con lo cual su arista deber\'ia
         hacer subir mucho a B en el ranking.\\
@@ -26,7 +26,7 @@
 
     \item[M\'etodo de Experimentaci\'on] Generamos una instancia de 20 equipos
         todos contra todos, donde existen A y B como se describieron. Entre los
-        dem\'as equipos hacemos que el ganador sea aleatorios (con semilla =
+        dem\'as equipos hacemos que el ganador sea aleatorio (con semilla =
         5). Todos los partidos terminan 1 a 0. Ejecutamos GeM y observamos el
         ranking final para diferentes valores de $\alpha$ (el factor de
         navegaci\'on).\\
@@ -66,8 +66,8 @@ evitar esta inestabilidad, serían los más bajos, dado que le dan menos
 importancia a estas situaciones extrañas pero perfectamente posibles en
 cualquier deporte.
 
-\par Lo que observamos es que GeM a la hora de otorgar un puntaje, se fija
-constantemente cual es el nuevo puntaje de aquellos equipos que hacen variar el
+\par Lo que observamos es que GeM a la hora de otorgar un puntaje se ``fija''
+constantemente cuál es el nuevo puntaje de aquellos equipos que hacen variar el
 ranking de un equipo X, lo cual en un caso est\'atico no pareciera estar mal,
 pero si lo pensamos en el tiempo avanzando fecha a fecha, podr\'ia ser injusto a
 los ojos de alguno\footnote{Ni hablar de las posibilidades de fraude. ''Vos me
@@ -75,7 +75,7 @@ ganaste, y si ahora yo salgo a perder te perjudico''. \emph{Imagine the
 possibilites}.}. Ejemplifiquemos esto \'ultimo: supongamos que Racing, en zona
 de descenso, le gana al puntero del campeonato y a partir de la inestabilidad
 encontrada en GeM, pasa a estar fuera de la zona de descenso. Pero ahora depende
-de que el puntero siga ganando, sino quiere volver a dicha zona. La mayor\'ia de
+de que el puntero siga ganando si no quiere volver a dicha zona. La mayor\'ia de
 los rankings oficiales de los deportes evitan esto, ya que equiparan los puntos
 que se reciben por ganarle a cualquier equipo (no hay diferencia en cuanto a
 ganarle al puntero que a un equipo de media tabla).
@@ -85,4 +85,4 @@ modelo GeM, si esto es perjudicial o no depender\'a del contexto de uso. La
 utilizaci\'on de este esquema para determinar el orden de los competidores en
 alg\'un evento deportivo podr\'ia dar lugar a situaci\'ones mejores o peores.
 Como siempre, con esto y con casi todas las cosas, su aplicaci\'on, beneficios y
-desventajes dependeran del contexto de uso.
+desventajes dependerán del contexto de uso.
