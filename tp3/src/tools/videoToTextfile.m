@@ -7,7 +7,7 @@
 % salto se utiliza para saltear cuadros de la imagen original. Si salto es 1 entonces no saltea ningún cuadro, si es mayor entonces saltea salto-1
 
 function videoToTextfile(videoFilename, textFilename, salto)
-	obj = mmreader(videoFilename);
+	obj = VideoReader(videoFilename);
 	video = obj.read();
 	nFrames = obj.NumberOfFrames;
 	frameRate = obj.FrameRate;
