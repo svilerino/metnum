@@ -18,13 +18,13 @@ using namespace std;
 typedef struct Video
 {
 	uint frame_count;
-	uint frame_alto;
-	uint frame_ancho;
+	uint frame_height;
+	uint frame_width;
 	double frame_rate;
 
 	vector< frame_t > frames;
 	
-	Video() : frame_count(0), frame_alto(0), frame_ancho(0), frame_rate(0) { frames.resize(0); }
+	Video() : frame_count(0), frame_height(0), frame_width(0), frame_rate(0) { frames.resize(0); }
 } Video;
 
 void read_video_from_args(std::istream& is, Video& video);
