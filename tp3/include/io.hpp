@@ -20,7 +20,7 @@ typedef struct Video
 	uint frame_count;
 	uint frame_alto;
 	uint frame_ancho;
-	uint frame_rate;
+	double frame_rate;
 
 	vector< frame_t > frames;
 	

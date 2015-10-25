@@ -1,6 +1,5 @@
 #include <io.hpp>
 #include <limits>
-#include <cmath>
 #include <cassert>
 
 void read_video_from_args(std::istream& is, Video& video)
@@ -13,9 +12,7 @@ void read_video_from_args(std::istream& is, Video& video)
     is.ignore(std::numeric_limits<std::streamsize>::max(),',');
     is >> video.frame_ancho;
     
-    double framerate = 0;
-    is >> framerate;
-    video.frame_rate = ceil(framerate);
+    is >> video.frame_rate;
 
     // Reserve memory for video dataframes
     video.frames.resize(video.frame_count);

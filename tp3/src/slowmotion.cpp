@@ -15,8 +15,8 @@ void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint in
 	video_output.frame_alto = video_input.frame_alto;
 	video_output.frame_ancho = video_input.frame_ancho;
 	video_output.frame_rate = video_input.frame_rate;
-	// NOTAR QUE NO COPIO LOS FRAMES ORIGINALES AL VIDEO DE SALIDA ACA. 
-	// Como voy a  hacer inserts intermedios en un vector de la stl, primero resizeo al tamaño que va a tener a la salida y me ahorro mover todo en cada insercion de frame interpolado
+	
+	// Avoid dynamic reallocation in between frames insertion.
 	video_output.frames.resize(new_frame_count);
 
 	if (interp_method == NEAREST_NEIGHBOUR){
