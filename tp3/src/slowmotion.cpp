@@ -17,7 +17,7 @@ void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint in
 	video_output.frame_rate = video_input.frame_rate;
 	// NOTAR QUE NO COPIO LOS FRAMES ORIGINALES AL VIDEO DE SALIDA ACA. 
 	// Como voy a  hacer inserts intermedios en un vector de la stl, primero resizeo al tamaño que va a tener a la salida y me ahorro mover todo en cada insercion de frame interpolado
-	video_output.frames.reserve(new_frame_count);
+	video_output.frames.resize(new_frame_count);
 
 	if (interp_method == NEAREST_NEIGHBOUR){
 		
@@ -34,25 +34,33 @@ void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint in
 }
 
 void SlowMotionEffect::nearest_neighbour_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output){
+	uint16_t output_frame_idx = 0;
 	for (uint cur_frame = 0; cur_frame < video_input.frame_count - 1; cur_frame++)
 	{
 		// Add current input frame
-		video_output.frames.push_back(video_input.frames[cur_frame]);
+		video_output.frames[output_frame_idx++] = video_input.frames[cur_frame];
 
 		// Insert new <interpol_frame_count> interpolated frames
 
 		// First half
-		for (uint j = 0; j < (interpol_frame_count >> 1); j++)
+		//cout << "[0.." << (interpol_frame_count / 2) << ")" <<  endl;
+		for (uint j = 0; j < (interpol_frame_count / 2); j++)
 		{
 			// Copy current frame
-			video_output.frames.push_back(video_input.frames[cur_frame]);
+			//cout << "primer for con indice " << j << endl;
+			video_output.frames[output_frame_idx++] = video_input.frames[cur_frame];
 		}
 
 		// Second half
-		for (uint j = (interpol_frame_count >> 1) + 1; j < interpol_frame_count; j++)
+		//cout << "[" << (interpol_frame_count / 2) << ".." << interpol_frame_count << ")" << endl;
+		for (uint j = (interpol_frame_count / 2); j < interpol_frame_count; j++)
 		{
 			// Copy next frame
-			video_output.frames.push_back(video_input.frames[cur_frame + 1]);
+			//cout << "segundo for con indice " << j << endl;
+			video_output.frames[output_frame_idx++] = video_input.frames[cur_frame + 1];
 		}
 	}
+
+	// Ultimo frame
+	video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
 }

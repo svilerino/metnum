@@ -41,7 +41,8 @@ int main(int argc, char** argv) {
         assert(interp_method < 3);
         
         uint interpol_frame_count = atoi(argv[4]);
-        
+
+        assert(interpol_frame_count >= 0);
 
         // -- Leer input
         ifstream is(input_filename);
