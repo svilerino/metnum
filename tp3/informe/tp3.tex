@@ -1,40 +1,40 @@
-\documentclass[11pt, a4paper]{article}
-\usepackage{a4wide,amsmath,amsfonts,graphicx,subcaption,tikz}
-\usepackage[utf8]{inputenc} % para poder usar tildes en archivos UTF-8
-\usepackage[spanish]{babel}
+%\documentclass[11pt, a4paper]{article}
+%\usepackage{a4wide,amsmath,amsfonts,graphicx,subcaption,tikz}
+%\usepackage[utf8]{inputenc} % para poder usar tildes en archivos UTF-8
+%\usepackage[spanish]{babel}
 %\usepackage[ruled,vlined]{algorithm2e}
 
 %\parindent = 0 pt
 \parskip = 5 pt
 
-\newcounter{row}
-\newcounter{col}
+%\newcounter{row}
+%\newcounter{col}
 
-\newcommand\setrow[3]{
-	\setcounter{col}{1}
-	\foreach \n in {#1, #2, #3} {
-	\edef\x{\value{col} - 0.5}
-	\edef\y{3.5 - \value{row}}
-	\node[anchor=center] at (\x, \y) {\n};
-	\stepcounter{col}
-	}
-	\stepcounter{row}
-}
+%\newcommand\setrow[3]{
+%	\setcounter{col}{1}
+%	\foreach \n in {#1, #2, #3} {
+%	\edef\x{\value{col} - 0.5}
+%	\edef\y{3.5 - \value{row}}
+%	\node[anchor=center] at (\x, \y) {\n};
+%	\stepcounter{col}
+%	}
+%	\stepcounter{row}
+%}
 
-\newcommand\setrowaux[7]{
-	\setcounter{col}{1}
-	\foreach \n in {#1, #2, #3, #4, #5, #6, #7} {
-	\edef\x{\value{col} - 0.5}
-	\edef\y{7.5 - \value{row}}
-	\node[anchor=center] at (\x, \y) {\n};
-	\stepcounter{col}
-	}
-	\stepcounter{row}
-}
+%\newcommand\setrowaux[7]{
+%	\setcounter{col}{1}
+%	\foreach \n in {#1, #2, #3, #4, #5, #6, #7} {
+%	\edef\x{\value{col} - 0.5}
+%	\edef\y{7.5 - \value{row}}
+%	\node[anchor=center] at (\x, \y) {\n};
+%	\stepcounter{col}
+%	}
+%	\stepcounter{row}
+%}
 
-\newcommand{\real}{\mathbb{R}}
+%\newcommand{\real}{\mathbb{R}}
 
-\begin{document}
+%\begin{document}
 \begin{center}
 \begin{tabular}{r|cr}
  \begin{tabular}{c}
@@ -133,4 +133,4 @@ de la lista de apellidos de los integrantes del grupo. Ejemplo: \texttt{[TP3] Ar
 \end{itemize}
 
 
-\end{document}
+%\end{document}
