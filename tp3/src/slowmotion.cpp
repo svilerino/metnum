@@ -124,3 +124,90 @@ void SlowMotionEffect::nearest_neighbour_interpolation(interpolation_method_t in
 	// Last frame
 	video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
 }
+
+/*void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output)
+{
+	std::vector< frame_t > xFrames(interpol_frame_count);
+	std::vector< frame_t > yFrames(interpol_frame_count);
+	for (uint cur_frame = 0; cur_frame < video_input.frame_count ; cur_frame++)
+	{
+		add_spline_frame_value(video_input.frames[cur_frame], cur_frame, xFrames[cur_frame], yFrames[cur_frame]);
+		// Formo mi tabla de valores de los pixeles por cada frame
+	}
+	polinomio_conjunto funciones_spline;
+	funciones_spline.resize(yFrames.size());
+	for(int i = 0; i < splines_frames_list.size() ; i++)
+	{
+		funciones_spline[i].resize(yFrames.size());
+	}
+	for(uint splineIndex = 0; splineIndex < yFrames.size() ; splineIndex++)
+	{
+		funciones_spline[splineIndex] = create_spline_method(yFrame[splineIndex]); 
+		// Se construye la funcion S por cada pixel que sera guardado en el conjunto polinomio.
+	}
+	// TODO: Una vez que tengo los S_{j} ( funcion spline ) de cada pixel, realizar la interpolacion
+	// evaluado en un valor cualquiera ( el enunciado creo que pide el intermedio ).
+	// Igualmente, me quedan bastantes dudas al respecto. 
+}
+
+void add_spline_frame_value(frame_t& current_frame, int indice_x0, frame_t& frame_x0, frame_t& frame_y0)
+{
+	uint frame_height = current_frame.size();
+	uint frame_width = current_frame[1].size();
+	for (uint i = 0; i < frame_height; i++)
+	{
+		for (uint j = 0; j < frame_width; j++)
+		{
+			frame_x0[i][j] = indice_x0;
+			frame_y0[i][j] = current_frame[i][j];
+		}	
+	}
+}
+
+vector<polinomio_spline_t> SlowMotionEffect::spline_algorithm(vector<pixel_t> x0, vector<pixel_t> y0)
+{
+    int n = x0.size()-1;
+    vector<pixel_t> a;
+    a.insert(a.begin(), y0.begin(), y0.end());
+    vector<pixel_t> b(n);
+    vector<pixel_t> d(n);
+    vector<pixel_t> h;
+    for(int i = 0; i < n; ++i)
+        h.push_back(x[i+1]-x[i]);
+    vector<pixel_t> alpha;
+    for(int i = 0; i < n; ++i)
+        alpha.push_back( 3*(a[i+1]-a[i])/h[i] - 3*(a[i]-a[i-1])/h[i-1]  );
+    vector<pixel_t> c(n+1);
+    vector<pixel_t> l(n+1);
+    vector<pixel_t> mu(n+1);
+    vector<pixel_t> z(n+1);
+    l[0] = 1;
+    mu[0] = 0;
+    z[0] = 0;
+    for(int i = 1; i < n; ++i)
+    {
+        l[i] = 2 *(x0[i+1]-x0[i-1])-h[i-1]*mu[i-1];
+        mu[i] = h[i]/l[i];
+        z[i] = (alpha[i]-h[i-1]*z[i-1])/l[i];
+    }
+    l[n] = 1;
+    z[n] = 0;
+    c[n] = 0;
+    for(int j = n-1; j >= 0; --j)
+    {
+        c[j] = z [j] - mu[j] * c[j+1];
+        b[j] = (a[j+1]-a[j])/h[j]-h[j]*(c[j+1]+2*c[j])/3;
+        d[j] = (c[j+1]-c[j])/3/h[j];
+    }
+    vector<TuplaSpline> splineRes(n);
+    for(int j = 0;j < n; ++j)
+    {
+        splineRes[j].a = a[j];
+        splineRes[j].b = b[j];
+        splineRes[j].c = c[j];
+        splineRes[j].d = d[j];
+        splineRes[j].xj = xj[j];
+        // Sj(x) = a_{j} + b_{j} [(x - x_{j})] + c_{j} [(x - x_{j})^2] + d_{j} [(x - x_{j})^3]
+    }
+    return splineRes;
+}*/

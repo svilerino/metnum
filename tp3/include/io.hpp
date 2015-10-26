@@ -27,7 +27,20 @@ typedef struct Video
 	Video() : frame_count(0), frame_height(0), frame_width(0), frame_rate(0) { frames.resize(0); }
 } Video;
 
-void read_video_from_args(std::istream& is, Video& video);
-void write_video_to_stream(std::ostream& os, Video& video);
+typedef struct polinomio_spline_t
+{
+	pixel_t a;
+	pixel_t b;
+	pixel_t c;
+	pixel_t d;
+	pixel_t xj;
+} polinomio_spline_t;
+
+typedef vector< vector< polinomio_spline_t > > polinomio_conjunto;
+
+
+// Txt impl
+//void read_video_from_args(std::istream& is, Video& video);
+//void write_video_to_stream(std::ostream& os, Video& video);
 
 #endif
