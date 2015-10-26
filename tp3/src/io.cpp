@@ -2,7 +2,9 @@
 #include <limits>
 #include <cassert>
 
-void read_video_from_args(std::istream& is, Video& video)
+// Impl for txt reading input
+
+/*void read_video_from_args(std::istream& is, Video& video)
 {
     // Read video metadata
     is >> video.frame_count;
@@ -60,4 +62,4 @@ void write_video_to_stream(std::ostream& os, Video& video)
             os << endl;
         }        
     }
-}
+}*/
