@@ -13,6 +13,17 @@ typedef uint16_t pixel_t;
 
 typedef vector< vector<pixel_t> > frame_t;
 
+typedef struct PolinomioSpline
+{
+	pixel_t a;
+	pixel_t b;
+	pixel_t c;
+	pixel_t d;
+	pixel_t xj;
+};
+
+typedef vector< vector< PolinomioSpline > > polinomio_conjunto;
+
 using namespace std;
 
 typedef struct Video
