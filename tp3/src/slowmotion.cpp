@@ -8,37 +8,24 @@
 void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output)
 {
 	
-	//Initialize common video output struct	
+	//Initialize video output struct	
 	video_output.frame_height = video_input.frame_height;
 	video_output.frame_width = video_input.frame_width;
 	video_output.frame_rate = video_input.frame_rate;
+	//Calculate particular output video metadata
+	uint new_frame_count = video_input.frame_count + (video_input.frame_count-1)*interpol_frame_count;
+	video_output.frame_count = new_frame_count;
+	
+	// Avoid dynamic reallocation in between frames insertion.
+	video_output.frames.resize(new_frame_count);
 
 	if (interp_method == NEAREST_NEIGHBOUR){
-		
-		//Calculate particular output video metadata
-		uint new_frame_count = video_input.frame_count + (video_input.frame_count-1)*interpol_frame_count;
-		video_output.frame_count = new_frame_count;
-		
-		// Avoid dynamic reallocation in between frames insertion.
-		video_output.frames.resize(new_frame_count);
 		
 		nearest_neighbour_interpolation(interp_method, interpol_frame_count, video_input, video_output);
 
 	} else if (interp_method == LINEAL){
 
-
-
-		interpol_frame_count = 1;
-
-
-		//Calculate particular output video metadata
-		uint new_frame_count = video_input.frame_count + (video_input.frame_count-1)*interpol_frame_count;
-		video_output.frame_count = new_frame_count;
-		
-		// Avoid dynamic reallocation in between frames insertion.
-		video_output.frames.resize(new_frame_count);
-		
-		linear_interpolation(interp_method, interpol_frame_count, video_input, video_output);
+		progressive_linear_interpolation(interp_method, interpol_frame_count, video_input, video_output);
 
 	} else if (interp_method == SPLINE){
 
@@ -49,7 +36,7 @@ void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint in
 
 }
 
-void SlowMotionEffect::linear_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output)
+void SlowMotionEffect::progressive_linear_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output)
 {
 	uint16_t output_frame_idx = 0;
 	for (uint cur_frame = 0; cur_frame < video_input.frame_count - 1; cur_frame++)
@@ -57,19 +44,24 @@ void SlowMotionEffect::linear_interpolation(interpolation_method_t interp_method
 		// Add current input frame
 		video_output.frames[output_frame_idx++] = video_input.frames[cur_frame];
 
-		//Interpolate new frame from current and next
-		frame_t mixed_frame;
-		create_linear_frame_mix(video_input.frames[cur_frame], video_input.frames[cur_frame + 1], mixed_frame);
+		//Interpolate new frames from current and next
+		double linear_step = 1 / (double)(interpol_frame_count+1);
 
-		//Add the mixed frame
-		video_output.frames[output_frame_idx++] = mixed_frame;
+		for (uint j = 0; j < interpol_frame_count; j++)
+		{
+			frame_t mixed_frame;
+			create_linear_frame_mix(video_input.frames[cur_frame], video_input.frames[cur_frame + 1], mixed_frame, (j+1)*linear_step);
+
+			//Add the mixed frame
+			video_output.frames[output_frame_idx++] = mixed_frame;
+		}
 	}
 
 	// Last frame
 	video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
 }
 
-void SlowMotionEffect::create_linear_frame_mix(frame_t& left_frame, frame_t& right_frame, frame_t& mixed_frame)
+void SlowMotionEffect::create_linear_frame_mix(frame_t& left_frame, frame_t& right_frame, frame_t& mixed_frame, double linear_step)
 {
 
 	uint frame_height = left_frame.size();
@@ -83,9 +75,20 @@ void SlowMotionEffect::create_linear_frame_mix(frame_t& left_frame, frame_t& rig
 
 		for (uint j = 0; j < frame_width; j++)
 		{
-			mixed_frame[i][j] = ( left_frame[i][j] + right_frame[i][j] ) / 2;
+			mixed_frame[i][j] = linear_interpolation(0,
+			 										left_frame[i][j],
+			 										1,
+			 										right_frame[i][j],
+			 										linear_step
+			 										);
 		}	
 	}
+}
+
+double SlowMotionEffect::linear_interpolation(double x0, double y0, double x1, double y1, double x)
+{
+	double y = y0 + (y1-y0) * ( (x - x0) / (x1 - x0) );
+	return y;
 }
 
 
