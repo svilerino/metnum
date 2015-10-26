@@ -2,6 +2,7 @@
 CC=g++
 LD=g++
 RM=rm
+OPENCV_LIB = `pkg-config --cflags --libs opencv`
 
 #------- Flags ------- 
 LDFLAGS=
@@ -11,7 +12,7 @@ CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/
 
 #------- Objects ------- 
 
-OBJS=main.o io.o slowmotion.o
+OBJS=main.o io.o slowmotion.o opencv_util.o
 #------- Dirs ------- 
 
 BINDIR=../bin
@@ -28,7 +29,7 @@ clean:
 
 tp3: $(OBJS)
 	mkdir -p $(BINDIR)
-	$(LD) $(LDFLAGS) -o $(BINDIR)/tp3 $(OBJS)
+	$(LD) $(LDFLAGS) -o $(BINDIR)/tp3 $(OBJS) $(OPENCV_LIB) -lm
 
 %.o: %.cpp
-	$(CC) -c $(CFLAGS) -o "$@" "$<"
+	$(CC) -c $(CFLAGS) -o "$@" "$<" $(OPENCV_LIB)
