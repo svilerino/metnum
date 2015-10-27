@@ -37,7 +37,7 @@ typedef struct polinomio_spline_t
 } polinomio_spline_t;
 
 typedef vector< polinomio_spline_t > pixel_polynomial_t;
-typedef vector< vector<pixel_polynomial_t> > frame_spline_polynomials_t;
+typedef vector< vector<pixel_polynomial_t> > block_spline_polynomials_t;
 
 // Txt impl
 //void read_video_from_args(std::istream& is, Video& video);

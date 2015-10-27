@@ -148,19 +148,17 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 		cout << "Blocks including trailing frames: " << blocks_count << endl;
 	}
 
-	
-	vector < frame_spline_polynomials_t > splines_bloques_list(blocks_count);
-
 	// Process blocks
 	uint starting_frame = 0;
 	for (uint block_idx = 0; block_idx < blocks_count-1; block_idx++)
 	{
 		cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << ")" << endl;
 		//Real frame index: block_idx*spline_block_size + frame_idx
-		create_spline_block( 	video_input,
+		process_spline_block( 		video_input,
+									video_output,
 									starting_frame,
 									starting_frame + spline_block_size,
-									splines_bloques_list[block_idx]
+									interpol_frame_count
 									);
 		starting_frame += spline_block_size;
 	}
@@ -169,35 +167,17 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	if(remaining_trailing_frames > 0)
 	{
 		cout << "[Block #" << (blocks_count-1) << "]Processing frames in range [" << starting_frame << ".."<< video_input.frame_count << ")" << endl;
-	 	create_spline_block(
+	 	process_spline_block(
 			video_input, 
+			video_output,
 			starting_frame, 
 			video_input.frame_count,
-			splines_bloques_list[blocks_count - 1]
+			interpol_frame_count
 		);
 	}
-
-
-	/* uint16_t output_frame_idx = 0;
-	for (uint cur_frame = 0; cur_frame < video_input.frame_count - 1; cur_frame++)
-	{
-		// Add current input frame
-		video_output.frames[output_frame_idx++] = video_input.frames[cur_frame];
-
-		double spline_step = 1 / (double) (interpol_frame_count + 1);
-
-		for (uint j = 0; j < interpol_frame_count; j++)
-		{
-			// TODO : Evaluar la funcion en dicho punto
-		}
-	} */
-
-	// Last frame
-	//video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
 }
 
-
-void SlowMotionEffect::create_spline_block(Video& video_input, const uint starting_frame, const uint ending_frame, frame_spline_polynomials_t& pixel_polynomials)
+void SlowMotionEffect::process_spline_block(Video& video_input, Video& video_output, const uint starting_frame, const uint ending_frame, uint interpol_frame_count)
 {
 	// Create (x, y) table for pixel (i, j)
 	// Let interpolation_window_frames_count be (ending_frame - starting_frame)
@@ -209,9 +189,10 @@ void SlowMotionEffect::create_spline_block(Video& video_input, const uint starti
 	vector<uint> x0;
 	vector<pixel_t> y0;
 
+	block_spline_polynomials_t pixel_polynomials;
 	pixel_polynomials.resize(video_input.frame_height);
 	for(uint i = 0; i < video_input.frame_height ; i++) 
- 	{
+ 	{	
  		pixel_polynomials[i].resize(video_input.frame_width);
 		for(uint j = 0 ; j < video_input.frame_width ; j++)
 		{
@@ -227,6 +208,55 @@ void SlowMotionEffect::create_spline_block(Video& video_input, const uint starti
 		}
  	}
 
+ 	// En pixel_polynomials[i][j][k] tengo los coeficientes de la ecuacion Sk del pixel i,j
+
+ 	uint16_t output_frame_idx = 0;//calcular posicion de comienzo de salida en bloque iesimo(distinta de vidinput);
+ 	cerr << "corregir el indice de aca arriba" << endl;
+
+ 	// Iterate over all frames in current block
+	for (uint cur_frame = starting_frame; cur_frame < ending_frame-1; cur_frame++)
+	{
+		// Add current input frame
+		video_output.frames[output_frame_idx++] = video_input.frames[cur_frame];
+
+		// Add new interpolated frames
+		double spline_step = 1 / (double) (interpol_frame_count + 1);
+		for (uint j = 0; j < interpol_frame_count; j++)
+		{
+			frame_t new_interpolated_frame;
+			create_linear_frame_mix(video_input.frames[cur_frame], video_input.frames[cur_frame + 1], new_interpolated_frame, (j+1)*spline_step);
+			
+			//Add the mixed frame
+			video_output.frames[output_frame_idx++] = new_interpolated_frame;
+		}
+	}
+
+	// Last frame
+	video_output.frames[output_frame_idx++] = video_input.frames[ending_frame - 1];
+}
+
+void SlowMotionEffect::create_spline_frame_mix(frame_t& left_frame, frame_t& right_frame, frame_t& mixed_frame, double spline_step)
+{
+
+	uint frame_height = left_frame.size();
+	uint frame_width = left_frame[1].size();
+
+	mixed_frame.resize(frame_height);
+
+	for (uint i = 0; i < frame_height; i++)
+	{
+		mixed_frame[i].resize(frame_width);
+
+		for (uint j = 0; j < frame_width; j++)
+		{
+			mixed_frame[i][j] = linear_interpolation(0,
+			 										left_frame[i][j],
+			 										1,
+			 										right_frame[i][j],
+			 										spline_step
+			 										);
+		}	
+	}
 }
 
 void SlowMotionEffect::create_spline_polynomial(const vector<uint>& x0, const vector<pixel_t>& y0, pixel_polynomial_t& pol_interpolate)
