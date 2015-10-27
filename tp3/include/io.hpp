@@ -36,8 +36,8 @@ typedef struct polinomio_spline_t
 	pixel_t xj;
 } polinomio_spline_t;
 
-typedef vector< vector< polinomio_spline_t > > polinomio_conjunto;
-
+typedef vector< polinomio_spline_t > polinomio_conjunto;
+typedef vector< vector<polinomio_conjunto> > cubicas_matriz;
 
 // Txt impl
 //void read_video_from_args(std::istream& is, Video& video);

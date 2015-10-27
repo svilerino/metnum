@@ -1,6 +1,8 @@
 #include <slowmotion.hpp>
 #include <cmath>
+#include <vector>
 
+using namespace std;
 // ---
 // Los videos de entrada y salida son distintos asi puedo llamar iterativamente para medir tiempo promedio sin perder el input.
 // ---
@@ -28,7 +30,7 @@ void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint in
 		progressive_linear_interpolation(interp_method, interpol_frame_count, video_input, video_output);
 
 	} else if (interp_method == SPLINE){
-
+		// spline_method_interpolation
 	}else{
 		cerr << "Invalid interpolation mode: " << interp_method << endl;
 		exit(-1);
@@ -125,46 +127,75 @@ void SlowMotionEffect::nearest_neighbour_interpolation(interpolation_method_t in
 	video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
 }
 
-/*void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output)
+void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output)
 {
-	std::vector< frame_t > xFrames(interpol_frame_count);
-	std::vector< frame_t > yFrames(interpol_frame_count);
-	for (uint cur_frame = 0; cur_frame < video_input.frame_count ; cur_frame++)
-	{
-		add_spline_frame_value(video_input.frames[cur_frame], cur_frame, xFrames[cur_frame], yFrames[cur_frame]);
-		// Formo mi tabla de valores de los pixeles por cada frame
-	}
-	polinomio_conjunto funciones_spline;
-	funciones_spline.resize(yFrames.size());
-	for(int i = 0; i < splines_frames_list.size() ; i++)
-	{
-		funciones_spline[i].resize(yFrames.size());
-	}
-	for(uint splineIndex = 0; splineIndex < yFrames.size() ; splineIndex++)
-	{
-		funciones_spline[splineIndex] = create_spline_method(yFrame[splineIndex]); 
-		// Se construye la funcion S por cada pixel que sera guardado en el conjunto polinomio.
-	}
-	// TODO: Una vez que tengo los S_{j} ( funcion spline ) de cada pixel, realizar la interpolacion
-	// evaluado en un valor cualquiera ( el enunciado creo que pide el intermedio ).
-	// Igualmente, me quedan bastantes dudas al respecto. 
-}
+	uint cant_bloques = 4; // Lo deje como variable local, por el momento.
+	uint divide_frames = (uint) (video_input.frame_count / cant_bloques);
+	
+	vector < cubicas_matriz > splines_bloques_list;
 
-void add_spline_frame_value(frame_t& current_frame, int indice_x0, frame_t& frame_x0, frame_t& frame_y0)
-{
-	uint frame_height = current_frame.size();
-	uint frame_width = current_frame[1].size();
-	for (uint i = 0; i < frame_height; i++)
+	uint i = 0;
+	uint bloque_count = 0;
+	while(i <= video_input.frame_count)
 	{
-		for (uint j = 0; j < frame_width; j++)
+		if ( (i + divide_frames) > video_input.frame_count ) // Muy chancho esto, significa si me estoy pasando del total frames.
 		{
-			frame_x0[i][j] = indice_x0;
-			frame_y0[i][j] = current_frame[i][j];
-		}	
+			splines_bloques_list[bloque_count] = interpolar_bloque(video_input, i, video_input.frame_count);
+		} 
+		else 
+		{
+			splines_bloques_list[bloque_count] = interpolar_bloque(video_input, i, i + divide_frames);
+			i += divide_frames;
+		}
+		++bloque_count;
 	}
+	
+
+	/* uint16_t output_frame_idx = 0;
+	for (uint cur_frame = 0; cur_frame < video_input.frame_count - 1; cur_frame++)
+	{
+		// Add current input frame
+		video_output.frames[output_frame_idx++] = video_input.frames[cur_frame];
+
+		double spline_step = 1 / (double) (interpol_frame_count + 1);
+
+		for (uint j = 0; j < interpol_frame_count; j++)
+		{
+			// TODO : Evaluar la funcion en dicho punto
+		}
+	} */
+
+	// Last frame
+	video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
+
 }
 
-vector<polinomio_spline_t> SlowMotionEffect::spline_algorithm(vector<pixel_t> x0, vector<pixel_t> y0)
+
+cubicas_matriz SlowMotionEffect::interpolar_bloque(Video& video_input, uint punto_origen, uint punto_destino)
+{
+	uint interpolation_size_frames = punto_destino - punto_origen;
+	cubicas_matriz polinomio_result;
+
+	std::vector<pixel_t> x0;
+	std::vector<pixel_t> y0;
+
+	for(uint i = 0; i < video_input.frame_height ; i++) 
+	{
+		for(uint j = 0 ; j < video_input.frame_width ; j++)
+		{
+			for(uint cur_frame = punto_origen; cur_frame < punto_destino ; cur_frame++) // Formo el polinomio, posicion x posicion
+			{
+				x0[cur_frame] = video_input.frames[cur_frame][i][j];
+				y0[cur_frame] = video_input.frames[cur_frame][i][j];
+			}
+			spline_algorithm(x0 ,y0, polinomio_result[i][j]);
+			// De esta forma, recorre y construye el polinomio en columna
+		}
+	}
+	return cubicas_matriz;
+}
+
+void SlowMotionEffect::spline_algorithm(vector<pixel_t>& x0, vector<pixel_t>& y0, polinomio_conjunto& pol_interpolate)
 {
     int n = x0.size()-1;
     vector<pixel_t> a;
@@ -172,11 +203,14 @@ vector<polinomio_spline_t> SlowMotionEffect::spline_algorithm(vector<pixel_t> x0
     vector<pixel_t> b(n);
     vector<pixel_t> d(n);
     vector<pixel_t> h;
+
     for(int i = 0; i < n; ++i)
         h.push_back(x[i+1]-x[i]);
+
     vector<pixel_t> alpha;
     for(int i = 0; i < n; ++i)
         alpha.push_back( 3*(a[i+1]-a[i])/h[i] - 3*(a[i]-a[i-1])/h[i-1]  );
+
     vector<pixel_t> c(n+1);
     vector<pixel_t> l(n+1);
     vector<pixel_t> mu(n+1);
@@ -184,30 +218,33 @@ vector<polinomio_spline_t> SlowMotionEffect::spline_algorithm(vector<pixel_t> x0
     l[0] = 1;
     mu[0] = 0;
     z[0] = 0;
+
     for(int i = 1; i < n; ++i)
     {
         l[i] = 2 *(x0[i+1]-x0[i-1])-h[i-1]*mu[i-1];
         mu[i] = h[i]/l[i];
         z[i] = (alpha[i]-h[i-1]*z[i-1])/l[i];
     }
+
     l[n] = 1;
     z[n] = 0;
     c[n] = 0;
+
     for(int j = n-1; j >= 0; --j)
     {
         c[j] = z [j] - mu[j] * c[j+1];
         b[j] = (a[j+1]-a[j])/h[j]-h[j]*(c[j+1]+2*c[j])/3;
         d[j] = (c[j+1]-c[j])/3/h[j];
     }
-    vector<TuplaSpline> splineRes(n);
+
     for(int j = 0;j < n; ++j)
     {
-        splineRes[j].a = a[j];
-        splineRes[j].b = b[j];
-        splineRes[j].c = c[j];
-        splineRes[j].d = d[j];
-        splineRes[j].xj = xj[j];
+        pol_interpolate[j].a = a[j];
+        pol_interpolate[j].b = b[j];
+        pol_interpolate[j].c = c[j];
+        pol_interpolate[j].d = d[j];
+        pol_interpolate[j].xj = xj[j];
+
         // Sj(x) = a_{j} + b_{j} [(x - x_{j})] + c_{j} [(x - x_{j})^2] + d_{j} [(x - x_{j})^3]
-    }
-    return splineRes;
-}*/
+    } 
+}
