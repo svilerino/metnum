@@ -20,7 +20,7 @@ class SlowMotionEffect {
 		static void spline_method_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, uint spline_window_size, Video& video_input, Video& video_output);
 		//ending frame is not inclusive [starting_frame..ending_frame)
 		static void create_spline_block(Video& video_input, const uint starting_frame, const uint ending_frame, frame_spline_polynomials_t& pixel_polynomials);
-		static void create_spline_polynomial(const vector<pixel_t>& x0, const vector<pixel_t>& y0, pixel_polynomial_t& pol_interpolate);
+		static void create_spline_polynomial(const vector<uint>& x0, const vector<pixel_t>& y0, pixel_polynomial_t& pol_interpolate);
 };
 
 #endif

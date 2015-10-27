@@ -1,3 +1,4 @@
+#include <vector_operations.tpp>
 #include <slowmotion.hpp>
 #include <cmath>
 #include <vector>
@@ -205,9 +206,30 @@ void SlowMotionEffect::create_spline_block(Video& video_input, const uint starti
 	//     For each (i,j) pixel 
 	//         y_k = pixel(i, j, k)
 
+	vector<uint> x0;
+	vector<pixel_t> y0;
+
+	pixel_polynomials.resize(video_input.frame_height);
+	for(uint i = 0; i < video_input.frame_height ; i++) 
+ 	{
+ 		pixel_polynomials[i].resize(video_input.frame_width);
+		for(uint j = 0 ; j < video_input.frame_width ; j++)
+		{
+			x0.clear();
+			y0.clear();
+			for(uint cur_frame = starting_frame; cur_frame < ending_frame ; cur_frame++) // Formo el polinomio, posicion x posicion
+			{				
+				x0.push_back(cur_frame);
+				y0.push_back(video_input.frames[cur_frame][i][j]);
+			}
+			// De esta forma, recorre y construye el polinomio en columna
+			create_spline_polynomial(x0, y0, pixel_polynomials[i][j]);
+		}
+ 	}
+
 }
 
-void SlowMotionEffect::create_spline_polynomial(const vector<pixel_t>& x0, const vector<pixel_t>& y0, pixel_polynomial_t& pol_interpolate)
+void SlowMotionEffect::create_spline_polynomial(const vector<uint>& x0, const vector<pixel_t>& y0, pixel_polynomial_t& pol_interpolate)
 {
     int n = x0.size()-1;
     vector<pixel_t> a;
