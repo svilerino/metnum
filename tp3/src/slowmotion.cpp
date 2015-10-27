@@ -16,27 +16,30 @@ void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint in
 	video_output.frame_height = video_input.frame_height;
 	video_output.frame_width = video_input.frame_width;
 	video_output.frame_rate = video_input.frame_rate;
-	//Calculate particular output video metadata
-	uint new_frame_count = video_input.frame_count + (video_input.frame_count-1)*interpol_frame_count;
-	video_output.frame_count = new_frame_count;
 	
-	// Avoid dynamic reallocation in between frames insertion.
-	video_output.frames.resize(new_frame_count);
-
 	if (interp_method == NEAREST_NEIGHBOUR){
+		//Calculate particular output video metadata
+		uint new_frame_count = video_input.frame_count + (video_input.frame_count-1)*interpol_frame_count;
+		video_output.frame_count = new_frame_count;
 		
+		// Avoid dynamic reallocation in between frames insertion.
+		video_output.frames.resize(new_frame_count);	
 		nearest_neighbour_interpolation(interp_method, interpol_frame_count, video_input, video_output);
 
 	} else if (interp_method == LINEAL){
+		//Calculate particular output video metadata
+		uint new_frame_count = video_input.frame_count + (video_input.frame_count-1)*interpol_frame_count;
+		video_output.frame_count = new_frame_count;
 
+		// Avoid dynamic reallocation in between frames insertion.
+		video_output.frames.resize(new_frame_count);	
 		progressive_linear_interpolation(interp_method, interpol_frame_count, video_input, video_output);
 
 	} else if (interp_method == SPLINE){
-
+		// Use dynamic reallocation for output frames.
+		video_output.frames.clear();
+		
 		spline_method_interpolation(interp_method, interpol_frame_count, SPLINE_BLOCK_SIZE, video_input, video_output);
-
-		cerr << " Aborting with -1 debug mode(otherwise calls opencv with 0 output frames)" << endl;
-		exit(-1);
 
 	}else{
 		cerr << "Invalid interpolation mode: " << interp_method << endl;
@@ -48,6 +51,7 @@ void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint in
 void SlowMotionEffect::progressive_linear_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output)
 {
 	uint16_t output_frame_idx = 0;
+	// cout << video_input.frame_count << " frames in video" << endl;
 	for (uint cur_frame = 0; cur_frame < video_input.frame_count - 1; cur_frame++)
 	{
 		// Add current input frame
@@ -63,6 +67,7 @@ void SlowMotionEffect::progressive_linear_interpolation(interpolation_method_t i
 
 			//Add the mixed frame
 			video_output.frames[output_frame_idx++] = mixed_frame;
+			// cout << output_frame_idx << endl;
 		}
 	}
 
@@ -154,7 +159,8 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	{
 		cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << ")" << endl;
 		//Real frame index: block_idx*spline_block_size + frame_idx
-		process_spline_block( 		video_input,
+		process_spline_block(
+									video_input,
 									video_output,
 									starting_frame,
 									starting_frame + spline_block_size,
@@ -210,29 +216,26 @@ void SlowMotionEffect::process_spline_block(Video& video_input, Video& video_out
 
  	// En pixel_polynomials[i][j][k] tengo los coeficientes de la ecuacion Sk del pixel i,j
 
- 	uint16_t output_frame_idx = 0;//calcular posicion de comienzo de salida en bloque iesimo(distinta de vidinput);
- 	cerr << "corregir el indice de aca arriba" << endl;
-
  	// Iterate over all frames in current block
 	for (uint cur_frame = starting_frame; cur_frame < ending_frame-1; cur_frame++)
 	{
 		// Add current input frame
-		video_output.frames[output_frame_idx++] = video_input.frames[cur_frame];
+		video_output.frames.push_back(video_input.frames[cur_frame]);
 
 		// Add new interpolated frames
 		double spline_step = 1 / (double) (interpol_frame_count + 1);
 		for (uint j = 0; j < interpol_frame_count; j++)
 		{
 			frame_t new_interpolated_frame;
-			create_linear_frame_mix(video_input.frames[cur_frame], video_input.frames[cur_frame + 1], new_interpolated_frame, (j+1)*spline_step);
+			create_spline_frame_mix(video_input.frames[cur_frame], video_input.frames[cur_frame + 1], new_interpolated_frame, (j+1)*spline_step);
 			
 			//Add the mixed frame
-			video_output.frames[output_frame_idx++] = new_interpolated_frame;
+			//video_output.frames.push_back(new_interpolated_frame);
 		}
 	}
 
 	// Last frame
-	video_output.frames[output_frame_idx++] = video_input.frames[ending_frame - 1];
+	video_output.frames.push_back(video_input.frames[ending_frame - 1]);
 }
 
 void SlowMotionEffect::create_spline_frame_mix(frame_t& left_frame, frame_t& right_frame, frame_t& mixed_frame, double spline_step)
@@ -249,66 +252,66 @@ void SlowMotionEffect::create_spline_frame_mix(frame_t& left_frame, frame_t& rig
 
 		for (uint j = 0; j < frame_width; j++)
 		{
-			mixed_frame[i][j] = linear_interpolation(0,
-			 										left_frame[i][j],
-			 										1,
-			 										right_frame[i][j],
-			 										spline_step
-			 										);
+			mixed_frame[i][j] = left_frame[i][j];//linear_interpolation(0,
+			 									//	left_frame[i][j],
+			 									//	1,
+			 									//	right_frame[i][j],
+			 									//	spline_step
+			 									//	);
 		}	
 	}
 }
 
 void SlowMotionEffect::create_spline_polynomial(const vector<uint>& x0, const vector<pixel_t>& y0, pixel_polynomial_t& pol_interpolate)
 {
-    int n = x0.size()-1;
-    vector<pixel_t> a;
-    a.insert(a.begin(), y0.begin(), y0.end());
-    vector<pixel_t> b(n);
-    vector<pixel_t> d(n);
-    vector<pixel_t> h;
-
-    for(int i = 0; i < n; ++i)
-        h.push_back(x0[i+1]-x0[i]);
-
-    vector<pixel_t> alpha;
-    for(int i = 0; i < n; ++i)
-        alpha.push_back( 3*(a[i+1]-a[i])/h[i] - 3*(a[i]-a[i-1])/h[i-1]  );
-
-    vector<pixel_t> c(n+1);
-    vector<pixel_t> l(n+1);
-    vector<pixel_t> mu(n+1);
-    vector<pixel_t> z(n+1);
-    l[0] = 1;
-    mu[0] = 0;
-    z[0] = 0;
-
-    for(int i = 1; i < n; ++i)
-    {
-        l[i] = 2 *(x0[i+1]-x0[i-1])-h[i-1]*mu[i-1];
-        mu[i] = h[i]/l[i];
-        z[i] = (alpha[i]-h[i-1]*z[i-1])/l[i];
-    }
-
-    l[n] = 1;
-    z[n] = 0;
-    c[n] = 0;
-
-    for(int j = n-1; j >= 0; --j)
-    {
-        c[j] = z [j] - mu[j] * c[j+1];
-        b[j] = (a[j+1]-a[j])/h[j]-h[j]*(c[j+1]+2*c[j])/3;
-        d[j] = (c[j+1]-c[j])/3/h[j];
-    }
-
-    for(int j = 0;j < n; ++j)
-    {
-        pol_interpolate[j].a = a[j];
-        pol_interpolate[j].b = b[j];
-        pol_interpolate[j].c = c[j];
-        pol_interpolate[j].d = d[j];
-        pol_interpolate[j].xj = h[j];
-
-        // Sj(x) = a_{j} + b_{j} [(x - x_{j})] + c_{j} [(x - x_{j})^2] + d_{j} [(x - x_{j})^3]
-    } 
+//    int n = x0.size()-1;
+//    vector<pixel_t> a;
+//    a.insert(a.begin(), y0.begin(), y0.end());
+//    vector<pixel_t> b(n);
+//    vector<pixel_t> d(n);
+//    vector<pixel_t> h;
+//
+//    for(int i = 0; i < n; ++i)
+//        h.push_back(x0[i+1]-x0[i]);
+//
+//    vector<pixel_t> alpha;
+//    for(int i = 0; i < n; ++i)
+//        alpha.push_back( 3*(a[i+1]-a[i])/h[i] - 3*(a[i]-a[i-1])/h[i-1]  );
+//
+//    vector<pixel_t> c(n+1);
+//    vector<pixel_t> l(n+1);
+//    vector<pixel_t> mu(n+1);
+//    vector<pixel_t> z(n+1);
+//    l[0] = 1;
+//    mu[0] = 0;
+//    z[0] = 0;
+//
+//    for(int i = 1; i < n; ++i)
+//    {
+//        l[i] = 2 *(x0[i+1]-x0[i-1])-h[i-1]*mu[i-1];
+//        mu[i] = h[i]/l[i];
+//        z[i] = (alpha[i]-h[i-1]*z[i-1])/l[i];
+//    }
+//
+//    l[n] = 1;
+//    z[n] = 0;
+//    c[n] = 0;
+//
+//    for(int j = n-1; j >= 0; --j)
+//    {
+//        c[j] = z [j] - mu[j] * c[j+1];
+//        b[j] = (a[j+1]-a[j])/h[j]-h[j]*(c[j+1]+2*c[j])/3;
+//        d[j] = (c[j+1]-c[j])/3/h[j];
+//    }
+//
+//    for(int j = 0;j < n; ++j)
+//    {
+//        pol_interpolate[j].a = a[j];
+//        pol_interpolate[j].b = b[j];
+//        pol_interpolate[j].c = c[j];
+//        pol_interpolate[j].d = d[j];
+//        pol_interpolate[j].xj = h[j];
+//
+//        // Sj(x) = a_{j} + b_{j} [(x - x_{j})] + c_{j} [(x - x_{j})^2] + d_{j} [(x - x_{j})^3]
+//    } 
 }
