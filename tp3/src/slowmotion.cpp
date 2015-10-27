@@ -30,7 +30,7 @@ void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint in
 		progressive_linear_interpolation(interp_method, interpol_frame_count, video_input, video_output);
 
 	} else if (interp_method == SPLINE){
-		// spline_method_interpolation
+		spline_method_interpolation(interp_method, interpol_frame_count, SPLINE_BLOCK_SIZE, video_input, video_output);
 	}else{
 		cerr << "Invalid interpolation mode: " << interp_method << endl;
 		exit(-1);
@@ -126,30 +126,43 @@ void SlowMotionEffect::nearest_neighbour_interpolation(interpolation_method_t in
 	// Last frame
 	video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
 }
-
-void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output)
-{
-	uint cant_bloques = 4; // Lo deje como variable local, por el momento.
-	uint divide_frames = (uint) (video_input.frame_count / cant_bloques);
+void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, uint spline_block_size, Video& video_input, Video& video_output)
+{	
+	uint blocks_count = (uint) (video_input.frame_count / spline_block_size);
+	uint remaining_trailing_frames = (uint) (video_input.frame_count % spline_block_size);
 	
-	vector < cubicas_matriz > splines_bloques_list;
-
-	uint i = 0;
-	uint bloque_count = 0;
-	while(i <= video_input.frame_count)
+	if(remaining_trailing_frames > 0)
 	{
-		if ( (i + divide_frames) > video_input.frame_count ) // Muy chancho esto, significa si me estoy pasando del total frames.
-		{
-			splines_bloques_list[bloque_count] = interpolar_bloque(video_input, i, video_input.frame_count);
-		} 
-		else 
-		{
-			splines_bloques_list[bloque_count] = interpolar_bloque(video_input, i, i + divide_frames);
-			i += divide_frames;
-		}
-		++bloque_count;
+		blocks_count++; // extra trailing frames block
 	}
+
 	
+	vector < frame_spline_polynomials_t > splines_bloques_list(blocks_count);
+
+	// Process blocks
+	uint starting_frame = 0;
+	for (uint block_idx = 0; block_idx < blocks_count-1; block_idx++)
+	{
+		//Real frame index: block_idx*spline_block_size + frame_idx
+		spline_interpolate_block( 	video_input,
+									starting_frame,
+									starting_frame + spline_block_size,
+									splines_bloques_list[block_idx]
+									);
+		starting_frame += spline_block_size;
+	}
+
+	// Process last incomplete block( % trailing frames )
+	if(remaining_trailing_frames > 0)
+	{
+	 	spline_interpolate_block(
+			video_input, 
+			starting_frame, 
+			video_input.frame_count,
+			splines_bloques_list[blocks_count - 1]
+		);
+	}
+
 
 	/* uint16_t output_frame_idx = 0;
 	for (uint cur_frame = 0; cur_frame < video_input.frame_count - 1; cur_frame++)
@@ -166,36 +179,45 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	} */
 
 	// Last frame
-	video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
+	//video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
 
 }
 
 
-cubicas_matriz SlowMotionEffect::interpolar_bloque(Video& video_input, uint punto_origen, uint punto_destino)
+void SlowMotionEffect::spline_interpolate_block(Video& video_input, uint starting_frame, uint ending_frame, frame_spline_polynomials_t& pixel_polynomials)
 {
-	uint interpolation_size_frames = punto_destino - punto_origen;
-	cubicas_matriz polinomio_result;
+	// Create (x, y) table for pixel (i, j)
+	// Let interpolation_window_frames_count be (ending_frame - starting_frame)
+	// Assume x in range [0..interpolation_window_frames_count)
+	// For kth frame in [starting_frame, ending_frame):
+	//     For each (i,j) pixel 
+	//         y_k = pixel(i, j, k)
 
-	std::vector<pixel_t> x0;
-	std::vector<pixel_t> y0;
+	std::vector<pixel_t> x_values(ending_frame - starting_frame, 0);
+	for (uint i = 0; i < ending_frame - starting_frame; i++)
+	{
+		x_values[i] = i;	
+	}
 
+	// TODO: El orden de los fors asi es mas legible pero fuckea la cache y la paginacion. 
+	// Si es muy lento, meter el for de los frames como el mas externo
+
+	std::vector<pixel_t> y_values(ending_frame - starting_frame, 0);
 	for(uint i = 0; i < video_input.frame_height ; i++) 
 	{
 		for(uint j = 0 ; j < video_input.frame_width ; j++)
 		{
-			for(uint cur_frame = punto_origen; cur_frame < punto_destino ; cur_frame++) // Formo el polinomio, posicion x posicion
+			for(uint cur_frame = starting_frame; cur_frame < ending_frame ; cur_frame++)		
 			{
-				x0[cur_frame] = video_input.frames[cur_frame][i][j];
-				y0[cur_frame] = video_input.frames[cur_frame][i][j];
+				y_values[cur_frame] = video_input.frames[cur_frame][i][j];
 			}
-			spline_algorithm(x0 ,y0, polinomio_result[i][j]);
-			// De esta forma, recorre y construye el polinomio en columna
+
+			create_spline_polynomial(x_values , y_values, pixel_polynomials[i][j]);
 		}
 	}
-	return cubicas_matriz;
 }
 
-void SlowMotionEffect::spline_algorithm(vector<pixel_t>& x0, vector<pixel_t>& y0, polinomio_conjunto& pol_interpolate)
+void SlowMotionEffect::create_spline_polynomial(vector<pixel_t>& x0, vector<pixel_t>& y0, pixel_polynomial_t& pol_interpolate)
 {
     int n = x0.size()-1;
     vector<pixel_t> a;
@@ -205,7 +227,7 @@ void SlowMotionEffect::spline_algorithm(vector<pixel_t>& x0, vector<pixel_t>& y0
     vector<pixel_t> h;
 
     for(int i = 0; i < n; ++i)
-        h.push_back(x[i+1]-x[i]);
+        h.push_back(x0[i+1]-x0[i]);
 
     vector<pixel_t> alpha;
     for(int i = 0; i < n; ++i)
@@ -243,7 +265,7 @@ void SlowMotionEffect::spline_algorithm(vector<pixel_t>& x0, vector<pixel_t>& y0
         pol_interpolate[j].b = b[j];
         pol_interpolate[j].c = c[j];
         pol_interpolate[j].d = d[j];
-        pol_interpolate[j].xj = xj[j];
+        pol_interpolate[j].xj = h[j];
 
         // Sj(x) = a_{j} + b_{j} [(x - x_{j})] + c_{j} [(x - x_{j})^2] + d_{j} [(x - x_{j})^3]
     } 
