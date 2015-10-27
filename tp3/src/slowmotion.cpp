@@ -1,6 +1,7 @@
 #include <slowmotion.hpp>
 #include <cmath>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 // ---
@@ -30,7 +31,12 @@ void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint in
 		progressive_linear_interpolation(interp_method, interpol_frame_count, video_input, video_output);
 
 	} else if (interp_method == SPLINE){
+
 		spline_method_interpolation(interp_method, interpol_frame_count, SPLINE_BLOCK_SIZE, video_input, video_output);
+
+		cerr << " Aborting with -1 debug mode(otherwise calls opencv with 0 output frames)" << endl;
+		exit(-1);
+
 	}else{
 		cerr << "Invalid interpolation mode: " << interp_method << endl;
 		exit(-1);
@@ -130,10 +136,15 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 {	
 	uint blocks_count = (uint) (video_input.frame_count / spline_block_size);
 	uint remaining_trailing_frames = (uint) (video_input.frame_count % spline_block_size);
-	
+
+	cout << video_input.frame_count << " frames in video" << endl;
+	cout << blocks_count << " blocks of " << spline_block_size << " frames" << endl;
+
+	cout << "Trailing frames: " << remaining_trailing_frames << endl;
 	if(remaining_trailing_frames > 0)
 	{
 		blocks_count++; // extra trailing frames block
+		cout << "Blocks including trailing frames: " << blocks_count << endl;
 	}
 
 	
@@ -143,8 +154,9 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	uint starting_frame = 0;
 	for (uint block_idx = 0; block_idx < blocks_count-1; block_idx++)
 	{
+		cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << ")" << endl;
 		//Real frame index: block_idx*spline_block_size + frame_idx
-		spline_interpolate_block( 	video_input,
+		create_spline_block( 	video_input,
 									starting_frame,
 									starting_frame + spline_block_size,
 									splines_bloques_list[block_idx]
@@ -155,7 +167,8 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	// Process last incomplete block( % trailing frames )
 	if(remaining_trailing_frames > 0)
 	{
-	 	spline_interpolate_block(
+		cout << "[Block #" << (blocks_count-1) << "]Processing frames in range [" << starting_frame << ".."<< video_input.frame_count << ")" << endl;
+	 	create_spline_block(
 			video_input, 
 			starting_frame, 
 			video_input.frame_count,
@@ -180,11 +193,10 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 
 	// Last frame
 	//video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
-
 }
 
 
-void SlowMotionEffect::spline_interpolate_block(Video& video_input, uint starting_frame, uint ending_frame, frame_spline_polynomials_t& pixel_polynomials)
+void SlowMotionEffect::create_spline_block(Video& video_input, const uint starting_frame, const uint ending_frame, frame_spline_polynomials_t& pixel_polynomials)
 {
 	// Create (x, y) table for pixel (i, j)
 	// Let interpolation_window_frames_count be (ending_frame - starting_frame)
@@ -193,31 +205,9 @@ void SlowMotionEffect::spline_interpolate_block(Video& video_input, uint startin
 	//     For each (i,j) pixel 
 	//         y_k = pixel(i, j, k)
 
-	std::vector<pixel_t> x_values(ending_frame - starting_frame, 0);
-	for (uint i = 0; i < ending_frame - starting_frame; i++)
-	{
-		x_values[i] = i;	
-	}
-
-	// TODO: El orden de los fors asi es mas legible pero fuckea la cache y la paginacion. 
-	// Si es muy lento, meter el for de los frames como el mas externo
-
-	std::vector<pixel_t> y_values(ending_frame - starting_frame, 0);
-	for(uint i = 0; i < video_input.frame_height ; i++) 
-	{
-		for(uint j = 0 ; j < video_input.frame_width ; j++)
-		{
-			for(uint cur_frame = starting_frame; cur_frame < ending_frame ; cur_frame++)		
-			{
-				y_values[cur_frame] = video_input.frames[cur_frame][i][j];
-			}
-
-			create_spline_polynomial(x_values , y_values, pixel_polynomials[i][j]);
-		}
-	}
 }
 
-void SlowMotionEffect::create_spline_polynomial(vector<pixel_t>& x0, vector<pixel_t>& y0, pixel_polynomial_t& pol_interpolate)
+void SlowMotionEffect::create_spline_polynomial(const vector<pixel_t>& x0, const vector<pixel_t>& y0, pixel_polynomial_t& pol_interpolate)
 {
     int n = x0.size()-1;
     vector<pixel_t> a;

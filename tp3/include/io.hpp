@@ -8,8 +8,8 @@
 using namespace std;
 
 // Asumo escala de grises entre 0 255
-//Si uso uint8, el parser piensa que son char y se va todo de mambo.
-typedef uint16_t pixel_t;
+//Nota:Si uso uint8, el parser de txt piensa que son char y se va todo de mambo.
+typedef uint8_t pixel_t;
 
 typedef vector< vector<pixel_t> > frame_t;
 

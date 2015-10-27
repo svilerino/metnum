@@ -33,7 +33,7 @@
 
             for (uint j = 0; j < video.frame_width; j++)
             {
-                is >> frame[i][j];
+                cambiar uint8 por uint16 porque istream piensa que son chars is >> frame[i][j];
                 if(is.peek() == ',') is.ignore();
             }
         }
