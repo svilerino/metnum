@@ -44,6 +44,10 @@ bin/
 *.synctex.gz
 *.tex.backup
 *.kilepr
+*.bcf
+*.fdb_latexmk
+*.run.xml
+
 
 #### Dropbox ####
 *.dropbox.attr
