@@ -1,15 +1,28 @@
-\par \IEEEPARstart{E}{N} el siguiente trabajo se aborda una problem\'atica tan
-com\'un a muchos \'ambitos distintos: la generaci\'on de \textit{Rankings} u
-\'ordenes. El objeto de estudio en nuestro caso ser\'a la elaboraci\'on de estos
-rankings para en el \'ambito de las p\'aginas web, para luego tratar de
-extrapolar los m\'etodos encontrados y aplicarlos a los participantes de
-distintos eventos deportivos.
+%!TEX root = informe.tex
+\IEEEPARstart{E}{N} el siguiente trabajo se aborda el desafío de aumentar algorítmicamente la cantidad de frames de un video de manera que el resultado se asemeje al video original. En otras palabras, el objetivo es, a partir de un video, generar otro con mayor cantidad de frames, de modo tal que coincidan en aquellos frames presentes en el video original y los frames generados se \emph{ajusten} a estos, apuntando idealmente a que el ojo humano no perciba el agregado artificial.
 
-\par Esta introducci\'on est\'a orientada a explicar muy brevemente: las
-caracter\'isticas y motivaciones detr\'as de la necesidad de generar estos
-rankings en el \'ambito de las p\'aginas web, el modelo propuesto orignalmente
-por el motor de b\'usqueda \emph{Google} con una breve fundamentaci\'on
-matem\'atica del mismo, para finalizar introduciendo los conceptos utilizados
-para adaptar dicho modelo a los eventos deportivos.
+En esta introducción presentaremos una lista no exhaustiva de las diversas situaciones que motivan la resolución de dicho problema y daremos un marco teórico a los métodos propuestos para su solución.
 
-%-------------------------------------------------------------------------------
+\subsection{La motivación}
+\subsubsection{Compresión de video}
+El aumento exponencial de internet ha dado lugar, entre otras cosas\cite{TP2}, a la mejora de la infraestructura utilizada, lo que en particular repercutió en un aumento generalizado de las velocidades de conexión y del ancho de banda de las mismas. Esto promovió su utilización para compartir contenido cada vez más pesado, en particular videos de todo tipo, desde caseros a profesionales. Además, de la mano con el avance de las tecnologías de captura de video, la resolución de los mismos aumenta cada vez más.
+
+Sin embargo, la inmensa cantidad de usuarios impone un límite al ancho de banda que se le puede dedicar a cada uno, sobretodo para sitios populares como YouTube que sirven miles de videos en cada instante determinado [¿CITA?], e impone la necesidad de criterios para reducir la cantidad de paquetes que se le transfieren a cada usuario.
+
+Un abordaje común y ampliamente difundido es la compresión de videos, con o sin pérdida de calidad. En términos generales, consiste en que el servidor envíe una versión comprimida del video (posiblemente precomputada de antemano) y que el usuario use su propio poder de cómputo para descomprimirlo y visualizarlo. De este modo se reduce la cantidad de tráfico en la red a costa de un trabajo mayor de CPU de servidores y usuarios, que en general resulta menos costoso.
+
+Los resultados de este trabajo pueden utilizarse como método de compresión con pérdida. Visto de ese modo, una versión \emph{comprimida} de un video es un nuevo video con un subconjunto de los frames del original. El mecanismo de compresión, entonces, resulta muy sencillo de implementar. Para realizar la descompresión se precisa, entonces, generar los frames faltantes a partir de los recibidos. El objetivo de este trabajo es el estudio de distintos métodos para resolver ese problema.
+
+Pero la compresión de videos no es la motivación principal de los métodos estudiados. Para dicho problema existen variados algoritmos que, sin eliminar cuadros completos, representan cada uno en función de los cambios respecto de los anteriores, obteniendo resultados más fieles (dado que no eliminan por completo la información de ningún cuadro) sin un tamaño mucho mayor\cite{wiki_data_compression_video}.
+
+\subsubsection{Reproducción en cámara lenta}
+Otra motivación posible y más generalizada resulta de analizar las tecnologías de captura de video. Desde su invención, el principio básico se mantuvo intacto: capturar varias imágenes por segundo y reproducirlas en orden para dar al ojo humano la sensación de movimiento. Un video, entonces, no es más que una secuencia de imagenes (en adelante \emph{frames}) reproducidas a una frecuencia determinada, en general mayor a 12 por segundo (el máximo que el sistema visual humano puede percibir como imágenes separadas\cite{wiki_framerate}). En la época del cine mudo las películas se filmaban con cámaras manuales, lo cual permitía alterar la cantidad de frames por segundo (en adelante \emph{frame-rate}) según la velocidad que se le quisiera dar a la escena: a mayor frame-rate la escena se percibe más lenta y viceversa. Pero al añadirles sonido fue necesario estandarizar el frame-rate, pues el oído humano es mucho más sensible a cambios de frecuencia que el ojo\cite{wiki_framerate}. Desde entonces el estándar ha sido filmar y reproducir a (aproximadamente) 24 cuadros por segundo, tanto películas como demás videos, lo cual se mantuvo prácticamente intacto hasta 2012 con la llegada del Cine en Alta Frecuencia (\emph{HFR} por sus siglas en inglés) de la mano de Peter Jacson en \emph{The Hobbit: An Unexpected Journey}.
+
+A lo largo de la historia y cada vez con mayor frecuencia se han utilizado Cámaras de Alta Velocidad (\emph{HSC}) para generar videos que, reproducidos a 24 \emph{fps}\footnote{frames por segundo, unidad estándar del frame-rate} permitan percibir cosas que el ojo humano o incluso quizás una cámara normal no percibiría. Los usos de los mismos son muy variados, y van desde la biomecánica\footnote{\url{https://www.youtube.com/watch?v=VSzpM8vEAFA}} hasta los eventos deportivos\footnote{\url{https://www.youtube.com/watch?v=O0lCJfFtjCQ}}, pasando incluso por meras curiosidades\footnote{\url{https://www.youtube.com/watch?v=tw3q4_jZv8M}}. Sin embargo los videos resultantes son sumamente pesados por unidad de tiempo, haciéndolos complicados de almacenar, transportar y distribuir. Además, el equipo necesario para realizar las capturas suele ser mucho más costoso que el equipamiento normal. O quizás simplemente no se cuenta con una versión en alta velocidad de un video ya filmado.
+
+Dicho en líneas más generales, es posible que se desee reproducir en cámara lenta un video del cual, por el motivo que fuere, solo se tiene una versión con frame-rate estándar. Una solución es generar computacionalmente los frames faltantes, aprovechando la información existente para crear frames que se acerquen lo más posible a los que hubiese producido una HFC. Lo cual nos lleva nuevamente al objeto de estudio de este trabajo.
+
+\subsubsection{Suavización de video y Morphing}
+También es posible que lo que se busque sea generar frames nuevos a partir de un video ya existente pero no con la intención de verlo en cámara lenta sino para que el resultado final sea más ``suave'' o agradable a la vista. Es un proceso común en los videos animados dibujados a mano\footnote{De hecho el primer video animado de la historia, Fantasmagorie de 1908, tiene solo la mitad de sus cuadros realmente dibujados.}, dado que el trabajo extra necesario para dibujar cada frame individualmente difícilmente sea apreciado por el espectador final. Hoy en día se utiliza también en animaciones por computadora, por ejemplo para realizar una trancisión fluida entre dos expresiones de una cara o entre dos estados posibles de un cuerpo 3D.
+
+Un objetivo similar es generar una trancisión entre dos fotos o videos que no necesariamente forman parte de umna misma captura, pero que se quiere integrar en un único y, en lo posible, fluido video. Los usos más comunes del \emph{morphing}, como se le llama, consisten en transformar la cara de una persona en la de otra\footnote{Como se puede ver en este excelente ejemplo: \url{https://www.youtube.com/watch?v=3ZHtL7CirJA}}.
