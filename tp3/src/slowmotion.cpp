@@ -41,6 +41,10 @@ void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint in
 		
 		spline_method_interpolation(interp_method, interpol_frame_count, SPLINE_BLOCK_SIZE, video_input, video_output);
 
+		uint new_frame_count = video_output.frames.size();
+		video_output.frame_count = new_frame_count;
+		cout << video_output.frame_count << endl;
+
 	}else{
 		cerr << "Invalid interpolation mode: " << interp_method << endl;
 		exit(-1);
@@ -231,7 +235,7 @@ void SlowMotionEffect::process_spline_block(Video& video_input, Video& video_out
 			pixel_polynomials, (j+1)*spline_step, cur_frame);
 			
 			//Add the mixed frame
-			//video_output.frames.push_back(new_interpolated_frame);
+			video_output.frames.push_back(new_interpolated_frame);
 		}
 	}
 
