@@ -194,7 +194,6 @@ void SlowMotionEffect::process_spline_block(Video& video_input, Video& video_out
 
 	vector<uint> x0;
 	vector<pixel_t> y0;
-
 	block_spline_polynomials_t pixel_polynomials;
 	pixel_polynomials.resize(video_input.frame_height);
 	for(uint i = 0; i < video_input.frame_height ; i++) 
@@ -226,8 +225,10 @@ void SlowMotionEffect::process_spline_block(Video& video_input, Video& video_out
 		double spline_step = 1 / (double) (interpol_frame_count + 1);
 		for (uint j = 0; j < interpol_frame_count; j++)
 		{
+		//	cout << "Aca!" << endl;
 			frame_t new_interpolated_frame;
-			create_spline_frame_mix(video_input.frames[cur_frame], video_input.frames[cur_frame + 1], new_interpolated_frame, (j+1)*spline_step);
+			create_spline_frame_mix(video_input.frames[cur_frame], video_input.frames[cur_frame + 1], new_interpolated_frame, 
+			pixel_polynomials, (j+1)*spline_step, cur_frame);
 			
 			//Add the mixed frame
 			//video_output.frames.push_back(new_interpolated_frame);
@@ -238,7 +239,7 @@ void SlowMotionEffect::process_spline_block(Video& video_input, Video& video_out
 	video_output.frames.push_back(video_input.frames[ending_frame - 1]);
 }
 
-void SlowMotionEffect::create_spline_frame_mix(frame_t& left_frame, frame_t& right_frame, frame_t& mixed_frame, double spline_step)
+void SlowMotionEffect::create_spline_frame_mix(frame_t& left_frame, frame_t& right_frame, frame_t& mixed_frame, block_spline_polynomials_t& pixel_polynomials, double spline_step, int position_frame)
 {
 
 	uint frame_height = left_frame.size();
@@ -252,66 +253,85 @@ void SlowMotionEffect::create_spline_frame_mix(frame_t& left_frame, frame_t& rig
 
 		for (uint j = 0; j < frame_width; j++)
 		{
-			mixed_frame[i][j] = left_frame[i][j];//linear_interpolation(0,
-			 									//	left_frame[i][j],
-			 									//	1,
-			 									//	right_frame[i][j],
-			 									//	spline_step
-			 									//	);
+			mixed_frame[i][j] = evaluate_cubic_spline(pixel_polynomials[i][j][position_frame], spline_step);
 		}	
 	}
 }
 
+pixel_t SlowMotionEffect::evaluate_cubic_spline(polinomio_spline_t& pixel_single_polynomial, double x)
+{
+	double coef_a = pixel_single_polynomial.a;
+	double coef_b = pixel_single_polynomial.b;
+	double coef_c = pixel_single_polynomial.c;
+	double coef_d = pixel_single_polynomial.d;
+	double xj = pixel_single_polynomial.xj;
+
+	double result = coef_a + coef_b * (x - xj) + coef_c * pow(x - xj,2) + coef_d * pow(x - xj,3);
+	//cout << result << endl;
+	return (pixel_t) result;
+    // Sj(x) = a_{j} + b_{j} [(x - x_{j})] + c_{j} [(x - x_{j})^2] + d_{j} [(x - x_{j})^3]
+}
+
 void SlowMotionEffect::create_spline_polynomial(const vector<uint>& x0, const vector<pixel_t>& y0, pixel_polynomial_t& pol_interpolate)
 {
-//    int n = x0.size()-1;
-//    vector<pixel_t> a;
-//    a.insert(a.begin(), y0.begin(), y0.end());
-//    vector<pixel_t> b(n);
-//    vector<pixel_t> d(n);
-//    vector<pixel_t> h;
-//
-//    for(int i = 0; i < n; ++i)
-//        h.push_back(x0[i+1]-x0[i]);
-//
-//    vector<pixel_t> alpha;
-//    for(int i = 0; i < n; ++i)
-//        alpha.push_back( 3*(a[i+1]-a[i])/h[i] - 3*(a[i]-a[i-1])/h[i-1]  );
-//
-//    vector<pixel_t> c(n+1);
-//    vector<pixel_t> l(n+1);
-//    vector<pixel_t> mu(n+1);
-//    vector<pixel_t> z(n+1);
-//    l[0] = 1;
-//    mu[0] = 0;
-//    z[0] = 0;
-//
-//    for(int i = 1; i < n; ++i)
-//    {
-//        l[i] = 2 *(x0[i+1]-x0[i-1])-h[i-1]*mu[i-1];
-//        mu[i] = h[i]/l[i];
-//        z[i] = (alpha[i]-h[i-1]*z[i-1])/l[i];
-//    }
-//
-//    l[n] = 1;
-//    z[n] = 0;
-//    c[n] = 0;
-//
-//    for(int j = n-1; j >= 0; --j)
-//    {
-//        c[j] = z [j] - mu[j] * c[j+1];
-//        b[j] = (a[j+1]-a[j])/h[j]-h[j]*(c[j+1]+2*c[j])/3;
-//        d[j] = (c[j+1]-c[j])/3/h[j];
-//    }
-//
-//    for(int j = 0;j < n; ++j)
-//    {
-//        pol_interpolate[j].a = a[j];
-//        pol_interpolate[j].b = b[j];
-//        pol_interpolate[j].c = c[j];
-//        pol_interpolate[j].d = d[j];
-//        pol_interpolate[j].xj = h[j];
-//
-//        // Sj(x) = a_{j} + b_{j} [(x - x_{j})] + c_{j} [(x - x_{j})^2] + d_{j} [(x - x_{j})^3]
-//    } 
+   int n = x0.size()-1;
+   vector<double> a;
+   a.insert(a.begin(), y0.begin(), y0.end());
+   vector<double> b(n);
+   vector<double> d(n);
+   vector<double> h;
+
+   for(int i = 0; i < n; ++i)
+       h.push_back(x0[i+1]-x0[i]);
+
+  // cout << "Se rompe o no?1" << endl;
+
+   vector<double> alpha;
+   for(int i = 0; i < n; ++i)
+       alpha.push_back( 3*(a[i+1]-a[i])/h[i] - 3*(a[i]-a[i-1])/h[i-1]  );
+
+  // cout << "Se rompe o no?2" << endl;
+
+
+   vector<double> c(n+1);
+   vector<double> l(n+1);
+   vector<double> mu(n+1);
+   vector<double> z(n+1);
+   l[0] = 1;
+   mu[0] = 0;
+   z[0] = 0;
+
+   for(int i = 1; i < n; ++i)
+   {
+       l[i] = 2 *(x0[i+1]-x0[i-1])-h[i-1]*mu[i-1];
+       mu[i] = h[i]/l[i];
+       z[i] = (alpha[i]-h[i-1]*z[i-1])/l[i];
+   }
+    //  cout << "Se rompe o no?3" << endl;
+
+   l[n] = 1;
+   z[n] = 0;
+   c[n] = 0;
+
+   for(int j = n-1; j >= 0; --j)
+   {
+       c[j] = z [j] - mu[j] * c[j+1];
+       b[j] = (a[j+1]-a[j])/h[j]-h[j]*(c[j+1]+2*c[j])/3;
+       d[j] = (c[j+1]-c[j])/3/h[j];
+   }
+
+   //cout << "Se rompe o no?4" << endl;
+   //cout << "Ene es " << n << " y pol_interpolate_size es :" << pol_interpolate.size() << endl;
+   pol_interpolate.resize(n);
+   for(int j = 0;j < n; ++j)
+   {
+       pol_interpolate[j].a = (pixel_t) a[j];
+       pol_interpolate[j].b = (pixel_t) b[j];
+       pol_interpolate[j].c = (pixel_t) c[j];
+       pol_interpolate[j].d = (pixel_t) d[j];
+       pol_interpolate[j].xj = (pixel_t) h[j];
+
+       // Sj(x) = a_{j} + b_{j} [(x - x_{j})] + c_{j} [(x - x_{j})^2] + d_{j} [(x - x_{j})^3]
+   } 
 }
+
