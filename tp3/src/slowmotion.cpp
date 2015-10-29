@@ -43,7 +43,7 @@ void SlowMotionEffect::interpolate(interpolation_method_t interp_method, uint in
 
 		uint new_frame_count = video_output.frames.size();
 		video_output.frame_count = new_frame_count;
-		cout << video_output.frame_count << endl;
+		//cout << video_output.frame_count << endl;
 
 	}else{
 		cerr << "Invalid interpolation mode: " << interp_method << endl;
@@ -231,8 +231,9 @@ void SlowMotionEffect::process_spline_block(Video& video_input, Video& video_out
 		{
 		//	cout << "Aca!" << endl;
 			frame_t new_interpolated_frame;
-			create_spline_frame_mix(video_input.frames[cur_frame], video_input.frames[cur_frame + 1], new_interpolated_frame, 
-			pixel_polynomials, (j+1)*spline_step, cur_frame);
+
+			cout << "Interpolating frame " << ((j+1)*spline_step + cur_frame) << endl;
+			create_spline_frame_mix(video_output.frame_height, video_output.frame_width, new_interpolated_frame, pixel_polynomials, (j+1)*spline_step, cur_frame);
 			
 			//Add the mixed frame
 			video_output.frames.push_back(new_interpolated_frame);
@@ -243,12 +244,8 @@ void SlowMotionEffect::process_spline_block(Video& video_input, Video& video_out
 	video_output.frames.push_back(video_input.frames[ending_frame - 1]);
 }
 
-void SlowMotionEffect::create_spline_frame_mix(frame_t& left_frame, frame_t& right_frame, frame_t& mixed_frame, block_spline_polynomials_t& pixel_polynomials, double spline_step, int position_frame)
+void SlowMotionEffect::create_spline_frame_mix(uint frame_height, uint frame_width, frame_t& mixed_frame, block_spline_polynomials_t& pixel_polynomials, double spline_step, int position_frame)
 {
-
-	uint frame_height = left_frame.size();
-	uint frame_width = left_frame[1].size();
-
 	mixed_frame.resize(frame_height);
 
 	for (uint i = 0; i < frame_height; i++)
@@ -257,7 +254,7 @@ void SlowMotionEffect::create_spline_frame_mix(frame_t& left_frame, frame_t& rig
 
 		for (uint j = 0; j < frame_width; j++)
 		{
-			mixed_frame[i][j] = evaluate_cubic_spline(pixel_polynomials[i][j][position_frame], spline_step);
+			mixed_frame[i][j] = evaluate_cubic_spline(pixel_polynomials[i][j][position_frame], position_frame + spline_step);
 		}	
 	}
 }

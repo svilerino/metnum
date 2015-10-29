@@ -22,7 +22,7 @@ class SlowMotionEffect {
 		//ending frame is not inclusive [starting_frame..ending_frame)
 		static void process_spline_block(Video& video_input, Video& video_output, const uint starting_frame, const uint ending_frame, uint interpol_frame_count);
 		static void create_spline_polynomial(const vector<uint>& x0, const vector<pixel_t>& y0, pixel_polynomial_t& pol_interpolate);
-		static void create_spline_frame_mix(frame_t& left_frame, frame_t& right_frame, frame_t& mixed_frame, block_spline_polynomials_t& pixel_polynomials, double spline_step, int position_frame);
+		static void create_spline_frame_mix(uint frame_height, uint frame_width, frame_t& mixed_frame, block_spline_polynomials_t& pixel_polynomials, double spline_step, int position_frame);
 
 };
 
