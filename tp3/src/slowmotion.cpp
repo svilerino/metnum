@@ -267,9 +267,14 @@ pixel_t SlowMotionEffect::evaluate_cubic_spline(polinomio_spline_t& pixel_single
 	double coef_d = pixel_single_polynomial.d;
 	double xj = pixel_single_polynomial.xj;
 
-	double result = coef_a + coef_b * (x - xj) + coef_c * pow(x - xj,2) + coef_d * pow(x - xj,3);
-	//cout << result << endl;
-	return (pixel_t) result;
+	double result = coef_a + coef_b * (x - xj) + coef_c * pow(x - xj, 2) + coef_d * pow(x - xj, 3);
+	cout << x << endl;
+	cout << result << endl;
+	
+	assert(result >=0);
+
+	pixel_t pixel_res = (pixel_t) result;
+	return pixel_res;
     // Sj(x) = a_{j} + b_{j} [(x - x_{j})] + c_{j} [(x - x_{j})^2] + d_{j} [(x - x_{j})^3]
 }
 
