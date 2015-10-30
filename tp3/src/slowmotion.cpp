@@ -144,6 +144,9 @@ void SlowMotionEffect::nearest_neighbour_interpolation(interpolation_method_t in
 }
 void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, uint spline_block_size, Video& video_input, Video& video_output)
 {	
+
+	assert(spline_block_size > 2);
+
 	uint blocks_count = (uint) (video_input.frame_count / spline_block_size);
 	uint remaining_trailing_frames = (uint) (video_input.frame_count % spline_block_size);
 
