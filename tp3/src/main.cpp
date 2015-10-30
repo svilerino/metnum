@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
         // -- Procesamiento
         double tiempo_promedio = 0.0;
         MEDIR_TIEMPO_PROMEDIO(
-            SlowMotionEffect::interpolate(interp_method, interpol_frame_count, video_input, video_output);
+            SlowMotionEffect::slowmotion(interp_method, interpol_frame_count, video_input, video_output);
         , CANT_ITERS_MEDICION, &tiempo_promedio);
 
         // -- Escribir output

@@ -7,6 +7,8 @@
 
 using namespace std;
 
+typedef enum interpolation_method_t {NEAREST_NEIGHBOUR, LINEAL, SPLINE} interpolation_method_t;
+
 // Asumo escala de grises entre 0 255
 //Nota:Si uso uint8, el parser de txt piensa que son char y se va todo de mambo.
 typedef uint16_t pixel_t;
