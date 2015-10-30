@@ -1,7 +1,7 @@
 #include <getopt.h>
 #include <highgui.h>
 #include <cv.h>
-#include <io.hpp>
+#include <types.hpp>
 
 typedef struct CvVideoWriter CvVideoWriter;
 

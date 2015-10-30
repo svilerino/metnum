@@ -1,7 +1,7 @@
 #ifndef INTERPOLATION_H
 #define INTERPOLATION_H
 
-#include <io.hpp>
+#include <types.hpp>
 
 #define SPLINE_BLOCK_SIZE 4
 

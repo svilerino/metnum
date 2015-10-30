@@ -1,7 +1,7 @@
 #ifndef SLOWMOTION_H
 #define SLOWMOTION_H
 
-#include <io.hpp>
+#include <types.hpp>
 #include <vector>
 #include <spline.hpp>
 
