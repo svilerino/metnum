@@ -91,13 +91,16 @@ void SlowMotionEffect::create_linear_frame_mix(frame_t& left_frame, frame_t& rig
 
 		for (uint j = 0; j < frame_width; j++)
 		{
-			mixed_frame[i][j] = Interpolation::linear_interpolation(0,
+			double interpol = Interpolation::linear_interpolation(0,
 			 										left_frame[i][j],
 			 										1,
 			 										right_frame[i][j],
 			 										linear_step
 			 										);
-		}	
+			Interpolation::saturate_8bit(interpol);
+
+			mixed_frame[i][j] = (pixel_t) interpol;
+		}
 	}
 }
 
@@ -248,7 +251,11 @@ void SlowMotionEffect::create_spline_frame_mix(uint frame_height, uint frame_wid
 
 		for (uint j = 0; j < frame_width; j++)
 		{
-			mixed_frame[i][j] = Interpolation::evaluate_cubic_spline(pixel_polynomials[i][j][position_frame], position_frame + spline_step);
+			double interpol = Interpolation::evaluate_cubic_spline(pixel_polynomials[i][j][position_frame], position_frame + spline_step);
+			
+			Interpolation::saturate_8bit(interpol);
+
+			mixed_frame[i][j] = (pixel_t) interpol;
 		}
 	}
 }

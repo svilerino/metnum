@@ -6,8 +6,8 @@ using namespace std;
 
 double Interpolation::linear_interpolation(double x0, double y0, double x1, double y1, double x)
 {
-	double y = y0 + (y1-y0) * ( (x - x0) / (x1 - x0) );
-	return y;
+	double y = y0 + (y1-y0) * ( (x - x0) / (x1 - x0) );    
+    return y;
 }
 
 void Interpolation::saturate_8bit(double &x)
@@ -36,8 +36,6 @@ double Interpolation::evaluate_cubic_spline(polinomio_spline_t& pixel_single_pol
 	double result = (coef_a + coef_b * (x - xj) + coef_c * pow(x - xj, 2) + coef_d * pow(x - xj, 3));
 	
 	//cout << result << endl;
-	
-	assert(result >=0);
 
 	return result;
     // Sj(x) = a_{j} + b_{j} [(x - x_{j})] + c_{j} [(x - x_{j})^2] + d_{j} [(x - x_{j})^3]
