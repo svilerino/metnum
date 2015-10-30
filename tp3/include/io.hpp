@@ -29,11 +29,11 @@ typedef struct Video
 
 typedef struct polinomio_spline_t
 {
-	pixel_t a;
-	pixel_t b;
-	pixel_t c;
-	pixel_t d;
-	pixel_t xj;
+	double a;
+	double b;
+	double c;
+	double d;
+	double xj;
 } polinomio_spline_t;
 
 typedef vector< polinomio_spline_t > pixel_polynomial_t;

@@ -16,7 +16,7 @@ class SlowMotionEffect {
 		static void progressive_linear_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output);
 		static void create_linear_frame_mix(frame_t& left_frame, frame_t& right_frame, frame_t& mixed_frame, double linear_step);
 		static double linear_interpolation(double x0, double y0, double x1, double y1, double x);
-		static pixel_t evaluate_cubic_spline(polinomio_spline_t& pixel_polynomial, double x);
+		static double evaluate_cubic_spline(polinomio_spline_t& pixel_polynomial, double x);
 
 		static void spline_method_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, uint spline_window_size, Video& video_input, Video& video_output);
 		//ending frame is not inclusive [starting_frame..ending_frame)
