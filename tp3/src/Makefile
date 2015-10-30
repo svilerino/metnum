@@ -12,7 +12,7 @@ CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/
 
 #------- Objects ------- 
 
-OBJS=main.o slowmotion.o opencv_util.o interpolation.o
+OBJS=main.o slowmotion.o opencv_util.o interpolation.o matriz.o
 #------- Dirs ------- 
 
 BINDIR=../bin

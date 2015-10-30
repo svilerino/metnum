@@ -29,4 +29,13 @@ typedef struct Video
 	Video() : frame_count(0), frame_height(0), frame_width(0), frame_rate(0) { frames.resize(0); }
 } Video;
 
+typedef struct spline_polynomials_t
+{
+	vector<double> m_x; 
+	vector<double> m_y; 
+	vector<double> m_a; 
+	vector<double> m_b; 
+	vector<double> m_c;
+} spline_polynomials_t;
+
 #endif
