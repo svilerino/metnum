@@ -16,7 +16,7 @@ using namespace std;
         execute_target \
     } \
     end = chrono::high_resolution_clock::now(); \
-    int elapsed = chrono::duration_cast<chrono::microseconds>(end-start).count(); \
+    int elapsed = chrono::duration_cast<chrono::milliseconds>(end-start).count(); \
     *out_double_variable_ptr = (double) ( elapsed/(double)cant_repeticiones );
 
 
