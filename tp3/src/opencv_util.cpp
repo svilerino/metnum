@@ -31,11 +31,17 @@ void FileToVideo(const char *archivo_entrada, Video& video)
     CvSize dst_size;
     dst_size.width = cvGetCaptureProperty(srcVid,CV_CAP_PROP_FRAME_WIDTH);
     dst_size.height = cvGetCaptureProperty(srcVid,CV_CAP_PROP_FRAME_HEIGHT);
-    int nchannels = 3;
     double fps = cvGetCaptureProperty(srcVid,CV_CAP_PROP_FPS);
 
     video.frame_height = dst_size.height;
-    video.frame_width = nchannels * dst_size.width;
+
+#ifdef COLOR_PROCESSING
+    uint nchannels = 3;
+    video.frame_width = dst_size.width * nchannels;
+#else
+    video.frame_width = dst_size.width;
+#endif
+
     video.frame_rate = fps;
     uint frame_count = 0;
     while( true ) {
@@ -60,7 +66,18 @@ void FileToVideo(const char *archivo_entrada, Video& video)
 
             for (uint j = 0; j < video.frame_width; j++)
             {
-                frame[i][j] = src[idx_src++];
+
+                #ifdef COLOR_PROCESSING
+                    frame[i][j] = src[idx_src++];
+                #else
+                    uint8_t blue = src[idx_src++];
+                    uint8_t green = src[idx_src++];
+                    uint8_t red = src[idx_src++];
+                    double promedio = (blue + red + green)/3.0;
+
+                    frame[i][j] = (pixel_t) promedio;
+                #endif
+
             }
         }
 
@@ -83,7 +100,14 @@ void VideoToFile (const char *archivo_salida, Video& video_output)
 
     uint nchannels = 3;
     CvSize dst_size;
-    dst_size.width = video_output.frame_width/nchannels;
+    dst_size.width = video_output.frame_width;
+
+    #ifdef COLOR_PROCESSING
+        dst_size.width = video_output.frame_width/nchannels;
+    #else
+        dst_size.width = video_output.frame_width;
+    #endif
+    
     dst_size.height = video_output.frame_height;
 
     typedef struct CvVideoWriter CvVideoWriter;
@@ -106,8 +130,13 @@ void VideoToFile (const char *archivo_salida, Video& video_output)
         {
             for (uint j = 0; j < video_output.frame_width; j++)
             {                
-                dst_ptr[idx_dst] = video_output.frames[cur_frame][i][j];
-                idx_dst++;
+                #ifdef COLOR_PROCESSING
+                    dst_ptr[idx_dst++] = video_output.frames[cur_frame][i][j];
+                #else
+                    dst_ptr[idx_dst++] = video_output.frames[cur_frame][i][j];
+                    dst_ptr[idx_dst++] = video_output.frames[cur_frame][i][j];
+                    dst_ptr[idx_dst++] = video_output.frames[cur_frame][i][j];
+                #endif
             }
         }    
 

@@ -10,6 +10,8 @@ LDFLAGS=
 #input from zero mode off
 CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ 
 
+#CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ -DCOLOR_PROCESSING
+
 #------- Objects ------- 
 
 OBJS=main.o slowmotion.o opencv_util.o interpolation.o matriz.o
