@@ -3,6 +3,7 @@
 #include <types.hpp>
 #include <slowmotion.hpp>
 #include <timing.hpp>
+#include <interpolation.hpp>
 #include <opencv_util.hpp>
 #include <cassert>
 
@@ -61,6 +62,7 @@ int main(int argc, char** argv) {
             cout << "LINEAL" << endl;
         } else if (interp_method == SPLINE){
             cout << "SPLINE" << endl;
+            cout << "Tamaño de bloque spline: " << SPLINE_BLOCK_SIZE << endl;
         }
 
 
@@ -69,7 +71,8 @@ int main(int argc, char** argv) {
             SlowMotionEffect::slowmotion(interp_method, interpol_frame_count, video_input, video_output);
         , CANT_ITERS_MEDICION, &tiempo_promedio);
 
-        cout << "Microsegundos consumidos para procesar el video de input(sin contar tiempo de I/O): " << tiempo_promedio << endl;
+        cout << "Se corrio el metodo " << CANT_ITERS_MEDICION << " veces sobre el video de input." << endl;
+        cout << "Tiempo consumido en promedio para procesar el video de input(sin contar tiempo de I/O): " << tiempo_promedio << " milisegundos" << endl;
 
         // -- Escribir output
         cout << endl << "------------------------------------- " << endl << endl;
