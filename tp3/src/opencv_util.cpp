@@ -94,10 +94,6 @@ void FileToVideo(const char *archivo_entrada, Video& video)
 
 void VideoToFile (const char *archivo_salida, Video& video_output) 
 {
-// ------
-// -- Write back to video
-// ------
-
     uint nchannels = 3;
     CvSize dst_size;
     dst_size.width = video_output.frame_width;
