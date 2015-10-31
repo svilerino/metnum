@@ -8,7 +8,7 @@ using namespace std;
 // Los videos de entrada y salida son distintos asi puedo llamar iterativamente para medir tiempo promedio sin perder el input.
 // ---
 
-void SlowMotionEffect::slowmotion(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output)
+void SlowMotionEffect::slowmotion(interpolation_method_t interp_method, uint interpol_frame_count, const Video& video_input, Video& video_output)
 {
 	
 	//Initialize video output struct	
@@ -49,7 +49,7 @@ void SlowMotionEffect::slowmotion(interpolation_method_t interp_method, uint int
 
 }
 
-void SlowMotionEffect::progressive_linear_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output)
+void SlowMotionEffect::progressive_linear_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, const Video& video_input, Video& video_output)
 {
 	uint16_t output_frame_idx = 0;
 	// cout << video_input.frame_count << " frames in video" << endl;
@@ -76,7 +76,7 @@ void SlowMotionEffect::progressive_linear_interpolation(interpolation_method_t i
 	video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
 }
 
-void SlowMotionEffect::create_linear_frame_mix(frame_t& left_frame, frame_t& right_frame, frame_t& mixed_frame, double linear_step)
+void SlowMotionEffect::create_linear_frame_mix(const frame_t& left_frame, const frame_t& right_frame, frame_t& mixed_frame, double linear_step)
 {
 
 	uint frame_height = left_frame.size();
@@ -103,7 +103,7 @@ void SlowMotionEffect::create_linear_frame_mix(frame_t& left_frame, frame_t& rig
 	}
 }
 
-void SlowMotionEffect::nearest_neighbour_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, Video& video_input, Video& video_output)
+void SlowMotionEffect::nearest_neighbour_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, const Video& video_input, Video& video_output)
 {
 	uint16_t output_frame_idx = 0;
 	for (uint cur_frame = 0; cur_frame < video_input.frame_count - 1; cur_frame++)
@@ -135,7 +135,7 @@ void SlowMotionEffect::nearest_neighbour_interpolation(interpolation_method_t in
 	// Last frame
 	video_output.frames[output_frame_idx++] = video_input.frames[video_input.frame_count - 1];
 }
-void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, uint spline_block_size, Video& video_input, Video& video_output)
+void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, uint spline_block_size, const Video& video_input, Video& video_output)
 {	
 
 	assert(spline_block_size > 2);
@@ -183,7 +183,7 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	}
 }
 
-void SlowMotionEffect::process_spline_block(Video& video_input, Video& video_output, const uint starting_frame, const uint ending_frame, uint interpol_frame_count)
+void SlowMotionEffect::process_spline_block(const Video& video_input, Video& video_output, const uint starting_frame, const uint ending_frame, uint interpol_frame_count)
 {
 	vector<double> x0;
 	vector<double> y0;
