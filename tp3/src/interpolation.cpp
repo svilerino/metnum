@@ -58,21 +58,21 @@ void Interpolation::calculate_spline_polynomials(const vector<double>& m_x, cons
     // Armar matriz entre 1 y n-1
     for(uint i = 1; i < n-1; i++) 
     {
-        A[i][i-1] = 1.0/3.0*(m_x[i] - m_x[i-1]);
-        A[i][i] = 2.0/3.0*(m_x[i+1] - m_x[i-1]);
-        A[i][i+1] = 1.0/3.0*(m_x[i+1] - m_x[i]);
-        vect_indep[i]=(m_y[i+1]-m_y[i]) / (m_x[i+1]-m_x[i]) - (m_y[i]-m_y[i-1])/(m_x[i]-m_x[i-1]);
+        A[i][i-1] = (m_x[i] - m_x[i-1]);
+        A[i][i] = 2.0*(m_x[i+1] - m_x[i-1]);
+        A[i][i+1] = (m_x[i+1] - m_x[i]);
+        vect_indep[i]=3.0*((m_y[i+1]-m_y[i]) / (m_x[i+1]-m_x[i]) - (m_y[i]-m_y[i-1])/(m_x[i]-m_x[i-1]));
     }
 
     // Agregar ecuaciones de condicion de frontera
 
-    // 2*b[0] = f''
-    A[0][0] = 2.0;
+    // b[0] = f''
+    A[0][0] = 1.0;
     A[0][1] = 0.0;
     vect_indep[0] = 0.0;// 2nd derivative 0 in the left edge
 
-    // 2*b[n-1] = f''
-    A[n-1][n-1] = 2.0;
+    // b[n-1] = f''
+    A[n-1][n-1] = 1.0;
     A[n-1][n-2] = 0.0;
     vect_indep[n-1] = 0.0; // 2nd derivative 0 in the left edge
 

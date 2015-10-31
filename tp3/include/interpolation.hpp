@@ -3,7 +3,7 @@
 
 #include <types.hpp>
 
-#define SPLINE_BLOCK_SIZE 4
+#define SPLINE_BLOCK_SIZE 16
 
 class Interpolation {
 	public:
