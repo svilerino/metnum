@@ -143,21 +143,21 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	uint blocks_count = (uint) (video_input.frame_count / spline_block_size);
 	uint remaining_trailing_frames = (uint) (video_input.frame_count % spline_block_size);
 
-	cout << video_input.frame_count << " frames in video" << endl;
-	cout << blocks_count << " blocks of " << spline_block_size << " frames" << endl;
+	// cout << video_input.frame_count << " frames in video" << endl;
+	// cout << blocks_count << " blocks of " << spline_block_size << " frames" << endl;
 
-	cout << "Trailing frames: " << remaining_trailing_frames << endl;
+	// cout << "Trailing frames: " << remaining_trailing_frames << endl;
 	if(remaining_trailing_frames > 0)
 	{
 		blocks_count++; // extra trailing frames block
-		cout << "Blocks including trailing frames: " << blocks_count << endl;
+		// cout << "Blocks including trailing frames: " << blocks_count << endl;
 	}
 
 	// Process blocks
 	uint starting_frame = 0;
 	for (uint block_idx = 0; block_idx < blocks_count-1; block_idx++)
 	{
-		cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << ")" << endl;
+		// cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << ")" << endl;
 		//Real frame index: block_idx*spline_block_size + frame_idx
 		process_spline_block(
 									video_input,
@@ -172,7 +172,7 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	// Process last incomplete block( % trailing frames )
 	if(remaining_trailing_frames > 0)
 	{
-		cout << "[Block #" << (blocks_count-1) << "]Processing frames in range [" << starting_frame << ".."<< video_input.frame_count << ")" << endl;
+		// cout << "[Block #" << (blocks_count-1) << "]Processing frames in range [" << starting_frame << ".."<< video_input.frame_count << ")" << endl;
 	 	process_spline_block(
 			video_input, 
 			video_output,
@@ -224,7 +224,7 @@ void SlowMotionEffect::process_spline_block(Video& video_input, Video& video_out
 		//	cout << "Aca!" << endl;
 			frame_t new_interpolated_frame;
 
-			cout << "Interpolating frame " << ((j+1)*spline_step + cur_frame) << endl;
+			// cout << "Interpolating frame " << ((j+1)*spline_step + cur_frame) << endl;
 			create_spline_frame_mix(video_output.frame_height,
 			 video_output.frame_width,
 			  new_interpolated_frame, 
