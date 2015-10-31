@@ -1,4 +1,6 @@
 #include <opencv_util.hpp>
+#include <interpolation.hpp>
+#include <cstdlib>
 
 static struct CvVideoWriter *abrir_writer(const char *archivo_salida, int fps, CvSize size) {
     struct CvVideoWriter *dstVid = NULL;
@@ -24,8 +26,8 @@ static CvCapture *abrir_video(const char *archivo_entrada) {
 }
 
 
-void FileToVideo(const char *archivo_entrada, Video& video)
-{
+void FileToVideo(const char *archivo_entrada, Video& video, const string carpeta_frames)
+{ 
     CvCapture *srcVid = abrir_video(archivo_entrada);
 
     CvSize dst_size;
@@ -51,8 +53,28 @@ void FileToVideo(const char *archivo_entrada, Video& video)
         if (cvFrame == NULL) {
             break;
         }
+        
+        // Save frame bmp to carpeta_frames folder.
+        string str_frame = carpeta_frames;
+        str_frame+= "/";
+        str_frame+= "frame_";
+        str_frame+= to_string(frame_count+1);
+        str_frame+= ".bmp";
 
-        unsigned char *src = (unsigned char *) cvFrame->imageData;
+        #ifdef COLOR_PROCESSING
+            cvSaveImage(str_frame.c_str(), cvFrame, NULL);
+        #else
+            IplImage *cvBWFrame = cvCreateImage(cvGetSize(cvFrame), IPL_DEPTH_8U, 1);
+            cvCvtColor(cvFrame, cvBWFrame, CV_BGR2GRAY);
+            cvSaveImage(str_frame.c_str(), cvBWFrame, NULL);
+        #endif
+
+        // Load new frame
+        #ifdef COLOR_PROCESSING
+            unsigned char *src = (unsigned char *) cvFrame->imageData;
+        #else
+            unsigned char *src = (unsigned char *) cvBWFrame->imageData;
+        #endif
         uint idx_src=0;
 
         // Reserve memory for <video.frame_height> pixel rows
@@ -66,18 +88,7 @@ void FileToVideo(const char *archivo_entrada, Video& video)
 
             for (uint j = 0; j < video.frame_width; j++)
             {
-
-                #ifdef COLOR_PROCESSING
-                    frame[i][j] = src[idx_src++];
-                #else
-                    uint8_t blue = src[idx_src++];
-                    uint8_t green = src[idx_src++];
-                    uint8_t red = src[idx_src++];
-                    double promedio = (blue + red + green)/3.0;
-
-                    frame[i][j] = (pixel_t) promedio;
-                #endif
-
+                frame[i][j] = src[idx_src++];
             }
         }
 
@@ -92,7 +103,7 @@ void FileToVideo(const char *archivo_entrada, Video& video)
 }
 
 
-void VideoToFile (const char *archivo_salida, Video& video_output) 
+void VideoToFile (const char *archivo_salida, Video& video_output, const string carpeta_frames) 
 {
     uint nchannels = 3;
     CvSize dst_size;
@@ -136,6 +147,16 @@ void VideoToFile (const char *archivo_salida, Video& video_output)
             }
         }    
 
+        // Save frame bmp to carpeta_frames folder.
+        string str_frame = carpeta_frames;
+        str_frame+= "/";
+        str_frame+= "frame_";
+        str_frame+= to_string(cur_frame+1);
+        str_frame+= ".bmp";
+
+        cvSaveImage(str_frame.c_str(), dst, NULL);
+
+        // Write frame to video.
         cvWriteFrame(dstVid, dst);
     }
 

@@ -6,6 +6,8 @@
 #include <interpolation.hpp>
 #include <opencv_util.hpp>
 #include <cassert>
+ #include <sys/stat.h>
+ #include <sys/types.h>
 
 #define CANT_ITERS_MEDICION 1
 
@@ -30,7 +32,13 @@ int main(int argc, char** argv) {
     } else {
         const char* input_filename = argv[1];
         const char* output_filename = argv[2];
-        
+
+        const string carpeta_frames_input = "frames_input";
+        const string carpeta_frames_output = "frames_output";
+
+        mkdir(carpeta_frames_input.c_str(), 0777);
+        mkdir(carpeta_frames_output.c_str(), 0777);
+
         interpolation_method_t interp_method = (interpolation_method_t) atoi(argv[3]);
         assert(interp_method < 3);
         
@@ -43,7 +51,7 @@ int main(int argc, char** argv) {
         Video video_output;
 
         cout << "Reading input video..." << endl;
-        FileToVideo(input_filename, video_input);
+        FileToVideo(input_filename, video_input, carpeta_frames_input);
         cout << "Done." << endl << endl;
 
         cout << "Input video metadata:" << endl;
@@ -78,7 +86,7 @@ int main(int argc, char** argv) {
         cout << endl << "------------------------------------- " << endl << endl;
         cout << "Writing output video..." << endl;
 
-        VideoToFile(output_filename, video_output);
+        VideoToFile(output_filename, video_output, carpeta_frames_output);
 
         cout << "Done." << endl << endl;
         cout << "Output video metadata:" << endl;
