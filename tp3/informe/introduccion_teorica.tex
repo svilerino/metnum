@@ -26,3 +26,40 @@ Dicho en líneas más generales, es posible que se desee reproducir en cámara l
 También es posible que lo que se busque sea generar frames nuevos a partir de un video ya existente pero no con la intención de verlo en cámara lenta sino para que el resultado final sea más ``suave'' o agradable a la vista. Es un proceso común en los videos animados dibujados a mano\footnote{De hecho el primer video animado de la historia, Fantasmagorie de 1908, tiene solo la mitad de sus cuadros realmente dibujados.}, dado que el trabajo extra necesario para dibujar cada frame individualmente difícilmente sea apreciado por el espectador final. Hoy en día se utiliza también en animaciones por computadora, por ejemplo para realizar una trancisión fluida entre dos expresiones de una cara o entre dos estados posibles de un cuerpo 3D.
 
 Un objetivo similar es generar una trancisión entre dos fotos o videos que no necesariamente forman parte de umna misma captura, pero que se quiere integrar en un único y, en lo posible, fluido video. Los usos más comunes del \emph{morphing}, como se le llama, consisten en transformar la cara de una persona en la de otra\footnote{Como se puede ver en este excelente ejemplo: \url{https://www.youtube.com/watch?v=3ZHtL7CirJA}}.
+
+\subsection{Los m\'etodos propuestos}
+
+Finalizada la enumeraci\'on de ciertos rubros que motiven la investigaci\'on sobre el tema, nos desviaremos al marco te\'orico que se nos presenta. A continuaci\'on, daremos una breve explicaci\'on de cada herramienta que encaminar\'a a las posible soluciones al problema de construir, a partir de un video en tiempo real, una secuencia de im\'agenes generadas de forma artificial que explaye la sensaci\'on de que el video original ha sido alentizado. A esto \'ultimo lo definimos como el efecto de $slowmotion$.
+
+\subsubsection{Cuadro m\'as cercano}
+
+Este m\'etodo se basa en una idea de car\'acter simplista, pero comprende de una intuici\'on que puede resultar de utilidad para ciertos tipos de videos, como por ejemplo, la filmaci\'on de un objeto inm\'ovil.
+
+Se extrae cada cuadro/frame en el orden en que el video los reproduce y tomando de a pares, se le adiciona una cierta cantidad de frames de por medio. No hay un n\'umero exacto que represente esta cantidad, por lo que se lo interpreta como par\'ametro de experimentaci\'on. Sin embargo, nos resta como inc\'ognita, el procedimiento por el cual se obtiene dichos cuadros. Esto \'ultimo es lo que caracterizar\'a al m\'etodo en cuesti\'on.
+
+Nos abstraemos por un momento de la totalidad de frames que compone una grabaci\'on para analizar en detalle el conjunto de im\'agenes resultantes entre cada par de cuadros de la repoducci\'on original. Asumimos que se decidi\'o la cantidad de frames a realizar. Para un mejor entendimiento, llamaremos a estos cuadros como \textit{frames artificiales}. Por otro lado, el par de frames provenientes del video original, se lo conocer\'an como \textit{frames originales}.
+
+Como lo indica el sub-t\'itulo de la secci\'on, mediante un algoritmo que muestra la posici\'on del frame artificial entre los dos frames originales, determinamos a qu\'e distancia se encuentra de ambos extremos. Recordemos que se ingresaron $n$ cuadros entre medio de los originales. Una vez realizado el paso de b\'usqueda, se decide copiar la im\'agen del extremo m\'as cercano al frame artificial que se est\'a evaluando. 
+
+De esta manera, habr\'a al menos (despreciando decimales) $n/2$  frames cuya im\'agen ser\'a id\'entica a la de alguno de los dos frames originales. En caso que se decida agregar una cantidad impar, se opta por fragmentar en dos partes de $n/2$ y $n/2+1$ cuadros. En la partici\'on de mayor peso
+, es el usuario quien selecciona qu\'e extremo escoger de los originales. En la siguiente figura, nos encontramos con un ejemplo consico de lo explicado: 
+
+( Ejemplo gra\'fico o dejar eso para el desarrollo )
+
+( Breve explicaci\'on del ejemplo )
+
+Volviendo al an\'alisis del video en su mera totalidad, se repite el anterior procedimiento en cada par de frames en el orden concebido por la secuencia del video. De tal forma, se obtienen los frames artificiales, consiguiendo una nueva filmaci\'on con el efecto de $slowmotion$ que este m\'etodo propone. 
+
+( Alg\'un comentario final )
+
+\subsubsection{Interpolaci\'on lineal}
+
+Semejante al \textit{cuadro m\'as cercano}, en el sentido que comparten la ideolog\'ia de trabajar c\'iclicamente con cada par de frames para eventualmente, obtener el video deseado con su respectivo efecto. No obstante, contaremos lo particular y caracter\'istico de este m\'etodo, que puede propocionar ciertas mejoras en el movimiento de objetos durante su filmaci\'on.
+
+Por un lado, no posee la misma intuici\'on que su antecesora, donde la im\'agen de cada frame artificial se basa en copiar alguno de los dos cuadros originales en evaluaci\'on. En cambio, se busca utilizar fundamentos matem\'aticos que ayuden a \textit{predecir y reflejar} lo sucedido entre cada par de frames del video original. 
+
+Nuevamente, nos enfocamos en analizar el algoritmo propuesto para la creaci\'on de los $n$ frames artificiales que se desean adherir entre cada conjunto de pares. En primer lugar, debemos pensar a cada frame como una matriz de $m$ $x$ $n$ p\'ixeles (dependiendo la resoluci\'on en que se dispone el video), siendo $m$ el largo del cuadro y $n$ el ancho. En segundo lugar, el procedimiento destina a generar un polinomio de grado uno \footnote{ Tambi\'en definida como funci\'on lineal; \url{https://es.wikipedia.org/wiki/Lineal}.} entre ese par de frames originales. Aunque, ¿de qu\'e forma inventaremos dichos polinomios? Para ello, introducimos algunos conceptos que resolver\'an esta inc\'ognita.
+
+Contamos previamente acerca de la idealizaci\'on de tales cuadros como matrices compuestas por p\'ixeles. Sin embargo, en ning\'un momento se aclar\'o del valor num\'erico que posee cada posici\'on. Consideramos un rango en el conjunto de n\'umeros enteros del $0$ al $255$, inclusive. Esta \'ultima se la conoce como \textbf{escala de grises} \footnote{\url{https://es.wikipedia.org/wiki/Escala_de_grises}}.
+
+( TBD )
