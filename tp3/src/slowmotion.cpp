@@ -160,13 +160,13 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	uint starting_frame = 0;
 	for (uint block_idx = 0; block_idx < blocks_count-1; block_idx++)
 	{
-		cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << ")" << endl;
+		cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << "]" << endl;
 		//Real frame index: block_idx*spline_block_size + frame_idx
 		process_spline_block(
 									video_input,
 									video_output,
 									starting_frame,
-									starting_frame + spline_block_size,
+									starting_frame + spline_block_size + 1, // Que tambien tenga en cuenta el primer frame del proximo bloque para que no haya saltos
 									interpol_frame_count
 									);
 		starting_frame += spline_block_size;
@@ -217,8 +217,24 @@ void SlowMotionEffect::process_spline_block(const Video& video_input, Video& vid
  	// Iterate over all frames in current block
 	for (uint cur_frame = starting_frame; cur_frame < ending_frame-1; cur_frame++)
 	{
+		
+		
 		// Add current input frame
-		video_output.frames.push_back(video_input.frames[cur_frame]);
+
+		// Hack sucio para que no repita el primer frame al final y al princiṕio de cada bloque
+		// aka: fixear esto
+		// Interpolating frame 4.5	
+		// Adding original frame 5 <---------- se agrega aca primero !	
+		// [Block #1]Processing frames in range [5..10]	
+		// Adding original frame 5  <---------- se agrega de nuevo !	
+		// Interpolating frame 5.5	
+		// Adding original frame 6	
+
+		if((starting_frame == 0) || (cur_frame > starting_frame)){
+			cout << "Adding original frame " << cur_frame << endl;
+			video_output.frames.push_back(video_input.frames[cur_frame]);
+		}
+
 
 		// Add new interpolated frames
 		double spline_step = 1 / (double) (interpol_frame_count + 1);
@@ -227,7 +243,7 @@ void SlowMotionEffect::process_spline_block(const Video& video_input, Video& vid
 		//	cout << "Aca!" << endl;
 			frame_t new_interpolated_frame;
 
-			// cout << "Interpolating frame " << ((j+1)*spline_step + cur_frame) << endl;
+			cout << "Interpolating frame " << ((j+1)*spline_step + cur_frame) << endl;
 			create_spline_frame_mix(video_output.frame_height,
 			 video_output.frame_width,
 			  new_interpolated_frame, 
@@ -241,6 +257,7 @@ void SlowMotionEffect::process_spline_block(const Video& video_input, Video& vid
 	}
 
 	// Last frame
+	cout << "Adding original frame " << ending_frame-1 << endl;
 	video_output.frames.push_back(video_input.frames[ending_frame - 1]);
 }
 
