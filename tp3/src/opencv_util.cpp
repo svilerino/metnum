@@ -59,7 +59,7 @@ void FileToVideo(const char *archivo_entrada, Video& video, const string carpeta
             continue;
         }
 
-        cout << "Leyendo frame " << frame_count << endl;
+        // cout << "Leyendo frame " << frame_count << endl;
 
         #ifdef COLOR_PROCESSING
             // Save frame bmp to carpeta_frames folder.
@@ -151,7 +151,7 @@ void VideoToFile (const char *archivo_salida, Video& video_output, const string 
 
     for (uint cur_frame = 0; cur_frame < video_output.frame_count; cur_frame+= (frame_drop+1) )
     {
-        cout << "Escribiendo frame " << cur_frame << endl;
+        // cout << "Escribiendo frame " << cur_frame << endl;
         uint idx_dst=0;
         for (uint i = 0; i < video_output.frame_height; i++)
         {
