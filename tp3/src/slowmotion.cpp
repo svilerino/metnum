@@ -153,8 +153,8 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 		cout << "Blocks including trailing frames: " << blocks_count << endl;
 	}
 
-	// Necesito al menos 3 para aplicar splines.
-	assert(remaining_trailing_frames >=3);
+	// Necesito al menos 3 para aplicar splines en el ultimo bloque.
+	assert((remaining_trailing_frames == 0) || (remaining_trailing_frames >=3));
 
 	// Process blocks
 	uint starting_frame = 0;
