@@ -28,6 +28,8 @@ int main(int argc, char** argv) {
         cerr << "\t2.- Splines" << endl;
 
         cerr << "El cuarto parámetro debe ser la cantidad k de frames a agregar entre cada par de frames [i, i+1] del video original." << endl;
+
+        cerr << "(Opcional) El quinto parámetro debe ser el tamaño del bloque de procesamiento de splines. En caso de no pasarse este argumento se tomara como valor por defecto el numero " << DEFAULT_SPLINE_BLOCK_SIZE << endl;
         exit(-1);
 
     } else {
@@ -52,7 +54,7 @@ int main(int argc, char** argv) {
         assert(spline_block_size >= 3);
         
         // Potencia de 2
-        assert(spline_block_size && ((spline_block_size & (spline_block_size-1)) == 0));
+        //assert(spline_block_size && ((spline_block_size & (spline_block_size-1)) == 0));
 
         // -- Leer input
         Video video_input;
