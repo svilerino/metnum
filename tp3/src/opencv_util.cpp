@@ -26,7 +26,7 @@ static CvCapture *abrir_video(const char *archivo_entrada) {
 }
 
 
-void FileToVideo(const char *archivo_entrada, Video& video, const string carpeta_frames)
+void FileToVideo(const char *archivo_entrada, Video& video, const string carpeta_frames, const bool saveFrames)
 { 
     CvCapture *srcVid = abrir_video(archivo_entrada);
 
@@ -53,20 +53,32 @@ void FileToVideo(const char *archivo_entrada, Video& video, const string carpeta
         if (cvFrame == NULL) {
             break;
         }
-        
-        // Save frame bmp to carpeta_frames folder.
-        string str_frame = carpeta_frames;
-        str_frame+= "/";
-        str_frame+= "frame_";
-        str_frame+= to_string(frame_count+1);
-        str_frame+= ".bmp";
 
         #ifdef COLOR_PROCESSING
-            cvSaveImage(str_frame.c_str(), cvFrame, NULL);
+            // Save frame bmp to carpeta_frames folder.
+            if(saveFrames)
+            {
+                string str_frame = carpeta_frames;
+                str_frame+= "/";
+                str_frame+= "frame_";
+                str_frame+= to_string(frame_count+1);
+                str_frame+= ".bmp";
+                cvSaveImage(str_frame.c_str(), cvFrame, NULL);
+            }
         #else
             IplImage *cvBWFrame = cvCreateImage(cvGetSize(cvFrame), IPL_DEPTH_8U, 1);
             cvCvtColor(cvFrame, cvBWFrame, CV_BGR2GRAY);
-            cvSaveImage(str_frame.c_str(), cvBWFrame, NULL);
+
+            // Save frame bmp to carpeta_frames folder.
+            if(saveFrames)
+            {
+                string str_frame = carpeta_frames;
+                str_frame+= "/";
+                str_frame+= "frame_";
+                str_frame+= to_string(frame_count+1);
+                str_frame+= ".bmp";
+                cvSaveImage(str_frame.c_str(), cvBWFrame, NULL);
+            }
         #endif
 
         // Load new frame
@@ -103,7 +115,7 @@ void FileToVideo(const char *archivo_entrada, Video& video, const string carpeta
 }
 
 
-void VideoToFile (const char *archivo_salida, Video& video_output, const string carpeta_frames) 
+void VideoToFile (const char *archivo_salida, Video& video_output, const string carpeta_frames, const bool saveFrames)
 {
     uint nchannels = 3;
     CvSize dst_size;
@@ -148,13 +160,16 @@ void VideoToFile (const char *archivo_salida, Video& video_output, const string 
         }    
 
         // Save frame bmp to carpeta_frames folder.
-        string str_frame = carpeta_frames;
-        str_frame+= "/";
-        str_frame+= "frame_";
-        str_frame+= to_string(cur_frame+1);
-        str_frame+= ".bmp";
+        if(saveFrames)
+        {
+            string str_frame = carpeta_frames;
+            str_frame+= "/";
+            str_frame+= "frame_";
+            str_frame+= to_string(cur_frame+1);
+            str_frame+= ".bmp";
 
-        cvSaveImage(str_frame.c_str(), dst, NULL);
+            cvSaveImage(str_frame.c_str(), dst, NULL);
+        }
 
         // Write frame to video.
         cvWriteFrame(dstVid, dst);

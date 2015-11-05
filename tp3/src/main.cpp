@@ -6,8 +6,6 @@
 #include <interpolation.hpp>
 #include <opencv_util.hpp>
 #include <cassert>
- #include <sys/stat.h>
- #include <sys/types.h>
 
 #define CANT_ITERS_MEDICION 1
 #define DEFAULT_SPLINE_BLOCK_SIZE 16
@@ -33,14 +31,8 @@ int main(int argc, char** argv) {
         exit(-1);
 
     } else {
-        const char* input_filename = argv[1];
-        const char* output_filename = argv[2];
-
-        const string carpeta_frames_input = "frames_input";
-        const string carpeta_frames_output = "frames_output";
-
-        mkdir(carpeta_frames_input.c_str(), 0777);
-        mkdir(carpeta_frames_output.c_str(), 0777);
+        string input_path = argv[1];
+        string output_path = argv[2];
 
         interpolation_method_t interp_method = (interpolation_method_t) atoi(argv[3]);
         assert(interp_method < 3);
@@ -61,15 +53,30 @@ int main(int argc, char** argv) {
         Video video_output;
 
         cout << "Reading input video..." << endl;
-        FileToVideo(input_filename, video_input, carpeta_frames_input);
+        FileToVideo(input_path.c_str(), video_input, "", false);
         cout << "Done." << endl << endl;
 
+        cout << "Input video path: " << input_path << endl;
         cout << "Input video metadata:" << endl;
         cout << "frame_count: " << video_input.frame_count << endl;
         cout << "frame_height: " << video_input.frame_height << endl;
         cout << "frame_width: " << video_input.frame_width << endl;
         cout << "frame_rate: " << video_input.frame_rate << endl;
         cout << "------------------------------------- " << endl << endl;
+
+        // -- Guardar video original en escala de grises
+        string input_directory = input_path.substr(0, input_path.find_last_of("/"));
+        string input_filename = input_path.substr(input_path.find_last_of("/"), input_path.length());
+        
+        string input_filename_no_extension = input_filename.substr(0, input_filename.find_last_of("."));
+        string input_extension = input_filename.substr(input_filename.find_last_of("."), input_filename.length());
+
+        string grayscale_output_path = input_directory + input_filename_no_extension + ".grayscale" + input_extension;
+
+        cout << "Guardando video original en escala de grises en: " << grayscale_output_path << "...";
+        VideoToFile(grayscale_output_path.c_str(), video_input, "", false);
+        cout << "Ok!" << endl;
+        cout << "------------------------------------- " << endl << endl;        
 
         // -- Procesamiento
 
@@ -83,7 +90,6 @@ int main(int argc, char** argv) {
             cout << "Tamaño de bloque spline: " << spline_block_size << endl;
         }
 
-
         double tiempo_promedio = 0.0;
         MEDIR_TIEMPO_PROMEDIO(
             SlowMotionEffect::slowmotion(interp_method, interpol_frame_count, video_input, video_output, spline_block_size);
@@ -96,9 +102,10 @@ int main(int argc, char** argv) {
         cout << endl << "------------------------------------- " << endl << endl;
         cout << "Writing output video..." << endl;
 
-        VideoToFile(output_filename, video_output, carpeta_frames_output);
+        VideoToFile(output_path.c_str(), video_output, "", false);
 
         cout << "Done." << endl << endl;
+        cout << "Output video path: " << output_path << endl;
         cout << "Output video metadata:" << endl;
         cout << "frame_count: " << video_output.frame_count << endl;
         cout << "frame_height: " << video_output.frame_height << endl;
