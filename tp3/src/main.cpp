@@ -8,6 +8,7 @@
 #include <cassert>
 
 #define CANT_ITERS_MEDICION 1
+#define DEFAULT_FRAME_DROP 0
 #define DEFAULT_SPLINE_BLOCK_SIZE 16
 
 using namespace std;
@@ -28,6 +29,7 @@ int main(int argc, char** argv) {
         cerr << "El cuarto parámetro debe ser la cantidad k de frames a agregar entre cada par de frames [i, i+1] del video original." << endl;
 
         cerr << "(Opcional) El quinto parámetro debe ser el tamaño del bloque de procesamiento de splines. En caso de no pasarse este argumento se tomara como valor por defecto el numero " << DEFAULT_SPLINE_BLOCK_SIZE << endl;
+        cerr << "(Opcional) El sexto parámetro debe ser la cantidad de frames a skipear en la lectura del video. En caso de no pasarse este argumento se tomara como valor por defecto el numero " << DEFAULT_FRAME_DROP << endl;
         exit(-1);
 
     } else {
@@ -44,16 +46,19 @@ int main(int argc, char** argv) {
         assert(interpol_frame_count >= 0);
         
         assert(spline_block_size >= 3);
-        
+
         // Potencia de 2
         //assert(spline_block_size && ((spline_block_size & (spline_block_size-1)) == 0));
 
+        const uint frame_drop = (argc > 6) ? atoi(argv[6]) : DEFAULT_FRAME_DROP;
+
         // -- Leer input
+
         Video video_input;
         Video video_output;
 
         cout << "Reading input video..." << endl;
-        FileToVideo(input_path.c_str(), video_input, "", false);
+        FileToVideo(input_path.c_str(), video_input, "", false, frame_drop);
         cout << "Done." << endl << endl;
 
         cout << "Input video path: " << input_path << endl;
@@ -63,22 +68,8 @@ int main(int argc, char** argv) {
         cout << "frame_width: " << video_input.frame_width << endl;
         cout << "frame_rate: " << video_input.frame_rate << endl;
         cout << "------------------------------------- " << endl << endl;
-
-        // -- Guardar video original en escala de grises
-        string input_directory = input_path.substr(0, input_path.find_last_of("/"));
-        string input_filename = input_path.substr(input_path.find_last_of("/"), input_path.length());
         
-        string input_filename_no_extension = input_filename.substr(0, input_filename.find_last_of("."));
-        string input_extension = input_filename.substr(input_filename.find_last_of("."), input_filename.length());
-
-        string grayscale_output_path = input_directory + input_filename_no_extension + ".grayscale" + input_extension;
-
-        cout << "Guardando video original en escala de grises en: " << grayscale_output_path << "...";
-        VideoToFile(grayscale_output_path.c_str(), video_input, "", false);
-        cout << "Ok!" << endl;
-        cout << "------------------------------------- " << endl << endl;        
-
-        // -- Procesamiento
+        // -- Procesamiento (Aplicar slowmotion)
 
         cout << "Aplicando efecto slowmotion al video utilizando el metodo de interpolacion: ";
         if (interp_method == NEAREST_NEIGHBOUR){
@@ -99,6 +90,7 @@ int main(int argc, char** argv) {
         cout << "Tiempo consumido en promedio para procesar el video de input(sin contar tiempo de I/O): " << tiempo_promedio << " milisegundos" << endl;
 
         // -- Escribir output
+
         cout << endl << "------------------------------------- " << endl << endl;
         cout << "Writing output video..." << endl;
 
