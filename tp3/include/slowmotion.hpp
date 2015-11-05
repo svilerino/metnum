@@ -7,7 +7,7 @@
 
 class SlowMotionEffect {
 	public:
-		static void slowmotion(interpolation_method_t interp_method, uint interpol_frame_count, const Video& video_input, Video& video_output);
+		static void slowmotion(interpolation_method_t interp_method, uint interpol_frame_count, const Video& video_input, Video& video_output, uint spline_block_size);
 
 	private:
 		static void nearest_neighbour_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, const Video& video_input, Video& video_output);

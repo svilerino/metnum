@@ -10,6 +10,7 @@
  #include <sys/types.h>
 
 #define CANT_ITERS_MEDICION 1
+#define DEFAULT_SPLINE_BLOCK_SIZE 16
 
 using namespace std;
 
@@ -42,9 +43,16 @@ int main(int argc, char** argv) {
         interpolation_method_t interp_method = (interpolation_method_t) atoi(argv[3]);
         assert(interp_method < 3);
         
-        uint interpol_frame_count = atoi(argv[4]);
+        const uint interpol_frame_count = atoi(argv[4]);
+
+        const uint spline_block_size = (argc > 5) ? atoi(argv[5]) : DEFAULT_SPLINE_BLOCK_SIZE;
 
         assert(interpol_frame_count >= 0);
+        
+        assert(spline_block_size >= 3);
+        
+        // Potencia de 2
+        assert(spline_block_size && ((spline_block_size & (spline_block_size-1)) == 0));
 
         // -- Leer input
         Video video_input;
@@ -70,13 +78,13 @@ int main(int argc, char** argv) {
             cout << "LINEAL" << endl;
         } else if (interp_method == SPLINE){
             cout << "SPLINE" << endl;
-            cout << "Tamaño de bloque spline: " << SPLINE_BLOCK_SIZE << endl;
+            cout << "Tamaño de bloque spline: " << spline_block_size << endl;
         }
 
 
         double tiempo_promedio = 0.0;
         MEDIR_TIEMPO_PROMEDIO(
-            SlowMotionEffect::slowmotion(interp_method, interpol_frame_count, video_input, video_output);
+            SlowMotionEffect::slowmotion(interp_method, interpol_frame_count, video_input, video_output, spline_block_size);
         , CANT_ITERS_MEDICION, &tiempo_promedio);
 
         cout << "Se corrio el metodo " << CANT_ITERS_MEDICION << " veces sobre el video de input." << endl;

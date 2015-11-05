@@ -3,8 +3,6 @@
 
 #include <types.hpp>
 
-#define SPLINE_BLOCK_SIZE 16
-
 class Interpolation {
 	public:
 		static double linear_interpolation(double x0, double y0, double x1, double y1, double x);

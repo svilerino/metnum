@@ -8,7 +8,7 @@ using namespace std;
 // Los videos de entrada y salida son distintos asi puedo llamar iterativamente para medir tiempo promedio sin perder el input.
 // ---
 
-void SlowMotionEffect::slowmotion(interpolation_method_t interp_method, uint interpol_frame_count, const Video& video_input, Video& video_output)
+void SlowMotionEffect::slowmotion(interpolation_method_t interp_method, uint interpol_frame_count, const Video& video_input, Video& video_output, uint spline_block_size)
 {
 	
 	//Initialize video output struct	
@@ -38,7 +38,7 @@ void SlowMotionEffect::slowmotion(interpolation_method_t interp_method, uint int
 		// Use dynamic reallocation for output frames.
 		video_output.frames.clear();
 		
-		spline_method_interpolation(interp_method, interpol_frame_count, SPLINE_BLOCK_SIZE, video_input, video_output);
+		spline_method_interpolation(interp_method, interpol_frame_count, spline_block_size, video_input, video_output);
 
 		video_output.frame_count = video_output.frames.size();
 
@@ -143,21 +143,21 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	uint blocks_count = (uint) (video_input.frame_count / spline_block_size);
 	uint remaining_trailing_frames = (uint) (video_input.frame_count % spline_block_size);
 
-	// cout << video_input.frame_count << " frames in video" << endl;
-	// cout << blocks_count << " blocks of " << spline_block_size << " frames" << endl;
+	cout << video_input.frame_count << " frames in video" << endl;
+	cout << blocks_count << " blocks of " << spline_block_size << " frames" << endl;
 
-	// cout << "Trailing frames: " << remaining_trailing_frames << endl;
+	cout << "Trailing frames: " << remaining_trailing_frames << endl;
 	if(remaining_trailing_frames > 0)
 	{
 		blocks_count++; // extra trailing frames block
-		// cout << "Blocks including trailing frames: " << blocks_count << endl;
+		cout << "Blocks including trailing frames: " << blocks_count << endl;
 	}
 
 	// Process blocks
 	uint starting_frame = 0;
 	for (uint block_idx = 0; block_idx < blocks_count-1; block_idx++)
 	{
-		// cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << ")" << endl;
+		cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << ")" << endl;
 		//Real frame index: block_idx*spline_block_size + frame_idx
 		process_spline_block(
 									video_input,
@@ -172,7 +172,7 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	// Process last incomplete block( % trailing frames )
 	if(remaining_trailing_frames > 0)
 	{
-		// cout << "[Block #" << (blocks_count-1) << "]Processing frames in range [" << starting_frame << ".."<< video_input.frame_count << ")" << endl;
+		cout << "[Block #" << (blocks_count-1) << "]Processing frames in range [" << starting_frame << ".."<< video_input.frame_count << ")" << endl;
 	 	process_spline_block(
 			video_input, 
 			video_output,
