@@ -26,7 +26,7 @@ static CvCapture *abrir_video(const char *archivo_entrada) {
 }
 
 
-void FileToVideo(const char *archivo_entrada, Video& video, const string carpeta_frames, const bool saveFrames)
+void FileToVideo(const char *archivo_entrada, Video& video, const string carpeta_frames, const bool saveFrames, uint frame_drop)
 { 
     CvCapture *srcVid = abrir_video(archivo_entrada);
 
@@ -53,6 +53,13 @@ void FileToVideo(const char *archivo_entrada, Video& video, const string carpeta
         if (cvFrame == NULL) {
             break;
         }
+
+        if(frame_count % (frame_drop+1) != 0){
+            frame_count++;
+            continue;
+        }
+
+        cout << "Leyendo frame " << frame_count << endl;
 
         #ifdef COLOR_PROCESSING
             // Save frame bmp to carpeta_frames folder.
@@ -109,13 +116,13 @@ void FileToVideo(const char *archivo_entrada, Video& video, const string carpeta
         frame_count++;
     }
 
-    video.frame_count = frame_count;
+    video.frame_count = video.frames.size();
 
     cvReleaseCapture(&srcVid);
 }
 
 
-void VideoToFile (const char *archivo_salida, Video& video_output, const string carpeta_frames, const bool saveFrames)
+void VideoToFile (const char *archivo_salida, Video& video_output, const string carpeta_frames, const bool saveFrames, uint frame_drop)
 {
     uint nchannels = 3;
     CvSize dst_size;
@@ -142,8 +149,9 @@ void VideoToFile (const char *archivo_salida, Video& video_output, const string 
 
     unsigned char *dst_ptr = (unsigned char *) dst->imageData;
 
-    for (uint cur_frame = 0; cur_frame < video_output.frame_count; cur_frame++)
+    for (uint cur_frame = 0; cur_frame < video_output.frame_count; cur_frame+= (frame_drop+1) )
     {
+        cout << "Escribiendo frame " << cur_frame << endl;
         uint idx_dst=0;
         for (uint i = 0; i < video_output.frame_height; i++)
         {
