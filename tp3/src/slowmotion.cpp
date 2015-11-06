@@ -138,7 +138,6 @@ void SlowMotionEffect::nearest_neighbour_interpolation(interpolation_method_t in
 }
 void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp_method, uint interpol_frame_count, uint spline_block_size, const Video& video_input, Video& video_output)
 {
-
 	assert(spline_block_size > 2);
 
 	uint blocks_count = (uint) (video_input.frame_count / spline_block_size);
@@ -166,6 +165,7 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	{
 		// cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << "]" << endl;
 		//Real frame index: block_idx*spline_block_size + frame_idx
+		assert(starting_frame + spline_block_size + 1 < video_input.frames.size());
 		process_spline_block(
                                 video_input,
                                 video_output,
@@ -179,6 +179,7 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
     //Process last block
     if(remaining_trailing_frames == 0)
     {
+    	assert(starting_frame + spline_block_size < video_input.frames.size());
         process_spline_block(
                                 video_input,
                                 video_output,
@@ -187,6 +188,7 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
                                 interpol_frame_count
                             );
     } else {
+    	assert(starting_frame + spline_block_size + 1 < video_input.frames.size());
         process_spline_block(
                                 video_input,
                                 video_output,
@@ -199,6 +201,7 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
         // Process last incomplete block( % trailing frames )
         if(remaining_trailing_frames >= 3)
         {
+    		assert(video_input.frame_count < video_input.frames.size());
             // cout << "[Block #" << (blocks_count-1) << "]Processing frames in range [" << starting_frame << ".."<< video_input.frame_count << ")" << endl;
             process_spline_block(
                 video_input,
@@ -208,7 +211,10 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
                 interpol_frame_count
             );
         } else if(remaining_trailing_frames == 2){
+            assert(starting_frame > 0);
             --starting_frame;
+
+            assert(video_input.frame_count < video_input.frames.size());
             process_spline_block(
                 video_input,
                 video_output,
@@ -241,6 +247,9 @@ void SlowMotionEffect::process_spline_block(const Video& video_input, Video& vid
             for(uint cur_frame = starting_frame; cur_frame < ending_frame ; cur_frame++) // Formo el polinomio, posicion x posicion
             {
                 x0.push_back(cur_frame);
+
+                assert(ending_frame < video_input.frames.size());
+                
                 y0.push_back(video_input.frames[cur_frame][i][j]);
             }
             // De esta forma, recorre y construye el polinomio en columna
