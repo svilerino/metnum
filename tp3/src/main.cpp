@@ -13,35 +13,17 @@
 
 using namespace std;
 
-uint calcular_frames_a_mantener(uint video_frame_count, uint frame_drop)
-{
-    return video_frame_count;
-//    uint frames_a_mantener = (uint) (video_frame_count / (frame_drop+1));
-//
-//    if(video_frame_count % (frame_drop+1) != 0)
-//    {
-//        frames_a_mantener++;
-//    }
-//    else
-//    {
-//        frames_a_mantener-=frame_drop;
-//    }
-//
-//    return frames_a_mantener;
-}
-
 uint calcular_frames_a_descartar(uint video_frame_count, uint frame_drop)
 {
-    uint frames_a_descartar = video_frame_count - calcular_frames_a_mantener(video_frame_count, frame_drop);
-//    uint frames_a_descartar = video_frame_count % (frame_drop+1);
-//    if(frames_a_descartar == 0)
-//    {
-//        frames_a_descartar -= frame_drop;
-//    }
-//    else
-//    {
-//        frames_a_descartar -= (frame_drop-1);
-//    }
+    uint frames_a_descartar = video_frame_count % (frame_drop+1);
+    if(frames_a_descartar == 0)
+    {
+        frames_a_descartar = frame_drop;
+    }
+    else
+    {
+        frames_a_descartar -= (frame_drop-1);
+    }
     return frames_a_descartar;
 }
 
@@ -95,6 +77,7 @@ int main(int argc, char** argv) {
 
         cout << endl << "[Warning] Se eliminan los ultimos " << ultimos_frames_a_quitar << " frames del video por cuestiones de redondeo" << endl;
         video_input.frames.erase(video_input.frames.end() - ultimos_frames_a_quitar, video_input.frames.end());
+        video_input.frame_count = video_input.frames.size();
 
         // -- Informacion del video de entrada luego de ser procesado
 
