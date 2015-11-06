@@ -7,7 +7,7 @@ Antes de ingresar al campo que abarca la explicaci\'on de los m\'etodos, queremo
 \begin{itemize}
 	\item \textit{Frame original}: Se le dar\'a nombre al cuadro que pertenece al video original, es decir, aquel archivo que no contiene los frames agregados que conciben al efecto de c\'amara lenta.
 	\item \textit{Frame artificial}: Lo llamaremos a aquellos cuadros que se realizar\'an a partir del procedimiento que dicho m\'etodo vaya planeando. En esta ocasi\'on, se puede ratificar que los mismos se crearan en conjunto, y entre medio de un par de frames originales.
-	\item \textit{Cantidad de frames a adjuntar}: Nos referiremos al par\'ametro que decide cu\'antos cuadros artificiales le adicionaremos entre cada par de frames originales. Lo denotaremos con la letra $f$.
+	\item \textit{Cantidad de frames a adjuntar}: Nos referiremos al par\'ametro que decide cu\'antos cuadros artificiales le adicionaremos entre cada par de frames originales. Lo denotaremos con las letras $fr$.
 	\item \textit{Matriz frame}: Aunque no se hablar\'a de ese nombre en particular, es fundamental aclarar que en cualquier comentario acerca de los valores o p\'ixeles de un frame, se lo est\'a especificando como una matriz de $m$ x $n$ (visto como la resoluci\'on del video) que lleva los valores del $0$ al $255$, inclusive (escala de grises).
 	\item \textit{P\'ixel}: Transladamos esta palabra asociada a la im\'agen digital al campo del \'algebra lineal. Por lo tanto, se lo considerar\'a como un componente de la matriz frame cuyos valores estan restringido en el rango $[0;255]$.
 \end{itemize}
@@ -22,9 +22,9 @@ Se extrae cada cuadro/frame en el orden en que el video los reproduce y tomando 
 
 Nos abstraemos por un momento de la totalidad de frames que compone una grabaci\'on para analizar en detalle el conjunto de im\'agenes resultantes entre cada par de cuadros de la repoducci\'on original.
 
-Como lo indica el sub-t\'itulo de la secci\'on, mediante un algoritmo que muestra la posici\'on del frame artificial entre los dos frames originales, determinamos a qu\'e distancia se encuentra de ambos extremos. Recordemos que se ingresaron $f$ cuadros entre medio de los originales. Una vez realizado el paso de b\'usqueda, se decide copiar la im\'agen del extremo m\'as cercano al frame artificial que se est\'a evaluando. 
+Como lo indica el sub-t\'itulo de la secci\'on, mediante un algoritmo que muestra la posici\'on del frame artificial entre los dos frames originales, determinamos a qu\'e distancia se encuentra de ambos extremos. Recordemos que se ingresaron $fr$ cuadros entre medio de los originales. Una vez realizado el paso de b\'usqueda, se decide copiar la im\'agen del extremo m\'as cercano al frame artificial que se est\'a evaluando. 
 
-De esta manera, habr\'a al menos (despreciando decimales) $f/2$  frames cuya im\'agen ser\'a id\'entica a la de alguno de los dos frames originales. En caso que se decida agregar una cantidad impar, se opta por fragmentar en dos partes de $f/2$ y $f/2+1$ cuadros. En la partici\'on de mayor peso
+De esta manera, habr\'a al menos (despreciando decimales) $fr/2$  frames cuya im\'agen ser\'a id\'entica a la de alguno de los dos frames originales. En caso que se decida agregar una cantidad impar, se opta por fragmentar en dos partes de $fr/2$ y $fr/2+1$ cuadros. En la partici\'on de mayor peso
 , es el usuario quien selecciona qu\'e extremo escoger de los originales. \textbf{En la figura 1}, nos encontramos con un ejemplo consico de lo explicado.
 
 \begin{figure}[h!]
@@ -34,21 +34,21 @@ De esta manera, habr\'a al menos (despreciando decimales) $f/2$  frames cuya im\
 \end{figure}
 \noindent
 
-En el caso de la figura, el par\'ametro de cantidad de cuadros a agregar es de $f = 22$. Por ende, se lo divide en dos particiones de $11$ frames artificiales cuya im\'agen corresponder\'a al frame original m\'as cercano (el marr\'on o blanco). Como observaci\'on trivial, el frame original $i$ se lo considera como la im\'agen reproducida en el estado de tiempo anterior a los artificiales agregados de por medio. An\'alogamente, ocurre con el otro cuadro en el extremo derecho.
+En el caso de la figura, el par\'ametro de cantidad de cuadros a agregar es de $fr = 22$. Por ende, se lo divide en dos particiones de $11$ frames artificiales cuya im\'agen corresponder\'a al frame original m\'as cercano (el marr\'on o blanco). Como observaci\'on trivial, el frame original $i$ se lo considera como la im\'agen reproducida en el estado de tiempo anterior a los artificiales agregados de por medio. An\'alogamente, ocurre con el otro cuadro en el extremo derecho.
 
 Volviendo al an\'alisis del video en su mera totalidad, se repite el anterior procedimiento en cada par de frames en el orden concebido por la secuencia del video. De tal forma, se obtienen los frames artificiales, consiguiendo una nueva filmaci\'on con el efecto de $slowmotion$ que este m\'etodo propone. 
 
 \textbf{¿Qu\'e relaci\'on lleva este m\'etodo con el concepto de interpolar?} No dejaremos esta pregunta de lado, pues estar\'iamos ignorando lo que en la introducci\'on le dimos tanta importancia. Como pequeño recordatorio, en interpolaci\'on se buscamos obtener nuevos puntos del plano en base a los datos ya conocidos. Copiar la im\'agen del extremo m\'as cercano equivale a tomar cada p\'ixel del frame original, o sea los datos conocidos, e insertar estos valores en el frame artificial. De hecho, el frame artificial no es m\'as que un ``punto intermedio'' entre los dos frames originales.
 
-Transladamos esto \'ultimo a t\'erminos matem\'aticos para evitar cualquier ambigüedad al respecto. Por cada p\'ixel, se tiene un polinomio al que denominaremos $S_{i,j}$ cuyo \'indice denota a la posici\'on de la matriz del frame que se esta evaluando. Por otro lado, abreviaremos a $frameOriginal_{p}$ al cuadro que esta en el extremo inferior (hecho pasado) y $frameOriginal_{(p+1)}$ al del extremo superior (hecho futuro). Finalmente, $f$ que simboliza nuevamente la cantidad de frames a adicionar. Definimos a $S_{i,j}$ como:
+Transladamos esto \'ultimo a t\'erminos matem\'aticos para evitar cualquier ambigüedad al respecto. Por cada p\'ixel, se tiene un polinomio al que denominaremos $S_{i,j}$ cuyo \'indice denota a la posici\'on de la matriz del frame que se esta evaluando. Por otro lado, abreviaremos a $frameOriginal_{p}$ al cuadro que esta en el extremo inferior (hecho pasado) y $frameOriginal_{(p+1)}$ al del extremo superior (hecho futuro). Finalmente, $fr$ que simboliza nuevamente la cantidad de frames a adicionar. Definimos a $S_{i,j}$ como:
 
 \[
 S_{i,j}(x) = 
 \left\{
     \begin{array}{ll}
-        pixel(frameOriginal_{p}(i,j)) & \mbox{si } x \leq f/2 \\
+        pixel(frameOriginal_{p}(i,j)) & \mbox{si } x \leq fr/2 \\
         \hspace{0.3cm}     
-        pixel(frameOriginal_{(p+1)}(i,j)) & \mbox{si } x > f/2
+        pixel(frameOriginal_{(p+1)}(i,j)) & \mbox{si } x > fr/2
     \end{array}
 \right.
 \]
