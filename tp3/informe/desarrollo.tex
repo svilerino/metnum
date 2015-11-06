@@ -1,39 +1,74 @@
-\par \IEEEPARstart{F}{i}nalizada la enumeraci\'on de ciertos rubros que motiven la investigaci\'on sobre el tema, con la adici\'on de una breve perspectiva del problema a trabajar y de la justificación teórica detrás del método de interpolación, nos dedicaremos a desarrollar con mayor precisi\'on cada m\'etodo n\'umerico en cuesti\'on. Recordemos que estos métodos intentan atacar el problema de construir, a partir de un video filmado en tiempo real, nuevos frames que den la sensaci\'on de que el video original ha sido ralentizado (efecto de \emph{slowmotion}), o, aún mejor, filmado con una cámara de alta frecuencia.
+%!TEX root = informe.tex
+
+\IEEEPARstart{F}{i}nalizada la enumeraci\'on de ciertos rubros que motiven la investigaci\'on sobre el tema, con la adici\'on de una breve perspectiva del problema a trabajar y de la justificación teórica detrás del método de interpolación, nos dedicaremos a desarrollar con mayor precisi\'on cada m\'etodo n\'umerico en cuesti\'on. Recordemos que estos métodos intentan atacar el problema de construir, a partir de un video filmado en tiempo real, nuevos frames que den la sensaci\'on de que el video original ha sido ralentizado (efecto de \emph{slowmotion}), o, aún mejor, filmado con una cámara de alta frecuencia.
+
+\subsection{Aclaraciones \'utiles para la comprensi\'on del desarrollo}
+
+Antes de ingresar al campo que abarca la explicaci\'on de los m\'etodos, queremos esclarecer ciertas frases o palabras claves que ocupar\'an terreno en el resto de la secci\'on:
+
+\begin{itemize}
+	\item \textit{Frame original}: Se le dar\'a nombre al cuadro que pertenece al video original, es decir, aquel archivo que no contiene los frames agregados que conciben al efecto de c\'amara lenta.
+	\item \textit{Frame artificial}: Lo llamaremos a aquellos cuadros que se realizar\'an a partir del procedimiento que dicho m\'etodo vaya planeando. En esta ocasi\'on, se puede ratificar que los mismos se crearan en conjunto, y entre medio de un par de frames originales.
+	\item \textit{Cantidad de frames a adjuntar}: Nos referiremos al par\'ametro que decide cu\'antos cuadros artificiales le adicionaremos entre cada par de frames originales. Lo denotaremos con las letras $fr$.
+	\item \textit{Matriz frame}: Aunque no se hablar\'a de ese nombre en particular, es fundamental aclarar que en cualquier comentario acerca de los valores o p\'ixeles de un frame, se lo est\'a especificando como una matriz de $m$ x $n$ (visto como la resoluci\'on del video) que lleva los valores del $0$ al $255$, inclusive (escala de grises).
+	\item \textit{P\'ixel}: Transladamos esta palabra asociada a la im\'agen digital al campo del \'algebra lineal. Por lo tanto, se lo considerar\'a como un componente de la matriz frame cuyos valores estan restringido en el rango $[0;255]$.
+\end{itemize}
 
 \subsection{Los m\'etodos propuestos}
 
-Para la explicación de todos los métodos consideramos dado (como parámetros del problema) el video sobre el cual trabajar y la cantidad $n$ de frames a generar entre cada par de frames del original. Llamaremos \emph{frames artificiales} a los frames generados por los métodos, y \emph{frames originales} a los frames provenientes del video original.
+Para la explicación de todos los métodos consideramos dado (como parámetros del problema) el video sobre el cual trabajar y la cantidad $fr$ de frames a generar entre cada par de frames del original. Llamaremos \emph{frames artificiales} a los frames generados por los métodos, y \emph{frames originales} a los frames provenientes del video original.
 
 \subsubsection{Cuadro m\'as cercano}
-
 Este m\'etodo se basa en una idea de car\'acter simplista, muy sencilla de implementar, y que nos permitirá tener una base para establecer comparaciones con métodos más inteligentes. A pesar de esto, puede resultar precisa para ciertos tipos de videos, como por ejemplo, la filmaci\'on de un objeto inmóvil.
 
 Como lo indica el subt\'itulo de la secci\'on, la idea del método es que cada frame artificial es una copia de su frame original más cercano en términos temporales. Para cada frame a generar el método calcula cuál es dicho ``vecino más cercano'', y luego copia la im\'agen de dicho frame al frame artificial a generar. 
 
-De esta manera, habr\'a al menos $n/2$ copias de cada frame original. En caso que se desee agregar una cantidad impar, se opta por fragmentar en dos partes de $n/2$ y $n/2+1$ cuadros. En la partici\'on de mayor peso, es el usuario quien selecciona qu\'e extremo escoger de los originales. En la siguiente figura, nos encontramos con un ejemplo consico de lo explicado: 
+De esta manera, habr\'a al menos $fr/2$ copias de cada frame original. En caso que se decida agregar una cantidad impar, se opta por fragmentar en dos partes de $fr/2$ y $fr/2+1$ cuadros. En la figura \ref{fig:vecino} vemos un ejemplo conciso de lo explicado.
 
-( Ejemplo gra\'fico o dejar eso para el desarrollo )
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.55\textwidth]{VecinoCercano.png}
+     \caption{Ejemplo de vecino m\'as cercano}\label{fig:vecino}
+\end{figure}
+\noindent
 
-( Breve explicaci\'on del ejemplo )
+En el caso de la figura, el par\'ametro de cantidad de cuadros a agregar es de $fr = 22$. Por ende, se lo divide en dos particiones de $11$ frames artificiales cuya imagen corresponder\'a al frame original m\'as cercano (el marr\'on o blanco). Como observaci\'on trivial, el frame original $i$ se lo considera como la imagen reproducida en el estado de tiempo anterior a los artificiales agregados de por medio. An\'alogamente, ocurre con el otro cuadro en el extremo derecho.
 
 Volviendo al an\'alisis del video en su mera totalidad, se repite el anterior procedimiento en cada par de frames en el orden concebido por la secuencia del video. De tal forma, se obtienen los frames artificiales, consiguiendo una nueva filmaci\'on con el efecto de $slowmotion$ que este m\'etodo propone. 
 
-( Alg\'un comentario final )
+\textbf{¿Qu\'e relaci\'on lleva este m\'etodo con el concepto de interpolar?} No dejaremos esta pregunta de lado, pues estar\'iamos ignorando lo que en la introducci\'on le dimos tanta importancia. Como pequeño recordatorio, en interpolaci\'on se buscamos obtener nuevos puntos del plano en base a los datos ya conocidos. Copiar la im\'agen del extremo m\'as cercano equivale a tomar cada p\'ixel del frame original, o sea los datos conocidos, e insertar estos valores en el frame artificial. De hecho, el frame artificial no es m\'as que un ``punto intermedio'' entre los dos frames originales.
 
-\subsubsection{Interpolaci\'on lineal}
+Transladamos esto \'ultimo a t\'erminos matem\'aticos para evitar cualquier ambigüedad al respecto. Por cada p\'ixel, se tiene un polinomio al que denominaremos $S_{i,j}$ cuyo \'indice denota a la posici\'on de la matriz del frame que se esta evaluando. Por otro lado, abreviaremos a $frameOriginal_{p}$ al cuadro que esta en el extremo inferior (hecho pasado) y $frameOriginal_{(p+1)}$ al del extremo superior (hecho futuro). Finalmente, $fr$ que simboliza nuevamente la cantidad de frames a adicionar. Definimos a $S_{i,j}$ como:
+
+\[
+S_{i,j}(x) = 
+\left\{
+    \begin{array}{ll}
+        pixel(frameOriginal_{p}(i,j)) & \mbox{si } x \leq fr/2 \\
+        \hspace{0.3cm}     
+        pixel(frameOriginal_{(p+1)}(i,j)) & \mbox{si } x > fr/2
+    \end{array}
+\right.
+\]
+
+(Continuara)
+
+\subsubsection{Construcci\'on mediante Interpolaci\'on lineal}
 
 Semejante al \emph{cuadro m\'as cercano}, en el sentido que comparten la ideolog\'ia de trabajar c\'iclicamente con cada par de frames para eventualmente, obtener el video deseado con su respectivo efecto. No obstante, contaremos lo particular y caracter\'istico de este m\'etodo, que puede propocionar ciertas mejoras en el movimiento de objetos durante su filmaci\'on.
 
 Por un lado, no posee la misma intuici\'on que su antecesora, donde la im\'agen de cada frame artificial se basa en copiar alguno de los dos cuadros originales en evaluaci\'on. En cambio, se busca utilizar fundamentos matem\'aticos que ayuden a \emph{predecir y reflejar} lo sucedido entre cada par de frames del video original. 
 
-Nuevamente, nos enfocamos en analizar el algoritmo propuesto para la creaci\'on de los $n$ frames artificiales que se desean adherir entre cada conjunto de pares. En primer lugar, debemos pensar a cada frame como una matriz de $m$ $x$ $n$ p\'ixeles (dependiendo la resoluci\'on en que se dispone el video), siendo $m$ el largo del cuadro y $n$ el ancho. En segundo lugar, el procedimiento destina a generar un polinomio de grado uno \footnote{ Tambi\'en definida como funci\'on lineal; \url{https://es.wikipedia.org/wiki/Lineal}.} entre ese par de frames originales. Aunque, ¿de qu\'e forma inventaremos dichos polinomios? Para ello, introducimos algunos conceptos que resolver\'an esta inc\'ognita.
+Nuevamente, nos enfocamos en analizar el algoritmo propuesto para la creaci\'on de los $fr$ frames artificiales que se desean adherir entre cada conjunto de pares. En primer lugar, debemos pensar a cada frame como una matriz de $m$ $x$ $n$ p\'ixeles (dependiendo la resoluci\'on en que se dispone el video), siendo $m$ el largo del cuadro y $n$ el ancho. En segundo lugar, el procedimiento destina a generar un polinomio de grado uno \footnote{ Tambi\'en definida como funci\'on lineal; \url{https://es.wikipedia.org/wiki/Lineal}.} entre ese par de frames originales.
 
 Contamos previamente acerca de la representación de tales cuadros como matrices compuestas por p\'ixeles, y de dichos píxeles como números de 0 a 255.
 
-Dicho esto, el m\'etodo se centra en crear un polinomio interpolador por cada posici\'on del frame cuyos puntos interpolados resultan ser los valores de dicha ubicaci\'on en el par de frames originales que se est\'a trabajando. Por ende, tendremos por cada par de cuadros reales, $m$ $x$ $n$ polinomios de grado uno. De lo anterior, nace una nueva duda : ¿C\'omo esto resuelve nuestro problema de crear m\'utiples frames artificiales?
+Dicho esto, el m\'etodo se centra en crear un polinomio interpolador por cada posici\'on del frame cuyos puntos interpolados resultan ser los valores de dicha ubicaci\'on en el par de frames originales que se est\'a trabajando. Por ende, tendremos por cada par de cuadros reales, $m$ $x$ $n$ polinomios de grado uno. De lo anterior nace una nueva duda : ¿C\'omo esto resuelve nuestro problema de crear m\'utiples frames artificiales?
 
 El hecho esta en que ahora conocemos los valores intermedios entre los dos cuadros originales y en consecuencia, podemos particionar ese dominio en $p$ partes ($p$ siendo la cantidad de frames que se adiciona en cada par) y finalmente, evaluar el polinomio en dicho borde de cada fragmento. Como observaci\'on, este paso lo tendremos que aplicar para cada posici\'on de la im\'agen.
 
 De misma forma, se realiza la tarea sobre cada par agrupado en el orden indicado con lo que eventualmente, el m\'etodo en cuesti\'on concluye con su labor, dejando el efecto de $slowmotion$ que la misma ofrece.
 
 ( Cosas para agregar : imagenes o ejemplo sencillo.)
+
+\subsubsection{Construcción mediante interpolación por splines}
