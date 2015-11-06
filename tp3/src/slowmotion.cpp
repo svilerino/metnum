@@ -170,7 +170,7 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
                                     video_input,
                                     video_output,
                                     starting_frame,
-                                    starting_frame + spline_block_size, // Que tambien tenga en cuenta el primer frame del proximo bloque para que no haya saltos
+                                    starting_frame + spline_block_size,
                                     interpol_frame_count
                                 );
             starting_frame += spline_block_size-1; //Asi no dejamos gaps sin interpolar
@@ -193,7 +193,7 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
                                     video_input,
                                     video_output,
                                     starting_frame,
-                                    starting_frame + spline_block_size, // Que tambien tenga en cuenta el primer frame del proximo bloque para que no haya saltos
+                                    starting_frame + spline_block_size,
                                     interpol_frame_count
                                 );
             starting_frame += spline_block_size-1;
