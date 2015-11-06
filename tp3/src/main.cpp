@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
         cerr << "Los parámetros de entrada no son los correctos." << endl;
         cerr << "El primer parametro debe ser el path al archivo de entrada(un video)." << endl;
         cerr << "El segundo parámetro debe ser el path al archivo de salida(un video)." << endl;
-        
+
         cerr << "El tercer parámetro debe ser el método a ejecutar." << endl;
         cerr << "\t0.- Vecino mas cercano" << endl;
         cerr << "\t1.- Interpolacion lineal" << endl;
@@ -52,16 +52,17 @@ int main(int argc, char** argv) {
 
         interpolation_method_t interp_method = (interpolation_method_t) atoi(argv[3]);
         assert(interp_method < 3);
-        
+
         const uint interpol_frame_count = atoi(argv[4]);
 
         const uint spline_block_size = (argc > 5) ? atoi(argv[5]) : DEFAULT_SPLINE_BLOCK_SIZE;
 
         assert(interpol_frame_count >= 0);
-        
+
         assert(spline_block_size >= 3);
 
-        const uint frame_drop = (argc > 6) ? atoi(argv[6]) : DEFAULT_FRAME_DROP;
+        const uint frame_drop = (argc > 6) ? atoi(argv[6]) : interpol_frame_count;
+        //const uint frame_drop = (argc > 6) ? atoi(argv[6]) : DEFAULT_FRAME_DROP;
 
         // -- Leer input completo(sin frame_drop)
 
@@ -92,18 +93,18 @@ int main(int argc, char** argv) {
 
         string input_directory = input_path.substr(0, input_path.find_last_of("/"));
         string input_filename = input_path.substr(input_path.find_last_of("/"), input_path.length());
-        
+
         string input_filename_no_extension = input_filename.substr(0, input_filename.find_last_of("."));
         string input_extension = input_filename.substr(input_filename.find_last_of("."), input_filename.length());
 
-        string grayscale_output_path = input_directory + input_filename_no_extension + ".grayscale" + input_extension;
+        string grayscale_output_path = input_directory + input_filename_no_extension + ".grayscale.avi";
 
         cout << "Guardando video original(con ultimos frames descartados adecuadamente) en escala de grises en: " << grayscale_output_path << "..." << endl;
         VideoToFile(grayscale_output_path.c_str(), video_input, "", false);
-        cout << "------------------------------------- " << endl << endl;        
+        cout << "------------------------------------- " << endl << endl;
 
         // -- Pre-Procesamiento (Skipear frames)
-        // Se puede hacer mejor borrando directo de video_input.frames en lugar de copiando lo que voy a dejar, 
+        // Se puede hacer mejor borrando directo de video_input.frames en lugar de copiando lo que voy a dejar,
         // pero hay que tener cuidado con los iteradores y su invalidacion cada vez que se borra un elemento
         vector<frame_t> skipped_frames;
 
