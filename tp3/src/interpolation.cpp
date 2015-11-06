@@ -7,7 +7,7 @@ using namespace std;
 
 double Interpolation::linear_interpolation(double x0, double y0, double x1, double y1, double x)
 {
-	double y = y0 + (y1-y0) * ( (x - x0) / (x1 - x0) );    
+	double y = y0 + (y1-y0) * ( (x - x0) / (x1 - x0) );
     return y;
 }
 
@@ -34,9 +34,9 @@ void Interpolation::calculate_spline_polynomials(const vector<double>& m_x, cons
 
     assert(m_x.size() > 2);
     assert(m_x.size() == m_y.size());
-    
+
     uint n = m_x.size();
-    
+
     // Check sorted m_x input
     for(uint i=0; i<n-1; i++) {
         assert(m_x[i ]< m_x[i+1]);
@@ -56,7 +56,7 @@ void Interpolation::calculate_spline_polynomials(const vector<double>& m_x, cons
     vector<double> vect_indep(n);
 
     // Armar matriz entre 1 y n-1
-    for(uint i = 1; i < n-1; i++) 
+    for(uint i = 1; i < n-1; i++)
     {
         A[i][i-1] = (m_x[i] - m_x[i-1]);
         A[i][i] = 2.0*(m_x[i+1] - m_x[i-1]);
@@ -90,6 +90,7 @@ void Interpolation::calculate_spline_polynomials(const vector<double>& m_x, cons
     }
 
     polinomios.m_y = m_y;
+
 }
 
 double Interpolation::eval_spline(const double x, spline_polynomials_t& polinomios)
