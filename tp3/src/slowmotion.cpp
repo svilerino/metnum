@@ -161,7 +161,8 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	// Process blocks
 	uint starting_frame = 0;
 	//for (uint block_idx = 0; block_idx < blocks_count-1; block_idx++)
-	for (uint block_idx = 0; block_idx < blocks_count-1; block_idx++)
+    if(blocks_count != 0) --blocks_count;
+	for (uint block_idx = 0; block_idx < blocks_count; block_idx++)
 	{
 		// cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << "]" << endl;
 		//Real frame index: block_idx*spline_block_size + frame_idx
