@@ -159,81 +159,70 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 
 	// Process blocks
 	uint starting_frame = 0;
-	//for (uint block_idx = 0; block_idx < blocks_count-1; block_idx++)
-    if(blocks_count != 0) --blocks_count;
-	for (uint block_idx = 0; block_idx < blocks_count; block_idx++)
-	{
-		// cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << "]" << endl;
-		//Real frame index: block_idx*spline_block_size + frame_idx
-		assert(starting_frame + spline_block_size + 1 < video_input.frames.size());
-		process_spline_block(
-                                video_input,
-                                video_output,
-                                starting_frame,
-                                starting_frame + spline_block_size + 1, // Que tambien tenga en cuenta el primer frame del proximo bloque para que no haya saltos
-                                interpol_frame_count
-                            );
-        starting_frame += spline_block_size;
+    if(blocks_count != 0)
+    {
+        for (uint block_idx = 0; block_idx < blocks_count-1; block_idx++)
+        {
+            // cout << "[Block #" << block_idx << "]Processing frames in range [" << starting_frame << ".."<< (starting_frame + spline_block_size) << "]" << endl;
+            //Real frame index: block_idx*spline_block_size + frame_idx
+            assert(starting_frame + spline_block_size < video_input.frames.size());
+            process_spline_block(
+                                    video_input,
+                                    video_output,
+                                    starting_frame,
+                                    starting_frame + spline_block_size, // Que tambien tenga en cuenta el primer frame del proximo bloque para que no haya saltos
+                                    interpol_frame_count
+                                );
+            starting_frame += spline_block_size-1; //Asi no dejamos gaps sin interpolar
+        }
+
+        //Process last block
+        if(remaining_trailing_frames == 0)
+        {
+            assert(starting_frame + spline_block_size < video_input.frames.size());
+            process_spline_block(
+                                    video_input,
+                                    video_output,
+                                    starting_frame,
+                                    video_input.frame_count,
+                                    interpol_frame_count
+                                );
+        } else {
+            assert(starting_frame + spline_block_size < video_input.frames.size());
+            process_spline_block(
+                                    video_input,
+                                    video_output,
+                                    starting_frame,
+                                    starting_frame + spline_block_size, // Que tambien tenga en cuenta el primer frame del proximo bloque para que no haya saltos
+                                    interpol_frame_count
+                                );
+            starting_frame += spline_block_size-1;
+        }
     }
 
-    //Process last block
-    if(remaining_trailing_frames == 0)
+    // Process last incomplete block( % trailing frames )
+    if(remaining_trailing_frames > 0)
     {
-    	assert(starting_frame + spline_block_size < video_input.frames.size());
         process_spline_block(
-                                video_input,
-                                video_output,
-                                starting_frame,
-                                starting_frame + spline_block_size,
-                                interpol_frame_count
-                            );
-    } else {
-    	assert(starting_frame + spline_block_size + 1 < video_input.frames.size());
-        process_spline_block(
-                                video_input,
-                                video_output,
-                                starting_frame,
-                                starting_frame + spline_block_size + 1, // Que tambien tenga en cuenta el primer frame del proximo bloque para que no haya saltos
-                                interpol_frame_count
-                            );
-        starting_frame += spline_block_size;
-
-        // Process last incomplete block( % trailing frames )
-        if(remaining_trailing_frames >= 3)
-        {
-    		assert(video_input.frame_count < video_input.frames.size());
-            // cout << "[Block #" << (blocks_count-1) << "]Processing frames in range [" << starting_frame << ".."<< video_input.frame_count << ")" << endl;
-            process_spline_block(
-                video_input,
-                video_output,
-                starting_frame,
-                video_input.frame_count,
-                interpol_frame_count
-            );
-        } else if(remaining_trailing_frames == 2){
-            assert(starting_frame > 0);
-            --starting_frame;
-
-            assert(video_input.frame_count < video_input.frames.size());
-            process_spline_block(
-                video_input,
-                video_output,
-                starting_frame,
-                video_input.frame_count,
-                interpol_frame_count,
-                remaining_trailing_frames
-            );
-        } //Si remaining_trailing_frames == 1 no hace falta interpolar nada mas
+            video_input,
+            video_output,
+            starting_frame,
+            video_input.frame_count,
+            interpol_frame_count,
+            remaining_trailing_frames>=2
+        );
     }
 }
 
-void SlowMotionEffect::process_spline_block(const Video& video_input, Video& video_output, uint starting_frame, const uint ending_frame, uint interpol_frame_count, uint remaining_trailing_frames)
+void SlowMotionEffect::process_spline_block(const Video& video_input, Video& video_output, uint starting_frame, const uint ending_frame, uint interpol_frame_count, bool enough_trailing_frames)
 {
 	vector<double> x0;
 	vector<double> y0;
 
 	vector< vector<spline_polynomials_t> > splines_list;
 	splines_list.resize(video_input.frame_height);
+
+    if(!enough_trailing_frames) --starting_frame; //calculo el spline con un frame previo
 
 	for(uint i = 0; i < video_input.frame_height ; i++)
  	{
@@ -248,8 +237,8 @@ void SlowMotionEffect::process_spline_block(const Video& video_input, Video& vid
             {
                 x0.push_back(cur_frame);
 
-                assert(ending_frame < video_input.frames.size());
-                
+                //assert(ending_frame < video_input.frames.size());
+
                 y0.push_back(video_input.frames[cur_frame][i][j]);
             }
             // De esta forma, recorre y construye el polinomio en columna
@@ -258,8 +247,7 @@ void SlowMotionEffect::process_spline_block(const Video& video_input, Video& vid
 
  	}
 
-    // Para el caso de 2 o menos trailing frames en el ultimo bloque
-    if(remaining_trailing_frames == 2) ++starting_frame;
+    if(!enough_trailing_frames) ++starting_frame; //Pero interpolo solo los trailing frames
 
  	// Iterate over all frames in current block
 	for (uint cur_frame = starting_frame; cur_frame < ending_frame-1; cur_frame++)
