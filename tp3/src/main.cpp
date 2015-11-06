@@ -22,7 +22,7 @@ uint calcular_frames_a_descartar(uint video_frame_count, uint frame_drop)
     }
     else
     {
-        frames_a_descartar -= (frame_drop-1);
+        frames_a_descartar --;
     }
     return frames_a_descartar;
 }
