@@ -1,7 +1,42 @@
-\par \IEEEPARstart{E}{N} la secci\'on anterior se presento una descripci\'on
-breve del problema a resolver, y se lleg\'o a un modelo matricial del mismo
-sobre el cual la resoluci\'on del problema se reduc\'ia a calcular el autovector
-$x$ asociado al autovalor $\lambda$ de valor 1. A su vez, se demostr\'o que como
-consecuencia del modelo y su matriz resultante, este $x$ y $\lambda$ existir\'an
-(y en el caso de $x$, que ser\'a \'unico).
+\par \IEEEPARstart{F}{i}nalizada la enumeraci\'on de ciertos rubros que motiven la investigaci\'on sobre el tema, con la adici\'on de una breve perspectiva del problema a trabajar, nos centraremos a desarrollar con mayor precisi\'on, cada m\'etodo n\'umerico en cuesti\'on. Recordemos que estas herramientas encaminar\'an a las posible soluciones al problema de construir, a partir de un video en tiempo real, una secuencia de im\'agenes generadas de forma artificial que explaye la sensaci\'on de que el video original ha sido alentizado (efecto de $slowmotion$).
 
+\subsection{Los m\'etodos propuestos}
+
+\subsubsection{Cuadro m\'as cercano}
+
+Este m\'etodo se basa en una idea de car\'acter simplista, pero comprende de una intuici\'on que puede resultar de utilidad para ciertos tipos de videos, como por ejemplo, la filmaci\'on de un objeto inm\'ovil.
+
+Se extrae cada cuadro/frame en el orden en que el video los reproduce y tomando de a pares, se le adiciona una cierta cantidad de frames de por medio. No hay un n\'umero exacto que represente esta cantidad, por lo que se lo interpreta como par\'ametro de experimentaci\'on. Sin embargo, nos resta como inc\'ognita, el procedimiento por el cual se obtiene dichos cuadros. Esto \'ultimo es lo que caracterizar\'a al m\'etodo en cuesti\'on.
+
+Nos abstraemos por un momento de la totalidad de frames que compone una grabaci\'on para analizar en detalle el conjunto de im\'agenes resultantes entre cada par de cuadros de la repoducci\'on original. Asumimos que se decidi\'o la cantidad de frames a realizar. Para un mejor entendimiento, llamaremos a estos cuadros como \textit{frames artificiales}. Por otro lado, el par de frames provenientes del video original, se lo conocer\'an como \textit{frames originales}.
+
+Como lo indica el sub-t\'itulo de la secci\'on, mediante un algoritmo que muestra la posici\'on del frame artificial entre los dos frames originales, determinamos a qu\'e distancia se encuentra de ambos extremos. Recordemos que se ingresaron $n$ cuadros entre medio de los originales. Una vez realizado el paso de b\'usqueda, se decide copiar la im\'agen del extremo m\'as cercano al frame artificial que se est\'a evaluando. 
+
+De esta manera, habr\'a al menos (despreciando decimales) $n/2$  frames cuya im\'agen ser\'a id\'entica a la de alguno de los dos frames originales. En caso que se decida agregar una cantidad impar, se opta por fragmentar en dos partes de $n/2$ y $n/2+1$ cuadros. En la partici\'on de mayor peso
+, es el usuario quien selecciona qu\'e extremo escoger de los originales. En la siguiente figura, nos encontramos con un ejemplo consico de lo explicado: 
+
+( Ejemplo gra\'fico o dejar eso para el desarrollo )
+
+( Breve explicaci\'on del ejemplo )
+
+Volviendo al an\'alisis del video en su mera totalidad, se repite el anterior procedimiento en cada par de frames en el orden concebido por la secuencia del video. De tal forma, se obtienen los frames artificiales, consiguiendo una nueva filmaci\'on con el efecto de $slowmotion$ que este m\'etodo propone. 
+
+( Alg\'un comentario final )
+
+\subsubsection{Interpolaci\'on lineal}
+
+Semejante al \textit{cuadro m\'as cercano}, en el sentido que comparten la ideolog\'ia de trabajar c\'iclicamente con cada par de frames para eventualmente, obtener el video deseado con su respectivo efecto. No obstante, contaremos lo particular y caracter\'istico de este m\'etodo, que puede propocionar ciertas mejoras en el movimiento de objetos durante su filmaci\'on.
+
+Por un lado, no posee la misma intuici\'on que su antecesora, donde la im\'agen de cada frame artificial se basa en copiar alguno de los dos cuadros originales en evaluaci\'on. En cambio, se busca utilizar fundamentos matem\'aticos que ayuden a \textit{predecir y reflejar} lo sucedido entre cada par de frames del video original. 
+
+Nuevamente, nos enfocamos en analizar el algoritmo propuesto para la creaci\'on de los $n$ frames artificiales que se desean adherir entre cada conjunto de pares. En primer lugar, debemos pensar a cada frame como una matriz de $m$ $x$ $n$ p\'ixeles (dependiendo la resoluci\'on en que se dispone el video), siendo $m$ el largo del cuadro y $n$ el ancho. En segundo lugar, el procedimiento destina a generar un polinomio de grado uno \footnote{ Tambi\'en definida como funci\'on lineal; \url{https://es.wikipedia.org/wiki/Lineal}.} entre ese par de frames originales. Aunque, ¿de qu\'e forma inventaremos dichos polinomios? Para ello, introducimos algunos conceptos que resolver\'an esta inc\'ognita.
+
+Contamos previamente acerca de la idealizaci\'on de tales cuadros como matrices compuestas por p\'ixeles. Sin embargo, en ning\'un momento se aclar\'o del valor num\'erico que posee cada posici\'on. Consideramos un rango en el conjunto de n\'umeros enteros del $0$ al $255$, inclusive. Esta \'ultima se la conoce como \textbf{escala de grises en 8 bits} \footnote{Numerical representation : \url{https://en.wikipedia.org/wiki/Grayscale}}, y su importancia revoca en que cada p\'ixel de los frames artificiales adquirir\'a un valor num\'erico dentro ese rango.
+
+Dicho esto, el m\'etodo se centra en crear un polinomio interpolador por cada posici\'on del frame cuyos puntos interpolados \textbf{(creo que no es puntos interpolados, pero no se me ocurre el verdadero)} resultan ser los valores de dicha ubicaci\'on en el par de frames originales que se est\'a trabajando. Por ende, tendremos por cada par de cuadros reales, $m$ $x$ $n$ polinomios de grado uno. De lo anterior, nace una nueva duda : ¿C\'omo esto resuelve nuestro problema de crear m\'utiples frames artificiales?
+
+El hecho esta en que ahora conocemos los valores intermedios entre los dos cuadros originales y en consecuencia, podemos particionar ese dominio en $p$ partes ($p$ siendo la cantidad de frames que se adiciona en cada par) y finalmente, evaluar el polinomio en dicho borde de cada fragmento. Como observaci\'on, este paso lo tendremos que aplicar para cada posici\'on de la im\'agen.
+
+De misma forma, se realiza la tarea sobre cada par agrupado en el orden indicado con lo que eventualmente, el m\'etodo en cuesti\'on concluye con su labor, dejando el efecto de $slowmotion$ que la misma ofrece.
+
+( Cosas para agregar : imagenes o ejemplo sencillo. No se si explicar polinomio interpolado aca o en el desarrollo. Etc. Rta de L: va antes, lo pongo en una sección anterior. Va a haber que reorganizar un poco esto porque nos estamos repitiendo.) 
