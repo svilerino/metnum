@@ -28,26 +28,26 @@ También es posible que lo que se busque sea generar frames nuevos a partir de u
 Un objetivo similar es generar una trancisión entre dos fotos o videos que no necesariamente forman parte de umna misma captura, pero que se quiere integrar en un único y, en lo posible, fluido video. Los usos más comunes del \emph{morphing}, como se le llama, consisten en transformar la cara de una persona en la de otra\footnote{Como se puede ver en este excelente ejemplo: \url{https://www.youtube.com/watch?v=3ZHtL7CirJA}}.
 
 \subsection{Marco teórico}
-Nos interesa, entonces, transformar videos computacionalmente para que se perciban más lentamente, que el resultado final se vea ``fluido'' y se acerque lo más posible a lo que se habría capturado usando una Cámara de Alta Velocidad. Lo primero que hace falta es modelar los videos de un modo que nos permita manejarlos usando lenguajes de programación conocidos, sin incluir herramientas de edición complejas que exceden al alcance de este trabajo. Usamos entonces que un video, en su forma ``original'' (sin compresión) es un conjunto ordenado de imágenes, cada una de la cual representa un frame. En consecuencia, el problema consiste en generar nuevas imágenes ``intermedias'' para que, al reproducir el video con el mismo frame-rate, se perciba más lento. A esto \'ultimo lo conoceremos como el efecto de $slowmotion$.
+Nos interesa, entonces, transformar videos computacionalmente para que se perciban más lentamente, que el resultado final se vea ``fluido'' y se acerque lo más posible a lo que se habría capturado usando una Cámara de Alta Velocidad. Lo primero que hace falta es modelar los videos de un modo que nos permita manejarlos usando lenguajes de programación conocidos, sin incluir herramientas de edición complejas que exceden al alcance de este trabajo. Usamos entonces que un video, en su forma ``original'' (sin compresión) es un conjunto ordenado de imágenes, cada una de la cual representa un frame. En consecuencia, el problema consiste en generar nuevas imágenes ``intermedias'' para que, al reproducir el video con el mismo frame-rate, se perciba más lento. A esto \'ultimo lo conoceremos como el efecto de \emph{slowmotion}.
 
 Cada imagen, a su vez, se puede modelar como una matriz de píxeles. Para simplificar el análisis, consideraremos todas las imágenes (y por lo tanto los videos) únicamente en escala de grises\footnote{Numerical representation: \url{https://en.wikipedia.org/wiki/Grayscale}}. De este modo, un píxel se puede representar con entero entre 0 y 255 inclusive (un byte) que denota la cantidad de luz que hay en ese píxel particular (siendo 0 el negro absoluto y 255 el blanco absoluto).
 
-La generación de estas nuevas imágenes intermedias pueden hacerse de diversas maneras. Una de ellas, aplicada en este trabajo, implica generarlas píxel por píxel, utilizando la información que nos brindan los píxeles correspondientes de las imágenes cercanas en el tiempo. Más formalmente, para cada píxel $p$ de cada frame $f$ a generar tomamos como información los píxeles que están en la misma posición que $p$ en las imágenes cercanas a $f$ en el tiempo.
+La generación de estas nuevas imágenes intermedias puede hacerse de diversas maneras. Una de ellas, aplicada en este trabajo, implica generarlas píxel por píxel, utilizando la información que nos brindan los píxeles correspondientes de las imágenes cercanas en el tiempo. Más formalmente, para cada píxel $p$ de cada frame $f$ a generar tomamos como información los píxeles que están en la misma posición que $p$ en las imágenes cercanas a $f$ en el tiempo.
 
 Se nos presenta el problema de cómo utilizar esa información para generar un píxel que resulte en un video final con las propiedades deseadas. En este trabajo estudiamos diferentes métodos y los comparamos estableciendo métricas cualitativas y cuantitativas. Pero para introducir el detalle de los métodos hace falta hacer algunas definiciones previas.
 
 \subsubsection{Interpolación}
-Dado un conjunto de puntos en $\mathbb{R}^2 (x_0, y_0), \ldots, (x_n, y_n)$ con $x_i \neq x_j$ si $i \neq j$ , decimos que una función $f:\mathbb{R}^2 \rightarrow \mathbb{R}^2$ interpola dichos puntos si $f(x_i) = y_i$ para todo $i = 0 \ldots n$. En particular, si nos restringimos a considerar polinomios, se puede demostrar que dados $n + 1$ puntos como los descritos existe un único polinomio $P \in \mathbb{R}[x]$ de grado menor o igual que $n$ tal que los interpola[\cite{wiki_lagrange_polynomial}]. A este polinomio se lo conoce como \emph{Polinomio Interpolador de Lagrange}, y su fórmula esta dada de la siguiente manera:
+Dado un conjunto de puntos en $\mathbb{R}^2 (x_0, y_0), \ldots, (x_n, y_n)$ con $x_i \neq x_j$ si $i \neq j$ , decimos que una función $f:\mathbb{R}^2 \rightarrow \mathbb{R}^2$ interpola dichos puntos si $f(x_i) = y_i$ para todo $i = 0, \ldots, n$. En particular, si nos restringimos a considerar polinomios, se puede demostrar que dados $n + 1$ puntos como los descritos existe un único polinomio $P \in \mathbb{R}[x]$ de grado menor o igual que $n$ tal que los interpola[\cite{wiki_lagrange_polynomial}]. A este polinomio se lo conoce como \emph{Polinomio Interpolador de Lagrange}, y su fórmula esta dada de la siguiente manera:
 
 \[P(x) = \sum_{k = 0}^n \left(y_k \prod_{i \neq k}^n \frac{x - x_i}{x_k - x_i}\right)\]
 
-Sin embargo, los polinomios interpoladores tienen la desventaja de que cuando el $n$ es grande \emph{oscilan} demasiado. Es por esto que en general se utiliza la técnica de \emph{Interpolación segmentada}, que consiste en desarrollar la función interpolante $f$ de a partes tomando subconjuntos de puntos consecutivos, generando el poliniomio interpolante de cada subconjunto y luego ``conectando'' cada uno de estos en el orden adecuado.
+Sin embargo, los polinomios interpolantes tienen la desventaja de que cuando el $n$ es grande \emph{oscilan} demasiado. Es por esto que en general se utiliza la técnica de \emph{Interpolación segmentada}, que consiste en desarrollar la función interpolante $f$ de a partes tomando subconjuntos de puntos consecutivos, generando el poliniomio interpolante de cada subconjunto y luego ``conectando'' cada uno de estos en el orden adecuado.
 
-Existen diversos tipos de interpolaci\'on segmentada, entre ellos, la lineal, cuadr\'atica y c\'ubica. Para la aplicaci\'on del efecto de $slowmotion$, se utilizar\'a la lineal y c\'ubica, mientras que la cuadr\'atica ser\'a descartada de la asignaci\'on. A continuaci\'on, se dar\'a una breve explicaci\'on de estos dos m\'etodos de interpolaci\'on. 
+Existen diversos tipos de Interpolaci\'on segmentada, entre ellos la lineal, cuadr\'atica y c\'ubica, nombrados según el grado de cada polinomio interpolante. Para la aplicaci\'on del efecto de \emph{slowmotion}, se utilizar\'a la lineal y c\'ubica. A continuaci\'on se dar\'a una breve explicaci\'on de estos dos m\'etodos de interpolaci\'on. 
 
 \subsubsection{Lineal}
 
-El caso m\'as sencillo lo corresponde la \textbf{Interpolación segmentada lineal}: construimos $S_0, \ldots, S_{n - 1}$ polinomios tal que $S_i$ interpola $x_i$ y $x_{i + 1}$ y definimos
+El caso m\'as sencillo es la \textbf{Interpolación segmentada lineal}: construimos $S_0, \ldots, S_{n - 1}$ polinomios tal que $S_i$ interpola $x_i$ y $x_{i + 1}$ y definimos
 
 \[
 f(x) = 
@@ -66,18 +66,45 @@ La interpolación segmetada lineal, no obstante, posee el problema de no resulta
 
 \subsubsection{Splines (Interpolaci\'on c\'ubica)}
 
-Al igual que en la Interpolaci\'on lineal, se procede a construir $S_0,  \ldots , S_{n - 1}$ polinomios donde en cada uno de ellos, se interpola un segmento equiespaciado sobre $x_i$ y $x_{i + 1}$ ( $i = 0 \ldots n$ ). Pero he aqu\'i la primer gran diferencia, y es que dichos polinomios son de grado 3 y por ende, se expresan de la forma: \[ S_i(x) = a_i x^3 + b_i x^2 + c_i x + d_i \]
+Al igual que en la Interpolaci\'on lineal, se procede a construir $S_0, \ldots, S_{n - 1}$ polinomios donde cada uno de ellos interpola un segmento equiespaciado sobre $x_i$ y $x_{i + 1}$ ($i = 0, \ldots, n$). La diferencia es que dichos polinomios son de grado 3 y por ende son de la forma: \[ S_i(x) = a_i x^3 + b_i x^2 + c_i x + d_i \]
 
-Sin entrar en gran detalle, se desea obtener la tupla de coeficientes $(a_i,b_i,c_i,d_i)$ y para ello se revela una serie de ecuaciones que comprender\'an ciertas condiciones, buscando mejorar el desempeño con respecto a su antecesora. Enumeramos estos requisitos sin desprendernos de una perspectiva m\'as conceptual y no tan t\'ecnica:
+En resumen, se desea obtener la tupla de coeficientes $(a_i,b_i,c_i,d_i)$ para $i = 0, \ldots, n$. Para ello se utiliza una serie de condiciones que, de cumplirse, mejorarían el problema descrito de la interpolación lineal. Enumeramos estos requisitos, primero, desde una perspectiva m\'as conceptual y no tan formal:
 
 \begin{enumerate}
-	\item Los polinomios $S_{i}$ deben pasar por los conjuntos de puntos $(x_{i},y_{i})$ que se establecieron como datos iniciales. Es decir, asegurar de que la funci\'on resultante sea continua.
-	\item Se debe mantener tambi\'en, la continuidad en las derivadas primeras y segundas. En otras palabras, por cada par $S_{i}$ y $S_{i+1}$ se debe cumplir en los puntos $x_{i}$ , la igualdad de evaluar en la derivada primera y segunda dichos polinomios (con $i = 0 \ldots n-1$).
+	\item Los polinomios $S_i$ deben pasar por los conjuntos de puntos $(x_i,y_i)$ que se establecieron como datos iniciales. Es decir, asegurar que la funci\'on resultante sea continua e interpole a los puntos originales.
+	\item Se debe mantener tambi\'en la continuidad en las derivadas primeras y segundas. En otras palabras, por cada par $S_i, S_{i+1}$ con $i = 0, \ldots, n-2$ se debe cumplir la igualdad de la derivada primera y segunda de dichos polinomios en el punto en que se conectan ($x_{i+1}$).
 	\item Para la \'ultima restricci\'on se consideran dos opciones:
 		\begin{enumerate}
-			\item La derivada segunda en los bordes de la funci\'on debe ser nula cuando se evalua en el $x_0$ y $x_n$, respectivamente. Se la define como \textit{Spline natural} y proviene de una curiosidad.
-			\item La derivada primera en los bordes coinciden con el de la funci\'on original que se est\'a aproximando en el punto $x_0$ y $x+n$, respectivamete. Esto implica que se necesita de cierta informaci\'on extra sobre la funci\'on a interpolar. Por esta raz\'on, se la conoce como \textit{Spline sujeto a la funci\'on interpoladora}.  
+			\item La derivada segunda en los bordes de la funci\'on debe ser nula cuando se evalua en el $x_0$ y $x_n$, respectivamente. Se la define como \textit{Spline natural}.
+			\item La derivada primera en los bordes coinciden con el de la funci\'on original que se est\'a aproximando en el punto $x_0$ y $x+n$, respectivamete. Esto implica que se necesita de cierta informaci\'on extra sobre la funci\'on a interpolar. Por esta raz\'on, se la conoce como \textit{Spline sujeto a la funci\'on interpolada}.  
 		\end{enumerate}
 \end{enumerate}
 
-A pesar de su mejora en ciertos aspectos, como la suavidad del $spline$ \footnote{Llamamos $spline$ al conjunto de funciones c\'ubicas, provenientes de interpolar cada segmento de la funci\'on real a aproximar.}, nos enfrentamos a una elevada cantidad de c\'alculos a realizar, lo cual nos dirige a un problema en el \'ambito computacional.
+Formalmente, todo esto se expresa como
+
+\begin{enumerate}
+\item $S_i(x_i) = y_i$ para todo $i = 0, \ldots, n-1$, y $S_{n-1}(x_n)=y_n$
+\item $S_i(x_{i + 1}) = S_{i+1}(x_{i + 1})$ para todo $i = 0, \ldots, n - 2$
+\item $S_i'(x_{i + 1}) = S_{i+1}'(x_{i + 1})$ para todo $i = 0, \ldots, n - 2$
+\item $S_i''(x_{i + 1}) = S_{i+1}''(x_{i + 1})$ para todo $i = 0, \ldots, n - 2$
+\item Se cumple que
+\begin{enumerate}
+\item $S''(x_0) = S''(x_n) = 0$ (spline natural)
+\item $S'(x_0) = f'(x_0)$ y $S'(x_n) = f'(x_n)$ (spline sujeto)
+\end{enumerate} 
+\end{enumerate}
+
+Y definimos entonces al \emph{spline} como el conjunto de todas las funciones cúbicas $S_i$:
+$$
+S(x) = 
+\left\{
+    \begin{array}{ll}
+        S_0(x)  & \mbox{si } x \in [x_{0}, x_1] \\
+        \hspace{0.3cm}\vdots \\     
+        S_{n - 1}(x) & \mbox{si } x \in [x_{n - 1}, x_n]
+    \end{array}
+\right.
+$$
+
+
+A pesar de su mejora en ciertos aspectos, como la suavidad del \emph{spline}, la cantidad de c\'alculos a realizar es mayor, lo cual nos lleva a un problema en el \'ambito computacional.
