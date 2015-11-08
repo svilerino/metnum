@@ -110,9 +110,9 @@ Deciframos lo anterior como los polinomios $S_{(i,j)}$, donde el par $(i,j)$ rep
 S_{(i,j)}(x) = y0 + (y1 - y0) * ( ( x - x0 ) / (x1 - x0) ) 
 \]
 
-Donde $y0 = frameOriginal_{p}(i,j)$ y $y1 = frameOriginal_{(p+1)}(i,j)$. Por parte de $x0$ y $x1$, lo enumeramos como $0$ y $1$ respectivamente. No importa el valor de estos \'ultimos, mientras sean consecutivos.\footnote{ a x1 = x0 + 1} No obstante, es importante aclarar que siempre se evaluar\'a esta funci\'on dentro del rango $[x0 ,x1]$, es decir, los puntos intermedios.
+Donde $y0 = frameOriginal_{p}(i,j)$ y $y1 = frameOriginal_{(p+1)}(i,j)$. Por parte de $x0$ y $x1$, lo enumeramos como $0$ y $1$ respectivamente. No importa el valor de estos \'ultimos, mientras sean consecutivos.\footnote{ a x1 = x0 + 1} No obstante, es importante aclarar que siempre se evaluar\'a esta funci\'on dentro del rango $(x0 ,x1)$, es decir, los puntos intermedios.
 
-Para una mayor comprensi\'on, representaremos gr\'aficamente el siguiente ejemplo: Supongamos que tenemos el algoritmo que realiza cada funci\'on $S_{(i,j)}$, recogiendo cada par p\'ixel de igual posici\'on en los dos frames originales escogidos. Notamos que est\'a operando sobre la posici\'on $(1,2)$ y decidimos visualizar dicho resultado. Asumiendo que el par\'ametro $fr = 2$, observamos lo siguiente:
+Para una mayor comprensi\'on, representaremos gr\'aficamente el siguiente ejemplo: Supongamos que tenemos el algoritmo que realiza la funci\'on $S_{(i,j)}$ , recogiendo cada par p\'ixel de igual posici\'on en los dos frames originales escogidos. Notamos que est\'a operando sobre la posici\'on $(1,2)$ y decidimos visualizar dicho resultado. Asumiendo que el par\'ametro $fr = 2$, observamos lo siguiente:
 
 \begin{figure}[h!]
   \centering
@@ -121,7 +121,7 @@ Para una mayor comprensi\'on, representaremos gr\'aficamente el siguiente ejempl
 \end{figure}
 \noindent
 
-Y as\'i este algoritmo proseguir\'a con su trabajo, hasta llegar al \'ultimo par de frames originales a interpolar. En consecuencia, obtiene la funci\'on explayada al inicio de esta perspectiva matem\'atica.
+De este modo, el algoritmo seguir\'a con su trabajo, hasta llegar al \'ultimo par de frames originales a interpolar. En respuesta, obtiene la funci\'on explayada al inicio de esta perspectiva matem\'atica.
 
 
 \begin{figure}[h!]
