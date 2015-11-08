@@ -153,8 +153,6 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
 	//	// cout << "Blocks including trailing frames: " << blocks_count << endl;
 	//}
 
-	// Necesito al menos 3 para aplicar splines en el ultimo bloque.
-	//assert((remaining_trailing_frames == 0) || (remaining_trailing_frames >=3));
 	assert(remaining_trailing_frames >= 0);
 
 	// Process blocks
@@ -170,7 +168,7 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
                                     video_input,
                                     video_output,
                                     starting_frame,
-                                    starting_frame + spline_block_size, // Que tambien tenga en cuenta el primer frame del proximo bloque para que no haya saltos
+                                    starting_frame + spline_block_size,
                                     interpol_frame_count
                                 );
             starting_frame += spline_block_size-1; //Asi no dejamos gaps sin interpolar
@@ -179,7 +177,6 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
         //Process last block
         if(remaining_trailing_frames == 0)
         {
-            assert(starting_frame + spline_block_size < video_input.frames.size());
             process_spline_block(
                                     video_input,
                                     video_output,
@@ -193,7 +190,7 @@ void SlowMotionEffect::spline_method_interpolation(interpolation_method_t interp
                                     video_input,
                                     video_output,
                                     starting_frame,
-                                    starting_frame + spline_block_size, // Que tambien tenga en cuenta el primer frame del proximo bloque para que no haya saltos
+                                    starting_frame + spline_block_size,
                                     interpol_frame_count
                                 );
             starting_frame += spline_block_size-1;
