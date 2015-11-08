@@ -131,6 +131,21 @@ Y as\'i este algoritmo proseguir\'a con su trabajo, hasta llegar al \'ultimo par
 \end{figure}
 \noindent
 
-\subsubsection{Construcción mediante interpolación por splines}
+\subsubsection{Construcción mediante interpolación por splines (c\'ubica)}
 
-Un m\'etodo que revive con la misma idea de conseguir los frames artificiales o intermedios mediante la evaluaci\'on de cierto polinomio en un determinado punto, pero esta vez aferr\'andose a una mayor complejidad. Sin lugar a dudas, su desarrollo dar\'a la sensaci\'on de brindar resultados m\'as satisfactorios en la construcci\'on del $slowmotion$, aunque habr\'a tiempo para confirmar esto \'ultimo durnate experimentaci\'on y/o conclusi\'on de este informe.
+Un m\'etodo que nace con la misma idea de conseguir los frames artificiales o intermedios mediante la evaluaci\'on de cierto polinomio en un determinado punto, pero esta vez aferr\'andose a una mayor complejidad. Sin lugar a dudas, su desarrollo dar\'a la sensaci\'on de brindar resultados m\'as satisfactorios en la construcci\'on del $slowmotion$, aunque habr\'a tiempo para confirmar esto \'ultimo durnate experimentaci\'on y/o conclusi\'on de este informe.
+
+\subsubsection*{\bf{Conceptualizaci\'on:}}
+
+Siendo \'este el tercer y \'ultimo m\'etodo a desarrollar, ya podemos abstraernos de ciertos detalles que fueron previamente explicados. De esta forma, nos centramos en lo peculiar y caracter\'istico de Splines, conceptualmente hablando.
+
+Por un lado, sabemos que pertenece a la familia de los interpoladores por segmentos. Por ende, la interpolaci\'on c\'ubica tambi\'en interpreta el problema de crear frames artificiales como un procedimiento donde se agrupan de a pares de cuadros originales, respetando el orden de la reproducci\'on del video, y creando frames de por medio. En principio, se podr\'ia pensar que Splines no cambia su metodolog\'ia con respecto a lo anteriormente visto. No obstante, se ha de analizar una serie de pasos que difiere a este m\'etodo con el resto.
+
+A diferencia del m\'etodo de Interpolaci\'on lineal, necesitamos disponer de todos los frames que la filmaci\'on contiene. La causa de ese requisito es que Splines no genera cada polinomio en base a un par de frames seleccionados, sino que a partir de tomar cada p\'ixel de una cierta posicion $(i,j)$ en todo el conjunto de cuadros, se construye la funci\'on asociada a ese p\'ixel en cuesti\'on. 
+
+¿Pero no se trataba el m\'etodo de crear un polinomio por cada par ($frameOriginal_{p}$,$frameOriginal_{(p+1)}$)? ($p = 0 \ldots$ $FramesTotal-1$) Efectivamente, Splines arma cada funci\'on de grado c\'ubico \footnote{\url{https://es.wikipedia.org/wiki/Ecuacion_de_tercer_grado}} por cada segmento de dos cuadros originales, pero a\'un as\'i, necesita recolectar los datos del resto de los frames existentes para completarlo.
+
+Una vez conseguido cada $Spline$ en la posici\'on del cuadro que se le indic\'o, prosigue a evaluar por cada segmento, los valores intermedios y de esa manera, crear los frames artificiales que generen el efecto de $slowmotion$ deseado. Como observaci\'on trivial, estos valores intermedios tambi\'en depender\'an de cuantos frames se le quiere adherir entre medio.
+
+
+ 
