@@ -3,11 +3,65 @@ implementaci\'on del m\'etodo propuesto. En las secciones previas hemos dado una
 introducci\'on al problema, su modelo y justificaci\'on de por qué el mismo sirve
 y a su vez hemos expuesto un m\'etodo que nos permite hayar la soluci\'on.
 
-\par En esta secci\'on primero hablaremos sobre una implementaci\'on del
-algoritmo \ref{alg:power_method2} (p\'agina \pageref{alg:power_method2}), su
-justificaci\'on y correctitud. Luego pasaremos a resolver el problema de las
-estructuras de datos utilizadas para las matrices del problema (las cuales, por
-representar grafos completos, presentar\'an incovenientes al querer trabajar
-con \emph{datasets} cada vez m\'as grandes).
+Datos al aire
 
-%---------------------------------------------------------------
+$f(x) = a + b (x - x0)$
+
+$y0 + (y1-y0) * ( (x - x0) / (x1 - x0)) \implies a = y0 \ y \ b = (y1-y0)/(x1-x0)$
+
+\begin{algorithm}
+    \KwIn{Puntos del dominio conocidos $x$ ; Puntos de im\'agen conocidos $y$, grado funci\'on $gr$}
+    \KwOut{Vector coeficiente $a$, Vector coeficiente $b$}
+    
+    \For{$i = 1 \ldots gr-1$}
+    {		
+		$a_i \gets y_i$\;
+		$b_i \gets \frac{y_{i+1} - y_{i} }{x_{i+1} - x_{i}}$\;
+	}
+    \KwRet{$a$,$b$}
+    \caption{Pseudoc\'odigo del algoritmo de Interpolaci\'on lineal}
+    \label{alg:int_lineal}
+\end{algorithm}
+
+$f(x) = d + c ( x - x0 ) + b ( x - x0)^2 + a ( x - x0)^3$
+
+\begin{algorithm}
+    \KwIn{Puntos del dominio conocidos $x$ ; Puntos de im\'agen conocidos $y$, grado funci\'on $gr$}
+    \KwOut{Vector coeficiente $a$, Vector coeficiente $b$, Vector coeficinete $c$, Vector coeficiente $d$}
+    
+	$MatrizSplines(0,0) \gets  1$\;
+	$MatrizSplines(1,0) \gets  0$\;
+	$vectorIndep_0 \gets 0$\;    
+    
+    \For{$i = 2 \ldots gr-1$}
+    {		
+		$MatrizSplines(i,i-1) \gets x_i - x_{i-1}$\;
+		$MatrizSplines(i,i) \gets 2 \ (x_{i+1} - x_{i-1})$\;
+		$MatrizSplines(i,i+1) \gets (x_{i+1} - x_i)$\;
+		$vectorIndep_i \gets 3 \  \frac{y_{i+1} - y_i }{x_{i+1}- x_{i}} - \frac{y_i - y_{i-1}}{ x_i -x_{i-1}}$\;
+	}    
+	
+	$MatrizSplines(gr,gr) \gets  1$\;
+	$MatrizSplines(gr,gr-1) \gets  0$\;
+	$vectorIndep_{gr} \gets 0$\; 
+	
+	$b \gets ResolverSistemaEcuaciones(MatrizSplines,vectorIndep)$\;
+	
+	\For{$i = 1 \ldots gr$}
+	{
+		$a_i \gets \frac{1}{3 \ \frac{b_{i+1} - b_{i}}{x_{i+1} - x_i}}$\;
+		$b_i \gets \frac{y_{i+1}- y_i}{x_{i+1}- x_i} - \frac{1}{3 \ (2 \ b_i + b_{i+1}) * (x_{i+1} - x_{i})}$\;
+	}    
+	
+	$y \gets d$	
+	
+    \KwRet{$a$,$b$,$c$,$d$}
+    \caption{Pseudoc\'odigo del algoritmo de Interpolaci\'on por Splines}
+    \label{alg:int_splines}
+\end{algorithm}
+
+
+
+
+
+
