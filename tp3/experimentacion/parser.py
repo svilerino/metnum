@@ -39,7 +39,8 @@ def parsear_filename(filename):
     else:
         raise ValueError
     cant_frames_generados = int(filename[filename.rfind("k")+1:])
-    return tipo_video, metodo, cant_frames_generados, tam_bloque
+    experimento = tipo_video, metodo, cant_frames_generados, tam_bloque
+    return experimento
 
 def parsear(filename):
     experimento = parsear_filename(filename)
@@ -64,7 +65,9 @@ def recorer_y_parsear_todo(path='.'):
             experimento, resultados = parsear(os.path.join(root, filename))
             datos[experimento] = resultados
     print(datos)
-
+    for experimento, resultados in datos.items():
+        # do stuff
+        pass
 
 def main():
     if len(sys.argv) > 1:
