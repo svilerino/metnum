@@ -1,0 +1,72 @@
+\IEEEPARstart{D}{urante} la experimentaci\'on, y dada la naturaleza de la misma,
+se sigui\'o una misma metodolog\'ia para recabar la informaci\'on necesaria para
+ser luego analizada.
+
+\par La forma en la que se presentar\'an los resultados m\'as adelante nada
+tiene que ver con el orden en el que se realiz\'o la experimentaci\'on.
+
+\par De la secci\'on anterior se puede observar que existen dos variables que
+nos indican (o limitan) los tipos de videos con los que trabajaremos. Estas dos
+variables no son otra que las diferentes combinaci\'on del tipo de movimiento
+filmado y de la c\'amara que realiza la grabaci\'on. As\'i pues, se termin\'o
+teniendo cuatro combinaci\'ones posibles: \emph{c\'amara fija-im\'agen fija},
+\emph{c\'amara fija-im\'agen m\'ovil}, \emph{c\'amara m\'ovil-im\'agen fija} y
+\emph{c\'amara m\'ovio-im\'agen m\'ovil}\footnote{Existen matices en estas
+combinaciones. Por ejemplo, \emph{la suavidad} de los movimientos, que podr\'ian
+variar en intensidad yendo de suaves a bruscos. Nuevamente, por cuestiones de
+tiempo se decidi\'o no incursionar en estos aspectos.}.
+
+\par Para cada una de estas categor\'ias de videos, se efectu\'o la
+interpolaci\'on con los 3 m\'etodos expuestos y todas sus posibles combinaciones
+de par\'ametros (cantidad de frames a interpolar entre frame y frame, y en el
+caso de spline el tama\~no de bloque.). Para luego poder hacer un an\'alisis
+objetivo de la calidad de los frames interpolados resultantes, lo que se hizo
+fue remover de los videos originales una cantidad calculada\footnote{En base
+a la cantidad de frames a interpolar.} de frames antes de interpolar el mismo.
+De esta manera se puede comparar los frames interpolados resultantes con los
+frames originales (los que fueron removidos previos al procesamiento), que no
+son otra cosa que el resultado que uno quisiera obtener de la interpolaci\'on.
+
+\par Luego se realizan los an\'alisis de los m\'etodos independientemente de los
+dem\'as m\'etodos, es decir que analizamos los resultados obtenidos de cada
+m\'etodo respecto de sus par\'ametros de entrada.
+
+\par Continuamos realizando un an\'alisis de m\'etodo versus m\'etodo, para
+los mismos par\'ametros (en el caso de splines, al tener 2 par\'ametros de
+entrada\footnote{Cantidad de bloques a interpolar y tama\~no de bloque.} se
+tuvieron que utilizar resultados obtenidos del an\'alisis del m\'etodo
+realizado previamente).
+
+\par Por \'ultimo, antes de terminar enunciando las conclusiones obtenidas para
+el tipo de video estudiado, se generaron unos videos que realizan la
+comparativa frame a frame de la diferencia entre el frame del video original y
+su contraparte interpolada para luego ser estudiados (visualizado en forma de
+\emph{heatmap}). La idea de esto es la de encontrar en que zonas de los frames,
+respecto de lo que ocurre en el video, genera problemas para los m\'etodos
+estudiados.
+
+\par Las m\'etricas utilizadas para los an\'alisis de los m\'etodos no son otras
+que las sugeridas por la c\'atedra: el \emph{Error Cuadr\'atico
+Medio}~\cite{mse} y el \emph{Peak Signal to Noise Ratio}~\cite{psnr}. El primero
+es una medida de error entre un valor (en nuestro caso, un frame) estimado y lo
+que es estimado (el frame original). Mientras que el \emph{PSNR} es un ratio
+que toma en cuenta el \emph{ECM} y el valor m\'aximo siendo
+estimado\footnote{Oriundo del an\'alisis de se\~nales, donde indica la
+relaci\'on entre la potencia m\'axima de una se\~nal y la potencia del ruido
+que la afecta.}. Justamente el PSNR es utilizado para cuantificar la calidad de
+la reconstrucci\'on de una se\~nal (o en nuestro caso, de un frame), un alto
+valor del mismo del mismo indica mayor calidad de la reconstrucci\'on (aunque
+se debe tener cierto cuidado en los casos donde existe compresi\'on de datos
+involucrada, caso que no aplica a este trabajo).
+
+\par Vale la pena aclarar que en las conclusiones generales es donde tambi\'en
+se realiza un an\'alisis m\'as subjetivo, basado en la percepci\'on de los
+autores de este trabajo. Claramente esta no es una muestra lo suficientemente
+alta de las posibles audiencias de los videos, pero alcanza dado el objetivo
+did\'actico del trabajo.
+
+\par Para concluir con esta secci\'on, agregamos a su vez que se realizaron
+otros experimentos m\'as puntuales para analizar los aspectos de correctitud de
+los m\'etodos (m\'inimamente) y del tiempo de c\'omputo, como as\'i tambi\'en
+una comparativa de como los m\'etodos se ven afectados seg\'un la variable
+m\'as importante de todas: el video.
