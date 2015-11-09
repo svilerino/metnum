@@ -5,9 +5,9 @@ En esta introducción presentaremos una lista no exhaustiva de las diversas situ
 
 \subsection{La motivación}
 \subsubsection{Compresión de video}
-El aumento exponencial de internet ha dado lugar, entre otras cosas\cite{TP2}, a la mejora de la infraestructura utilizada, lo que en particular repercutió en un aumento generalizado de las velocidades de conexión y del ancho de banda de las mismas. Esto promovió su utilización para compartir contenido cada vez más pesado, en particular videos de todo tipo, desde caseros a profesionales. Además, de la mano con el avance de las tecnologías de captura de video, la resolución de los mismos aumenta cada vez más.
+El crecimiento exponencial de internet ha dado lugar, entre otras cosas\cite{TP2}, a la mejora de la infraestructura utilizada, lo que en particular repercutió en un aumento generalizado de las velocidades de conexión y del ancho de banda de las mismas. Esto promovió su utilización para compartir contenido cada vez más pesado, en particular videos de todo tipo, desde caseros a profesionales. Además, de la mano con el avance de las tecnologías de captura de video, la resolución de los mismos aumenta cada vez más.
 
-Sin embargo, la inmensa cantidad de usuarios impone un límite al ancho de banda que se le puede dedicar a cada uno, sobretodo para sitios populares como YouTube que sirven miles de videos en cada instante determinado [\textbf{CITA}], e impone la necesidad de criterios para reducir la cantidad de paquetes que se le transfieren a cada usuario.
+Sin embargo, la inmensa cantidad de usuarios impone un límite al ancho de banda que se le puede dedicar a cada uno, sobretodo para sitios populares como YouTube que sirven miles de videos en cada instante determinado, e impone la necesidad de criterios para reducir la cantidad de paquetes que se le transfieren a cada usuario.
 
 Un abordaje común y ampliamente difundido es la compresión de videos, con o sin pérdida de calidad. En términos generales, consiste en que el servidor envíe una versión comprimida del video (posiblemente precomputada de antemano) y que el usuario use su propio poder de cómputo para descomprimirlo y visualizarlo. De este modo se reduce la cantidad de tráfico en la red a costa de un trabajo mayor de CPU de servidores y usuarios, que en general resulta menos costoso.
 
@@ -16,11 +16,13 @@ Los resultados de este trabajo pueden utilizarse como método de compresión con
 Pero la compresión de videos no es la motivación principal de los métodos estudiados. Para dicho problema existen variados algoritmos que, sin eliminar cuadros completos, representan cada uno en función de los cambios respecto de los anteriores, obteniendo resultados más fieles (dado que no eliminan por completo la información de ningún cuadro) sin un tamaño mucho mayor\cite{wiki_data_compression_video}.
 
 \subsubsection{Reproducción en cámara lenta}
-Otra motivación posible y más generalizada resulta de analizar las tecnologías de captura de video. Desde su invención, el principio básico se mantuvo intacto: capturar varias imágenes por segundo y reproducirlas en orden para dar al ojo humano la sensación de movimiento. Un video, entonces, no es más que una secuencia de imagenes (en adelante \emph{frames}) reproducidas a una frecuencia determinada, en general mayor a 12 por segundo (el máximo que el sistema visual humano puede percibir como imágenes separadas\cite{wiki_framerate}). En la época del cine mudo las películas se filmaban con cámaras manuales, lo cual permitía alterar la cantidad de frames por segundo (en adelante \emph{frame-rate}) según la velocidad que se le quisiera dar a la escena: a mayor frame-rate la escena se percibe más lenta y viceversa. Pero al añadirles sonido fue necesario estandarizar el frame-rate, pues el oído humano es mucho más sensible a cambios de frecuencia que el ojo\cite{wiki_framerate}. Desde entonces el estándar ha sido filmar y reproducir a (aproximadamente) 24 cuadros por segundo, tanto películas como demás videos, lo cual se mantuvo prácticamente intacto hasta 2012 con la llegada del Cine en Alta Frecuencia (\emph{HFR} por sus siglas en inglés) de la mano de Peter Jacson en \emph{The Hobbit: An Unexpected Journey}.
+Otra motivación posible y más generalizada resulta de analizar las tecnologías de captura de video. Desde su invención, el principio básico se mantuvo intacto: capturar varias imágenes por segundo y reproducirlas en orden para dar al ojo humano la sensación de movimiento. Un video, entonces, no es más que una secuencia de imagenes (en adelante \emph{frames}) reproducidas a una frecuencia determinada, en general mayor a 12 por segundo (el máximo que el sistema visual humano puede percibir como imágenes separadas\cite{wiki_framerate}). En la época del cine mudo las películas se filmaban con cámaras manuales, lo cual permitía alterar la cantidad de frames por segundo (en adelante \emph{frame-rate}) según la velocidad que se le quisiera dar a la escena: a mayor frame-rate la escena se percibe más lenta y viceversa. Pero al añadirles sonido fue necesario estandarizar el frame-rate, pues el oído humano es mucho más sensible a cambios de frecuencia que el ojo\cite{wiki_framerate}. Desde entonces el estándar ha sido filmar y reproducir a (aproximadamente) 24 cuadros por segundo, tanto películas como demás videos, lo cual se mantuvo prácticamente intacto hasta 2012 con la llegada del Cine en Alta Frecuencia (\emph{HFR} por sus siglas en inglés) de la mano de Peter Jackson en \emph{The Hobbit: An Unexpected Journey}.
 
-A lo largo de la historia y cada vez con mayor frecuencia se han utilizado Cámaras de Alta Velocidad (\emph{HSC}) para generar videos que, reproducidos a 24 \emph{fps}\footnote{frames por segundo, unidad estándar del frame-rate} permitan percibir cosas que el ojo humano o incluso quizás una cámara normal no percibiría. Los usos de los mismos son muy variados, y van desde la biomecánica\footnote{\url{https://www.youtube.com/watch?v=VSzpM8vEAFA}} hasta los eventos deportivos\footnote{\url{https://www.youtube.com/watch?v=O0lCJfFtjCQ}}, pasando incluso por meras curiosidades\footnote{\url{https://www.youtube.com/watch?v=tw3q4_jZv8M}}. Sin embargo los videos resultantes son sumamente pesados por unidad de tiempo, haciéndolos complicados de almacenar, transportar y distribuir. Además, el equipo necesario para realizar las capturas suele ser mucho más costoso que el equipamiento normal. O quizás simplemente no se cuenta con una versión en alta velocidad de un video ya filmado.
+A lo largo de la historia y cada vez con mayor frecuencia se han utilizado Cámaras de Alta Velocidad (\emph{HSC}) para generar videos que, reproducidos a 24 \emph{fps}\footnote{frames por segundo, unidad estándar del frame-rate} permitan percibir cosas que una cámara normal e incluso el ojo humano no percibiría. Los usos de los mismos son muy variados, y van desde la biomecánica\footnote{\url{https://www.youtube.com/watch?v=VSzpM8vEAFA}} hasta los eventos deportivos\footnote{\url{https://www.youtube.com/watch?v=O0lCJfFtjCQ}}, pasando incluso por meras curiosidades\footnote{\url{https://www.youtube.com/watch?v=tw3q4_jZv8M}}. Sin embargo los videos resultantes son sumamente pesados por unidad de tiempo, haciéndolos complicados de almacenar, transportar y distribuir. Además, el equipo necesario para realizar las capturas suele ser mucho más costoso que el equipamiento normal. O quizás simplemente no se cuenta con una versión en alta velocidad de un video ya filmado.
 
 Dicho en líneas más generales, es posible que se desee reproducir en cámara lenta un video del cual, por el motivo que fuere, solo se tiene una versión con frame-rate estándar. Una solución es generar computacionalmente los frames faltantes, aprovechando la información existente para crear frames que se acerquen lo más posible a los que hubiese producido una HFC. Lo cual nos lleva nuevamente al objeto de estudio de este trabajo.
+
+Esta es, en particular, la motivación sobre la que más hincapié haremos en el resto del trabajo, más allá de que los mismos métodos pueden ser usados para atacar cualquiera de los problemas que describimos en esta sección.
 
 \subsubsection{Suavización de video y Morphing}
 También es posible que lo que se busque sea generar frames nuevos a partir de un video ya existente pero no con la intención de verlo en cámara lenta sino para que el resultado final sea más ``suave'' o agradable a la vista. Es un proceso común en los videos animados dibujados a mano\footnote{De hecho el primer video animado de la historia, Fantasmagorie de 1908, tiene solo la mitad de sus cuadros realmente dibujados.}, dado que el trabajo extra necesario para dibujar cada frame individualmente difícilmente sea apreciado por el espectador final. Hoy en día se utiliza también en animaciones por computadora, por ejemplo para realizar una trancisión fluida entre dos expresiones de una cara o entre dos estados posibles de un cuerpo 3D.
@@ -64,15 +66,17 @@ como la función interpolante final. Notar que, por ser cada $S_i$ polinomio int
 
 La interpolación segmetada lineal, no obstante, posee el problema de no resultar ``suave'' geométricamente, es decir, no es derivable en los puntos considerados. Esto, sumado a problemas diferentes que trae la utilización de polinomios cuadráticos, nos motiva a usar polinomios cúbicos, dando lugar a la técnica conocida como \emph{splines}.
 
-\subsubsection{Splines (Interpolaci\'on c\'ubica)}
+\subsubsection{Splines (Interpolaci\'on c\'ubica)}\label{sec:splines}
 
-Al igual que en la Interpolaci\'on lineal, se procede a construir $S_0, \ldots, S_{n - 1}$ polinomios donde cada uno de ellos interpola un segmento equiespaciado sobre $x_i$ y $x_{i + 1}$ ($i = 0, \ldots, n$). La diferencia es que dichos polinomios son de grado 3 y por ende son de la forma: \[ S_i(x) = a_i x^3 + b_i x^2 + c_i x + d_i \]
+Al igual que en la Interpolaci\'on lineal, se procede a construir $S_0, \ldots, S_{n - 1}$ polinomios donde cada uno de ellos interpola un segmento equiespaciado sobre $x_i$ y $x_{i + 1}$ ($i = 0, \ldots, n$). La diferencia es que dichos polinomios son de grado 3. Por conveniencia, vamos a considerar que son de la forma
 
-En resumen, se desea obtener la tupla de coeficientes $(a_i,b_i,c_i,d_i)$ para $i = 0, \ldots, n$. Para ello se utiliza una serie de condiciones que, de cumplirse, mejorarían el problema descrito de la interpolación lineal. Enumeramos estos requisitos, primero, desde una perspectiva m\'as conceptual y no tan formal:
+\[S_i(x) = a_i + b_i (x - x_i) + c_i (x - x_i)^2 + d_i (x - x_i)^3\]
+
+Se desea obtener la tupla de coeficientes $(a_i,b_i,c_i,d_i)$ para $i = 0, \ldots, n$. Para ello se utiliza una serie de condiciones que, de cumplirse, mejorarían el problema descrito de la interpolación lineal. Enumeramos estos requisitos, primero, desde una perspectiva m\'as conceptual y no tan formal:
 
 \begin{enumerate}
 	\item Los polinomios $S_i$ deben pasar por los conjuntos de puntos $(x_i,y_i)$ que se establecieron como datos iniciales. Es decir, asegurar que la funci\'on resultante sea continua e interpole a los puntos originales.
-	\item Se debe mantener tambi\'en la continuidad en las derivadas primeras y segundas. En otras palabras, por cada par $S_i, S_{i+1}$ con $i = 0, \ldots, n-2$ se debe cumplir la igualdad de la derivada primera y segunda de dichos polinomios en el punto en que se conectan ($x_{i+1}$).
+	\item Se debe mantener tambi\'en la continuidad en las derivadas primeras y segundas. En otras palabras, por cada par $S_i, S_{i + 1}$ con $i = 0, \ldots, n-2$ se debe cumplir la igualdad de la derivada primera y segunda de dichos polinomios en el punto en que se conectan ($x_{i + 1}$).
 	\item Para la \'ultima restricci\'on se consideran dos opciones:
 		\begin{enumerate}
 			\item La derivada segunda en los bordes de la funci\'on debe ser nula cuando se evalua en el $x_0$ y $x_n$, respectivamente. Se la define como \textit{Spline natural}.
@@ -80,13 +84,13 @@ En resumen, se desea obtener la tupla de coeficientes $(a_i,b_i,c_i,d_i)$ para $
 		\end{enumerate}
 \end{enumerate}
 
-Formalmente, todo esto se expresa como
+Formalmente, todo esto se expresa como\footnote{El siguiente desarrollo formal fue obtenido y adaptado del \textbf{Apunte de Métodos Numéricos} de \textbf{Guido Tagliavini Ponce} accesible en \url{https://github.com/CubaWiki/MetNum-ApunteFinal-gtagliavini/raw/master/notas.pdf}}
 
 \begin{enumerate}
 \item $S_i(x_i) = y_i$ para todo $i = 0, \ldots, n-1$, y $S_{n-1}(x_n)=y_n$
-\item $S_i(x_{i + 1}) = S_{i+1}(x_{i + 1})$ para todo $i = 0, \ldots, n - 2$
-\item $S_i'(x_{i + 1}) = S_{i+1}'(x_{i + 1})$ para todo $i = 0, \ldots, n - 2$
-\item $S_i''(x_{i + 1}) = S_{i+1}''(x_{i + 1})$ para todo $i = 0, \ldots, n - 2$
+\item $S_i(x_{i + 1}) = S_{i + 1}(x_{i + 1})$ para todo $i = 0, \ldots, n - 2$
+\item $S_i'(x_{i + 1}) = S_{i + 1}'(x_{i + 1})$ para todo $i = 0, \ldots, n - 2$
+\item $S_i''(x_{i + 1}) = S_{i + 1}''(x_{i + 1})$ para todo $i = 0, \ldots, n - 2$
 \item Se cumple que
 \begin{enumerate}
 \item $S''(x_0) = S''(x_n) = 0$ (spline natural)
@@ -96,7 +100,7 @@ Formalmente, todo esto se expresa como
 
 Y definimos entonces al \emph{spline} como el conjunto de todas las funciones cúbicas $S_i$:
 $$
-S(x) = 
+f(x) = 
 \left\{
     \begin{array}{ll}
         S_0(x)  & \mbox{si } x \in [x_{0}, x_1] \\
@@ -107,4 +111,93 @@ S(x) =
 $$
 
 
-A pesar de su mejora en ciertos aspectos, como la suavidad del \emph{spline}, la cantidad de c\'alculos a realizar es mayor, lo cual nos lleva a un problema en el \'ambito computacional.
+A pesar de su mejora en ciertos aspectos, como la suavidad del \emph{spline}, la cantidad de c\'alculos a realizar es mayor, lo cual nos lleva a un problema en el \'ambito computacional. Estudiemos entonces cómo encontrar los coeficientes.
+
+Recordemos que estamos considerando polinomios de la forma 
+\[S_i(x) = a_i + b_i (x - x_i) + c_i (x - x_i)^2 + d_i (x - x_i)^3\]
+
+Observemos que $S_i(x_i) = a_i$. Usando la condición 1, tenemos
+
+\[a_i = y_i \hspace{0.1cm}\text{para todo } i = 0, \cdots, n - 1\]
+\[a_{n - 1} + b_{n - 1} (x_n - x_{n - 1}) + c_{n - 1} (x_n - x_{n - 1})^2 + d_{n - 1} (x_n - x_{n - 1})^3 = y_n\]
+
+Combinando las condiciones 1 y 2 obtenemos $S_i(x_{i + 1}) = y_{i + 1} = a_{i + 1}$. Entonces
+
+\[a_i + b_i (x_{i + 1} - x_i) + c_i (x_{i + 1} - x_i)^2 + d_i (x_{i + 1} - x_i)^3 = a_{i + 1} \hspace{0.1cm}\text{para todo } i = 0, \cdots, n - 2\]
+
+Observar que $S_i'(x) = b_i + 2c_i(x - x_i) + 3 d_i (x - x_i)^2$. Como $S_{i + 1}'(x_{i + 1}) = b_{i + 1}$ entonces la condición 3 equivale a 
+
+\[b_i + 2c_i(x_{i + 1} - x_i) + 3 d_i (x_{i + 1} - x_i)^2 = b_{i + 1} \hspace{0.1cm}\text{para todo } i = 0, \cdots, n - 2\]
+
+Observar que $S_i''(x) = 2c_i + 6d_i(x - x_i)$. Como $S_{i + 1}''(x_{i + 1}) = 2c_{i + 1}$ entonces la condición 4 equivale a
+
+\[2c_i + 6d_i(x_{i + 1} - x_i) = 2c_{i + 1} \hspace{0.1cm}\text{para todo } i = 0, \cdots, n - 2\]
+
+Finalmente, si el spline es natural (la versión que utilizaremos en este trabajo, por desconocer la derivada de la función que genera los puntos), la condición 5 equivale a
+
+\[2c_0 = 0\]
+\[2c_{n - 1} + 6d_{n - 1}(x_n - x_{n - 1}) = 0\]
+
+Definamos $a_n = y_n$, $c_n = 0$ y $h_i = x_{i + 1} - x_i$. Entonces las ecuaciones son
+
+\begin{enumerate}
+\item $a_i = y_i$ para todo $i = 0, \ldots, n$
+\item $a_i + b_ih_{i} + c_i h_{i}^2 + d_i h_{i}^3 = a_{i + 1}$ para todo $i = 0, \ldots, n - 1$
+\item $b_i + 2c_i h_{i} + 3d_i h_{i} ^2 = b_{i + 1}$ para todo $i = 0, \ldots, n - 2$
+\item $2c_i + 6d_i h_{i} = 2c_{i + 1}$ para todo $i = 0, \ldots, n - 1$
+\item $c_0 = 0$
+\end{enumerate} 
+
+De la ecuación 4 despejamos
+
+\[d_i = \frac{c_{i + 1} - c_i}{3 h_{i}}\]
+
+Sustituyendo esto último y la ecuación 1 en la ecuación 2 y despejando
+
+\begin{align*}
+b_i &= \frac{1}{h_{i}}\left(y_{i + 1} - y_i - c_i h_{i}^2 - d_i h_{i}^3)\right)\\
+    &= \frac{1}{h_{i}}\left(y_{i + 1} - y_i - c_i h_{i}^2 - \frac{(c_{i + 1} - c_i) h_{i}^3}{3 h_{i}}\right)\\
+    &= \frac{y_{i + 1} - y_i}{h_{i}} - c_i h_{i} - \frac{1}{3} (c_{i + 1} - c_i) h_{i}\\
+    &= \frac{y_{i + 1} - y_i}{h_{i}} - \frac{h_{i}}{3}\left(2c_i + c_{i + 1}\right)
+\end{align*}
+
+Sustituyendo en la ecuación 3 y despejando
+
+\begin{align*}
+0 & = b_i - b_{i + 1} + 2c_ih_{i} + 3d_i h_{i}^2\\
+    & = \frac{y_{i + 1} - y_i}{h_{i}} - \frac{h_{i}}{3}\left(2c_i + c_{i + 1}\right) -
+        \frac{y_{i + 2} - y_{i + 1}}{h_{i + 1}} + \frac{h_{i + 1}}{3}\left(2c_{i + 1} + c_{i + 2}\right)\\
+        & +2c_ih_{i} + 3\frac{c_{i + 1} - c_i}{3 h_{i}} h_{i}^2\\
+    & = \left[\frac{y_{i + 1} - y_i}{h_{i}} - \frac{y_{i + 2} - y_{i + 1}}{h_{i + 1}}\right]
+         - \frac{2}{3} h_{i} c_i - \frac{1}{3} h_{i} c_{i + 1} + \frac{2}{3} h_{i + 1} c_{i + 1} + \frac{1}{3} h_{i + 1} c_{i + 2}\\
+        & + 2h_{i} c_i + h_{i} c_{i + 1} - h_{i}c_i\\
+    & = \left[\frac{y_{i + 1} - y_i}{h_{i}} - \frac{y_{i + 2} - y_{i + 1}}{h_{i + 1}}\right]
+         + \frac{1}{3}h_i c_i + \frac{2}{3} (h_i + h_{i + 1}) c_{i + 1} + \frac{1}{3}h_{i + 1} c_{i + 2}\\
+\end{align*}
+
+Equivalentemente
+
+\[h_i c_i + 2 (h_i + h_{i + 1}) c_{i + 1} + h_{i + 1} c_{i + 2} = 
+3 \left[\frac{y_{i + 2} - y_{i + 1}}{h_{i + 1}} - \frac{y_{i + 1} - y_i}{h_{i}}\right]
+\]
+
+Esta ecuación, que vale para $i = 0, \cdots, n - 2$, contiene toda la información de las demás (pues la obtuvimos a través de sustituciones sucesivas). Juntando estas $n - 1$ ecuaciones con $c_0 = 0$ y $c_n = 0$ tenemos un sistema de $n + 1$ ecuaciones y $n + 1$ incógnitas
+
+\[
+\begin{pmatrix}
+1       & 0                 & 0                 & 0             &           &           &                           &           \\
+h_0         & 2(h_0 + h_1)  & h_1           & 0             &           &           &                           &           \\
+0       & h_1           & 2(h_1 + h_2)  & h_2       &           &           &                           &           \\
+        &               &               &           & \ddots        &           &                           &           \\
+        &               &               &           &           & h_{n - 2} & 2(h_{n - 2} + h_{n - 1})  & h_{n - 1}\\
+        &               &               &           &           &   0       &           0               & 1         \\
+\end{pmatrix}\]
+
+Esta matriz es estrictamente diagonal dominante (pues $h_i = x_{i + 1} - x_i > 0$), por lo cual es inversible\cite{properties_of_diagonally_dominant_matrix}. Luego, la solución es única: existe un único spline natural para $x_0, \cdots, x_n$, la cual se puede encontrar utilizando métodos de resolución de sistemas de ecuaciones como eliminación gaussiana\cite{TP1}.
+
+\subsection{Error}
+Para establecer la correctitud de nuestros métodos, hará falta utilizar la noción de \emph{Error Cuadr\'atico Medio} (ECM) y \emph{Peak to Signal Noise Ratio} (PSNR). Básicamente, dado un video de $m \times n$ (alto $\times$ ancho) con frames originales $F$ y uno con la misma resolución con frames generados artificialmente $\bar{F}$, definimos  
+$$\texttt{ECM}(F,\bar{F}) = \frac{1}{mn}\sum_{i=1}^m\sum_{j = 1}^n |F_{k_{ij}} - \bar{F}_{k_{ij}}|^2$$
+$$\texttt{PSNR}(F,\bar{F}) = 10 \log_{10}\bigg(\frac{255^2}{\texttt{ECM}(F,\bar{F})}\bigg)$$
+
+Como forma de intuición, notemos que el ECM, como su nombre lo indica, es un promedio de la diferencia de todos los píxeles de dos frames al cuadrado. Asimismo, el PSNR es el una medida de cuánto se acerca el error al máximo posible ($255^2$) medido en escala logarítmica.
