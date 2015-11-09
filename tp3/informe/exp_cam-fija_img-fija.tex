@@ -1,0 +1,546 @@
+\IEEEPARstart{E}{n} principio, pudiera parecerle al lector, que este experimento
+carece de sentido. B\'asicamente se est\'a evaluando un video que no tiene
+movimiento de ning\'un tipo. Lo cual es err\'oneo. En el caso evaluado, se tiene
+un video de la vista de unos edificioes y la transici\'on del d\'ia a la noche.
+Esto hace que los colores, lo cual hace al observar el video en blanco y negro,
+que cambien las \emph{tonalidades} o brillo de las distintas partes del video.
+
+\par As\'i pues, un caso que en principio har\'ia que uno diga ''la
+interpolaci\'on deber\'ia funcionar sin error, pues que no hay movimiento''
+(como se mencion\'o, que el movimiento sea el principal factor del error de los
+m\'etodos a aplicar es la principal hip\'otesis a comprobar) no nos queda tan
+claro.
+
+\par Comenzamos entonces a presentar los resultados obtenidos a partir de la
+aplicaci\'on de los m\'etodos explicados e implementados para este video.
+
+%---------------------------------------------------------------
+\subsubsection{Spline}
+\par Lo primero a tener en cuenta al experimentar con este m\'etodo es que
+tenemos 2 variables (la tercera variable, el video, est\'a fija): la cantidad
+de frames a interpolar y el tama\~no de bloque. Decidimos entonces, primero
+''fijar'' la cantidad de frames a interpolar y an\'alizar que ocurre al variar
+el tama\~no del bloque.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[][ECM para 10 frames interpolados]{
+        \includegraphics[width=.5\textwidth]{mse_spline-camara_fija-imagen_fija-k10.pdf}
+        \label{subfig:fija-fija_spline-mse-k10}
+    }
+    \subfloat[][PSNR para 10 frames interpolados]{
+        \includegraphics[width=.5\textwidth]{psnr_spline-camara_fija-imagen_fija-k10.pdf}
+        \label{subfig:fija-fija_spline-psnr-k10}
+    }
+    \caption{Comparativa tama\~no de bloque para 10 frames interpolados}
+    \label{fig:fija-fija_spline-bloques}
+\end{figure}
+
+\par Se puede observar en la figura \ref{fig:fija-fija_spline-bloques} que las
+m\'etricas utilizadas (ECM y PSNR) para los distintos tama\~nos de bloques son
+pr\'acticamente id\'enticas: est\'an solapadas casi igual para todos los frames
+interpolados del video. Si bien en los gr\'aficos expuestos se pueden llegar a
+notar ciertas regiones de frames donde alguno de los tam\~nos de bloque difiere
+(por ejemplo, en la figura \ref{subfig:fija-fija_spline-mse-k10} en el bloque de
+frames del 1 al 50 se ve que para el tama\~no de bloque 4 tenemos 2 picos: uno
+donde tiene un mayor ECM que el resto y otro donde tiene un menor ECM, lo cual
+se ve reflejado tambi\'en en la gr\'afica del PSNR\footnote{D\'onde para el pico
+de mayor ECM se obtiene un PSNR menor que el resto, y al rev\'es para el pico de
+menor ECM. Esto tiene sentido ya que como se explic\'o, el PSNR es una m\'etrica
+de la calidad de la interpolaci\'on/estimaci\'on del frame, y tener un mayor
+ECM indica menor calidad en la estimaci\'on.}), como comportamiento general
+observamos que el tama\~no del bloque (aplicado ''a ciegas'' sobre la totalidad
+del video) no nos asegura una mejor ni peor estimaci\'on/interpolaci\'on. Este
+patr\'on se repite para las restantes variantes en funci\'on de la cantidad
+de frames interpolados, motivo por el cual s\'olo exponemos los resultados para
+$10$ frames interpolados a la hora de describir este comportamiento.
+
+\par Habiendo analizado que el tama\~no del bloque (utilizado de la manera
+explicada) no pareciera tener influencia en el error comentido en un sentido
+amplio (ya que observamos como var\'ia el ECM y PSNR frame a frame), evaluamos
+algunos resultados m\'as ''estad\'isticos'', si se quiere, del ECM a lo largo
+de todos los frames seg\'un cada tama\~no de bloque.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[][Valor medio, Desv\'io Est\'andar, M\'aximo y M\'inimo\label{tbl:spline_k10}]{
+        \footnotesize
+        \setlength{\tabcolsep}{3pt}
+        \begin{tabular}{|l|r|r|r|r|}
+            \hline
+            \textbf{Bloque}& \textbf{Mean}& \textbf{Std}& \textbf{M\'ax}& \textbf{M\'in}\\
+            \hline\hline
+            4& 5.6919& 5.4221& 41.8650& 0.5080\\
+            8& 5.6497& 5.0825& 40.8340& 0.6403\\
+            16& 5.6812& 5.0828& 41.5168& 0.6407\\
+            32& 5.6881& 5.0950& 41.5173& 0.6407\\
+            Entero& 5.6881& 5.0950& 41.5173& 0.6407\\
+            \hline
+        \end{tabular}
+    }\hspace{10pt}
+    \subfloat[][Diferencia M\'axima\label{tbl:dif_spline_k10}]{
+        \footnotesize
+        \setlength{\tabcolsep}{3pt}
+        \begin{tabular}{|l|r|r|r|r|r|}
+            \hline
+            \textbf{Bloque}& \textbf{vs 4}& \textbf{vs 8}& \textbf{vs 16}& \textbf{vs 32}& \textbf{vs Entero}\\
+            \hline\hline
+            \textbf{4}& 0& 11.0099& 11.0156& 11.0156& 11.0156\\
+            \textbf{8}& 2.9723& 0&  1.0059&  1.0069&  1.0069\\
+            \textbf{16}& 2.8873&  1.4356& 0&  0.5544&  0.5544\\
+            \textbf{32}& 2.9104&  0.9827&  0.6176& 0& 0\\
+            \textbf{Entero}& 2.9104&  0.9827&  0.6176& 0& 0\\
+            \hline
+        \end{tabular}
+    }
+    \caption{Comparativa ECM seg\'un tama\~no de bloque}
+\end{figure}
+
+\par Si observamos la tabla \ref{tbl:spline_k10}, obsevamos resultados que
+validan lo observado previamente: el tama\~no del bloque no pareciera influir
+en el error cometido. Las diferencias son m\'inimas, salvo por ah\'i el error
+m\'inimo cometido por el tama\~no de bloque 4 es menor que para los dem\'as
+tama\~nos de bloque y que su desv\'io est\'andar es un poco mayor. Aunque estas
+diferencias tambi\'en son muy peque\~nas, siendo despreciables a la hora de
+afirmar que el tama\~no de bloque no afecta al error cometido.
+
+\par Continuando, si se observa la tabla \ref{tbl:dif_spline_k10}, la cual nos
+se\~nala la diferencia m\'axima de los errores cometida entre dos interpolaciones
+con distinto tama\~no de bloque (es decir, cual fue la diferencia m\'as amplia
+del ECM para un mismo frame entre dos tama\~nos de bloque), observamos que
+el tama\~no de bloque 4 cometi\'o, respecto de los dem\'as tama\~nos, un error
+m\'as amplio que los dem\'as. Si volvemos a observar la figura
+\ref{subfig:fija-fija_spline-mse-k10}, podemos observar que hay un claro pico
+de error m\'as alto para el tama\~no de bloque 4 entre los primeros 50 frames.
+Seguramente esta diferencia observada en la tabla se debe a dicho frame, donde
+el tama\~no de bloque 4 cometi\'o mucho m\'as error que los dem\'as m\'etodos.
+Descartando este valor, conclu\'imos que el tama\~no de bloque no afecta (salvo
+casos aislados) al error cometido por la interpolaci\'on mediante
+spline\footnote{Por cuestiones de tiempo no se pudo buscar exactamente el frame
+donde ocurri\'o esta \'ultima diferencia explicada, para observar su
+correlaci\'on con lo que ocurre en el video.}.
+
+\par Hasta ahora hemos analizado lo que ocurre para diferentes tama\~nos de
+bloque. Pasamos entonces a observar que ocurre para diferentes cantidades de
+frames interpolados.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[][ECM para 1 frame interpolado]{
+        \label{subfig:fija-fija_spline-mse-k1}
+        \includegraphics[width=.5\textwidth]{mse_spline-camara_fija-imagen_fija-k1.pdf}
+    }
+    \subfloat[][ECM para 5 frames interpolados]{
+        \includegraphics[width=.5\textwidth]{mse_spline-camara_fija-imagen_fija-k5.pdf}
+        \label{subfig:fija-fija_spline-mse-k5}
+    }
+    \caption{Comparativa seg\'un cantidad de bloques interpolados}
+    \label{fig:fija-fija_spline-frames-interpolados}
+\end{figure}
+
+\par Lo primero, evidente, que salta a la vista de observar las figuras
+\ref{subfig:fija-fija_spline-mse-k10}, \ref{subfig:fija-fija_spline-mse-k1} y
+\ref{subfig:fija-fija_spline-mse-k5}, es la cantidad (y valor o intensidad) de
+los picos de error. Se ve que a medida que se incrementa la cantidad de frames
+interpolados, comienzan a acentuarse el comportamiento en ''picos'' de los
+errores frame a frame, siendo cada vez m\'as amplia la diferencia entre el
+m\'inimo error cometido de un ''pico'' y el error m\'aximo alcanzado en el mismo
+(observar con detenimiento la escala de las figuras). A su vez se observa de
+manera intuitiva que la media del ECM ir\'ia aumentando a medida que se interpolan
+cada vez m\'as frames. Esto \'ultimo tiene sentido, ya que ahora se tienen frames
+cada vez m\'as distantes y se interpolan todos los frames intermedios. A mayor
+distancia entre los frames ''dato'' que se usan para calcular el polinomio
+interpolador, se puede pensar que menos informaci\'on se tiene y por lo tanto
+la calidad de la estimaci\'on se ve perjudicada.
+
+\par Por otra parte, se observa un comportamiento similar, aunque de distinta
+intensidad, en los 3 gr\'aficos: el ECM tiene un comportamiento oscilante,
+aunque no c\'iclico ni constante. Es decir, se ve que el ECM tienede a
+incrementarse hasta llegara un ''pico'', para luego comenzar a descender. Y
+as\'i repetidamente (pero, como se a dicho, la ''intensidad'', o valores que
+alcanza -tanto m\'inimos como m\'aximos locales- var\'ia a lo largo de los
+frames del video). Prestando una mayor atenci\'on, se nota que el ECM tiende a
+ser m\'as bajo para aquellos frames que est\'an m\'as cerca de alguno de los
+frames originales (no interpolados) del video. Nuevamente, el valor m\'aximo
+del ECM alcanzado para los frames contenidos entre 2 frames originales/no
+interpolados var\'ia (todav\'ia por motivos desconocidos), pero el
+comportamiento de incrementarse el ECM a medida que nos alejamos de un frame
+original y decrementarse al acercarse es un patr\'on que se da en todos los
+casos.
+
+\par Observermos los datos est\'adisticos del ECM para los diferentes valores
+de los frames interpolados\footnote{Estos datos solo consideran los frames
+interpolados}:
+
+\begin{figure}[H]
+    \centering
+    \subfloat[][Valor Medio]{
+        \includegraphics[width=.5\textwidth]{camara_fija-imagen_fija-mean_spline.pdf}
+    }
+    \subfloat[][Desv\'io Est\'andar]{
+        \includegraphics[width=.5\textwidth]{camara_fija-imagen_fija-std_spline.pdf}
+    }\\
+    \subfloat[][M\'aximo]{
+        \includegraphics[width=.5\textwidth]{camara_fija-imagen_fija-max_spline.pdf}
+    }
+    \subfloat[][M\'inimo]{
+        \includegraphics[width=.5\textwidth]{camara_fija-imagen_fija-min_spline.pdf}
+    }
+    \caption{Est\'adisticas ECM Seg\'un Frames Interpolados - M\'etodo Lineal}
+    \label{fig:fija-fija_spline-mse_estadisticas}
+\end{figure}
+
+\par Analizando la figura \ref{fig:fija-fija_spline-mse_estadisticas}, lo primero
+que salta a la vista es que claramente hay un patr\'on en el ECM comparando por
+tama\~no de bloques. La relaci\'on entre los distintos valores de frames
+interpolados se mantiene para cada grupo correspondiente al tama\~no de bloque.
+Esto es consistente con los resultados vistos anteriormente en esta misma
+secci\'on.
+
+\par En segundo lugar, ya concentrandonos en la cantidad de frames interpolados,
+vemos un resultado que no era esperado seg\'un nuestras hip\'otesis: observamos
+un valor medio de error, desv\'io est\'andar y error m\'aximo que es notoriamente
+menor para la interpolacio de 2 frames (e incluso, se obtuvo la mejor
+aproximaci\'on de un \'unico frame, como se observa en el gr\'afico del ECM
+m\'inimo). Es decir, pare este video observamos que se obtienen los mejores
+valores generales de error cuando se interpola de a 2 frames en lugar de a 1,
+como se plante\'o en las hip\'otesis. Pareciese que para este video, tener un
+poco menos de informaci\'on mejora sustancialmente el ECM (ver la comparaci\'on
+para 1 frame versus 2 frames).
+
+\par Siguiendo esta misma l\'inea de an\'alisis, observamos al interpolar 1 frame
+y 10 nos dan un desv\'io est\'andar alto comparado con las interpolaciones de 2
+y 5 frames, aunque los valores medios del error para 10 frames son muchos m\'as
+altos que para el resto de los valores. Esto \'ultimo si confirma, parcialmente,
+la hip\'otesis de que a mayor cantidad de frames interpolados, mayor ser\'a el
+error (o peor la aproximaci\'on).
+
+\par Para finalizar el an\'alisis de estos datos, resulta realmente sorpresivo
+observar un error medio menor para la interpolaci\'on de 2 frames que para la
+de 1 frame. A\'un as\'i, la diferencia entre estos es m\'inima, y si
+despreciamos esta diferencia diciendo que la diferencia es tan peque\~na que
+podemos considerar que ambas tiene el mismo ECM medio, vemos confirmada la
+hip\'otesis ya mencionada, ya que a mayor cantidad de frames interpolados,
+mayor error medio. Aunque vale la pena mencionar que, el desv\'io est\'andar
+nos indica que para una interpolaci\'on de 1 frame en este tipo de videos,
+tenemos una gran varianza frame a frame de la calidad de la interpolaci\'on.
+Descontando este valor sorpresivo, observamos que esta varianza mantiene la
+relaci\'on inicialmente esperada, aumentando a medida que aumenta la cantidad
+de frames interpolados.
+
+\par Por \'ultimo, es interesante tratar de asociar los errores cometidos por
+el m\'etodo con lo que est\'a ocurriendo en el video. En la figura
+\ref{fig:fija-fija_spline-heatmap} se puede observar una captura del video
+comparativo de este m\'etodo para tama\~no de bloque 4 y cantidad de frames
+interpolados 1\footnote{\url{https://drive.google.com/open?id=0B0RfkWV-4-XqNFJMT1l5NXg2VHM}}.
+
+\par Decidimos utilizar estos par\'ametros ya que de los datos vistos
+previamente, con los mimos tenemos un valor alto (relativo a los dem\'as
+par\'ametros) de varianza en el ECM frame a frame. De esta manera, consideramos
+que ser\'ia menos costoso identificar la regi\'on (o regiones) del video que
+m\'as influyen en el error de la interpolaci\'on.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{camara_fija-imagen_fija-spline-k1-blk4.png}
+    \label{fig:fija-fija_spline-heatmap}
+    \caption{Regi\'on peor aproximada por la interpolaci\'on por spline}
+\end{figure}
+
+\par En dicho video observamos que los pixeles que hacen al ECM est\'an
+distribu\'idos por todo el frame, asociados seg\'un interpretamos, a los
+cambios de iluminaci\'on\footnote{Recordemos que el video trata de unos
+edificios (y parte del cielo) en una transici\'on acelerada del d\'ia a la
+noche.}. La captura no es capaz de mostrar esto, pero la mostramos ya que es
+representativa de la zona del video que es peor aproximada por la
+interpolaci\'on. Se puede observar que aquellas partes m\'as afectadas por los
+cambios de iluminaci\'on (el cielo y las partes altas de los edificioes) tienen
+un error un poco m\'as alto que las partes bajas de los edificios
+(especialmente la parte inferior izquierda), sobre las cuales el efecto de la
+sombra de los dem\'as edificios mitiga el efecto de los cambios de
+iluminaci\'on (ya que permanecen m\'as oscuros de por s\'i).
+
+\par Es decir, se observa que aquellas partes del video que se ven m\'as
+afectadas por cambios m\'as ''bruscos'' o diferenciados de iluminaci\'on (pasar
+de alto brillo a poco brillo) son aquellas zonas que m\'as contribuyen al error
+de la interpolaci\'on.
+
+%---------------------------------------------------------------
+\subsubsection{Interpolaci\'on Lineal}
+\par A la hora de analizar los resultados de un mismos m\'etodo para distintos
+valores de frames interpolados (como en toda esta secci\'on, la variable del
+video se encuentra fijada), observar frame a frame y comparar el ECM/PSNR no
+resulta un par\'ametro v\'alido. Esto se debe a que comprar cualquiera de estas
+m\'etricas tiene sentido al hacerlo sobre un mismo frame interpolado, y dado que
+para cada par\'ametro se interpolan distintos frames, la comparaci\'on carece
+de sentido\footnote{Se podr\'ia tratar de encontrar frames interpolados en
+com\'un, pero dicho trabajo complicaba mucho la tarea del an\'alisis y por
+cuestiones de tiempo no pudo ser considerada esta opci\'on.}.
+
+\par As\'i pues, a la hora de analizar y comprar un mismo m\'etodo y que ocurre
+al tener que interpolar m\'as informaci\'on/frames, recurrimos a las m\'etricas
+estad\'isticas del ECM que fueron presentadas en la experimentaci\'on anterior.
+Las mismas pueden observarse en la figura
+\ref{fig:fija-fija_lineal-mse_estadisticas}.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[][Valor Medio]{
+        \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-mean_lineal.pdf}
+    }%\hspace{20pt}
+    \subfloat[][Desv\'io Est\'andar]{
+        \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-std_lineal.pdf}
+    }%\vspace{20pt}
+    \subfloat[][M\'aximo]{
+        \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-max_lineal.pdf}
+    }%\hspace{20pt}
+    \subfloat[][M\'inimo]{
+        \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-min_lineal.pdf}
+    }
+    \caption{Est\'adisticas ECM Seg\'un Frames Interpolados - M\'etodo Lineal}
+    \label{fig:fija-fija_lineal-mse_estadisticas}
+\end{figure}
+
+\par En este caso, como se puede observar en los gr\'aficos, nuestra
+hip\'otesis sobre la calidad de la interpolaci\'on en funci\'on de la cantidad
+de frames a interpolar se cumple para el valor medio. A menor cantidad de
+frames a interpolar, menor ECM medio, aunque el error m\'aximo cometido de
+todas las variantes (y el m\'inimo tamb\'en) pertencen al caso en que se
+interpola de a 1 frame (es decir, el caso donde se tiene la mayor canttidad de
+informaci\'on ''original''). Nuevamente, como ocurri\'o con spline, pareciera
+que hay alg\'un frame en particular del video que al ser interpolado de a 1
+frame, genera un pico de error. De la observaci\'on del video interpolado, se
+ve que hay un momento al principio del mismo donde hay una baja del brillo
+instant\'anea, antes de que vuelva a su nivel normal (o similar al nivel previo
+antes de este evento). Esto es distinguible al ojo humano, y intu\'imos que lo
+que puede estar ocurriendo es que los frames correspondientes a esta baja de
+brillo son utilizados en la interpolaci\'on cuando se interpola de a 1 frame, y
+que no se lo usa cuando se incrementa este par\'ametro. De esta manera, al
+utilizarlo en el primer caso, se le baja el brillo a los frames interpolados,
+mientras que en el segundo caso est\'o no ocurre, obteniendose el error
+\'unicamente en los pocos frames que son oscuros.
+
+\par Nuevamente, se ve que el comportamiento del ECM (o PSNR, que sigue el
+mismo patr\'on) es oscilante entre n\'umeros altos de error y bajos (o de
+aproximaci\'on, en el caso de PSNR). Esto se puede ver en la figura
+\ref{fig:fija-fija_lineal-psnr-k1}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=.85\textwidth]{camara_fija-imagen_fija-lineal-psnr-k1.pdf}
+    \caption{PSNR para 1 frame interpolado - M\'etodo Lineal}
+    \label{fig:fija-fija_lineal-psnr-k1}
+\end{figure}
+
+\par De nuestro an\'alisis, entendemos que el error de interpolar entre frames
+cercanos ser\'a similar, salvo cuando se tiene un cambio abruto de un frame al
+siguiente en el video original. As\'i pues observamos en el gr\'afico (que es
+similar a los de mayor cantidad de frames interpolados, salvo alguna
+variaci\'on menor en los n\'umeros) que el PSNR\footnote{Recordemos que esta es
+una m\'etrica que a mayor valor, m\'as fidedigna es la estimaci\'on del frame.}
+se mantiene en valores por encima de los 45db la mayor parte del tiempo, salvo
+ciertos picos de error que bajan su valor por unos pocos frames. Esto estar\'ia
+relacionado con los cambios de iluminaci\'on distinguibles al ojo que tiene el
+video.
+
+\par Para finalizar con el an\'alisis del m\'etodo lineal para este video,
+nuevamente generamos un video que comparase la diferencia entre los frames para
+la interpolaci\'on lineal de 10 frames\footnote{\url{}} (utilizando el mismo
+argumento que en splines, elegimos este par\'ametro ya que es el que mayor
+desv\'io est\'andar tiene de todas las variantes). Presentamos a continuaci\'on
+una captura del mismo, que consideramos representativa de las regiones de los
+frames donde se influye m\'as en el error de interpolaci\'on.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{camara_fija-imagen_fija-lineal-k10.png}
+    \label{fig:fija-fija_lineal-heatmap}
+    \caption{Regi\'on peor aproximada por la interpolaci\'on lineal}
+\end{figure}
+
+\par El an\'alisis de este video comparativo, y las conclusiones, terminan
+siendo exactamente igual que para el caso de splines de este mismo video. Se
+puede observar como lo que afecta al error es la iluminaci\'on, y que las
+partes m\'as afectadas por la misma (el cielo y las partes altas de los
+edificios durante el d\'ia, y los sectores cercanos a las fuentes de luz
+artificial durante la noche) son aquellas que mayor error (diferencia)
+introducen. No queda mucho m\'as que agregar a lo ya dicho para el m\'etodo de
+splines.
+
+%---------------------------------------------------------------
+\subsubsection{Vecino m\'as Cercano}
+\par La metodolog\'ia de experimentaci\'on pare este m\'etodo no difiere
+respecto de los 2 m\'etodos previos. As\'i pues, ahorrando explicaciones, se
+pasa a exponer los resultados obtenidos de la experimentaci\'on.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[][Valor Medio]{
+        \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-mean_vecino.pdf}
+    }%\hspace{20pt}
+    \subfloat[][Desv\'io Est\'andar]{
+        \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-std_vecino.pdf}
+    }%\vspace{20pt}
+    \subfloat[][M\'aximo]{
+        \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-max_vecino.pdf}
+    }%\hspace{20pt}
+    \subfloat[][M\'inimo]{
+        \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-min_vecino.pdf}
+    }
+    \caption{Est\'adisticas ECM Seg\'un Frames Interpolados - M\'etodo Vecino M\'as Cercano}
+    \label{fig:fija-fija_vecino-mse_estadisticas}
+\end{figure}
+
+\par En los resultados expuestos en la figura \ref{fig:fija-fija_vecino-mse_estadisticas}
+se encuentran relaciones entre las distintas variantes de frames interpolados, y
+con n\'umeros bastantes cercanos tambi\'en, que al caso de splines. La diferencia
+destacable radica en los valores de error m\'inimo alcanzado para las variantes de
+interpolaci\'on de 1 y 10 frames, que como se puede observar son mucho m\'as chicos
+que para los par\'ametros restantes. A\'un as\'i, una vista detallada de los valores nominales
+nos muestra que a pesar de ser estos muy peque\~nos, ya se est\'a teniendo errores
+m\'inimos de valor nominal muy peque\~no, haciendo que esta diferencia entre
+distintas variantes del m\'etodo sean poco importantes. Es decir, tanto como si
+se interpolan 1, 2, 5 o 10 frames, pareciera que siempre habr\'a alg\'un frame
+interpolado con pr\'acticamente 0 error de estimaci\'on.
+
+\par Respecto del an\'alisis del PSNR, y del video de comparaci\'on, los resultados
+observados son exactamente id\'enticos a los explicados en el caso del m\'etodo
+lineal para este video.
+
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=.85\textwidth]{camara_fija-imagen_fija-vecino-psnr-k1.pdf}
+%    \caption{PSNR para 1 frame interpolado - M\'etodo Vecino M\'as Cercano}
+%    \label{fig:fija-fija_vecnio-psnr-k1}
+%\end{figure}
+
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\textwidth]{camara_fija-imagen_fija-vecino-k10.png}
+%    \label{fig:fija-fija_vecino-heatmap}
+%    \caption{Regi\'on peor aproximada por la interpolaci\'on del vecino m\'as cercano}
+%\end{figure}
+
+%---------------------------------------------------------------
+\subsubsection{An\'alisis entre M\'etodos}
+\par Luego de haber analizado cada m\'etodo independientemente de los dem\'as,
+bas\'andonos \'unicamente en sus par\'ametros, pasamos a comparar cada m\'etodo
+cualitativamente respecto de los otros, siempre para el mismo video.
+
+\par En la figura \ref{fig:fija-fija_metodos} se puede observar el ECM y PSNR
+frame a frame para el caso de 2 frames interpolados de c\'ada uno de los
+m\'etodos.  En el caso del m\'etodo de splines, se expuso los resultados para
+la interpolaci\'on del video completo (sin dividir por bloques), ya que como se
+vi\'o en su respectivo an\'alisis, el comportamiento era similar no importa el
+tama\~no del bloque.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[][ECM para 2 frames interpolados]{
+        \includegraphics[width=.5\textwidth]{mse_methods-camara_fija-imagen_fija-k2.pdf}
+        \label{subfig:fija-fija_mse-k2}
+    }
+    \subfloat[][PSNR para 2 frames interpolados]{
+        \includegraphics[width=.5\textwidth]{psnr_methods-camara_fija-imagen_fija-k2.pdf}
+        \label{subfig:fija-fija_psnr-k2}
+    }
+    \caption{Comparativa de m\'etodos para 2 frames interpolados}
+    \label{fig:fija-fija_metodos}
+\end{figure}
+
+\par En ambos gr\'aficos (aunque m\'as claramente en el PSNR) se observa un patr\'on
+claro (m\'as all\'a de que haya frames que sean excepciones): la fidelidad es mejor
+(o el error es menor) para el m\'etodo del vecino m\'as cercano, seguido por la
+interpolaci\'on lineal y por \'ultimo el m\'etodo de splines.
+
+\par No se exponen estas comparativas para otras variantes de interpolaci\'on,
+ya que este patr\'on se repite en todos los casos. Adem\'as, vale la pena
+recordar que para la cantidad de frames interpolados igual a 2 es para el cual
+se obten\'ia el menor ECM medio para los m\'etodos de splines y vecino, y
+virtualmente el menor tambi\'en para la interpolaci\'on lineal (la diferencia
+para frames interpolados igual a 1 es m\'inima).
+
+\par Pasemos a observar a continuaci\'on, las comparaciones para los valores
+estad\'isticos del error cuadr\'atico medio:
+
+\begin{figure}[H]
+    \centering
+    \subfloat[][Valor Medio]{
+        \includegraphics[width=.5\textwidth]{mean_methods-camara_fija-imagen_fija.pdf}
+    }
+    \subfloat[][Desv\'io Est\'andar]{
+        \includegraphics[width=.5\textwidth]{std_methods-camara_fija-imagen_fija.pdf}
+    }\\
+    \subfloat[][M\'aximo]{
+        \includegraphics[width=.5\textwidth]{max_methods-camara_fija-imagen_fija.pdf}
+    }
+    \subfloat[][M\'inimo]{
+        \includegraphics[width=.5\textwidth]{min_methods-camara_fija-imagen_fija.pdf}
+    }
+    \caption{Est\'adisticas ECM - Comparativa de M\'etodos}
+    \label{fig:fija-fija_methods-mse_estadisticas}
+\end{figure}
+
+\par Al observarse estos datos, aparece algo que \emph{a priori} parecer\'ia
+una contradicci\'on: el valor medio del ECM para el m\'etodo lineal es menor en
+2 de las variantes (cantidad de frames 1 y 10) que el m\'etodo del vecino m\'as
+cercano. Analizando un poco esto (pues, como afirmamos unos p\'arrafos m\'as
+arriba, para todas las variantes encontramos que el PSNR para el m\'etodo del
+vecino m\'as cercano segu\'ia el patr\'o de ser m\'as alto que el de los
+restantes m\'etodos), entendemos que el motivo de esto se debe a que el
+m\'etodo del vecino tiene picos m\'as amplios donde comete mucho m\'as error
+que el m\'etodo de interpolaci\'on lineal. Esto puede observarse, nuevamente,
+en la figura \ref{fig:fija-fija_metodos}.  Esto explica el porque del valor
+medio del error es m\'as bajo para el m\'etodo lineal, aunque en la gran
+mayor\'ia de los frames la aproximaci\'on del m\'etodo del vecino es mejor.
+
+%---------------------------------------------------------------
+\subsubsection{Conclusiones}
+\par A lo largo de la experimentaci\'on para el tipo de video
+\emph{c\'amara-fija, im\'agen fija}, observamos que todos los m\'etodos
+mostraron un buen comportamiento.  Esta afirmaci\'on es subjetiva y basada en
+la opini\'on de los autores luego de observar los videos resultantes. Para el
+ojo humano, las diferencias entre los m\'etodos (o para el mismo m\'etodo con
+diferentes par\'ametros) fueron imperceptibles.
+
+\par A\'un as\'i, un an\'alisis m\'as objetivo basado en las m\'etricas nos
+lleg\'o a indicar que, al menos para los par\'ametros evaluados, el m\'etodo
+del vecino pareciera ser mejor, incluso cuando se interpolan muchos frames
+(recordemos que una las hip\'otesis al comienzo de la experimentaci\'on era que
+los m\'etodos de spline e interpolaci\'on lineal deber\'ian ser mejores en caso
+de tener que estimar/reconstruir muchos frames). Si bien su ECM medio es m\'as
+alto que el de otros m\'etodos, pudimos observar que tambi\'en lo es su
+desv\'io est\'andar. Y justamente esto \'ultimo es lo que nos permiti\'o
+descubrir que el motivo de su ECM medio m\'as alto se debe a que, en
+determinados frames (los m\'as alejados de los 2 frames utilizados para
+interpolar, de hecho) el m\'etodo tiene un error m\'as alto que el resto. Como
+esto \'ultimo ocurre seguido, el ECM tiende a subir, pero al observar el PSNR
+frame a frame se pudo concluir que en realidad, para la gran mayor\'ia de los
+frames interpolados, el m\'etodo del vecino superaba a sus pares.
+
+\par Esto \'ultimo no es un resultado menor, m\'as si se tiene en cuenta que
+el m\'etodo del vecino es el m\'as barato computacionalmente hablando, como ya
+se ha visto.
+
+\par En otra l\'inea de an\'alisis, tambi\'en se observ\'o que al menos para
+este tipo de video, que el tama\~no de bloque utilizado no hizo variar a la
+efectividad del m\'etodo de spline. Esto, si bien no esperado al comenzar los
+experimentos, es razonable si se considera que en si mismo el video no presenta
+casi cambios, m\'as all\'a del brillo de sus puntos debido al cambio de
+iluminaci\'on. Tiene sentido entonces que el resultado de splines no var\'ie ya
+que ''la funci\'on interpolada''\footnote{Los pixels a lo largo de los frames.}
+camb\'ian en funci\'on del frame de manera ''suave'', con lo cual no importe
+desde que frame a que frame se genere el spline, sus valores en los extremos de
+los bloques tender\'ian a ser similiares a lo que se les exije en el m\'etodo a
+los \emph{sub-splines}.
+
+\par Para finalizar este experimento, vale la pena remarcar nuevamente que si
+bien la interpolaci\'on de todos los m\'etodos tuvieron error, el mismo siempre
+fue muy peque\~no nominalmente. De hecho, como se mencion\'o al principio de
+estas conclusiones, fueron imperceptibles para los autores. Si se observan los
+errores m\'aximos obtenidos de todos los m\'etodos, observamos que el error
+m\'as grosero cometido fue de 60, el cual quedar\'a en evidencia que es un
+valor peque\~no al compararlo con los errores de los m\'etodos en los otros
+tipos de videos que se exponen m\'as adelante.
+
+%---------------------------------------------------------------

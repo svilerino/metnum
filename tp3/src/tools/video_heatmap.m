@@ -56,4 +56,5 @@ function video_heatmap(vorg_filename, vint_filename, output_prefix)
         %writeVideo(writerObj, currFrame);
     end
     %close(writerObj);
+    close all;
 end

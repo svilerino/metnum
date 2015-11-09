@@ -2,6 +2,15 @@
 se sigui\'o una misma metodolog\'ia para recabar la informaci\'on necesaria para
 ser luego analizada.
 
+\par En primer lugar se decidi\'o trabajar con im\'agenes en escala de grises o,
+coloquialmente llamado \emph{blanco y negro}. Esto es as\'i ya que dentro del
+alcance de nuestro trabajo, estamos estudiando (principalmente) la correctitud
+de los frames interpolados. Si se tuvieran en cuenta los colores, se tendr\'ia
+la complicaci\'on del error agregado de interpolar los canales de colores por
+separado, lo cual escapa a los objetivos del trabajo (adem\'as de tener la
+limitante del tiempo para realizar este trabajo.). Resumiendo, se tom\'o esta
+decisi\'on para simplificar y enfocar m\'as el an\'alisis a realizar.
+
 \par La forma en la que se presentar\'an los resultados m\'as adelante nada
 tiene que ver con el orden en el que se realiz\'o la experimentaci\'on.
 
@@ -57,7 +66,10 @@ que la afecta.}. Justamente el PSNR es utilizado para cuantificar la calidad de
 la reconstrucci\'on de una se\~nal (o en nuestro caso, de un frame), un alto
 valor del mismo del mismo indica mayor calidad de la reconstrucci\'on (aunque
 se debe tener cierto cuidado en los casos donde existe compresi\'on de datos
-involucrada, caso que no aplica a este trabajo).
+involucrada, caso que no aplica a este trabajo). Tambi\'en se usaron los
+valores medios, desv\'io est\'andard, m\'aximo y m\'inimo del ECM para realizar
+comparaciones para el mismo m\'etodo y sus diferentes par\'ametros, como as\'i
+tambi\'en entre los distintos m\'etodos.
 
 \par Vale la pena aclarar que en las conclusiones generales es donde tambi\'en
 se realiza un an\'alisis m\'as subjetivo, basado en la percepci\'on de los
@@ -70,3 +82,6 @@ otros experimentos m\'as puntuales para analizar los aspectos de correctitud de
 los m\'etodos (m\'inimamente) y del tiempo de c\'omputo, como as\'i tambi\'en
 una comparativa de como los m\'etodos se ven afectados seg\'un la variable
 m\'as importante de todas: el video.
+
+\par Los videos originales utilizados para la experimentaci\'on pueden
+obtenerse en \url{https://drive.google.com/open?id=0B0RfkWV-4-XqMlhfa0Z2WUMtRTg}

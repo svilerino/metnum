@@ -34,4 +34,6 @@ function [STATS] = compare_video_same_interpolation(video_prefix,interpolation)
     pos = get(psnr_f,'Position');
     set(psnr_f,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
     print(psnr_f,sprintf('%s%s%s%i','psnr_methods-',video_prefix,'-k',interpolation),'-dpdf','-r600','-painters');
+
+    close all;
 end
