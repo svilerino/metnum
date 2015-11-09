@@ -1,32 +1,31 @@
 %!TEX root = informe.tex
 
-\IEEEPARstart{F}{i}nalizada la enumeraci\'on de ciertos rubros que motiven la investigaci\'on sobre el tema, con la adici\'on de una breve explicaci\'on del problema a trabajar y de la justificación teórica detrás del método de interpolación, nos dedicaremos a desarrollar con mayor precisi\'on cada m\'etodo n\'umerico en cuesti\'on. Recordemos que estos métodos intentan atacar el problema de construir, a partir de un video filmado en tiempo real, nuevos frames que den la sensaci\'on de que el video original ha sido ralentizado (efecto de \emph{slowmotion}), o, aún mejor, filmado con una cámara de alta frecuencia.
+\IEEEPARstart{F}{i}nalizada la enumeraci\'on de los problemas que motivan la investigaci\'on sobre el tema y la adici\'on de una breve explicaci\'on del problema a trabajar y de la justificación teórica detrás del método de interpolación, nos dedicaremos a desarrollar con mayor precisi\'on cada m\'etodo n\'umerico en cuesti\'on. Recordemos que estos métodos intentan atacar el problema de construir, a partir de un video filmado en tiempo real, nuevos frames que den la sensaci\'on de que el video original ha sido ralentizado (efecto de \emph{slowmotion}), o, aún mejor, filmado con una cámara de alta frecuencia.
 
 \subsection{Aclaraciones \'utiles para la comprensi\'on del desarrollo}
 
-Antes de ingresar al campo que abarca la explicaci\'on de los m\'etodos, queremos esclarecer ciertas frases o palabras claves que ocupar\'an terreno en el resto de la secci\'on:
+Antes de comenzar con la explicaci\'on de los m\'etodos queremos definir ciertas frases o palabras claves que ocupar\'an terreno en el resto de la secci\'on:
 
 \begin{itemize}
-	\item \textit{Frame original}: Se le dar\'a nombre al cuadro que pertenece al video original, es decir, aquel archivo que no contiene los frames agregados que conciben al efecto de c\'amara lenta.
-	\item \textit{Frame artificial}: Lo llamaremos a aquellos cuadros que se realizar\'an a partir del procedimiento que dicho m\'etodo vaya planeando. En esta ocasi\'on, se puede ratificar que los mismos se crearan en conjunto, y entre medio de un par de frames originales.
-	\item \textit{Cantidad de frames a adjuntar}: Nos referiremos al par\'ametro que decide cu\'antos cuadros artificiales le adicionaremos entre cada par de frames originales. Lo denotaremos con las letras $fr$.
-	\item \textit{Matriz frame}: Aunque no se hablar\'a de ese nombre en particular, es fundamental aclarar que en cualquier comentario acerca de los valores o p\'ixeles de un frame, se lo est\'a especificando como una matriz de $m$ x $n$ (visto como la resoluci\'on del video) que lleva los valores del $0$ al $255$, inclusive (escala de grises).
-	\item \textit{P\'ixel}: Transladamos esta palabra asociada a la im\'agen digital al campo del \'algebra lineal. Por lo tanto, se lo considerar\'a como un componente de la matriz frame cuyos valores estan restringido en el rango $[0;255]$.
+	\item \textit{Frame original}: Cuadro que pertenece al video original, es decir, aquel que no contiene los frames agregados que conciben al efecto de c\'amara lenta.
+	\item \textit{Frame artificial}: Cuadro que se realizar\'a a partir del procedimiento que cada m\'etodo vaya planeando. Siempre tiene a cierta distancia, tanto a derecha como izquierda, frames originales.
+	\item \textit{Cantidad de frames a adjuntar}: Entero que indica cu\'antos cuadros artificiales le adicionaremos entre cada par de frames originales. Lo denotaremos con las letras $fr$.
+	\item \textit{Matriz frame}: Aunque no se hablar\'a de este nombre en particular, es fundamental aclarar que en cualquier comentario acerca de los valores o p\'ixeles de un frame, se lo est\'a modelando como una matriz de $m \times n$ (resoluci\'on del video) que lleva los valores del $0$ al $255$ inclusive (escala de grises).
+    \item \textit{P\'ixel}: Transladamos esta palabra asociada a la imagen digital al campo del \'algebra lineal. Por lo tanto, se lo considerar\'a como un componente de la matriz frame cuyos valores estan restringido en el rango $[0;255]$.
 \end{itemize}
 
+Para la explicación de todos los métodos consideramos dado (como parámetros del problema) el video sobre el cual trabajar (con su resolución $m \times n$) y la cantidad $fr$ de frames a generar entre cada par de frames del original.
+
 \subsection{Los m\'etodos propuestos}
-
-Para la explicación de todos los métodos consideramos dado (como parámetros del problema) el video sobre el cual trabajar y la cantidad $fr$ de frames a generar entre cada par de frames del original. Llamaremos \emph{frames artificiales} a los frames generados por los métodos, y \emph{frames originales} a los frames provenientes del video original.
-
 \subsubsection{Cuadro m\'as cercano}
 
-Este m\'etodo se basa en una idea de car\'acter simplista, muy sencilla de implementar, y que nos permitirá tener una base para establecer comparaciones con métodos más inteligentes. A pesar de esto, puede resultar precisa para ciertos tipos de videos, como por ejemplo, la filmaci\'on de un objeto inmóvil.
+Este m\'etodo se basa en una idea simplista, muy sencilla de implementar, y que nos permitirá tener una base para establecer comparaciones con métodos más ``inteligentes''. A pesar de esto, puede resultar precisa para ciertos tipos de videos, como por ejemplo, la filmaci\'on de un objeto inmóvil.
 
-\subsubsection*{\bf{Conceptualizaci\'on:}}
+\subsubsection*{\bf{Intuición}}
 
-Como lo indica el subt\'itulo de la secci\'on, la idea del método es que cada frame artificial es una copia de su frame original más cercano en términos temporales. Para cada frame a generar el método calcula cuál es dicho ``vecino más cercano'', y luego copia la im\'agen de dicho frame al frame artificial a generar. 
+Como lo indica el subt\'itulo de la secci\'on, la idea del método es que cada frame artificial es una copia de su frame original más cercano en términos temporales. Para cada frame a generar el método calcula cuál es dicho ``vecino más cercano'' y luego copia la im\'agen de dicho frame al frame artificial a generar. 
 
-De esta manera, habr\'a al menos $fr/2$ copias de cada frame original. En caso que se decida agregar una cantidad impar, se opta por fragmentar en dos partes de $fr/2$ y $fr/2+1$ cuadros. En la figura \ref{fig:vecino} vemos un ejemplo conciso de lo explicado.
+De esta manera, habr\'a al menos $fr/2$ copias de cada frame original. En caso que se decida agregar una cantidad impar, se opta por fragmentar en dos partes de $fr/2$ y $fr/2+1$ cuadros. En la figura \ref{fig:vecino} vemos un ejemplo conciso de lo explicado. La cantidad de cuadros a agregar es de $fr = 22$, por lo que se lo divide en dos particiones de $11$ frames artificiales cuya imagen corresponder\'a al frame original m\'as cercano (el marr\'on o blanco).
 
 \begin{figure}[h!]
   \centering
@@ -35,117 +34,102 @@ De esta manera, habr\'a al menos $fr/2$ copias de cada frame original. En caso q
 \end{figure}
 \noindent
 
-En el caso de la figura, el par\'ametro de cantidad de cuadros a agregar es de $fr = 22$. Por ende, se lo divide en dos particiones de $11$ frames artificiales cuya imagen corresponder\'a al frame original m\'as cercano (el marr\'on o blanco). Como observaci\'on trivial, el frame original $i$ se lo considera como la imagen reproducida en el estado de tiempo anterior a los artificiales agregados de por medio. An\'alogamente, ocurre con el otro cuadro en el extremo derecho.
+Volviendo al an\'alisis del video en su totalidad, se repite el anterior procedimiento para cada par de frames en el orden establecido por la secuencia del video. De tal forma se obtienen los frames artificiales, consiguiendo una nueva filmaci\'on con el efecto de \textit{slowmotion} que queríamos. 
 
-Volviendo al an\'alisis del video en su mera totalidad, se repite el anterior procedimiento en cada par de frames en el orden concebido por la secuencia del video. De tal forma, se obtienen los frames artificiales, consiguiendo una nueva filmaci\'on con el efecto de $slowmotion$ que este m\'etodo propone. 
+\subsubsection*{\bf{Perspectiva matem\'atica}}
 
-\subsubsection*{\bf{Perspectiva Matem\'atica:}}
-
-\textbf{¿Qu\'e relaci\'on lleva este m\'etodo con el concepto de interpolar?} No dejaremos esta pregunta de lado, pues estar\'iamos ignorando lo que en la introducci\'on le dimos tanta importancia. Como pequeño recordatorio, en interpolaci\'on se buscamos obtener nuevos puntos del plano en base a los datos ya conocidos. Copiar la im\'agen del extremo m\'as cercano equivale a tomar cada p\'ixel del frame original, o sea los datos conocidos, e insertar estos valores en el frame artificial. De hecho, el frame artificial no es m\'as que un ``punto intermedio'' entre los dos frames originales.
-
-Transladamos esto \'ultimo a t\'erminos matem\'aticos para evitar cualquier ambigüedad al respecto. Por cada p\'ixel, se tiene un polinomio al que denominaremos $S_{i,j}$ cuyo \'indice denota a la posici\'on de la matriz del frame que se esta evaluando. Por otro lado, abreviaremos a $frameOriginal_{p}$ al cuadro que esta en el extremo inferior (hecho pasado) y $frameOriginal_{(p+1)}$ al del extremo superior (hecho futuro). Finalmente, $fr$ que simboliza nuevamente la cantidad de frames a adicionar. Definimos a $S_{i,j}$ como:
+\textbf{¿Qu\'e relaci\'on tiene este m\'etodo con el concepto de interpolar?} A pesar de ser muy sencillo, este método está usando cierta forma de interpolación. Si consideramos cada píxel $(i, j)$ del video a lo largo del tiempo, obtenemos para cada uno una lista de pares $f_{i,j}(t)=y$ donde $t$ es el instante de un frame original y $y$ el valor de brillo del píxel $(i,j)$ de dicho frame. El método propuesto interpola dichos puntos usando 
 
 \[
-S_{i,j}(x) = 
+f_{i,j}(t) = 
 \left\{
     \begin{array}{ll}
-        frameOriginal_{p}(i,j) & \mbox{si } x \leq fr/2 \\
-        \hspace{0.3cm}     
-        frameOriginal_{(p+1)}(i,j) & \mbox{si } x > fr/2
+        frame(t)_{i,j} & \mbox{si } original(t) \\
+        frame(anterior(t))_{i,j} & \mbox{si } resto(t) \leq fr/2 \\     
+        frame(siguiente(t))_{i,j} & \mbox{si } resto(t) > fr/2
     \end{array}
 \right.
 \]
 
-Por ende, conseguimos transformar una idea, cuyo fundamento se apartaba de este concepto de interpolaci\'on, a desarrollar una funci\'on partida en dos fragmentos. Ambas particiones, tienen la particularidad de ser funciones constantes \footnote{\url{https://es.wikipedia.org/wiki/Funcion_constante}} a lo largo de su dominio. 
+donde 
+\begin{align*}
+    &original(t) \text{ sii } t \text{ coincide con el instante de un frame original}\\
+    original(t) \Rightarrow\ &frame(t)=\text{el frame original del instante } t\\
+    \neg original(t) \Rightarrow\ &anterior(t) = \max_{k}(original(k) \wedge k < t)\\
+    \neg original(t) \Rightarrow\ &siguiente(t) = \min_{k}(original(k) \wedge k > t)\\
+    \neg original(t) \Rightarrow\ &resto(t) = t-anterior(t)
+\end{align*}
 
-Se concluye al hecho de que debido a su posible discontinuidad (solo puede ser continua si ambas particiones comparten la misma constante), los cambios entre cada fragmento podr\'ian detallar un cambio brusco durante la reproducci\'on del video resultante, si es que entre la matriz del frame original y su sucesora, existe una gran desigualdad n\'umerica. Dicho de otras palabras, si la suma 
+Es fácil ver que la función interpola efectivamente los puntos $f_{i,j}(t)=y$, aunque lo hace de modo ``pobre'': para cada par de frames originales tiene una discontinuidad entre ellos a distancia $fr/2$, que será percibida como un ``salto'' en las imágenes del video. El único caso en que esto no ocurre es cuando los frames considerados son idénticos, por lo que arriesgamos que es el caso en que el método mejor se comportará.
 
-\[ \sum_{i = 0}^m \sum_{j = 0}^n ( frameOriginal_{p}(i,j) - frameOriginal_{(p+1)}(i,j) )^2 \]
+\subsubsection{Interpolaci\'on lineal}
 
-es elevada, luego se puede confirmar un cambio de frame a frame notorio (salto de escena, por ejemplo) que ratifique lo anteriormente dicho. Aunque no los adelantaremos a un terreno que puede ser tentativo para cierta experimentaci\'on.
+Compartiendo con \emph{vecino m\'as cercano} la idea de trabajar píxel a píxel con cada par de frames para eventualmente obtener el video deseado con su respectivo efecto, este método puede propocionar ciertas mejoras a la hora de trabajar con videos con movimiento\footnote{Que, entendemos, es el caso de la mayoría de los videos, exceptuando quizás los subidos a YouTube para compartir música.}.
 
-\subsubsection{Construcci\'on mediante Interpolaci\'on lineal}
+\subsubsection*{\bf{Intuición}}
+El m\'etodo se centra en tomar crear un interpolador lineal segmentado por cada píxel del video, cuyos puntos interpolados son los valores de brillo del píxel en los frames originales. Por ende, tendremos por cada par de frames originales $m \times n$ polinomios de grado uno, que usaremos para conocer los valores intermedios entre los dos cuadros originales y gererar así los píxeles de los frames artificiales.
 
-Semejante al \emph{cuadro m\'as cercano}, en el sentido que comparten la ideolog\'ia de trabajar c\'iclicamente con cada par de frames para eventualmente, obtener el video deseado con su respectivo efecto. No obstante, contaremos lo particular y caracter\'istico de este m\'etodo, que puede propocionar ciertas mejoras en el movimiento de objetos durante su filmaci\'on.
-
-\subsubsection*{\bf{Conceptualizaci\'on:}}
-
-Por un lado, no posee la misma intuici\'on que su antecesora, donde la im\'agen de cada frame artificial se basa en copiar alguno de los dos cuadros originales en evaluaci\'on. En cambio, se busca utilizar fundamentos matem\'aticos que ayuden a \emph{predecir y reflejar} lo sucedido entre cada par de frames del video original. 
-
-Nuevamente, nos enfocamos en analizar el algoritmo propuesto para la creaci\'on de los $fr$ frames artificiales que se desean adherir entre cada conjunto de pares. En primer lugar, debemos pensar a cada frame como una matriz de $m$ $x$ $n$ p\'ixeles (dependiendo la resoluci\'on en que se dispone el video), siendo $m$ el largo del cuadro y $n$ el ancho. En segundo lugar, el procedimiento destina a generar un polinomio de grado uno \footnote{ Tambi\'en definida como funci\'on lineal; \url{https://es.wikipedia.org/wiki/Lineal}.} entre ese par de frames originales.
-
-Contamos previamente acerca de la representación de tales cuadros como matrices compuestas por p\'ixeles, y de dichos píxeles como números enteros del 0 a 255.
-
-Dicho esto, el m\'etodo se centra en crear un polinomio interpolador por cada posici\'on del frame cuyos puntos interpolados resultan ser los valores de dicha ubicaci\'on en el par de frames originales que se est\'a trabajando. Por ende, tendremos por cada par de cuadros reales, $m$ $x$ $n$ polinomios de grado uno. De lo anterior nace una nueva duda : ¿C\'omo esto resuelve nuestro problema de crear m\'utiples frames artificiales?
-
-El hecho est\'a en que ahora conocemos los valores intermedios entre los dos cuadros originales y en consecuencia, podemos particionar ese dominio en $p$ partes ($p$ siendo la cantidad de frames que se adiciona en cada par) y finalmente, evaluar el polinomio en los bordes de cada fragmento. Como observaci\'on, este paso lo tendremos que aplicar para cada posici\'on de la matriz modelada.
-
-De misma forma, se realiza la tarea sobre cada par agrupado en el orden indicado con lo que eventualmente, el m\'etodo en cuesti\'on concluye con su labor, dejando el efecto de $slowmotion$ que la misma ofrece.
+En la figura \ref{fig:lineal} se puede observar el efecto producido por una interpolación de este estilo.
 
 \begin{figure}[h!]
   \centering
     \includegraphics[width=0.65\textwidth]{InterpolacionLineal.png}
-     \caption{Muestra de interpolaci\'on lineal con un solo frame intermedio}\label{fig:vecino}
+     \caption{Muestra de interpolaci\'on lineal con un solo frame intermedio}\label{fig:lineal}
 \end{figure}
 \noindent
 
-\subsubsection*{\bf{Perspectiva Matem\'atica:}}
-
-Repasamos r\'apidamente lo que en la introducci\'on te\'orica hab\'iamos señalado, aplic\'andolo a la asignaci\'on en cuesti\'on. Construimos $S_0, \ldots, S_{n - 1}$ polinomios tal que $S_i$ interpola $x_i$ y $x_{i + 1}$. Luego, definimos la siguiente funci\'on que adjunta \'estos \'ultimos:
+\subsubsection*{\bf{Perspectiva matem\'atica}}
+Nuevamente consideramos para cada píxel una lista de pares $f(t)=y$. Aplicando lo visto en la Introducción teórica, para cada píxel construimos $S_0, \ldots, S_{n - 1}$ polinomios de grado a lo sumo 1 (con $n$ cantidad total de frames del video) tal que $S_p$ interpola $t_p=y_p$ y $t_{p + 1}=y_{p+1}$ para cada $t_p$ instante de un frame original. Luego, definimos la siguiente funci\'on:
  
 \[
-f(x) = 
+f(t) = 
 \left\{
     \begin{array}{ll}
-        S_0(x)  & \mbox{si } x \in [x_{0}, x_1] \\
+        S_0(t)  & \mbox{si } t \in [t_{0}, t_1] \\
         \hspace{0.3cm}\vdots \\     
-        S_{n - 1}(x) & \mbox{si } x \in [x_{n - 1}, x_n]
+        S_{n - 1}(t) & \mbox{si } t \in [t_{n - 1}, t_n]
     \end{array}
 \right.
 \]
 
-Deciframos lo anterior como los polinomios $S_{(i,j)}$, donde el par $(i,j)$ representa a una posici\'on de la matriz frame. Nuevamente, estamos realizando una funci\'on a partir de un par de frames originales tal que el $frameOriginal_{p}$ se figura como el estado anterior y $frameOriginal_{(p+1)}$ el posterior. Aqu\'i yace una diferencia con el m\'etodo del vecino m\'as cercano y es que cada $S_{(i,j)}$ corresponde a una funci\'on lineal. Pasamos a definir a \'esta misma como la siguiente recta:
+Como ya dijimos, habrá una de estas $f_{i,j}$ por cada píxel $(i,j)$, pero nos restringimos a definirla para un único para evitar la notación $_{i,j}$ en todas las ecuaciones.
 
-\[
-S_{(i,j)}(x) = y0 + (y1 - y0) * ( ( x - x0 ) / (x1 - x0) ) 
-\]
+Cada $S_p$ se define como la siguiente recta:
 
-Donde $y0 = frameOriginal_{p}(i,j)$ y $y1 = frameOriginal_{(p+1)}(i,j)$. Por parte de $x0$ y $x1$, lo enumeramos como $0$ y $1$ respectivamente. No importa el valor de estos \'ultimos, mientras sean consecutivos.\footnote{ a x1 = x0 + 1} No obstante, es importante aclarar que siempre se evaluar\'a esta funci\'on dentro del rango $(x0 ,x1)$, es decir, los puntos intermedios.
+$$S_p(t) = y_p + (y_{p+1} - y_p) * \frac{t - t_0}{t_1 - t_0}$$
 
-Para una mayor comprensi\'on, representaremos gr\'aficamente el siguiente ejemplo: Supongamos que tenemos el algoritmo que realiza la funci\'on $S_{(i,j)}$ , recogiendo cada par p\'ixel de igual posici\'on en los dos frames originales escogidos. Notamos que est\'a operando sobre la posici\'on $(1,2)$ y decidimos visualizar dicho resultado. Asumiendo que el par\'ametro $fr = 2$, observamos lo siguiente:
+Donde $y_{p} = frame_p[i,j]$, $y_{p+1} = frame_{p+1}[i,j]$, $t_0=0$ y $t_1=1$. El valor de estos \'ultimos dos no importa realmente mientras sean consecutivos\footnote{$t_1 = t_0 + 1$}. No obstante, es importante aclarar que siempre se evaluar\'a esta funci\'on dentro del rango $(t_0 t_1)$, es decir, los puntos intermedios. \textbf{TODO: REVISAR}
+
+Para una mayor comprensi\'on, representaremos gr\'aficamente el método. Supongamos que tenemos el algoritmo que instancia una funci\'on $S_{p}$, tomando la información de un par de p\'ixeles de igual posici\'on (por ejemplo $(1,2)$) en $frame_0$ y $frame_1$, y la evalúa en $fr$ puntos para generar píxeles artificiales. Asumiendo $fr = 2$, observamos en la figura \ref{fig:intSimple} el resultado.
+
+Si lo usamos considerando ahora múltiples frames ($frame_0 \ldots frame_6$) generamos 6 splines $S_0, \ldots, S_5$ y 12 frames artificiales como se puede ver en la figura \ref{fig:intConjunta}.
 
 \begin{figure}[h!]
   \centering
     \includegraphics[width=0.85\textwidth]{InterpolacionSimple.png}
-     \label{fig:intSimple}
+     \caption{Resultado de interpolar usando 2 frames}\label{fig:intSimple}
 \end{figure}
 \noindent
-
-De este modo, el algoritmo seguir\'a con su trabajo, hasta llegar al \'ultimo par de frames originales a interpolar. En respuesta, obtiene la funci\'on explayada al inicio de esta perspectiva matem\'atica.
-
 
 \begin{figure}[h!]
   \centering
     \includegraphics[width=0.75\textwidth]{InterpolacionConjunta.png}
-     \caption{Resultado luego de haber interpolado por separado cada $S_{i}$ (con $i = 0 \ldots 5$)}\label{fig:intConjunta}
+     \caption{Resultado de interpolar usando 7 frames}\label{fig:intConjunta}
 \end{figure}
 \noindent
 
 \subsubsection{Construcción mediante interpolación por splines (c\'ubica)}
 
-Un m\'etodo que nace con la misma idea de conseguir los frames artificiales o intermedios mediante la evaluaci\'on de cierto polinomio en un determinado punto, pero esta vez aferr\'andose a una mayor complejidad. Sin lugar a dudas, su desarrollo dar\'a la sensaci\'on de brindar resultados m\'as satisfactorios en la construcci\'on del $slowmotion$, aunque habr\'a tiempo para confirmar esto \'ultimo durnate experimentaci\'on y/o conclusi\'on de este informe.
+Continuando con la idea de conseguir los frames artificiales o intermedios mediante la creación y evaluación de polinomios para cada píxel, pasamos a utilizar polinomios de grado 3. Por lo dicho en la introducción teórica creeríamos que esto puede brindar resultados m\'as satisfactorios en la construcci\'on del video final, aunque habr\'a que confirmar esto durante la experimentaci\'on.
 
-\subsubsection*{\bf{Conceptualizaci\'on:}}
+\subsubsection*{\bf{Intuición}}
 
-Siendo \'este el tercer y \'ultimo m\'etodo a desarrollar, ya podemos abstraernos de ciertos detalles que fueron previamente explicados. De esta forma, nos centramos en lo peculiar y caracter\'istico de Splines, conceptualmente hablando.
+Siendo \'este el tercer y \'ultimo m\'etodo a desarrollar, podemos abstraernos de ciertos detalles que fueron previamente explicados.
 
-Por un lado, sabemos que pertenece a la familia de los interpoladores por segmentos. Por ende, la interpolaci\'on c\'ubica tambi\'en interpreta el problema de crear frames artificiales como un procedimiento donde se agrupan de a pares de cuadros originales, respetando el orden de la reproducci\'on del video, y creando frames de por medio. En principio, se podr\'ia pensar que Splines no cambia su metodolog\'ia con respecto a lo anteriormente visto. No obstante, se ha de analizar una serie de pasos que difiere a este m\'etodo con el resto.
+Ya hemos dicho que pertenece a la familia de los interpoladores por segmentos. En principio, se podr\'ia pensar que el método no cambia su metodolog\'ia con respecto al anterior. Nos limitaremos aquí a expresar en qué se diferencian.
 
-A diferencia del m\'etodo de Interpolaci\'on lineal, necesitamos disponer de todos los frames que la filmaci\'on contiene. La causa de ese requisito es que Splines no genera cada polinomio en base a un par de frames seleccionados, sino que a partir de tomar cada p\'ixel de una cierta posicion $(i,j)$ en todo el conjunto de cuadros, se construye la funci\'on asociada a ese p\'ixel en cuesti\'on. 
+A diferencia del m\'etodo de Interpolaci\'on lineal, este método varía sus resultados dependiendo de todos los frames considerados para hacer el spline, es decir, no genera cada $S_k$ únicamente en función del valor del píxel en los frames $k$ y $k+1$, sino que todos los frames influyen en los coeficientes de la funci\'on $S_k$, y su evaluación en el punto $t$ puede variar dependiendo de qué frames fueron considerados. Esto se debe, intuitivamente, a que el método utiliza la información de todos los frames para generar cada función $S_{i,j}$, combinándola en un único sistema de ecuaciones\footnote{ver sección \ref{sec:splines}}.
 
-¿Pero no se trataba el m\'etodo de crear un polinomio por cada par ($frameOriginal_{p}$,$frameOriginal_{(p+1)}$)? ($p = 0 \ldots$ $FramesTotal-1$) Efectivamente, Splines arma cada funci\'on de grado c\'ubico \footnote{\url{https://es.wikipedia.org/wiki/Ecuacion_de_tercer_grado}} por cada segmento de dos cuadros originales, pero a\'un as\'i, necesita recolectar los datos del resto de los frames existentes para completarlo.
+Una opción sencilla en su implementación es usar todos los frames del video para generar el spline. El problema es que el sistema matricial a resolver puede ser muy grande, potencialmente excediendo las capacidades de memoria de las computadoras comunes y trayendo inconvenientes no deseados al uso del método. Queda entonces la aplicación de una alternativa: crear múltiples splines de a bloques. Es decir, tomar cierta cantidad de frames y definirla como el \textit{tamaño de bloque}, para luego generar un spline por cada bloque.
 
-Una vez conseguido cada $Spline$ en la posici\'on del cuadro que se le indic\'o, prosigue a evaluar por cada segmento, los valores intermedios y de esa manera, crear los frames artificiales que generen el efecto de $slowmotion$ deseado. Como observaci\'on trivial, estos valores intermedios tambi\'en depender\'an de cuantos frames se le quiere adherir entre medio.
-
-
- 
+\subsubsection*{\bf{Perspectiva matem\'atica}}
