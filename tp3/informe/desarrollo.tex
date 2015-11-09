@@ -16,6 +16,18 @@ Antes de comenzar con la explicaci\'on de los m\'etodos queremos definir ciertas
 
 Para la explicación de todos los métodos consideramos dado (como parámetros del problema) el video sobre el cual trabajar (con su resolución $m \times n$) y la cantidad $fr$ de frames a generar entre cada par de frames del original.
 
+Además, dado $t \in \mathbb{R}$ definiremos lo siguiente para ayudarnos en las definiciones más formales:
+
+\begin{align*}
+    &original(t) \text{ sii } t \text{ coincide con el instante de tiempo de un frame original}\\
+    original(t) \Rightarrow\ &frame(t)=\text{el frame original del instante $t$}\\
+    \neg original(t) \Rightarrow\ &anterior(t) = \max_{k}(original(k) \wedge k < t)\\
+    \neg original(t) \Rightarrow\ &siguiente(t) = \min_{k}(original(k) \wedge k > t)\\
+    \neg original(t) \Rightarrow\ &resto(t) = t-anterior(t)\\
+    0 \leq i < m \wedge 0 \leq j < n \Rightarrow&\ f[i,j] =\text{el valor de brillo de píxel en la posición $(i, j)$ para un frame $f$}
+\end{align*}
+
+
 \subsection{Los m\'etodos propuestos}
 \subsubsection{Cuadro m\'as cercano}
 
@@ -50,15 +62,6 @@ f_{i,j}(t) =
     \end{array}
 \right.
 \]
-
-donde 
-\begin{align*}
-    &original(t) \text{ sii } t \text{ coincide con el instante de un frame original}\\
-    original(t) \Rightarrow\ &frame(t)=\text{el frame original del instante } t\\
-    \neg original(t) \Rightarrow\ &anterior(t) = \max_{k}(original(k) \wedge k < t)\\
-    \neg original(t) \Rightarrow\ &siguiente(t) = \min_{k}(original(k) \wedge k > t)\\
-    \neg original(t) \Rightarrow\ &resto(t) = t-anterior(t)
-\end{align*}
 
 Es fácil ver que la función interpola efectivamente los puntos $f_{i,j}(t)=y$, aunque lo hace de modo ``pobre'': para cada par de frames originales tiene una discontinuidad entre ellos a distancia $fr/2$, que será percibida como un ``salto'' en las imágenes del video. El único caso en que esto no ocurre es cuando los frames considerados son idénticos, por lo que arriesgamos que es el caso en que el método mejor se comportará.
 
@@ -98,7 +101,7 @@ Cada $S_p$ se define como la siguiente recta:
 
 $$S_p(t) = y_p + (y_{p+1} - y_p) * \frac{t - t_0}{t_1 - t_0}$$
 
-Donde $y_{p} = frame_p[i,j]$, $y_{p+1} = frame_{p+1}[i,j]$, $t_0=0$ y $t_1=1$. El valor de estos \'ultimos dos no importa realmente mientras sean consecutivos\footnote{$t_1 = t_0 + 1$}. No obstante, es importante aclarar que siempre se evaluar\'a esta funci\'on dentro del rango $(t_0 t_1)$, es decir, los puntos intermedios. \textbf{TODO: REVISAR}
+Donde $y_{p} = frame_p[i,j]$, $y_{p+1} = frame_{p+1}[i,j]$, $t_0=anterior(t)$ y $t_1=siguiente(t)$. Es importante aclarar que siempre se debe evaluar esta funci\'on dentro del rango $(t_0, t_1)$, es decir, los puntos intermedios.
 
 Para una mayor comprensi\'on, representaremos gr\'aficamente el método. Supongamos que tenemos el algoritmo que instancia una funci\'on $S_{p}$, tomando la información de un par de p\'ixeles de igual posici\'on (por ejemplo $(1,2)$) en $frame_0$ y $frame_1$, y la evalúa en $fr$ puntos para generar píxeles artificiales. Asumiendo $fr = 2$, observamos en la figura \ref{fig:intSimple} el resultado.
 
@@ -133,3 +136,19 @@ A diferencia del m\'etodo de Interpolaci\'on lineal, este método varía sus res
 Una opción sencilla en su implementación es usar todos los frames del video para generar el spline. El problema es que el sistema matricial a resolver puede ser muy grande, potencialmente excediendo las capacidades de memoria de las computadoras comunes y trayendo inconvenientes no deseados al uso del método. Queda entonces la aplicación de una alternativa: crear múltiples splines de a bloques. Es decir, tomar cierta cantidad de frames y definirla como el \textit{tamaño de bloque}, para luego generar un spline por cada bloque.
 
 \subsubsection*{\bf{Perspectiva matem\'atica}}
+Considerando como un nuevo tamaño el tamaño de bloque (que eventualmente podría ser igual a la cantidad de frames del video, dando lugar a un único spline por píxel) generamos un spline por píxel por bloque. Los puntos a interpolar serán el tiempo $t$ y el valor del brillo $y$ de dicho píxel en todos los frames del bloque.
+
+Usando la equivalencia vista en la Introducción teórica (del problema de encontrar los coeficientes de un spline con el de resolver un sistema de ecuaciones lineal) podemos generar la matriz asociada al sistema para cada spline a generar y resolver el sistema usando eliminación gaussiana normalmente. Eso nos da como resultado los coeficientes $(a_i,b_i,c_i,d_i)$ de cada polinomio cúbico $S_k$ de los que componen el spline. Luego basta hacer
+$$
+S(t) = 
+\left\{
+    \begin{array}{ll}
+        S_0(t)  & \mbox{si } t \in [t_{0}, t_1] \\
+        \hspace{0.3cm}\vdots \\     
+        S_{n - 1}(t) & \mbox{si } t \in [t_{n - 1}, t_n]
+    \end{array}
+\right.
+$$
+
+para generar cada spline $S$.
+
