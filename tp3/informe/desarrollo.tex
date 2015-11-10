@@ -1,17 +1,18 @@
 %!TEX root = informe.tex
 
-\IEEEPARstart{F}{i}nalizada la enumeraci\'on de los problemas que motivan la investigaci\'on sobre el tema y la adici\'on de una breve explicaci\'on del problema a trabajar y de la justificación teórica detrás del método de interpolación, nos dedicaremos a desarrollar con mayor precisi\'on cada m\'etodo n\'umerico en cuesti\'on. Recordemos que estos métodos intentan atacar el problema de construir, a partir de un video filmado en tiempo real, nuevos frames que den la sensaci\'on de que el video original ha sido ralentizado (efecto de \emph{slowmotion}), o, aún mejor, filmado con una cámara de alta frecuencia.
+\IEEEPARstart{F}{i}nalizada la enumeraci\'on de los problemas que motivan la investigaci\'on sobre el tema y una breve explicaci\'on del problema a trabajar y de la justificación teórica detrás del método de interpolación, nos dedicaremos a desarrollar con mayor precisi\'on cada m\'etodo n\'umerico en cuesti\'on. Recordemos que estos métodos intentan atacar el problema de construir, a partir de un video filmado en tiempo real, nuevos frames que den la sensaci\'on de que el video original ha sido ralentizado (efecto de \emph{slowmotion}), o, aún mejor, filmado con una cámara de alta frecuencia.
 
 \textbf{Aclaraciones \'utiles para la comprensi\'on del desarrollo}
 
-Antes de comenzar con la explicaci\'on de los m\'etodos queremos definir ciertas frases o palabras claves que ocupar\'an terreno en el resto de la secci\'on:
+Antes de comenzar con la explicaci\'on de los m\'etodos queremos definir ciertas frases o palabras claves:
 
 \begin{itemize}
 	\item \textit{Frame original}: Cuadro que pertenece al video original, es decir, aquel que no contiene los frames agregados que conciben al efecto de c\'amara lenta.
 	\item \textit{Frame artificial}: Cuadro que se realizar\'a a partir del procedimiento que cada m\'etodo vaya planeando. Siempre tiene a cierta distancia, tanto a derecha como izquierda, frames originales.
 	\item \textit{Cantidad de frames a adjuntar}: Entero que indica cu\'antos cuadros artificiales le adicionaremos entre cada par de frames originales. Lo denotaremos con las letras $fr$.
 	\item \textit{Matriz frame}: Aunque no se hablar\'a de este nombre en particular, es fundamental aclarar que en cualquier comentario acerca de los valores o p\'ixeles de un frame, se lo est\'a modelando como una matriz de $m \times n$ (resoluci\'on del video) que lleva los valores del $0$ al $255$ inclusive (escala de grises).
-    \item \textit{P\'ixel}: Transladamos esta palabra asociada a la imagen digital al campo del \'algebra lineal. Por lo tanto, se lo considerar\'a como un componente de la matriz frame cuyos valores estan restringido en el rango $[0;255]$.
+    \item \textit{P\'ixel}: Transladamos esta palabra asociada a la imagen digital al campo de los videos, por lo que llamaremos píxel también a un punto específico del video (con coordenadas $(i,j)$) a lo largo de todo el desarrollo del mismo. También utilizaremos esta palabra en el campo del \'algebra lineal, considerándolo como un componente de la matriz frame cuyos valores están dentro del rango $[0;255]$. Quedará claro por contexto qué acepción estamos usando en cada caso.
+    \item \textit{Spline}: Para evitar ambigüedades llamaremos spline a la función interpolante formada por uno o más polinomios cúbicos, no a cada polinomio cúbico por separado.
 \end{itemize}
 
 Para la explicación de todos los métodos consideramos dado (como parámetros del problema) el video sobre el cual trabajar (con su resolución $m \times n$) y la cantidad $fr$ de frames a generar entre cada par de frames del original.
@@ -29,13 +30,15 @@ Además, dado $t \in \mathbb{R}$ definiremos lo siguiente para ayudarnos en las 
 
 \subsection{Cuadro m\'as cercano}
 
-Este m\'etodo se basa en una idea simplista, muy sencilla de implementar, y que nos permitirá tener una base para establecer comparaciones con métodos más ``inteligentes''. A pesar de esto, puede resultar precisa para ciertos tipos de videos, como por ejemplo, la filmaci\'on de un objeto inmóvil.
+Este m\'etodo se basa en una idea simplista, muy sencilla de implementar, y que nos permitirá tener una base para establecer comparaciones con métodos más ``inteligentes''. A pesar de esto, podría llegar a resultar precisa para ciertos tipos de videos, como por ejemplo, la filmaci\'on de un objeto inmóvil. Volveremos sobre esto en la sección de experimentación.
 
 \subsubsection*{\bf{Intuición}}
 
 Como lo indica el subt\'itulo de la secci\'on, la idea del método es que cada frame artificial es una copia de su frame original más cercano en términos temporales. Para cada frame a generar el método calcula cuál es dicho ``vecino más cercano'' y luego copia la im\'agen de dicho frame al frame artificial a generar. 
 
-De esta manera, habr\'a al menos $fr/2$ copias de cada frame original. En caso que se decida agregar una cantidad impar, se opta por fragmentar en dos partes de $fr/2$ y $fr/2+1$ cuadros. En la figura \ref{fig:vecino} vemos un ejemplo conciso de lo explicado. La cantidad de cuadros a agregar es de $fr = 22$, por lo que se lo divide en dos particiones de $11$ frames artificiales cuya imagen corresponder\'a al frame original m\'as cercano (el marr\'on o blanco).
+De esta manera, habr\'a al menos $fr/2$ copias de cada frame original. En caso que se decida agregar una cantidad impar, se opta por fragmentar en dos partes de $fr/2$ y $fr/2+1$ cuadros.
+
+En la figura \ref{fig:vecino} vemos un ejemplo conciso de lo explicado: la cantidad de cuadros a agregar es de $fr = 22$, por lo que se lo divide en dos particiones de $11$ frames artificiales cuya imagen corresponder\'a al frame original m\'as cercano (el marr\'on o blanco).
 
 \begin{figure}[h!]
   \centering
@@ -44,19 +47,19 @@ De esta manera, habr\'a al menos $fr/2$ copias de cada frame original. En caso q
 \end{figure}
 \noindent
 
-Volviendo al an\'alisis del video en su totalidad, se repite el anterior procedimiento para cada par de frames en el orden establecido por la secuencia del video. De tal forma se obtienen los frames artificiales, consiguiendo una nueva filmaci\'on con el efecto de \textit{slowmotion} que queríamos. 
+Volviendo al an\'alisis del video en su totalidad, se repite el anterior procedimiento para cada par de frames en el orden establecido por la secuencia del video. De tal forma se obtienen los frames artificiales, consiguiendo una nueva filmaci\'on con el efecto de \textit{slowmotion} que queríamos.
 
 \subsubsection*{\bf{Perspectiva matem\'atica}}
 
-\textbf{¿Qu\'e relaci\'on tiene este m\'etodo con el concepto de interpolar?} A pesar de ser muy sencillo, este método está usando cierta forma de interpolación. Si consideramos cada píxel $(i, j)$ del video a lo largo del tiempo, obtenemos para cada uno una lista de pares $f_{i,j}(t)=y$ donde $t$ es el instante de un frame original y $y$ el valor de brillo del píxel $(i,j)$ de dicho frame. El método propuesto interpola dichos puntos usando 
+\textbf{¿Qu\'e relaci\'on tiene este m\'etodo con el concepto de interpolar?} A pesar de ser muy sencillo, este método está usando cierta forma de interpolación. Si consideramos cada píxel $(i, j)$ del video a lo largo del tiempo, obtenemos para cada uno una lista de pares $f_{i,j}(t)=y$ donde $t$ es el instante de un frame original e $y$ el valor de brillo del píxel $(i,j)$ de dicho frame. El método propuesto interpola dichos puntos usando 
 
 \[
 f_{i,j}(t) = 
 \left\{
     \begin{array}{ll}
-        frame(t)_{i,j} & \mbox{si } original(t) \\
-        frame(anterior(t))_{i,j} & \mbox{si } resto(t) \leq fr/2 \\     
-        frame(siguiente(t))_{i,j} & \mbox{si } resto(t) > fr/2
+        frame(t)[i,j] & \mbox{si } original(t) \\
+        frame(anterior(t))[i,j] & \mbox{si } resto(t) \leq fr/2 \\     
+        frame(siguiente(t))[i,j] & \mbox{si } resto(t) > fr/2
     \end{array}
 \right.
 \]
@@ -68,7 +71,7 @@ Es fácil ver que la función interpola efectivamente los puntos $f_{i,j}(t)=y$,
 Compartiendo con \emph{vecino m\'as cercano} la idea de trabajar píxel a píxel con cada par de frames para eventualmente obtener el video deseado con su respectivo efecto, este método puede propocionar ciertas mejoras a la hora de trabajar con videos con movimiento\footnote{Que, entendemos, es el caso de la mayoría de los videos, exceptuando quizás los subidos a YouTube para compartir música.}.
 
 \subsubsection*{\bf{Intuición}}
-El m\'etodo se centra en tomar crear un interpolador lineal segmentado por cada píxel del video, cuyos puntos interpolados son los valores de brillo del píxel en los frames originales. Por ende, tendremos por cada par de frames originales $m \times n$ polinomios de grado uno, que usaremos para conocer los valores intermedios entre los dos cuadros originales y gererar así los píxeles de los frames artificiales.
+El m\'etodo se centra en crear un interpolador lineal segmentado por cada píxel del video, cuyos puntos interpolados son los valores de brillo del píxel en los frames originales. Por ende, tendremos por cada par de frames originales $m \times n$ polinomios de grado uno, que usaremos para conocer los valores intermedios entre los dos cuadros originales y gererar así los píxeles de los frames artificiales.
 
 En la figura \ref{fig:lineal} se puede observar el efecto producido por una interpolación de este estilo.
 
@@ -93,13 +96,13 @@ f(t) =
 \right.
 \]
 
-Como ya dijimos, habrá una de estas $f_{i,j}$ por cada píxel $(i,j)$, pero nos restringimos a definirla para un único para evitar la notación $_{i,j}$ en todas las ecuaciones.
+Como ya dijimos, habrá una de estas $f$ por cada píxel $(i,j)$, pero nos restringimos a definirla para un único píxel para evitar la notación $_{i,j}$ en todas las ecuaciones.
 
 Cada $S_p$ se define como la siguiente recta:
 
 $$S_p(t) = y_p + (y_{p+1} - y_p) * \frac{t - t_0}{t_1 - t_0}$$
 
-Donde $y_{p} = frame_p[i,j]$, $y_{p+1} = frame_{p+1}[i,j]$, $t_0=anterior(t)$ y $t_1=siguiente(t)$. Es importante aclarar que siempre se debe evaluar esta funci\'on dentro del rango $(t_0, t_1)$, es decir, los puntos intermedios.
+donde $y_{p} = frame_p[i,j]$, $y_{p+1} = frame_{p+1}[i,j]$, $t_0=anterior(t)$ y $t_1=siguiente(t)$.
 
 Para una mayor comprensi\'on, representaremos gr\'aficamente el método. Supongamos que tenemos el algoritmo que instancia una funci\'on $S_{p}$, tomando la información de un par de p\'ixeles de igual posici\'on (por ejemplo $(1,2)$) en $frame_0$ y $frame_1$, y la evalúa en $fr$ puntos para generar píxeles artificiales. Asumiendo $fr = 2$, observamos en la figura \ref{fig:intSimple} el resultado.
 
@@ -108,14 +111,14 @@ Si lo usamos considerando ahora múltiples frames ($frame_0 \ldots frame_6$) gen
 \begin{figure}[h!]
   \centering
     \includegraphics[width=0.85\textwidth]{InterpolacionSimple.png}
-     \caption{Resultado de interpolar usando 2 frames}\label{fig:intSimple}
+     \caption{Resultado de interpolar linealmente usando 2 frames}\label{fig:intSimple}
 \end{figure}
 \noindent
 
 \begin{figure}[h!]
   \centering
     \includegraphics[width=0.75\textwidth]{InterpolacionConjunta.png}
-     \caption{Resultado de interpolar usando 7 frames}\label{fig:intConjunta}
+     \caption{Resultado de interpolar linealmente usando 7 frames}\label{fig:intConjunta}
 \end{figure}
 \noindent
 
@@ -127,14 +130,12 @@ Continuando con la idea de conseguir los frames artificiales o intermedios media
 
 Siendo \'este el tercer y \'ultimo m\'etodo a desarrollar, podemos abstraernos de ciertos detalles que fueron previamente explicados.
 
-Ya hemos dicho que pertenece a la familia de los interpoladores por segmentos. En principio, se podr\'ia pensar que el método no cambia su metodolog\'ia con respecto al anterior. Nos limitaremos aquí a expresar en qué se diferencian.
+Ya hemos dicho que pertenece a la familia de los interpoladores por segmentos. A diferencia del m\'etodo de Interpolaci\'on lineal, este método varía sus resultados dependiendo de todos los frames considerados para hacer el spline, es decir, no genera cada $S_k$ únicamente en función del valor del píxel en los frames $k$ y $k+1$, sino que todos los frames influyen en los coeficientes del polinomio $S_k$, y su evaluación en un mismo punto $t$ puede variar dependiendo de qué frames fueron considerados. Esto se debe, matemáticamente, a que el método utiliza la información de todos los puntos (combinándola en un único sistema de ecuaciones) para generar cada función interpolante $f_{i,j}$\footnote{ver sección \ref{sec:splines}}.
 
-A diferencia del m\'etodo de Interpolaci\'on lineal, este método varía sus resultados dependiendo de todos los frames considerados para hacer el spline, es decir, no genera cada $S_k$ únicamente en función del valor del píxel en los frames $k$ y $k+1$, sino que todos los frames influyen en los coeficientes de la funci\'on $S_k$, y su evaluación en el punto $t$ puede variar dependiendo de qué frames fueron considerados. Esto se debe, intuitivamente, a que el método utiliza la información de todos los frames para generar cada función $S_{i,j}$, combinándola en un único sistema de ecuaciones\footnote{ver sección \ref{sec:splines}}.
-
-Una opción sencilla en su implementación es usar todos los frames del video para generar el spline. El problema es que el sistema matricial a resolver puede ser muy grande, potencialmente excediendo las capacidades de memoria de las computadoras comunes y trayendo inconvenientes no deseados al uso del método. Queda entonces la aplicación de una alternativa: crear múltiples splines por píxel, de a bloques. Es decir, tomar cierta cantidad de frames y definirla como el \textit{tamaño de bloque}, para luego generar un spline por cada bloque.
+Una opción sencilla en su implementación es usar todos los frames del video para generar el spline. El problema es que el sistema matricial a resolver puede ser muy grande, potencialmente consumiendo mucho tiempo en su resolución y grandes cantidades de memoria, trayendo inconvenientes no deseados al uso del método. Queda entonces la aplicación de una alternativa: crear múltiples splines por píxel, de a bloques. Es decir, tomar cierta cantidad de frames y definirla como el \textit{tamaño de bloque}, para luego generar un spline por cada bloque.
 
 \subsubsection*{\bf{Perspectiva matem\'atica}}
-Considerando como un nuevo tamaño el tamaño de bloque (que eventualmente podría ser igual a la cantidad de frames del video, dando lugar a un único spline por píxel) generamos un spline por píxel por bloque. Los puntos a interpolar serán el tiempo $t$ y el valor del brillo $y$ de dicho píxel en todos los frames del bloque.
+Considerando como un nuevo parámetro el tamaño de bloque (que eventualmente podría ser igual a la cantidad de frames del video, dando lugar a un único spline por píxel) generamos un spline por píxel por bloque. Los puntos a interpolar serán el tiempo $t$ y el valor del brillo $y$ de dicho píxel en todos los frames del bloque.
 
 Usando la equivalencia vista en la Introducción teórica (del problema de encontrar los coeficientes de un spline con el de resolver un sistema de ecuaciones lineal) podemos generar la matriz asociada al sistema para cada spline a generar y resolver el sistema usando eliminación gaussiana normalmente, como ya hemos desarrollado en trabajos anteriores. Eso nos da como resultado los coeficientes $(a_i,b_i,c_i,d_i)$ de cada polinomio cúbico $S_k$ de los que componen el spline. Luego basta hacer
 
@@ -149,9 +150,9 @@ S(t) =
 \right.
 $$
 
-para generar cada spline $S$, y ``conectar'' entre sí los splines que corresponden a un mismo píxel. Como los splines interpolan efectivamente los puntos que coinciden con frames originales, la función $f(t)$ de cada píxel es continua incluso en los frames ``límite'' de cada bloque, aunque esto no sea cierto para la derivada primera y segunda. Naturalmente, al optimizar el algorimo se pierden algunas propiedades deseables.
+para generar cada spline $S$, y ``conectar'' entre sí los splines que corresponden a un mismo píxel. Como los splines interpolan efectivamente los puntos que coinciden con frames originales, la función $f(t)$ de cada píxel es continua incluso en los frames ``límite'' de cada bloque, aunque esto no sea necesariamente cierto para la derivada primera y segunda en esos puntos\footnote{Naturalmente, optimizar el algorimo hace que se pierdan algunas propiedades deseables.}.
 
-Hace falta hacer hincapié en un detalle con el que nos encontramos a la hora de elegir cómo construir los bloques. Es importante que un \emph{frame límite} sea tanto el último de un spline como el primero del siguiente. No hacerlo así (nuestra primera implementación), es decir, tomar un frame $k$ como el último de un spline y el frame siguiente $k+1$ como el primero del spline siguiente lleva a que haya dos frames entre los cuales no se crean frames artificiales, perdiendo el efecto buscado entre ellos.
+Hace falta hacer hincapié en un detalle con el que nos encontramos a la hora de elegir cómo construir los bloques. Es importante que un \emph{frame límite} sea tanto el último de un spline como el primero del siguiente. No hacerlo así (nuestra primera implementación), es decir, tomar un frame $k$ como el último de un spline y el frame siguiente $k+1$ como el primero del spline siguiente llevaba a que hubiera dos frames entre los cuales no se creaban frames artificiales, perdiendo el efecto buscado entre ellos.
 
 \begin{figure}[h!]
   \centering
@@ -165,4 +166,4 @@ En la figura \ref{fig:intConjuntaSplines} graficamos cómo resulta la interpolac
 \subsection{Cálculo del error de los métodos}
 Por último, nos interesa comparar de manera imparcial los métodos utilizados, utilizando alguna medida de cuánto se acercan a ``la realidad'': en nuestro caso, a lo que habría captado una cámara de alta frecuencia. Pero para hacerlo haría falta tener dos videos del mismo evento, filmados desde el mismo punto, uno con una cámara de alta frecuencia y otro con una normal. Como las cámaras ocupan un espacio, esto es físicamente imposible\cite{wiki_impenetrability}. Lo que haremos, en su lugar, para comparar los métodos, será ``descartar'' frames de un video (normal o no) y darle este nuevo video ``recortado'' como entrada a nuestros métodos de interpolación. La comparación entre el resultado y el video original nos dará una aproximación de cuán ``acertados'' son nuestros métodos para siumlar lo que ocurre entre dos frames de un video cualquiera.
 
-Para realizar la comparación, usaremos las definiciones de \texttt{ECM} y \texttt{PSNR} ya dadas en la introducción teórica, comparando frame a frame entre los dos videos.
+Para realizar la comparación, usaremos las definiciones de \texttt{ECM} y \texttt{PSNR} ya dadas en la Introducción teórica, comparando frame a frame entre los dos videos.

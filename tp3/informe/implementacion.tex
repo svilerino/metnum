@@ -1,12 +1,14 @@
+%!TEX root = informe.tex
+
 \subsection{Pseudocódigo relevante a los métodos de interpolación}
-\par \IEEEPARstart{A}{} continuaci\'on nos explayaremos sobre los detalles de la
-implementaci\'on del m\'etodo propuesto. En las secciones previas hemos dado una
-introducci\'on al problema, su modelo y justificaci\'on de por qué el mismo sirve
-y a su vez hemos expuesto un m\'etodo que nos permite hayar la soluci\'on.
+\par \IEEEPARstart{A}{} continuaci\'on nos explayaremos sobre los detalles de
+implementaci\'on de cada m\'etodo propuesto.
 
-$f(x) = a + b (x - x0)$
+\vspace{0.4cm}
 
-$y0 + (y1-y0) * ( (x - x0) / (x1 - x0)) \implies a = y0 \ y \ b = (y1-y0)/(x1-x0)$
+$$f(x) = a + b (x - x_0)$$
+
+$$y_0 + (y_1-y_0) \times \frac{x - x_0}{x_1 - x_0} \implies a = y_0 \ \wedge \ b = \frac{y_1-y_0}{x_1-x_0}$$
 
 \begin{algorithm}
     \KwIn{Puntos del dominio conocidos $x$ ; Puntos de im\'agen conocidos $y$, grado funci\'on $gr$}
@@ -22,7 +24,7 @@ $y0 + (y1-y0) * ( (x - x0) / (x1 - x0)) \implies a = y0 \ y \ b = (y1-y0)/(x1-x0
     \label{alg:int_lineal}
 \end{algorithm}
 
-$f(x) = d + c ( x - x0 ) + b ( x - x0)^2 + a ( x - x0)^3$
+$$f(x) = d + c ( x - x_0 ) + b ( x - x_0)^2 + a ( x - x_0)^3$$
 
 \begin{algorithm}
     \KwIn{Puntos del dominio conocidos $x$ ; Puntos de im\'agen conocidos $y$, grado funci\'on $gr$}
@@ -63,25 +65,24 @@ $f(x) = d + c ( x - x0 ) + b ( x - x0)^2 + a ( x - x0)^3$
 El algoritmo de vecino mas cercano es simplemente copiar los frames apropiadamente como se explicó en la sección Desarrollo.
 
 \subsection{Diseño del programa}
-Desde un punto de vista de diseño, se explicarán brevemente las decisiones tomadas acerca de estructuras de datos y flujo de datos desde el video de input hasta el video de output. Se mencionarán además, posibles mejoras que quedaron fuera de este trabajo por cuestiones de tiempo.\\
+Desde un punto de vista de diseño, se explicarán brevemente las decisiones tomadas acerca de estructuras de datos y flujo de datos desde el video de input hasta el video de output. Se mencionarán además, posibles mejoras que quedaron fuera de este trabajo por cuestiones de tiempo.
 
-\emph{Nota:} Se ignorarán partes del programa hechas específicamente para la experimentacion, centrándonos únicamente en el efecto de slowmotion sobre un video de entrada.\\
+\emph{Nota}: Se ignorarán partes del programa hechas específicamente para la experimentacion, centrándonos únicamente en el efecto de slowmotion sobre un video de entrada.
 
 Se tienen los siguientes renombres y estructuras:
 \begin{itemize}
-	\item Pixel: Byte sin signo.
-	\item Frame: Conjunto ordenado en 2 dimensiones de píxeles.
-	\item Video: Metadata del video\footnote{Ancho, Alto, Fps, Cantidad de frames.} y un conjunto ordenado de frames.
+	\item \texttt{Pixel}: Byte sin signo.
+	\item \texttt{Frame}: Conjunto ordenado en 2 dimensiones de \texttt{Pixel}es.
+	\item \texttt{Video}: Metadata del video\footnote{Ancho, Alto, fps, Cantidad de frames.} y un conjunto ordenado de \texttt{Frame}s.
 \end{itemize}
 
-Representamos los conjuntos ordenados como arreglos, utilizando el contenedor \emph{vector} de la libreria STL de C++.\\
+Representamos los conjuntos ordenados como arreglos, utilizando el contenedor \texttt{vector} de la libreria STL de C++.
 
 Explicaremos en órden de procesamiento las etapas del flujo de datos:
 \begin{enumerate}
-	\item Lectura del video de disco a Ram: Se utilizó la librería \emph{OpenCV} para leer un video desde un stream y guardarlo en una estructura Video mencionada anteriormente. Se lee el video completo a RAM, convirtiendolo a blanco y negro mediante una función provista por la librería.
-	\item Se procesa el video según el método de interpolación elegido y sus parámetros asociados. En caso de interpolación lineal o vecino más cercano, simplemente se itera entre todos los pares de frames consecutivos generando segun corresponda los frames intermedios. En el caso de splines, se divide el video en bloques de un tamaño determinado y se calcula un spline para cada pixel dentro de cada bloque\footnote{Los bloques consecutivos comparten el mismo último y primer pixel para evitar saltos en la interpolación.}\footnote{Se arma el sistema de ecuaciones de splines y se resuelve mediante eliminación gaussiana.}. Luego, se procede a generar frames intermedios evaluando estos splines para cada pixel, en el punto intermedio correspondiente.\\
-	\emph{Nota:} El procesamiento de un video de entrada se traduce en la creación de un video de salida donde sus frames son una sucesión de frames originales y frames generados intercalados.
-	\item Finalmente, se realiza el proceso opuesto con \emph{OpenCV}, se escribe desde una estructura Video, a una stream binario con un formato de video determinado. La conversión de color de escala de grises a RGB es directamente replicar la intensidad de brillo en cada componente de color.
+	\item Lectura del video de disco a RAM: se utilizó la librería \emph{OpenCV} para leer un video desde un stream y guardarlo en una estructura \texttt{Video} mencionada anteriormente. Se lee el video completo a RAM, convirtiendolo a escala de grises mediante una función provista por la librería\footnote{La conversión de color de escala de grises a RGB consiste en replicar la intensidad de brillo en cada componente de color. Ver \url{https://en.wikipedia.org/wiki/Grayscale}}.
+	\item Se procesa el video según el método de interpolación elegido y sus parámetros asociados. En caso de interpolación lineal o vecino más cercano, simplemente se itera entre todos los pares de \texttt{Frame}s consecutivos generando segun corresponda los \texttt{Frame}s intermedios. En el caso de splines, se divide el \texttt{Video} en bloques de un tamaño determinado por parámetro y se genera un spline para cada \texttt{Pixel} dentro de cada bloque. Luego, se procede a generar \texttt{Frame}s intermedios evaluando estos splines para cada \texttt{Pixel} en el punto intermedio correspondiente.
+	\item Finalmente, se realiza el proceso opuesto con \emph{OpenCV}: se escribe desde una estructura \texttt{Video} a una stream binario con un formato de video determinado.
 \end{enumerate}
 
 \begin{figure}[h!]
@@ -93,9 +94,9 @@ Explicaremos en órden de procesamiento las etapas del flujo de datos:
 
 Como posibles mejoras se tienen:
 \begin{itemize}
-	 \item Leer el video de forma \emph{lazy} y escribir de forma \emph{golosa}, es decir, leer de disco a ram únicamente el conjunto de frames necesarios para trabajar\footnote{El tamaño de bloque spline en interpolación spline, o 2 píxeles en los otros métodos.}, generar nuevos frames e ir escribiendolos al resultado a medida que se generan. Esto minimizaría el uso de la memoría RAM, respecto a la solución actual que mantiene todo el video de input y output en RAM antes de escribir a disco. 
+	 \item Leer el video de forma \emph{lazy} y escribir de forma \emph{golosa}, es decir, leer de disco a RAM únicamente el conjunto de frames necesarios para trabajar\footnote{El tamaño de bloque spline en interpolación spline, o 2 píxeles en los otros métodos.}, generar nuevos frames e ir escribiéndolos al resultado a medida que se generan. Esto minimizaría el uso de la memoría RAM respecto a la solución actual que mantiene todo el video de input y output en RAM antes de escribir a disco.
 
-	 \item Aprovechar la forma tridiagonal de la matriz del sistema lineal que queda al resolver un spline utilizando una matriz esparsa, y/o alguna factorización apropiada. 
+	 \item Aprovechar la forma tridiagonal de la matriz del sistema lineal que queda al resolver un spline utilizando una matriz esparsa, y/o alguna factorización apropiada, para reducir la complejidad temporal y espacial del último método.
 \end{itemize}
 
 
