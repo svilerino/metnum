@@ -15,7 +15,7 @@ claro.
 aplicaci\'on de los m\'etodos explicados e implementados para este video.
 
 %---------------------------------------------------------------
-\subsubsection{Spline}
+\subsubsection{Spline}\label{subsubsec:fija-fija_spline}
 \par Lo primero a tener en cuenta al experimentar con este m\'etodo es que
 tenemos 2 variables (la tercera variable, el video, est\'a fija): la cantidad
 de frames a interpolar y el tama\~no de bloque. Decidimos entonces, primero
@@ -127,8 +127,8 @@ frames interpolados.
 \begin{figure}[H]
     \centering
     \subfloat[][ECM para 1 frame interpolado]{
-        \label{subfig:fija-fija_spline-mse-k1}
         \includegraphics[width=.5\textwidth]{mse_spline-camara_fija-imagen_fija-k1.pdf}
+        \label{subfig:fija-fija_spline-mse-k1}
     }
     \subfloat[][ECM para 5 frames interpolados]{
         \includegraphics[width=.5\textwidth]{mse_spline-camara_fija-imagen_fija-k5.pdf}
@@ -287,13 +287,13 @@ Las mismas pueden observarse en la figura
     \centering
     \subfloat[][Valor Medio]{
         \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-mean_lineal.pdf}
-    }%\hspace{20pt}
+    }
     \subfloat[][Desv\'io Est\'andar]{
         \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-std_lineal.pdf}
-    }%\vspace{20pt}
+    }
     \subfloat[][M\'aximo]{
         \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-max_lineal.pdf}
-    }%\hspace{20pt}
+    }
     \subfloat[][M\'inimo]{
         \includegraphics[width=.25\textwidth]{camara_fija-imagen_fija-min_lineal.pdf}
     }
