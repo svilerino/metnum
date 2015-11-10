@@ -36,7 +36,13 @@ Fuimos elevando el par\'ametro de entrada, agregando m\'as frames de por medio. 
 
 En este caso, mostramos un caso donde se le adicion\'o 10 frames, y luego comprobando al obtener la totalidad de im\'agenes, se verific\'o que los valores de los p\'ixeles intermedios, coincid\'ian con la funci\'on lineal en dicho punto.
 
-(Foto)
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.55\textwidth]{GraficoLineal.png}
+     \caption{Muestra del momento en que se realiza el cambio de blanco a negro, con sus respectivos frames intermedios}\label{fig:linealValidacion}
+\end{figure}
+\noindent
 
 \subsubsection*{Splines}
 
@@ -50,9 +56,15 @@ No obstante, si bien al notar que efectivamente la funci\'on $f(x)$ en este caso
 
 \subsubsection*{\bf{Resultado:}}
 
-Ideamos una instancia con par\'ametro de adici\'on de frames igual a 10, y dividido en 3 bloques. Como lo que importa aqu\'i es validaci\'on y no performance, optamos por un valor menor. Dicho esto, mediante $MatLab$ visualizamos cada Spline generado por bloque y comparando con la implementaci\'on, no se encontr\'o ninguna objeci\'on a lo ya comentado.
+Ideamos una instancia con par\'ametro de adici\'on de frames igual a 5, y dividido en 16 bloques. Como lo que importa aqu\'i es validaci\'on y no performance, optamos por un valor menor. Dicho esto, mediante $MatLab$ visualizamos cada Spline generado por bloque y comparando con la implementaci\'on, no se encontr\'o ninguna objeci\'on a lo ya comentado.
 
-(Falta unos gr\'aficos, pero honestamente no estoy seguro de si esto es lo que se quiere)
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.55\textwidth]{GraficoSplines.png}
+     \caption{Muestra del bloque que contiene el cambio, con los cuadros comparados}\label{fig:splineValidacion}
+\end{figure}
+\noindent
 
 %---------------------------------------------------------------
 \subsubsection{C\'amara Fija - Im\'agen Fija}
@@ -64,5 +76,3 @@ Usamos metodolog\'ias id\'enticas para los tres m\'etodos. Esto es, extraer cada
 \subsubsection*{\bf{Resultado:}}
 
 Como en cada p\'ixel $(i,j)$ el valor se mantuvo constante, as\'i lo fue con las funciones interpoladoras. De esta manera, cualquier punto que era evaluado por m\'as frames que se le quisiese acomodar, solo produc\'ia un video m\'as largo.
-
-(No esta andando el programa by the way, con $out_of_range$) 
