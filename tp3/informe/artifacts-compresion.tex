@@ -15,6 +15,8 @@ Dividiremos nuestro análisis en diferentes casos, en función de las siguientes
 	\item Tipo de Movimiento de la Cámara
 \end{itemize}
 
+\emph{Nota:} Los videos analizados aqui, corresponden a los \emph{interpolados de resolución original} de la carpeta de google drive en \url{https://drive.google.com/folderview?id=0B0RfkWV-4-XqMk9Pei1WZUJ3T00&usp=sharing_eid&ts=563b7352}.
+
 \subsection{Descompresión mediante interpolación por vecino mas cercano}
 Dado que este método de \emph{reconstrucción} es un método \emph{no predictivo} no se producirán artifacts bajo nuestra definición, simplemente el video descomprimido tendrá un efecto de \texttt{lag} en donde la reproducción parece trabada. Esto es esperable, ya que este método copia frames consecutivamente para lograr un efecto de mayor tiempo de visualización por frame en la reproducción en tiempo real. 
 
@@ -32,5 +34,5 @@ En este caso, se considera una cámara en posición fija, captando una escena co
 Este caso de prueba se carácteriza por rápidos cambios en los ángulos de la filmación y por una escena rápida ocurriendo de fondo. Probablemente este sea el peor caso, cualitativamente hablando. Lo que se observa es que a medida que se aumenta el factor de compresión, el video reconstruido se parece mas a una transición suave de frames muy distintos que al video original. Esto lo atribuimos a la excesiva pérdida de información en la compresión del video original. 
 
 \subsection{Descompresión mediante interpolación cúbica con splines}
-Dada la combinacion explosiva de casos que es este caso y el tiempo acotado que tenemos para realizar este trabajo, no analizaremos esto.
+Dada la combinacion explosiva de experimentos que induce este caso y el tiempo acotado que tenemos para realizar este trabajo, no analizaremos esto.
 
