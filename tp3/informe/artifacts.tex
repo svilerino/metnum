@@ -1,14 +1,12 @@
 Para comenzar esta sección, consideremos este trabajo en un marco de compresión de video para transmisión en redes de baja velocidad \footnote{Consideramos que la motivación de este trabajo, que la empresa \texttt{youborn} quiera transmitir videos en slowmotion pero enviando videos originales, es análogo a transmitir un video comprimido, para luego reconstruir el original.}.\footnote{Nuestro algoritmo de compresion consiste en quitarle frames al video original y luego regenerarlos, ya sea de forma predictiva o no predictiva.} Los videos de entrada pueden verse como los videos \texttt{comprimidos} y los videos de salida\footnote{Los videos en \texttt{cámara lenta}} como los videos \texttt{descomprimidos}.\\
 
 Consideremos la eliminacion de frames intermedios de un video al algoritmo de compresión y a la copia o predicción de frames intermedios como algoritmo de descompresión. Los algoritmos de descompresión pueden clasificarse en los siguientes tipos:
-\begin{enumerate}
-	\item Métodos predictivos: Interpolación polinomial de frames intermedios, intenta \texttt{llenar los huecos} de forma natural entre cada par de frames, intentando predecir el comportamiento del video entre 2 frames conocidos.
+\begin{itemize}
+	\item Métodos predictivos: Interpolación polinomial de frames intermedios, intenta \emph{llenar los huecos} de forma natural entre cada par de frames, intentando predecir el comportamiento del video entre 2 frames conocidos.
 	\item Métodos no predictivos: Por ejemplo, vecino mas cercano, se limita a copiar información, sin interés en regenerar la pérdida provocada al momento de la compresión.
-\end{enumerate}
+\end{itemize}
 
-Por otro lado, consideraremos \texttt{artifact} a una anomalía en el video de salida que no representa
-
-En este contexto, analizaremos los posibles \texttt{artifacts} visibles en los videos resultantes, provocados por nuestros métodos de reconstrucción. 
+En este contexto, consideraremos \emph{artifacts} a aquellos errores visuales resultantes de la aplicaci\'on de un m\'etodo o t\'ecnica. En particular a aquellos que no reflejan una situación verosimil en la vida real\footnote{Esto es muy subjetivo, pero no me explayo mas porque bordea la filosofía.}\footnote{Por ejemplo la pierna fantasma de la slide de la presentacion del tp.}.
 
 Dividiremos nuestro analisis en diferentes casos, en funcion de las siguientes variables:
 \begin{itemize}
@@ -19,8 +17,8 @@ Dividiremos nuestro analisis en diferentes casos, en funcion de las siguientes v
 \end{itemize}
 
 \subsection{Interpolacion por vecino mas cercano}
-\subsubsection{Cámara e imagen fijas}
-Comencemos por el caso mas controlado, el caso de camara e imagen fijas. En nuestro experimento de laboratorio\footnote{Video con un unico frame repetido muchas veces}. Es claro que por la forma de construcción del efecto de cámara lenta de vecino mas cercano, el video resultante no sera otro que un video conteniendo un unico frame, repetido, pero durante mas tiempo. En este caso no encontramos artifacts. Por otro lado, veamos un subcaso mas interesante. Consideremos un video con camara e imagen fijas, pero con iluminacion variable. Nuevamente, observamos que el efecto no produce artifacts, 
-simplemente da la sensación de que cada frame se reproduce durante mas tiempo, produciendo un efecto de camara lenta sin \texttt{predecir} nueva información.
+Dado que este método de \emph{reconstrucción} es un método \emph{no predictivo} no se producirán artifacts bajo nuestra definición, simplemente el video descomprimido tendrá un efecto de \texttt{lag} en donde la reproducción parece trabada. Esto es esperable, ya que este método copia frames consecutivamente para lograr un efecto de mayor tiempo de visualización por frame en la reproducción en tiempo real. 
 
-\subsubsection{Cámara e imagen fijas}
+\subsection{Interpolacion lineal}
+\subsubsection{Cámara fija e imagen fija - Caso de laboratorio}
+En nuestro caso de laboratorio \footnote{Un video conteniendo un único frame repetido muchas veces.} puede observarse que al ser todos los pares de frames iguales los frames interpolados linealmente tambien lo serán ya que la recta que une a todos los pixeles entre los 2 frames consecutivos es una constante. No se observan artifacts.

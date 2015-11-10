@@ -7,10 +7,11 @@ OPENCV_LIB = `pkg-config --cflags --libs opencv`
 #------- Flags ------- 
 LDFLAGS=
 
-#input from zero mode off
-CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ 
+CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ -DAUTO_DROP_FRAMES
 
-#CFLAGS=-Wall -ggdb -O2 -std=c++11 -I../include/ -DCOLOR_PROCESSING
+#flags opcionales en CFLAGS
+#-DCOLOR_PROCESSING procesa los videos en color
+#-DAUTO_DROP_FRAMES skipea los frames automaticamente para experimentacion
 
 #------- Objects ------- 
 
