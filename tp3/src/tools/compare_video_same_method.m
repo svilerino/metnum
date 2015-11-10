@@ -23,7 +23,7 @@ function [STATS] = compare_video_same_method(video_prefix,method)
         plot(1:size(PSNR,2),PSNR,'-');
         xlabel('Frame Interpolado','FontSize',10);
         ylabel('PSNR','FontSize',10);
-        print(psnr_f,sprintf('%s%s%s%i%s',video_prefix,'-psnr','-k',interpolation_ratios(i),'.pdf'),'-dpdf','-painters','-r600');
+        print(psnr_f,sprintf('%s-%s%s%i%s',video_prefix,method,'-psnr-k',interpolation_ratios(i),'.pdf'),'-dpdf','-painters','-r600');
         %figure(mse_f);
         %plot(1:size(MSE,2),MSE,'-');
     end
