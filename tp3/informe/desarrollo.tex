@@ -2,7 +2,7 @@
 
 \IEEEPARstart{F}{i}nalizada la enumeraci\'on de los problemas que motivan la investigaci\'on sobre el tema y la adici\'on de una breve explicaci\'on del problema a trabajar y de la justificación teórica detrás del método de interpolación, nos dedicaremos a desarrollar con mayor precisi\'on cada m\'etodo n\'umerico en cuesti\'on. Recordemos que estos métodos intentan atacar el problema de construir, a partir de un video filmado en tiempo real, nuevos frames que den la sensaci\'on de que el video original ha sido ralentizado (efecto de \emph{slowmotion}), o, aún mejor, filmado con una cámara de alta frecuencia.
 
-\subsection{Aclaraciones \'utiles para la comprensi\'on del desarrollo}
+\textbf{Aclaraciones \'utiles para la comprensi\'on del desarrollo}
 
 Antes de comenzar con la explicaci\'on de los m\'etodos queremos definir ciertas frases o palabras claves que ocupar\'an terreno en el resto de la secci\'on:
 
@@ -27,9 +27,7 @@ Además, dado $t \in \mathbb{R}$ definiremos lo siguiente para ayudarnos en las 
     0 \leq i < m \wedge 0 \leq j < n \Rightarrow&\ f[i,j] =\text{el valor de brillo de píxel en la posición $(i, j)$ para un frame $f$}
 \end{align*}
 
-
-\subsection{Los m\'etodos propuestos}
-\subsubsection{Cuadro m\'as cercano}
+\subsection{Cuadro m\'as cercano}
 
 Este m\'etodo se basa en una idea simplista, muy sencilla de implementar, y que nos permitirá tener una base para establecer comparaciones con métodos más ``inteligentes''. A pesar de esto, puede resultar precisa para ciertos tipos de videos, como por ejemplo, la filmaci\'on de un objeto inmóvil.
 
@@ -65,7 +63,7 @@ f_{i,j}(t) =
 
 Es fácil ver que la función interpola efectivamente los puntos $f_{i,j}(t)=y$, aunque lo hace de modo ``pobre'': para cada par de frames originales tiene una discontinuidad entre ellos a distancia $fr/2$, que será percibida como un ``salto'' en las imágenes del video. El único caso en que esto no ocurre es cuando los frames considerados son idénticos, por lo que arriesgamos que es el caso en que el método mejor se comportará.
 
-\subsubsection{Interpolaci\'on lineal}
+\subsection{Interpolaci\'on lineal}
 
 Compartiendo con \emph{vecino m\'as cercano} la idea de trabajar píxel a píxel con cada par de frames para eventualmente obtener el video deseado con su respectivo efecto, este método puede propocionar ciertas mejoras a la hora de trabajar con videos con movimiento\footnote{Que, entendemos, es el caso de la mayoría de los videos, exceptuando quizás los subidos a YouTube para compartir música.}.
 
@@ -121,7 +119,7 @@ Si lo usamos considerando ahora múltiples frames ($frame_0 \ldots frame_6$) gen
 \end{figure}
 \noindent
 
-\subsubsection{Construcción mediante interpolación por splines (c\'ubica)}
+\subsection{Construcción mediante interpolación por splines (c\'ubica)}
 
 Continuando con la idea de conseguir los frames artificiales o intermedios mediante la creación y evaluación de polinomios para cada píxel, pasamos a utilizar polinomios de grado 3. Por lo dicho en la introducción teórica creeríamos que esto puede brindar resultados m\'as satisfactorios en la construcci\'on del video final, aunque habr\'a que confirmar esto durante la experimentaci\'on.
 
@@ -133,12 +131,13 @@ Ya hemos dicho que pertenece a la familia de los interpoladores por segmentos. E
 
 A diferencia del m\'etodo de Interpolaci\'on lineal, este método varía sus resultados dependiendo de todos los frames considerados para hacer el spline, es decir, no genera cada $S_k$ únicamente en función del valor del píxel en los frames $k$ y $k+1$, sino que todos los frames influyen en los coeficientes de la funci\'on $S_k$, y su evaluación en el punto $t$ puede variar dependiendo de qué frames fueron considerados. Esto se debe, intuitivamente, a que el método utiliza la información de todos los frames para generar cada función $S_{i,j}$, combinándola en un único sistema de ecuaciones\footnote{ver sección \ref{sec:splines}}.
 
-Una opción sencilla en su implementación es usar todos los frames del video para generar el spline. El problema es que el sistema matricial a resolver puede ser muy grande, potencialmente excediendo las capacidades de memoria de las computadoras comunes y trayendo inconvenientes no deseados al uso del método. Queda entonces la aplicación de una alternativa: crear múltiples splines de a bloques. Es decir, tomar cierta cantidad de frames y definirla como el \textit{tamaño de bloque}, para luego generar un spline por cada bloque.
+Una opción sencilla en su implementación es usar todos los frames del video para generar el spline. El problema es que el sistema matricial a resolver puede ser muy grande, potencialmente excediendo las capacidades de memoria de las computadoras comunes y trayendo inconvenientes no deseados al uso del método. Queda entonces la aplicación de una alternativa: crear múltiples splines por píxel, de a bloques. Es decir, tomar cierta cantidad de frames y definirla como el \textit{tamaño de bloque}, para luego generar un spline por cada bloque.
 
 \subsubsection*{\bf{Perspectiva matem\'atica}}
 Considerando como un nuevo tamaño el tamaño de bloque (que eventualmente podría ser igual a la cantidad de frames del video, dando lugar a un único spline por píxel) generamos un spline por píxel por bloque. Los puntos a interpolar serán el tiempo $t$ y el valor del brillo $y$ de dicho píxel en todos los frames del bloque.
 
-Usando la equivalencia vista en la Introducción teórica (del problema de encontrar los coeficientes de un spline con el de resolver un sistema de ecuaciones lineal) podemos generar la matriz asociada al sistema para cada spline a generar y resolver el sistema usando eliminación gaussiana normalmente. Eso nos da como resultado los coeficientes $(a_i,b_i,c_i,d_i)$ de cada polinomio cúbico $S_k$ de los que componen el spline. Luego basta hacer
+Usando la equivalencia vista en la Introducción teórica (del problema de encontrar los coeficientes de un spline con el de resolver un sistema de ecuaciones lineal) podemos generar la matriz asociada al sistema para cada spline a generar y resolver el sistema usando eliminación gaussiana normalmente, como ya hemos desarrollado en trabajos anteriores. Eso nos da como resultado los coeficientes $(a_i,b_i,c_i,d_i)$ de cada polinomio cúbico $S_k$ de los que componen el spline. Luego basta hacer
+
 $$
 S(t) = 
 \left\{
@@ -150,5 +149,20 @@ S(t) =
 \right.
 $$
 
-para generar cada spline $S$.
+para generar cada spline $S$, y ``conectar'' entre sí los splines que corresponden a un mismo píxel. Como los splines interpolan efectivamente los puntos que coinciden con frames originales, la función $f(t)$ de cada píxel es continua incluso en los frames ``límite'' de cada bloque, aunque esto no sea cierto para la derivada primera y segunda. Naturalmente, al optimizar el algorimo se pierden algunas propiedades deseables.
 
+Hace falta hacer hincapié en un detalle con el que nos encontramos a la hora de elegir cómo construir los bloques. Es importante que un \emph{frame límite} sea tanto el último de un spline como el primero del siguiente. No hacerlo así (nuestra primera implementación), es decir, tomar un frame $k$ como el último de un spline y el frame siguiente $k+1$ como el primero del spline siguiente lleva a que haya dos frames entre los cuales no se crean frames artificiales, perdiendo el efecto buscado entre ellos.
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.75\textwidth]{InterpolacionCubicaConjunta.png}
+     \caption{Resultado de interpolar usando splines}\label{fig:intConjuntaSplines}
+\end{figure}
+\noindent
+
+En la figura \ref{fig:intConjuntaSplines} graficamos cómo resulta la interpolación de un único bloque utilizando un spline. Se puede observar que la función generada resulta, al menos a simple vista, más ``suave'' que la lineal.
+
+\subsection{Cálculo del error de los métodos}
+Por último, nos interesa comparar de manera imparcial los métodos utilizados, utilizando alguna medida de cuánto se acercan a ``la realidad'': en nuestro caso, a lo que habría captado una cámara de alta frecuencia. Pero para hacerlo haría falta tener dos videos del mismo evento, filmados desde el mismo punto, uno con una cámara de alta frecuencia y otro con una normal. Como las cámaras ocupan un espacio, esto es físicamente imposible\cite{wiki_impenetrability}. Lo que haremos, en su lugar, para comparar los métodos, será ``descartar'' frames de un video (normal o no) y darle este nuevo video ``recortado'' como entrada a nuestros métodos de interpolación. La comparación entre el resultado y el video original nos dará una aproximación de cuán ``acertados'' son nuestros métodos para siumlar lo que ocurre entre dos frames de un video cualquiera.
+
+Para realizar la comparación, usaremos las definiciones de \texttt{ECM} y \texttt{PSNR} ya dadas en la introducción teórica, comparando frame a frame entre los dos videos.

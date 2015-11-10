@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 import os
 import sys
+#import numpy as np
+#import matplotlib.pyplot as plt
+from collections import defaultdict, OrderedDict
+
 
 def parsear_filename(filename):
     filename = filename[:-4]    # saco la extensión
@@ -39,7 +43,7 @@ def parsear_filename(filename):
     else:
         raise ValueError
     cant_frames_generados = int(filename[filename.rfind("k")+1:])
-    experimento = tipo_video, metodo, cant_frames_generados, tam_bloque
+    experimento = (tipo_video, metodo, cant_frames_generados, tam_bloque)
     return experimento
 
 def parsear(filename):
@@ -58,23 +62,55 @@ def parsear(filename):
     return experimento, resultados
 
 def recorer_y_parsear_todo(path='.'):
-    datos = {}
+    datos = OrderedDict()
     for root, subfolders, filenames in os.walk(path):
         for filename in [filename for filename in filenames if 'txt' in filename]:
             print("Parseando", filename)
             experimento, resultados = parsear(os.path.join(root, filename))
             datos[experimento] = resultados
-    print(datos)
+    return datos
+
+def procesar(datos):
+    tiempos_por_tipo_video, tiempos_por_metodo = defaultdict(dict), defaultdict(dict)
     for experimento, resultados in datos.items():
-        # do stuff
-        pass
+        tipo_video, metodo, cant_frames_generados, tam_bloque = experimento
+        tiempo_total, frame_count, frame_height, frame_rate = resultados
+        if "spline" in metodo:
+            metodo += " (blk = " + str(tam_bloque) + ")"
+        if cant_frames_generados == 10:
+            tiempos_por_tipo_video[tipo_video][metodo] = tiempo_total
+        if "lineal" in metodo:
+            print(abreviar(tipo_video), metodo, cant_frames_generados, str(tiempo_total).replace(".",","), sep="-")
+        if cant_frames_generados == 10 and not "original" in tipo_video and not "lab" in tipo_video:
+            print(abreviar(tipo_video), metodo, frame_count, str(tiempo_total).replace(".",","), sep="-")
+    return tiempos_por_tipo_video
+
+def plot_dict(dicc):
+    for tipo_video in dicc.keys():
+        tiempos_por_metodo = dicc[tipo_video]
+        plt.bar(range(len(tiempos_por_metodo)), tiempos_por_metodo.values(), align='center')
+        plt.xticks(range(len(tiempos_por_metodo)), list(tiempos_por_metodo.keys()))
+        plt.show()
+
+def abreviar(tipo_video):
+    return tipo_video.replace("Cámara", "C").replace("Imagen", "I").replace("móvil", "M").replace("fija", "F").replace("(laboratorio","(lab)").replace("Blanco a negro", "BN").replace(" ","")
 
 def main():
     if len(sys.argv) > 1:
         path = sys.argv[2]
-        recorer_y_parsear_todo(path)
+        datos = recorer_y_parsear_todo(path)
     else:
-        recorer_y_parsear_todo()
+        datos = recorer_y_parsear_todo()
+    tiempos_por_tipo_video = procesar(datos)
+    for tipo_video, metodos in tiempos_por_tipo_video.items():
+        print(abreviar(tipo_video), end="-")
+        sorted_dict = sorted(metodos.items(), key=lambda item: item[0])
+        ([print(elem[0],end="-") for elem in sorted_dict])
+        for metodo, tiempo in sorted_dict:
+            print(str(tiempo).replace(".",","), end="-")
+        print()
+
+    #plotear(datos)
 
 if __name__ == '__main__':
     main()
