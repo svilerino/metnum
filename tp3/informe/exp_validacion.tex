@@ -34,9 +34,15 @@ Con esto \'ultimo, ya se puede considerar que tampoco traer\'a dificultad al mom
 
 Fuimos elevando el par\'ametro de entrada, agregando m\'as frames de por medio. De esta manera, el m\'etodo se encargaba de evaluar cada $f(x) = x$, con $x \in \{ \frac{1}{fr} ; \frac{2}{fr} \ldots ; \frac{fr}{fr} \}$. Como dicha funci\'on es creciente, notamos como efectivamente el avanze del video reflejaba el esclarecimiento del mismo, tomando valores de grises m\'as suaves hasta llegar al cero.
 
-En este caso, mostramos un caso donde se le adicion\'o 10 frames, y luego comprobando al obtener la totalidad de im\'agenes, se verific\'o que los valores de los p\'ixeles intermedios, coincid\'ian con la funci\'on lineal en dicho punto.
+En este caso, mostramos un caso donde se le adicion\'o 10 frames, y luego comprobando al obtener la totalidad de im\'agenes, se verific\'o que los valores de los p\'ixeles intermedios, coincid\'ian con la funci\'on lineal en dicho punto. ( Ver figura \ref{fig:linealValidacion} ).
 
-(Foto)
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.75\textwidth]{GraficoLineal.png}
+     \caption{Muestra del momento en que se realiza el cambio de blanco a negro, con sus respectivos frames intermedios}\label{fig:linealValidacion}
+\end{figure}
+\noindent
 
 \subsubsection*{Splines}
 
@@ -46,13 +52,20 @@ $f(x) = a (x - x0)^3 + b ( x - x0)^2 + c ( x - x0) + d$
 
 Pero, ¿C\'omo hallamos los coeficientes del polinomio? Podr\'iamos por un lado, realizar las cuentas a papel y  de ah\'i seguir con el procedimiento de verificar con respecto a la implementaci\'on. Sin embargo, eso ser\'ia  bastante engorroso de realizar, por lo que optamos por usar un software inteligente cuyo nombre es $MatLab$. Usando la funci\'on $interpo1$ podemos obtener el valor de cualquier punto intermedio, en particular los que se evaluaron en nuestro programa.
 
-No obstante, si bien al notar que efectivamente la funci\'on $f(x)$ en este caso es tambi\'en una lineal id\'entica a la anterior, hay que tener en cuenta una herramienta clave en $Splines$: la construcci\'on por bloques. Pero como decidimos que cada bloque comparta su primer y \'ultimo frame (excepto los extremos, que comparten alguno de los 2), luego no existe el caso de que se divida de forma tal que quede todo negro de un lado y blanco en lo que sigue.
+No obstante, si bien al notar que efectivamente la funci\'on $f(x)$ se asemeja a una funci\'o lineal, hay que tener en cuenta una herramienta clave en $Splines$: la construcci\'on por bloques. Pero como decidimos que cada bloque comparta su primer y \'ultimo frame (excepto los extremos, que comparten alguno de los 2), luego no existe el caso de que se divida de forma tal que quede todo negro de un lado y blanco en lo que sigue.
 
 \subsubsection*{\bf{Resultado:}}
 
-Ideamos una instancia con par\'ametro de adici\'on de frames igual a 10, y dividido en 3 bloques. Como lo que importa aqu\'i es validaci\'on y no performance, optamos por un valor menor. Dicho esto, mediante $MatLab$ visualizamos cada Spline generado por bloque y comparando con la implementaci\'on, no se encontr\'o ninguna objeci\'on a lo ya comentado.
+Ideamos una instancia con par\'ametro de adici\'on de frames igual a 5, y dividido en 16 bloques. Como lo que importa aqu\'i es validaci\'on y no performance, optamos por un valor menor. Dicho esto, mediante $MatLab$ visualizamos cada Spline generado por bloque y comparando con la implementaci\'on, no se encontr\'o ninguna objeci\'on a lo ya comentado.
 
-(Falta unos gr\'aficos, pero honestamente no estoy seguro de si esto es lo que se quiere)
+Con el gr\'afico \ref{fig:splineValidacion}, identificamos lo que $MatLab$ produjo al enviarle los puntos pertenecientes al bloque donde se hallaba el cambio de blanco a negro y de ah\'i, comparamos con los frames que obtuvimos.
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.75\textwidth]{GraficoSplines.png}
+     \caption{Muestra del bloque que contiene el cambio, con los cuadros comparados}\label{fig:splineValidacion}
+\end{figure}
+\noindent
 
 %---------------------------------------------------------------
 \subsubsection{C\'amara Fija - Im\'agen Fija}
@@ -63,6 +76,4 @@ Usamos metodolog\'ias id\'enticas para los tres m\'etodos. Esto es, extraer cada
 
 \subsubsection*{\bf{Resultado:}}
 
-Como en cada p\'ixel $(i,j)$ el valor se mantuvo constante, as\'i lo fue con las funciones interpoladoras. De esta manera, cualquier punto que era evaluado por m\'as frames que se le quisiese acomodar, solo produc\'ia un video m\'as largo.
-
-(No esta andando el programa by the way, con $out_of_range$) 
+Como en cada p\'ixel $(i,j)$ el valor se mantuvo constante, as\'i lo fue con las funciones interpoladoras. De esta manera, cualquier punto que era evaluado por m\'as frames que se le quisiese acomodar, solo produc\'ia un video m\'as largo. En conclusi\'on, la im\'agen permeneci\'o intacta durante toda su reproducci\'on.
