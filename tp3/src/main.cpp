@@ -28,6 +28,15 @@ uint calcular_frames_a_descartar(uint video_frame_count, uint frame_drop)
 }
 
 int main(int argc, char** argv) {
+
+#ifdef COLOR_PROCESSING
+    cerr << "[Warning] Compilado con flag COLOR_PROCESSING activado" << endl;
+#endif
+
+#ifdef AUTO_DROP_FRAMES
+    cerr << "[Warning] Compilado con flag AUTO_DROP_FRAMES activado. Cambian los parametros de entrada, para mas info correr ../bin/tp3 sin argumentos" << endl;
+#endif
+
     if(argc < 5)
     {
 
@@ -43,7 +52,13 @@ int main(int argc, char** argv) {
         cerr << "El cuarto parámetro debe ser la cantidad k de frames a agregar entre cada par de frames [i, i+1] del video original." << endl;
 
         cerr << "(Opcional) El quinto parámetro debe ser el tamaño del bloque de procesamiento de splines. En caso de no pasarse este argumento se tomara como valor por defecto el numero " << DEFAULT_SPLINE_BLOCK_SIZE << endl;
-        cerr << "(Opcional) El sexto parámetro debe ser la cantidad de frames a skipear en la lectura del video. En caso de no pasarse este argumento se tomara como valor por defecto el numero " << DEFAULT_FRAME_DROP << endl;
+
+        #ifdef AUTO_DROP_FRAMES
+            cerr << "(Opcional) El sexto parámetro debe ser la cantidad de frames a skipear en la lectura del video. En caso de no pasarse este argumento se tomara como valor por defecto el numero indicado en el cuarto parametro" << endl;
+        #else 
+            cerr << "(Opcional) El sexto parámetro debe ser la cantidad de frames a skipear en la lectura del video. En caso de no pasarse este argumento se tomara como valor por defecto el numero " << DEFAULT_FRAME_DROP << endl;
+        #endif 
+
         exit(-1);
 
     } else {
@@ -61,8 +76,11 @@ int main(int argc, char** argv) {
 
         assert(spline_block_size >= 3);
 
-        const uint frame_drop = (argc > 6) ? atoi(argv[6]) : interpol_frame_count;
-        //const uint frame_drop = (argc > 6) ? atoi(argv[6]) : DEFAULT_FRAME_DROP;
+        #ifdef AUTO_DROP_FRAMES
+            const uint frame_drop = (argc > 6) ? atoi(argv[6]) : interpol_frame_count;
+        #else 
+            const uint frame_drop = (argc > 6) ? atoi(argv[6]) : DEFAULT_FRAME_DROP;
+        #endif 
 
         // -- Leer input completo(sin frame_drop)
 
