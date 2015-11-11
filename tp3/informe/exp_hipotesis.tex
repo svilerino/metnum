@@ -5,8 +5,112 @@ comenz\'o el mismo con algunas conjeturas y nociones de lo que deb\'ia ocurrir.
 
 \begin{enumerate}
     \item\begin{LaTeXdescription}
-        \item[Hip\'otesis] saraza
+        \item[Hip\'otesis] A mayor cantidad de frames a interpolar, menor
+            precisi\'on tendr\'a el video si se consideran los errores de todos
+            los cuadros interpolados (respecto de lo que deber\'ian haber sido
+            en caso de ser ''filmados'').
 
-        \item[Motivaci\'on] saraza
-    \end{LaTeXdescription}
+        \item[Motivaci\'on] La justificaci\'on de esta hip\'otesis es bastante
+            simple e intuitiva. Uno debe utilizar dos frames para generar
+            una cantidad fija de nuevos frames que se reproducir\'an entre
+            estos dos frames iniciales. Luego, los frames constru\'idos que
+            est\'an m\'as cerca de los frames dato (u originales) tiene sentido
+            que sean tengan menor error que aquellos m\'as alejados (ya que
+            los movimientos que se graban en los videos son continuos, si se los
+            piensa matem\'aticamente). Es entonces m\'as probable que las
+            funciones interpoladoras a utilizar en el trabajo tengan m\'as
+            precisi\'on ''cerca'' de los puntos que interpolan (es decir, los
+            frames originales). As\'i pues, de haber cada vez m\'as frames a
+            ser generados, cada vez habr\'a m\'as frames con mayor error,
+            incrementando el error promedio del video completo.
+    \end{LaTeXdescription}\medskip
+
+    \item\begin{LaTeXdescription}
+        \item[Hip\'otesis] A mayor cantidad de frames a interpolar, mayor
+            tiempo de c\'omputo ser\'a necesario.
+
+        \item[Motivaci\'on] Nuevamente, esta es una idea intuitiva y simple. Si
+            se deben generar m\'as frames, m\'as tiempo ser\'a necesario para
+            construirlos (m\'as all\'a de que no se requiera m\'as tiempo para
+            calcular el polinomio interpolador de cada frame\footnote{En realidad,
+            como ya se ha explicado, habr\'a un polinomio interpolador por cada
+            p\'ixel. Pero se puede pensar al conjunto de los polinomios de todos
+            los p\'ixeles como el polinomio interpolador del frame. Es un
+            peque\~no abuso de notaci\'on para facilitar la escritura y
+            lectura.}).
+    \end{LaTeXdescription}\medskip
+
+    \item\begin{LaTeXdescription}
+        \item[Hip\'otesis] A mayor resoluc\'on de los frames, mayor tiempo
+            de c\'omputo ser\'a necesario.\footnote{Si bien pudimos realizar
+            esta experimentaci\'on para un set de videos con mayor
+            resoluci\'on, por limitantes de tiempo los resultados no pudieron
+            ser expuestos en este trabajo.}.
+
+        \item[Motivaci\'on] 
+    \end{LaTeXdescription}\medskip
+
+    \item\begin{LaTeXdescription}
+        \item[Hip\'otesis] Al haber m\'as movimiento en el video, menos precisos
+            ser\'an los frames interpolados (respecto de lo que deber\'ian haber
+            sido en caso de ser filmados).
+
+        \item[Motivaci\'on] Esta es quiz\'as nuestra hip\'otesis m\'as fuerte.
+            B\'asicamente entendemos que el principal problema al tratar de
+            generar nuevos frames que se comporten como lo har\'ia lo que sea
+            que se haya filmado es estimar como ser\'an los movimientos. Los
+            movimientos, desde el punto de vista de una filmaci\'on, son los
+            cambios en las im\'agenes. Un p\'ixel movi\'endose por una pantalla
+            no es otra cosa que un pixel con un color/tonalidad\footnote{En el
+            caso de trabajar con filmaciones en blanco y negro.} en un frame, y
+            que al siguiente dicho pixel cambia de tonalidad y alguno de sus
+            p\'ixeles vecinos toma el color/tonalidad del p\'ixel mencionado
+            para el frame previo (o una tonalidad similar, ya que tambi\'en
+            podr\'iamos tener una filamci\'on afectada por la iluminaci\'on).
+            As\'i pues, consideramos que por la forma de aproximar que tienen
+            los m\'etodos implementados, el movimiento ser\'a justamente el
+            aspecto m\'as problem\'atico, ya que los mismos no tienen en cuenta
+            de ninguna manera este concepto, sino que simplemente se basan en
+            los valores de los p\'ixeles (por ejemplo, un movimiento repentino,
+            donde un pixel pasa de un color a otro en frames contiguos,
+            probablemente al generarse frames intermedios estos muestren un
+            cambio suave de tonalidad cuando en realidad, por la naturaleza de
+            lo filmado, el cambio deber\'ia ser abrupto).
+    \end{LaTeXdescription}\medskip
+
+    \item\begin{LaTeXdescription}
+        \item[Hip\'otesis] Los 3 m\'etodos a evaluar ser\'an m\'as similares en
+            cuanto a la precisi\'on/error a menor cantidad de frames
+            interpolados.
+
+        \item[Motivaci\'on] A partir de la primera hip\'otesis, es razonable
+            pensar que a menor cantidad de frames interpolados, menor ser\'a
+            el error introducido en el video para cualquier m\'etodo de
+            interpolaci\'on.
+    \end{LaTeXdescription}\medskip
+
+    \item\begin{LaTeXdescription}
+        \item[Hip\'otesis] El m\'inimo error cometido (es decir, el error
+            m\'inimo cometido al interpolar un frame respecto de lo que
+            deber\'ia ser) ser\'a siempre el mismo para el m\'etodo del
+            vecino m\'as cercano.
+
+        \item[Motivaci\'on] La naturaleza del m\'etodo del vecino m\'as cercano
+            nos asegura que, no importa la cantidad de frames que se
+            interpolen, los frames generados inmediatos a los originales
+            ser\'an una copia de estos \'ultimos (correspondientemente). Y esto
+            no cambiar\'a aunque se aumente la cantidad de frames interpolados.
+            As\'i pues, utilizando el mismo razonamiento con el cual se
+            explic\'o que los frames artificiales m\'as cercanos a los
+            originales son los que menor error deber\'ian tener, y teniendo que
+            los frames m\'as cercanos a los originales ser\'an siempre los
+            mismos (para este m\'etodo), tenemos que su error no deber\'ia
+            variar significativamente si hay m\'as frames artificiales
+            a continuaci\'on de los frames interpolados m\'as cercanos a los
+            originales.
+    \end{LaTeXdescription}\medskip
 \end{enumerate}
+
+\par B\'asicamente la pregunta que esperamos poder responder luego de
+experimentar y analizar los resultados es: \textbf{¿Es alg\'un m\'etodo mejor
+que los otros?}
