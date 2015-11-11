@@ -7,19 +7,17 @@
 
 
 \begin{figure}[h!]
-  \centering
-    \includegraphics[width=\textwidth]{tiempos-laboratorio.png}
-     \caption{Tiempo de ejecución de cada método por tipo de video, para videos de ``laboratorio''}\label{fig:tiempos-lab}
+\centering
+    \subfloat[][Por tipo de video, para videos de ``laboratorio'']{
+        \includegraphics[width=0.5\textwidth]{tiempos-laboratorio.png}
+        \label{fig:tiempos-lab}
+    }
+    \subfloat[][Por cantidad de frames del video]{
+        \includegraphics[width=0.5\textwidth]{tiempos-cant-frames.png}
+        \label{fig:tiempos-cant-frames}
+    }
+    \caption{Tiempo de ejecuci\'on de cada M\'etodo}
 \end{figure}
-\noindent
-
-\begin{figure}[h!]
-  \centering
-    \includegraphics[width=\textwidth]{tiempos-cant-frames.png}
-     \caption{Tiempo de ejecución de cada método por cantidad de frames del video}\label{fig:tiempos-cant-frames}
-\end{figure}
-\noindent
-
 
 Al medir los tiempos de los métodos para cada tipo de video utilizado, fijando en 10 la cantidad de frames a agregar, obtuvimos lo graficado en la figura \ref{fig:tiempos}. Puede apreciarse claramente, como podía adivinarse, que el método de interpolación por splines tarda mucho más que los demás, mientras que el método de vecino más cercano toma tiempos casi imperceptibles, menores a 30ms para cualquier tipo de video.
 
