@@ -1,8 +1,57 @@
 %!TEX root = informe.tex
-\IEEEPARstart{A}{} lo largo de este trabajo atacamos el problema de generar frames artificiales para un video, intentando lograr que se ajusten al original hasta el punto -ideal- de que el ojo humano no detecte la diferencia con un video filmado en alta frecuencia.
+\IEEEPARstart{A}{} lo largo de este trabajo atacamos el problema de generar
+frames artificiales para un video, intentando lograr que se ajusten al original
+hasta el punto -ideal- de que el ojo humano no detecte la diferencia con un
+video filmado en alta frecuencia.
 
-Como primera conclusión al respecto podemos decir que no logramos dicho objetivo ideal: de nuestras observaciones descubrimos fácilmente que, al menos para los tres métodos implementados, los resultados ``no engañan a nadie''. Todos los métodos presentan o bien \emph{lag} o bien \emph{fantasmeo}, perturbando la sensación de fluidez y alterando el realismo percibido del video.
+\par Como primera conclusión al respecto podemos decir que no logramos dicho
+objetivo ideal: de nuestras observaciones descubrimos fácilmente que, al menos
+para los tres métodos implementados, los resultados ``no engañan a nadie''.
+Todos los métodos presentan o bien \emph{lag} o bien \emph{fantasmeo},
+perturbando la sensación de fluidez y alterando el realismo percibido del
+video.
 
-Más allá de ese análisis cualitativo, pudimos observar que atacar el problema de forma \emph{naïve} (el método que llamamos ``Vecino más cercano'') produce resultados con error matemático más reducido aunque visualmente pareciera ser el peor método, pudiendo obtenerse resultados visualmente más agradables con métodos más inteligentes como interpolación mediante poliniomios.
+\par Más allá de ese análisis cualitativo, pudimos observar que atacar el
+problema de forma \emph{naïve} (el método que llamamos ``Vecino más cercano'')
+produce resultados con error matemático más reducido aunque visualmente
+pareciera ser el peor método, pudiendo obtenerse resultados visualmente más
+agradables con métodos más inteligentes como interpolación mediante
+poliniomios. As\'i pues, en realidad, consideramos que la m\'etrica del ECM
+no es necesariamente la ideal para tratar de identificar qué m\'etodo comete
+``menos error'' (pensando el error como el efecto final ante los espectadores
+del video procesado). Probablemente se deban investigar otras posibles variables
+que guarden más correlaci\'on para con la percepci\'on humana promedio.
 
-También concluimos que, visto como método de compresión, los resultados son pobres. En la actualidad existen métodos que, sin utilizar mucho más espacio, generan prácticamente nulos \emph{artifacts} y no pierden información de cuadros completos.
+\par También concluimos que, visto como método de compresión, los resultados
+son pobres. En la actualidad existen métodos que, sin utilizar mucho más
+espacio, generan prácticamente nulos \emph{artifacts} y no pierden información
+de cuadros completos.
+
+\par De los resultados obtenidos de la experimentaci\'on tambi\'en observamos
+un \'unico caso (el de la c\'amara fija, im\'agen m\'ovil) donde el tama\~no
+del bloque del m\'etodo de spline pareciera tener algun tipo de influencia.
+De los resultados sobre esta variable nos queda la sensaci\'on de que no
+la hemos explotado a fondo. La intuici\'on nos indica que en caso de haber
+podido analizar casos donde los movimientos fueran abruptos/bruscos y suaves,
+habr\'iamos visto diferencias notorias con los tama\~nos de bloque de este
+m\'etodo. Claramente, a estas alturas, esto queda para futuros trabajos.
+
+\par Pasando a cuestiones de performance, observamos como era evidente que los
+m\'etodos m\'as ``baratos'' (computacionalmente hablando) son los m\'as
+simples: vecino m\'as cercano es m\'as barato que lineal, que a su vez es m\'as
+barato que spline. A la hora de trabajar con splines, descubrimos que el tamaño de bloque influye en la performance pero de manera no lineal, encontrando un mínimo en bloques de 4 u 8 frames dependiendo del video considerado. También descubrimos, como era esperable, que a videos más largos los métodos necesitan más tiempo para procesarlos, que esta relación se aproxima a una lineal, y que la pendiente más grande la tiene el método de splines.
+
+\par De los resultados globales obtenidos en cuanto a la
+percepci\'on, consideramos que a la hora de implementar un filtro de c\'amara
+lenta, el m\'etodo por defecto (sin saber nada m\'as al respecto) ser\'ia el de
+interpolaci\'on lineal, por obtener este resultados ``subjetivos'' (la
+consideraci\'on de los autores de que m\'etodo logr\'o mejor el efecto)
+similares a spline y mejores que vecino m\'as cercano, y por ser m\'as barato
+que spline.
+
+\par Para finalizar, era la intenci\'on de quienes escriben realizar un
+an\'alisis m\'as pormenorizado de los m\'etodos en funci\'on de los tipos de
+videos evaluados. Es decir, tomar un m\'etodo y ver como var\'ia los ECM/PSNR,
+desv\'io est\'andar, etc seg\'un el tipo de video con el que se trabaje. Por
+cuestiones de tiempo, no se alcanz\'o a realizar dicho an\'alisis
+que consideramos que hubiera sido muy prol\'ifero.

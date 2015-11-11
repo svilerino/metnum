@@ -7,19 +7,17 @@
 
 
 \begin{figure}[h!]
-  \centering
-    \includegraphics[width=\textwidth]{tiempos-laboratorio.png}
-     \caption{Tiempo de ejecución de cada método por tipo de video, para videos de ``laboratorio''}\label{fig:tiempos-lab}
+\centering
+    \subfloat[][Por tipo de video, para videos de ``laboratorio'']{
+        \includegraphics[width=0.5\textwidth]{tiempos-laboratorio.png}
+        \label{fig:tiempos-lab}
+    }
+    \subfloat[][Por cantidad de frames del video]{
+        \includegraphics[width=0.5\textwidth]{tiempos-cant-frames.png}
+        \label{fig:tiempos-cant-frames}
+    }
+    \caption{Tiempo de ejecuci\'on de cada M\'etodo}
 \end{figure}
-\noindent
-
-\begin{figure}[h!]
-  \centering
-    \includegraphics[width=\textwidth]{tiempos-cant-frames.png}
-     \caption{Tiempo de ejecución de cada método por cantidad de frames del video}\label{fig:tiempos-cant-frames}
-\end{figure}
-\noindent
-
 
 Al medir los tiempos de los métodos para cada tipo de video utilizado, fijando en 10 la cantidad de frames a agregar, obtuvimos lo graficado en la figura \ref{fig:tiempos}. Puede apreciarse claramente, como podía adivinarse, que el método de interpolación por splines tarda mucho más que los demás, mientras que el método de vecino más cercano toma tiempos casi imperceptibles, menores a 30ms para cualquier tipo de video.
 
@@ -29,4 +27,4 @@ De modo similar, observamos que tomar el video completo como un único bloque no
 
 Para los dos métodos más rápidos, realizamos el mismo experimento para nuestros videos de ``laboratorio'': el pasaje de negro a blanco y la foto fija convertida en un video constante. En la figura \ref{fig:tiempos-lab} pueden observarse los resultados, donde nuevamente se confirma que el método de Vecino más cercano es hasta un orden de magnitud más rápido que el de Interpolación lineal.
 
-Finalmente, realizamos la comparación del tiempo consumido por cada método y la cantidad de frames del video original. Los resultados pueden verse en la figura \ref{fig:tiempos-cant-frames}. De su observación notamos que el costo de ejecutar los métodos depende directamente de la cantidad de frames del video, pero que esta dependencia parece ser más fuerte para los splines que para los demás métodos.
+Finalmente, realizamos la comparación del tiempo consumido por cada método y la cantidad de frames del video original. Los resultados pueden verse en la figura \ref{fig:tiempos-cant-frames}. De su observación notamos que el costo de ejecutar los métodos parece depender linealmente de la cantidad de frames del video, y que la pendiente parece ser más fuerte para los splines que para los demás métodos. Dentro de los splines, vemos que la pendiente varía para bloques de tamaño 4 y 8, pero que para tamaños de bloque mayores, la pendiente aumenta cuando aumenta el tamaño de bloque.
