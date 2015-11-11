@@ -1,33 +1,34 @@
-En este contexto, consideraremos \emph{artifacts} a aquellos errores visuales resultantes de la aplicaci\'on de un m\'etodo o t\'ecnica. En particular a aquellos que no reflejan una situación verosímil en la vida real\footnote{Esto es muy subjetivo, pero no me explayo mas porque bordea la filosofía.}\footnote{Por ejemplo la pierna fantasma de la slide de la presentación del tp.}.
+%!TEX root = informe.tex
+En este contexto, consideraremos \emph{artifacts} a aquellos errores visuales resultantes de la aplicaci\'on de un m\'etodo o t\'ecnica. En particular a aquellos que no reflejan una situación verosímil en la vida real\footnote{Esto es muy subjetivo, y no nos explayaremos más porque bordea la filosofía. Esperemos quede claro con los ejemplos.}.
 
 Dividiremos nuestro análisis en diferentes casos, en función de las siguientes variables:
 \begin{itemize}
 	\item Método utilizado para la interpolación
-	\item Tipo Movimiento grabado por la Cámara
-	\item Tipo de Movimiento de la Cámara
-	\item En el caso de splines, se considera además el tamaño del bloque utilizado
+	\item Tipo de movimiento grabado por la cámara
+	\item Tipo de movimiento de la cámara
+	\item En el caso de splines, tamaño del bloque utilizado
 \end{itemize}
 
 Los algoritmos utilizados para producir el efecto de cámara lenta pueden clasificarse en los siguientes tipos:
 \begin{itemize}
 	\item Métodos predictivos: Interpolación polinomial de frames intermedios, intenta \emph{llenar los huecos} de forma natural entre cada par de frames, intentando predecir el comportamiento del video entre 2 frames conocidos.
-	\item Métodos no predictivos: Por ejemplo, vecino mas cercano, se limita a copiar frames, sin interés en generar nueva información.
+	\item Métodos no predictivos: Vecino más cercano, se limita a copiar frames, sin interés en generar nueva información.
 \end{itemize}
 
-\emph{Nota:} Se consideran los videos subidos al google drive adjunto con esta entrega. Para los 3 metodos de interpolacion se experimento con los mismos videos.
+\emph{Nota:} Se consideran los videos del directorio subido a Google Drive adjunto con esta entrega. Para los 3 metodos de interpolacion se experimentó con los mismos videos.
 
 \subsubsection{\bf{Interpolación por vecino mas cercano}}
 Dado que este método de \emph{slowmotion} es un método \emph{no predictivo} no se producirán artifacts bajo nuestra definición, simplemente el video ralentizado tendrá un efecto de \texttt{lag} en donde la reproducción parece trabada. Esto es esperable, ya que este método copia frames consecutivamente para lograr un efecto de mayor tiempo de visualización por frame en la reproducción en tiempo real. 
 
 \subsubsection{\bf{Interpolación lineal}}
 \subsubsection*{Cámara fija e imagen fija - Caso de laboratorio}
-En nuestro caso de laboratorio \footnote{Un video conteniendo un único frame repetido muchas veces.} puede observarse que al ser todos los pares de frames iguales los frames interpolados linealmente también lo serán ya que la recta que une a todos los píxeles entre los 2 frames consecutivos es una constante. No se observan artifacts.
+En nuestro caso de laboratorio\footnote{Un video conteniendo un único frame repetido muchas veces.} puede observarse que al ser todos los pares de frames iguales los frames interpolados linealmente también lo serán ya que la recta que une a todos los píxeles entre los 2 frames consecutivos es una constante. No se observan artifacts.
 
 \subsubsection*{Cámara fija e imagen fija}
-Consideremos en este caso, un video de un objeto inmóvil, pero con cambios de iluminación. Lo que observamos es, que a medida que vamos aumentando el factor de ralentización \footnote{Agregando mas frames intermedios mediante interpolación.} se van suavizando los cambios en el video. Puntualmente, en el video original, observamos el suave cambio de color del cielo y el rápido encendido y apagado de luces. En el video ralentizado, mientras más frames fueron agregados artificialmente, se produce un efecto de suavizamiento de estos cambios rápidos, dándoles una sensación de transición lenta entre encendido y apagado de luces. Respecto a los cambios lentos, no observamos nada muy evidente.
+Consideremos en este caso, un video de un objeto inmóvil, pero con cambios de iluminación. Lo que observamos es que a medida que vamos aumentando el factor de ralentización\footnote{Agregando mas frames intermedios.} se van suavizando los cambios en el video. Puntualmente, en el video original, observamos el suave cambio de color del cielo y el rápido encendido y apagado de luces. En el video ralentizado, mientras más frames fueron agregados artificialmente, se produce un efecto de suavizamiento de estos cambios rápidos, dándoles una sensación de transición lenta entre encendido y apagado de luces. Respecto a los cambios lentos, no observamos nada muy evidente.
 
 \subsubsection*{Cámara fija e imagen móvil}
-En este caso, se considera una cámara en posición fija, captando una escena con mucho movimiento y fondo estático. Particularmente es una escena de un partido de fútbol. Puede observarse que al aumentar el factor de slowmotion, se observa un efecto de \texttt{fantasmeo} en la parte móvil de la escena. Esto puede explicarse desde un punto de vista de la clasificación en métodos predictivos. Bajo el objetivo de construir una secuencia verosímil de frames entre dos frames consecutivos\footnote{\url{https://en.wikipedia.org/wiki/Motion_estimation} . En nuestro caso simplemente los \texttt{motion vectors} mapean idénticamente los píxeles entre dos frames consecutivos.}, intenta predecir el movimiento de los objetos presentes, mientras menos distancia se mueva el objeto entre par de frames originales, mas acertada será esta predicción. Por otro lado, al estar mapeando los píxeles idénticamente al predecir el movimiento, nos queda esta sensación de fantasmeo, producida por la transición suave entre los colores en la región donde se produce el movimiento. Otro buen ejemplo donde se ve esta anomalía es la figura \ref{fig:lineal}, corrida sobre el video \emph{city.avi}. Respecto al fondo estático, al ser los valores de los píxeles iguales entre frames, la recta que los une también es constante y dichos píxeles son copiados idénticamente en cada frame agregado.
+En este caso, se considera una cámara en posición fija, captando una escena con mucho movimiento y fondo estático. Particularmente es una escena de un partido de fútbol. Puede observarse que al aumentar el factor de \emph{slowmotion} se observa un efecto de \texttt{fantasmeo} en la parte móvil de la escena. Esto puede explicarse desde un punto de vista de la clasificación en métodos predictivos. Bajo el objetivo de construir una secuencia verosímil de frames entre dos frames consecutivos\footnote{\url{https://en.wikipedia.org/wiki/Motion_estimation}. En nuestro caso simplemente los \texttt{motion vectors} mapean idénticamente los píxeles entre dos frames consecutivos.}, intenta predecir el movimiento de los objetos presentes, mientras menos distancia se mueva el objeto entre par de frames originales, mas acertada será esta predicción. Por otro lado, al estar mapeando los píxeles idénticamente al predecir el movimiento, nos queda esta sensación de fantasmeo, producida por la transición suave entre los colores en la región donde se produce el movimiento. Otro buen ejemplo donde se ve esta anomalía es la figura \ref{fig:lineal}, corrida sobre el video \emph{city.avi}. Respecto al fondo estático, al ser los valores de los píxeles iguales entre frames, la recta que los une también es constante y dichos píxeles son copiados idénticamente en cada frame agregado.
 
 \subsubsection*{Cámara móvil e imagen fija}
 En este caso lo que se observa es algo similar a lo mencionado anteriormente de \emph{motion prediction}, al moverse la figura, particularmente en los bordes de la misma, donde la diferencia entre el gris de la figura y el fondo negro es mas visible, se producen artifacts de fantasmeo mas marcado, nuevamente esto es producido por nuestro mapeo idéntico de píxeles entre frames, produciendo una transición suave de colores en las regiones donde se producen los cambios mas bruscos. El fondo no presenta artifacts evidentes. Como detalle, notar que en la parte frontal central del robot, los artifacts son mas leves, asumimos que esto se debe a que a pesar de mapear idénticamente los píxeles, la varianza de color de la región es muy baja.
