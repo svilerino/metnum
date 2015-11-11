@@ -1,0 +1,9 @@
+En el makefile hay varios flags que se pueden o no activar
+
+#flags opcionales en CFLAGS
+#-DCOLOR_PROCESSING procesa los videos en color
+#-DAUTO_DROP_FRAMES skipea los frames automaticamente para experimentacion
+
+Si se compila sin ninguno de ellos, el ejecutable resultante se comporta exactamente como espera el enunciado. Caso contrario pueden cambiar los parametros de entrada.
+
+Para estar seguro de como funciona la version que hayas compilado, podes correr ../bin/tp3 sin argumentos e indicada absolutamente todo lo necesario para ejecutar el tp con o sin flags.
