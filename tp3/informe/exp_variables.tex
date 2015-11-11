@@ -1,21 +1,69 @@
-\IEEEPARstart{A}{} partir de las hip\'otesis enunciadas, se determinaron
+A partir de las hip\'otesis enunciadas, se determinaron
 ciertas caracter\'isticas y par\'ametros que posiblemente afecten a la calidad
 de las interpolaciones aplicadas a los videos. Estas son:
 
 \begin{LaTeXdescription}
-    \item[Frames Interpolados]
+    \item[Frames Interpolados] La cantidad de frames artificalmente generados
+        que ser\'an insertados entre cada par de frames del video original. Se
+        consideron 4 alternativas para esta variable: 1, 2, 5 o 10 frames.
+        Agregar de a 1 frame cada virtualmente duplica la cantidad de frames
+        del video original, con lo cual si se mantiene el \emph{ratio de
+        reproducci\'on}\footnote{Frames per second.} se estar\'ia obteniendo el
+        efecto de reproducir a la ''mitad'' de la velocidad original. Se
+        consider\'o algunas alternativas m\'as, aunque es d\'ificil imaginar
+        alg\'un contexto donde se busque reproducir artificalmente el efecto de
+        \emph{c\'amara lenta} con algo m\'as de 5 frames.\medskip
 
-    \item[M\'etodo de Interpolaci\'on]
+    \item[M\'etodo de Interpolaci\'on] Tenemos 3 formas/m\'etodos de generar
+        los frames interpolados: Vecino m\'as Cercano, Interpolaci\'on Lineal,
+        Interpolaci\'on C\'ubica o Spline. Claramente cada uno de ellos funciona
+        de forma distinta, como ya se ha explicado. As\'i pues, la elecci\'on
+        del m\'etodo deber\'ia afectar a los frames generados artificialmente,
+        ya que dificilmente en un caso de uso real los m\'etodos devuelvan un
+        frame artificial id\'entico.\medskip
 
-    \item[Tama\~no de Bloque (splines)]
+    \item[Tama\~no de Bloque (splines)] El m\'etodo de spline puede pensarse
+        como aplicado a todo el video, o se podr\'ian aplicar a distintos
+        bloques a lo largo del video (generando disintos splines por cada
+        bloque del video).  Parte de los objetivos de la experimentaci\'on es
+        ver si esto afecta a los resultados de alguna manera. Los valores
+        considerados fueron 4, 8, 16 y 32 frames (m\'as el caso de aplicar el
+        m\'etodo a todo el video).\medskip
 
-    \item[Resoluci\'on del Video]
+    \item[Resoluci\'on del Video] ¿La resoluci\'on del video afecta a los
+        m\'etodos de alguna manera?¿Es acaso alguno de ellos (o todos) m\'as
+        preciso para resoluciones mayores?\footnote{Se experiment\'o con los
+        mismos videos en 2 resoluciones diferentes, pero por cuestiones de
+        tiempo los resultados de las resoluciones m\'as grandes no pudieron ser
+        analizadas.}.\medskip
 
-    \item[Duraci\'on del Video]
+    \item[Tipo Movimiento grabado por la C\'amara] A partir de una c\'amara uno
+        podr\'ia grabar algo est\'atico o con poco movimiento, como por ejemplo
+        el crecimiento de la vida vegetal\footnote{O a la defensa de Platense
+        jugando al \emph{offside}}, o algo con m\'as movimiento como por
+        ejemplo una carrera de autos o un evento deportivo\footnote{No, no
+        quedamos manija luego del TP2}.  As\'i pues, dados los tiempos de este
+        trabajo, decidimos hacer una bipartici\'on de los posibles videos
+        respecto de esta caracter\'istica: videos que graban cosas est\'aticas
+        como videos que filman situaciones donde hay movimiento.  Hay
+        distinciones que ser\'ian interesantes tener en cuenta, como por
+        ejemplo si los movimientos son abruptos o suaves, pero nuevamente los
+        tiempos para confeccionar esta trabajo no permitieron dicho
+        an\'alisis.\medskip
 
-    \item[Tipo Movimiento grabado por la C\'amara]
-
-    \item[Tipo de Movimiento de la C\'amara]
+    \item[Tipo de Movimiento de la C\'amara] Al igual que en el item anterior,
+        bien se puede considerar los movimientos de la c\'amara que efect\'ua
+        la filmaci\'on. De hecho, podr\'ia llegar a considerarse que si se
+        analiza el movimiento de un video, no importa si el mismo proviene de
+        mover la c\'amara o de filmar algo que efectivamente cambie de
+        posici\'on. A\'un as\'i, dado que en este aspecto en realidad estamos
+        explorando como se comportan los m\'etodos propuestos, se decidi\'o
+        realizar una partici\'on similar al caso previo para los movimientos
+        de la c\'amara: videos donde la c\'amara est\'e fija y videos donde
+        la misma presente alg\'un tipo de movimiento. Nuevamente entra en juego
+        otras distinciones respecto de como son estos movimientos que no
+        pudieron ser evaluadas por las limintantes de tiempo ya
+        mencionadas.\medskip
 \end{LaTeXdescription}
 
 \par Estas son algunas de las variables que se podr\'ian en tener en cuenta (en

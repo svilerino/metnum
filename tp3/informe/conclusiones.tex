@@ -1,1 +1,8 @@
-\IEEEPARstart{A}{} lo largo de este trabajo pudimos vislumbrar las complejidades propias del problema de ordenar una colección en principio desordenada de elementos. Tomamos el ejemplo de las páginas web por un lado y el de las competiciones deportivas por otro, enfocándonos particularmente en el fútbol. Usamos el algoritmo de PageRank y su adaptación GeM para resolver ambos problemas respectivamente, y estudiamos su comportamiento al variar diferentes parámetros de entrada, particularmente el factor de teletransportación $\alpha$.
+%!TEX root = informe.tex
+\IEEEPARstart{A}{} lo largo de este trabajo atacamos el problema de generar frames artificiales para un video, intentando lograr que se ajusten al original hasta el punto -ideal- de que el ojo humano no detecte la diferencia con un video filmado en alta frecuencia.
+
+Como primera conclusión al respecto podemos decir que no logramos dicho objetivo ideal: de nuestras observaciones descubrimos fácilmente que, al menos para los tres métodos implementados, los resultados ``no engañan a nadie''. Todos los métodos presentan o bien \emph{lag} o bien \emph{fantasmeo}, perturbando la sensación de fluidez y alterando el realismo percibido del video.
+
+Más allá de ese análisis cualitativo, pudimos observar que atacar el problema de forma \emph{naïve} (el método que llamamos ``Vecino más cercano'') produce resultados con error matemático más reducido aunque visualmente pareciera ser el peor método, pudiendo obtenerse resultados visualmente más agradables con métodos más inteligentes como interpolación mediante poliniomios.
+
+También concluimos que, visto como método de compresión, los resultados son pobres. En la actualidad existen métodos que, sin utilizar mucho más espacio, generan prácticamente nulos \emph{artifacts} y no pierden información de cuadros completos.

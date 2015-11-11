@@ -1,4 +1,5 @@
-Para comenzar esta sección, consideremos este trabajo en un marco de compresión de video para transmisión en redes de baja velocidad \footnote{Consideramos que la motivación de este trabajo, que la empresa \texttt{youborn} quiera transmitir videos en slowmotion pero enviando videos originales, es análogo a transmitir un video comprimido, para luego reconstruir el original.}.\footnote{Nuestro algoritmo de compresión consiste en quitarle frames al video original y luego regenerarlos, ya sea de forma predictiva o no predictiva.} Los videos de entrada pueden verse como los videos \texttt{comprimidos} y los videos de salida\footnote{Los videos en \texttt{cámara lenta}} como los videos \texttt{descomprimidos}.\\
+%!TEX root = informe.tex
+Para comenzar esta sección, consideremos este trabajo en un marco de compresión de video para transmisión en redes de baja velocidad \footnote{Consideramos que la motivación de este trabajo, que la empresa \texttt{youborn} quiera transmitir videos en slowmotion pero enviando videos originales, es análogo a transmitir un video comprimido, para luego reconstruir el original.}.\footnote{Nuestro algoritmo de compresión consiste en quitarle frames al video original y luego regenerarlos, ya sea de forma predictiva o no predictiva.} Los videos de entrada pueden verse como los videos \texttt{comprimidos} y los videos de salida\footnote{Los videos en \texttt{cámara lenta}} como los videos \texttt{descomprimidos}.
 
 Consideremos la eliminación de frames intermedios de un video al algoritmo de compresión y a la copia o predicción de frames intermedios como algoritmo de descompresión. Los algoritmos de descompresión pueden clasificarse en los siguientes tipos:
 \begin{itemize}
@@ -17,22 +18,22 @@ Dividiremos nuestro análisis en diferentes casos, en función de las siguientes
 
 \emph{Nota:} Los videos analizados aqui, corresponden a los \emph{interpolados de resolución original} de la carpeta de google drive en \url{https://drive.google.com/folderview?id=0B0RfkWV-4-XqMk9Pei1WZUJ3T00&usp=sharing_eid&ts=563b7352}.
 
-\subsection{Descompresión mediante interpolación por vecino mas cercano}
+\subsubsection{\bf{Descompresión mediante interpolación por vecino mas cercano}}
 Dado que este método de \emph{reconstrucción} es un método \emph{no predictivo} no se producirán artifacts bajo nuestra definición, simplemente el video descomprimido tendrá un efecto de \texttt{lag} en donde la reproducción parece trabada. Esto es esperable, ya que este método copia frames consecutivamente para lograr un efecto de mayor tiempo de visualización por frame en la reproducción en tiempo real. 
 
-\subsection{Descompresión mediante interpolación lineal}
-\subsubsection{Cámara fija e imagen fija - Caso de laboratorio}
+\subsubsection{\bf{Descompresión mediante interpolación lineal}}
+\subsubsection*{Cámara fija e imagen fija - Caso de laboratorio}
 En nuestro caso de laboratorio \footnote{Un video conteniendo un único frame repetido muchas veces.} puede observarse que al ser todos los pares de frames iguales los frames interpolados linealmente también lo serán ya que la recta que une a todos los píxeles entre los 2 frames consecutivos es una constante. No se observan artifacts.
 
-\subsubsection{Cámara fija e imagen fija}
+\subsubsection*{Cámara fija e imagen fija}
 Consideremos en este caso, un video de un objeto inmóvil, pero con cambios de iluminación. Lo que observamos es, que a medida que vamos aumentando el factor de compresión \footnote{Quitando mas frames intermedios del video original y regenerándolos mediante interpolación.} se pierden detalles de cambios \emph{rápidos} en el video. Puntualmente, en el video original, observamos el suave cambio de color del cielo y el rápido encendido y apagado de luces. En el video regenerado, mientras más frames fueron descartados del original, se produce un efecto de suavizamiento de estos cambios, y en el extremo con el factor $k = 10$\footnote{Quitar de a 10 frames intermedios del video original al comprimir.} observamos que directamente se perdieron en su mayoría estos movimientos rápidos del video.
 
-\subsubsection{Cámara fija e imagen móvil}
+\subsubsection*{Cámara fija e imagen móvil}
 En este caso, se considera una cámara en posición fija, captando una escena con mucho movimiento. Particularmente es una escena de un partido de fútbol. Puede observarse que al aumentar el factor de compresión, se observa un efecto de \texttt{fantasmeo} en la escena, particularmente con los objetos de rápido movimiento. Esto puede explicarse desde un punto de vista del método predictivo de reconstrucción, en su objetivo de construir una secuencia verosímil de frames entre dos frames consecutivos\footnote{\url{https://en.wikipedia.org/wiki/Motion_estimation} . En nuestro caso simplemente los \texttt{motion vectors} mapean idénticamente los píxeles entre dos frames consecutivos.}, intenta predecir el movimiento de los objetos presentes, mientras menos distancia haya entre par de frames originales, mas acertada será esta predicción. Por otro lado, al estar mapeando los píxeles idénticamente al predecir el movimiento, nos queda esta sensación de fantasmeo, producida por la transición suave entre dos frames. Otro buen ejemplo donde se ve esta anomalía es la figura \ref{fig:lineal}.
 
-\subsubsection{Cámara móvil e imagen móvil}
+\subsubsection*{Cámara móvil e imagen móvil}
 Este caso de prueba se carácteriza por rápidos cambios en los ángulos de la filmación y por una escena rápida ocurriendo de fondo. Probablemente este sea el peor caso, cualitativamente hablando. Lo que se observa es que a medida que se aumenta el factor de compresión, el video reconstruido se parece mas a una transición suave de frames muy distintos que al video original. Esto lo atribuimos a la excesiva pérdida de información en la compresión del video original. 
 
-\subsection{Descompresión mediante interpolación cúbica con splines}
+\subsubsection{\bf{Descompresión mediante interpolación cúbica con splines}}
 Dada la combinacion explosiva de experimentos que induce este caso y el tiempo acotado que tenemos para realizar este trabajo, no analizaremos esto.
 
